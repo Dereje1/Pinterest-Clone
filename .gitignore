@@ -1,0 +1,17 @@
+#dependencies
+/node_modules
+
+
+
+# dependencies
+/node_modules
+
+# testing
+/coverage
+
+# production
+/build
+
+#private
+.env
+nodemon.json

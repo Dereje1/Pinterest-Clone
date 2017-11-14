@@ -1,0 +1,65 @@
+//variable declaration in list form fot links only
+$a-tags: 'a, a:active, a:hover, a:visited, a:active, a:hover';
+
+body{
+    background: black;
+    opacity:1;
+    #logincard{
+      background-color: #fff;
+      border-radius: 8px;
+      min-height: 533px;
+      margin-top: -266px;
+      width: 400px;
+      left: 50%;
+      top: 50%;
+      position: absolute;
+      transform: translateX(-50%);
+      display: flex;
+      flex-direction: column;
+      justify-content: space-around;
+      align-items: center;
+      background: white;
+      border-radius: 10px;
+      #welcome{
+            font-family: 'Helvetica Neue', Helvetica, 'ヒラギノ角ゴ Pro W3', 'Hiragino Kaku Gothic Pro', メイリオ, Meiryo, 'ＭＳ Ｐゴシック', arial, sans-serif;
+            font-size: 28px;
+            font-weight: bold;
+            color:#555;
+      }
+      #subheader{
+        font-weight: bold;
+        color: #ccc;
+        font-size: 18px;
+        text-align: center;
+      }
+      #loginbutton{
+        border: 0px;
+        height: 40px;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        border-radius: 2px;
+        -webkit-font-smoothing: antialiased;
+        -moz-osx-font-smoothing: grayscale;
+        padding: 1px;
+        font-size: 15px;
+        font-weight: bold;
+        outline: none;
+        -webkit-box-shadow: none;
+        box-shadow: none;
+        cursor: pointer;
+        background-clip: padding-box;
+        transition: opacity .2s linear;
+        width: 268px;
+        background-color: #4285f4;
+        color:white;
+        #twitter{
+          font-size: 30px;
+          padding-left: 3px;
+        }
+        #buttontext{
+          padding-right: 45px;
+        }
+      }
+    }
+  }
