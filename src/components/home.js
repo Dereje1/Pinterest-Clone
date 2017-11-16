@@ -1,23 +1,39 @@
-"use strict" //home page for both authorized and unauthorized users
 import React, { Component } from 'react';
+import Masonry from 'react-masonry-component';
 
 class Home extends Component {
   constructor(props) {
     super(props);
+    this.state = {
+      ready:false
+    };
   }
-  handleLogin(){
-    window.location="/auth/twitter"
+  handleImagesLoaded(){
+    console.log("yes!!")
   }
   render() {
-    return (
-      <div id="logincard">
-        <div>
-          <div id="welcome">Welcome to PClone</div>
-          <div id="subheader">Find new ideas to try</div>
+    var masonryOptions = {
+      transitionDuration: 0
+  };
+    let images = ["https://shorten-my-link.glitch.me/LGe0i","https://shorten-my-link.glitch.me/LV10f","https://shorten-my-link.glitch.me/JkFcl","https://shorten-my-link.glitch.me/LV10f","https://shorten-my-link.glitch.me/LGe0i","https://shorten-my-link.glitch.me/JkFcl"]
+    var childElements = images.map(function(element,idx){
+   return (
+        <div key={idx} className="image-box">
+            <img  className="image-format" src={element} />
+            <div className="text-center"> And what if I write Blablabla</div>
         </div>
-        <button id="loginbutton" onClick={()=>this.handleLogin()}><span id="twitter"><i className="fa fa-twitter" aria-hidden="true"></i></span><span id="buttontext">Continue With Twitter</span></button>
-      </div>
     );
+  });
+
+  return (
+      <div id="mainframe">
+        <Masonry>
+          {childElements}
+        </Masonry>
+      </div>
+      );
+
+
   }
 
 }

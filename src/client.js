@@ -15,12 +15,13 @@ import {Router, Route, IndexRoute,browserHistory} from 'react-router';
 import Main from './main'
 
 import Home from './components/home'
+import Mypics from './components/mypics'
 //import combined reducer to pass to store here
 import reducers from './reducers/index'
 
 //use logger for debugging only
-//const middleware = applyMiddleware(thunk,logger)
-const middleware = applyMiddleware(thunk)
+const middleware = applyMiddleware(thunk,logger)
+//const middleware = applyMiddleware(thunk)
 const store = createStore(reducers,middleware)
 
 //decalre all routes of application below note that /profileadd,/passchange ,/mybooks actually
@@ -30,7 +31,8 @@ const Routes = (
 <Provider store={store}>
   <Router history={browserHistory}>
     <Route path="/" component={Main}>
-    <IndexRoute component={Home}/>
+      <IndexRoute component={Home}/>
+      <Route path="/mypics" component={Mypics}/>
     </Route>
   </Router>
 </Provider>

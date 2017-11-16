@@ -2,64 +2,116 @@
 $a-tags: 'a, a:active, a:hover, a:visited, a:active, a:hover';
 
 body{
-    background: black;
-    opacity:1;
-    #logincard{
-      background-color: #fff;
-      border-radius: 8px;
-      min-height: 533px;
-      margin-top: -266px;
-      width: 400px;
-      left: 50%;
-      top: 50%;
-      position: absolute;
-      transform: translateX(-50%);
-      display: flex;
-      flex-direction: column;
-      justify-content: space-around;
-      align-items: center;
-      background: white;
-      border-radius: 10px;
-      #welcome{
-            font-family: 'Helvetica Neue', Helvetica, 'ヒラギノ角ゴ Pro W3', 'Hiragino Kaku Gothic Pro', メイリオ, Meiryo, 'ＭＳ Ｐゴシック', arial, sans-serif;
-            font-size: 28px;
-            font-weight: bold;
-            color:#555;
+    background: white;
+    margin:0px;
+    #mainframe{
+      border: 3px solid black;
+      margin-top: 75px;
+      margin-left: 20px;
+      margin-right: 20px;
+      .image-box{
+        width:400px;
+        height:auto;
+        border: 3px solid black;
+
       }
-      #subheader{
-        font-weight: bold;
-        color: #ccc;
-        font-size: 18px;
-        text-align: center;
+      .image-format{
+        display:block;
+        margin:auto;
+        width:80%;
       }
-      #loginbutton{
-        border: 0px;
-        height: 40px;
+    }
+
+    #cover{
+      background: rgba(0, 0, 0,0.6);
+      height:100%;
+      width:100%;
+      #logincard{
+        z-index: 15;
+        background-color: #fff;
+        border-radius: 8px;
+        min-height: 533px;
+        margin-top: -266px;
+        width: 400px;
+        left: 50%;
+        top: 50%;
+        position: absolute;
+        transform: translateX(-50%);
         display: flex;
-        justify-content: space-between;
+        flex-direction: column;
+        justify-content: space-around;
         align-items: center;
-        border-radius: 2px;
-        -webkit-font-smoothing: antialiased;
-        -moz-osx-font-smoothing: grayscale;
-        padding: 1px;
-        font-size: 15px;
-        font-weight: bold;
-        outline: none;
-        -webkit-box-shadow: none;
-        box-shadow: none;
-        cursor: pointer;
-        background-clip: padding-box;
-        transition: opacity .2s linear;
-        width: 268px;
-        background-color: #4285f4;
-        color:white;
-        #twitter{
-          font-size: 30px;
-          padding-left: 3px;
+        background: white;
+        border-radius: 10px;
+        #welcome{
+              font-family: 'Helvetica Neue', Helvetica, 'ヒラギノ角ゴ Pro W3', 'Hiragino Kaku Gothic Pro', メイリオ, Meiryo, 'ＭＳ Ｐゴシック', arial, sans-serif;
+              font-size: 28px;
+              font-weight: bold;
+              color:#555;
         }
-        #buttontext{
+        #subheader{
+          font-weight: bold;
+          color: #ccc;
+          font-size: 18px;
+          text-align: center;
+        }
+        .buttontext{
           padding-right: 45px;
+        }
+        #loginbutton{
+          border: 0px;
+          height: 40px;
+          display: flex;
+          justify-content: space-between;
+          align-items: center;
+          border-radius: 2px;
+          -webkit-font-smoothing: antialiased;
+          -moz-osx-font-smoothing: grayscale;
+          padding: 1px;
+          font-size: 15px;
+          font-weight: bold;
+          outline: none;
+          -webkit-box-shadow: none;
+          box-shadow: none;
+          cursor: pointer;
+          background-clip: padding-box;
+          transition: opacity .2s linear;
+          width: 268px;
+          background-color: #4285f4;
+          color:white;
+          #twitter{
+            font-size: 30px;
+            padding-left: 3px;
+          }
+        }
+        #guestbutton{
+          border: 0px;
+          height: 40px;
+          display: flex;
+          justify-content: space-between;
+          align-items: center;
+          border-radius: 2px;
+          -webkit-font-smoothing: antialiased;
+          -moz-osx-font-smoothing: grayscale;
+          padding: 1px;
+          font-size: 15px;
+          font-weight: bold;
+          outline: none;
+          -webkit-box-shadow: none;
+          box-shadow: none;
+          cursor: pointer;
+          background-clip: padding-box;
+          transition: opacity .2s linear;
+          width: 268px;
+          background-color: #ffb45e;
+          color:white;
+          margin-bottom: 10px;
+          #guest{
+            font-size: 30px;
+            padding-left: 3px;
+          }
         }
       }
     }
+
   }

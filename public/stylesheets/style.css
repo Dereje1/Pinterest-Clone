@@ -1,10 +1,36 @@
 @charset "UTF-8";
 body {
-  background: black;
-  opacity: 1;
+  background: white;
+  margin: 0px;
 }
 
-body #logincard {
+body #mainframe {
+  border: 3px solid black;
+  margin-top: 75px;
+  margin-left: 20px;
+  margin-right: 20px;
+}
+
+body #mainframe .image-box {
+  width: 400px;
+  height: auto;
+  border: 3px solid black;
+}
+
+body #mainframe .image-format {
+  display: block;
+  margin: auto;
+  width: 80%;
+}
+
+body #cover {
+  background: rgba(0, 0, 0, 0.6);
+  height: 100%;
+  width: 100%;
+}
+
+body #cover #logincard {
+  z-index: 15;
   background-color: #fff;
   border-radius: 8px;
   min-height: 533px;
@@ -22,21 +48,25 @@ body #logincard {
   border-radius: 10px;
 }
 
-body #logincard #welcome {
+body #cover #logincard #welcome {
   font-family: 'Helvetica Neue', Helvetica, 'ヒラギノ角ゴ Pro W3', 'Hiragino Kaku Gothic Pro', メイリオ, Meiryo, 'ＭＳ Ｐゴシック', arial, sans-serif;
   font-size: 28px;
   font-weight: bold;
   color: #555;
 }
 
-body #logincard #subheader {
+body #cover #logincard #subheader {
   font-weight: bold;
   color: #ccc;
   font-size: 18px;
   text-align: center;
 }
 
-body #logincard #loginbutton {
+body #cover #logincard .buttontext {
+  padding-right: 45px;
+}
+
+body #cover #logincard #loginbutton {
   border: 0px;
   height: 40px;
   display: flex;
@@ -59,11 +89,36 @@ body #logincard #loginbutton {
   color: white;
 }
 
-body #logincard #loginbutton #twitter {
+body #cover #logincard #loginbutton #twitter {
   font-size: 30px;
   padding-left: 3px;
 }
 
-body #logincard #loginbutton #buttontext {
-  padding-right: 45px;
+body #cover #logincard #guestbutton {
+  border: 0px;
+  height: 40px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-radius: 2px;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  padding: 1px;
+  font-size: 15px;
+  font-weight: bold;
+  outline: none;
+  -webkit-box-shadow: none;
+  box-shadow: none;
+  cursor: pointer;
+  background-clip: padding-box;
+  transition: opacity .2s linear;
+  width: 268px;
+  background-color: #ffb45e;
+  color: white;
+  margin-bottom: 10px;
+}
+
+body #cover #logincard #guestbutton #guest {
+  font-size: 30px;
+  padding-left: 3px;
 }

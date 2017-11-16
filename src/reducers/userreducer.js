@@ -4,6 +4,9 @@ export function userStatusReducer(state={user:[]},action){
     case "GET_USER_STATUS":
       return {user: action.payload};
       break;
+    case "SET_GET_STATUS":
+      return {user:action.payload};
+      break;
   }
   return state
 }

@@ -14,6 +14,20 @@ module.exports = function(app, passport) {
                 displayname: req.user.twitter.displayName
             });
     });
+    //wether a user is logged in or not json data will show up on the profile page
+
+    //guest login path -- not logged in but provides persistence instaed of doing it on client side
+    app.get('/guest',function(req, res) {
+      let headerObject = req.headers //need for ip
+      let ip = (headerObject['x-forwarded-for']||req.socket.remoteAddress).split(",")[0];
+      ip = (ip === "::1") ? "local" : ip
+      res.json({
+                authenticated: false,
+                userip: ip,
+                username: "Guest",
+                displayname: "Guest"
+            });
+    });
     // route for logging out
     app.get('/logout', function(req, res) {
         req.logout();
