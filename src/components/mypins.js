@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import {connect} from 'react-redux';
 
 import PinCreate from './pincreatemodal';
+import {addPin} from '../actions/pinactions' //adds book to db
 class Mypins extends Component {
 
   constructor(props) {
@@ -11,12 +12,14 @@ class Mypins extends Component {
     }
   }
   pinForm(){
-    console.log("Lets create the pin form!")
     this.setState({
       displayPinCreate:true
     })
   }
-
+  saving(pinJSON){
+    console.log("Pin Saving callback!!",pinJSON)
+    addPin(pinJSON)
+  }
   render() {
     return (
       <div id="mypinframe">
@@ -31,6 +34,7 @@ class Mypins extends Component {
         message={this.state.displayPinCreate}
         reset={()=>this.setState({displayPinCreate:false})}
         userInfo={this.props.user.user}
+        savePin={(pinJSON)=>this.saving(pinJSON)}
         />
       </div>
     );

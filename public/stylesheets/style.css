@@ -26,18 +26,11 @@ body #mainframe .image-box:hover {
   visibility: visible;
 }
 
-body #mainframe .image-cover {
-  background-color: yellow;
-  visibility: visible;
-  width: 80%;
-  border-radius: 5px;
-}
-
 body #mainframe .image-format {
   display: block;
   visibility: visible;
   margin: auto;
-  width: 80%;
+  width: 90%;
   border-radius: 5px;
   cursor: -moz-zoom-in;
   cursor: -webkit-zoom-in;
@@ -48,10 +41,10 @@ body #mainframe .image-format:hover {
   opacity: 0.7;
 }
 
-body #mainframe .testbutton {
+body #mainframe .savebutton {
   position: absolute;
-  top: 25px;
-  left: 68%;
+  top: 11%;
+  left: 73%;
   width: 20%;
   height: 35px;
   background-color: #a80b0b;
@@ -60,6 +53,22 @@ body #mainframe .testbutton {
   font-weight: 700;
   border-radius: 7px;
   border: none;
+}
+
+body #mainframe .owner {
+  position: absolute;
+  top: 78%;
+  left: 7%;
+  color: white;
+  font-size: 12px;
+  font-weight: 700;
+}
+
+body #mainframe .description {
+  font-weight: bold;
+  font-size: 24px;
+  color: #555;
+  font-family: "Helvetica";
 }
 
 body #mypinframe {

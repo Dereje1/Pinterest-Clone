@@ -3,14 +3,17 @@ import React, { Component } from 'react';
 import { Button,Modal} from 'react-bootstrap'
 import {findDOMNode} from 'react-dom';
 import Masonry from 'react-masonry-component';
-
+import $ from "jquery";
 class PinCreate extends Component {
   constructor(props) {
     super(props)
     //initialize modal show state to false
     this.state={
       show:false,
-      picPreview:""
+      picPreview:'/images/NO-IMAGE.png',
+      saveDisabled:true,
+      picValid:false,
+      descriptionValid:false
     }
   }
 
@@ -31,33 +34,75 @@ class PinCreate extends Component {
     //the message field
     this.setState({
       show: false,
-      picPreview:""
+      picPreview:'/images/NO-IMAGE.png'
     },()=>this.props.reset());
   }
   picprocess(e){
+    if (this.state.descriptionValid){
+      this.setState({
+        picPreview:e.target.value,
+        picValid:true,
+        saveDisabled:false
+      })
+    }
+    else{
+      this.setState({
+        picPreview:e.target.value,
+        picValid:true,
+        saveDisabled:true
+      })
+    }
+  }
+  discprocess(e){
+    if(e.target.value.length){
+      if(this.state.picValid){
+        this.setState({
+          descriptionValid:true,
+          saveDisabled:false
+        })
+      }
+      else{
+        this.setState({
+          descriptionValid:true,
+          saveDisabled:true
+        })
+      }
+
+    }
+    else{
+      this.setState({
+        descriptionValid:false,
+        saveDisabled:true
+      })
+    }
+  }
+  invalidImage(){
     this.setState({
-      picPreview:e.target.value
+      picPreview:'/images/NO-IMAGE.png',
+      picValid:false,
+      saveDisabled:true
     })
   }
   savePic(){
-
     let picDescription = findDOMNode(this.refs.imgdesc).value.trim()
     let picLink = findDOMNode(this.refs.imglink).value.trim()
-    if((picDescription&&picLink)===""){return}
-    let storeJSON={
+
+    let pinJSON={
       owner:this.props.userInfo.username,
       imgDescription:picDescription,
-      imgLink:picLink
+      imgLink:picLink,
+      timeStamp:Date.now(),
+      savedBy: []
     }
-    console.log(storeJSON)
+    this.props.savePin(pinJSON)
+    this.close()
   }
   addpin(){
-    let preview = this.state.picPreview.length ? this.state.picPreview : '/images/NO-IMAGE.png'
     return(
       <div id="addpin">
         <div id="picdisplay">
           <Masonry>
-            <img  className="pinTest" src={preview}/>
+            <img  onError={()=>this.invalidImage()} className="pinTest" src={this.state.picPreview}/>
           </Masonry>
         </div>
         <div id="formarea">
@@ -66,6 +111,7 @@ class PinCreate extends Component {
           ref="imgdesc"
           id="textdesc"
           placeholder="Description..."
+          onChange={(e)=>this.discprocess(e)}
            />
            <p>Paste Link to Image</p>
            <textarea
@@ -94,7 +140,7 @@ class PinCreate extends Component {
           {this.addpin()}
       </Modal.Body>
       <Modal.Footer>
-        <Button bsStyle="danger" onClick={()=>this.savePic()}>Save</Button>
+        <Button bsStyle="danger" onClick={()=>this.savePic()} disabled={this.state.saveDisabled}>Save</Button>
       </Modal.Footer>
     </Modal>
     );
