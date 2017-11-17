@@ -15,7 +15,7 @@ import {Router, Route, IndexRoute,browserHistory} from 'react-router';
 import Main from './main'
 
 import Home from './components/home'
-import Mypics from './components/mypics'
+import Mypins from './components/mypins'
 //import combined reducer to pass to store here
 import reducers from './reducers/index'
 
@@ -32,7 +32,7 @@ const Routes = (
   <Router history={browserHistory}>
     <Route path="/" component={Main}>
       <IndexRoute component={Home}/>
-      <Route path="/mypics" component={Mypics}/>
+      <Route path="/pins" component={Mypins}/>
     </Route>
   </Router>
 </Provider>

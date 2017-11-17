@@ -63,7 +63,7 @@ class Menu extends Component {
             <Navbar.Collapse>
                 <Nav pullRight>
                   <NavItem eventKey={2} href="/"><strong>Home</strong></NavItem>
-                  <NavItem eventKey={3} href="/mypics">My Pics</NavItem>
+                  <NavItem eventKey={3} href="/pins">My Pins</NavItem>
                   <NavItem eventKey={5} href="/logout">Logout {this.props.user.user.displayname.split(' ')[0]}</NavItem>
                 </Nav>
             </Navbar.Collapse>

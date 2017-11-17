@@ -14418,9 +14418,9 @@ var _home = __webpack_require__(463);
 
 var _home2 = _interopRequireDefault(_home);
 
-var _mypics = __webpack_require__(581);
+var _mypins = __webpack_require__(584);
 
-var _mypics2 = _interopRequireDefault(_mypics);
+var _mypins2 = _interopRequireDefault(_mypins);
 
 var _index = __webpack_require__(582);
 
@@ -14454,7 +14454,7 @@ var Routes = _react2.default.createElement(
       _reactRouter.Route,
       { path: '/', component: _main2.default },
       _react2.default.createElement(_reactRouter.IndexRoute, { component: _home2.default }),
-      _react2.default.createElement(_reactRouter.Route, { path: '/mypics', component: _mypics2.default })
+      _react2.default.createElement(_reactRouter.Route, { path: '/pins', component: _mypins2.default })
     )
   )
 );
@@ -37032,8 +37032,8 @@ var Menu = function (_Component) {
               ),
               _react2.default.createElement(
                 _reactBootstrap.NavItem,
-                { eventKey: 3, href: '/mypics' },
-                'My Pics'
+                { eventKey: 3, href: '/pins' },
+                'My Pins'
               ),
               _react2.default.createElement(
                 _reactBootstrap.NavItem,
@@ -49563,11 +49563,18 @@ var Home = function (_Component) {
         return _react2.default.createElement(
           'div',
           { key: idx, className: 'image-box' },
+          _react2.default.createElement('div', { className: 'image-cover' }),
           _react2.default.createElement('img', { className: 'image-format', src: element }),
           _react2.default.createElement(
             'div',
-            { className: 'text-center' },
+            { className: 'description text-center' },
             ' And what if I write Blablabla'
+          ),
+          _react2.default.createElement(
+            'button',
+            { className: 'testbutton' },
+            _react2.default.createElement('i', { className: 'fa fa-thumb-tack', 'aria-hidden': 'true' }),
+            ' Save'
           )
         );
       });
@@ -57326,52 +57333,7 @@ module.exports = isFlattenable;
 
 
 /***/ }),
-/* 581 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-
-var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
-
-var _react = __webpack_require__(0);
-
-var _react2 = _interopRequireDefault(_react);
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-
-function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
-
-function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
-
-var Mypics = function (_Component) {
-  _inherits(Mypics, _Component);
-
-  function Mypics() {
-    _classCallCheck(this, Mypics);
-
-    return _possibleConstructorReturn(this, (Mypics.__proto__ || Object.getPrototypeOf(Mypics)).apply(this, arguments));
-  }
-
-  _createClass(Mypics, [{
-    key: 'render',
-    value: function render() {
-      return _react2.default.createElement('div', null);
-    }
-  }]);
-
-  return Mypics;
-}(_react.Component);
-
-exports.default = Mypics;
-
-/***/ }),
+/* 581 */,
 /* 582 */
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -57418,6 +57380,303 @@ function userStatusReducer() {
   }
   return state;
 }
+
+/***/ }),
+/* 584 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+var _react = __webpack_require__(0);
+
+var _react2 = _interopRequireDefault(_react);
+
+var _reactRedux = __webpack_require__(91);
+
+var _pincreatemodal = __webpack_require__(585);
+
+var _pincreatemodal2 = _interopRequireDefault(_pincreatemodal);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+var Mypins = function (_Component) {
+  _inherits(Mypins, _Component);
+
+  function Mypins(props) {
+    _classCallCheck(this, Mypins);
+
+    var _this = _possibleConstructorReturn(this, (Mypins.__proto__ || Object.getPrototypeOf(Mypins)).call(this, props));
+
+    _this.state = {
+      displayPinCreate: false
+    };
+    return _this;
+  }
+
+  _createClass(Mypins, [{
+    key: 'pinForm',
+    value: function pinForm() {
+      console.log("Lets create the pin form!");
+      this.setState({
+        displayPinCreate: true
+      });
+    }
+  }, {
+    key: 'render',
+    value: function render() {
+      var _this2 = this;
+
+      return _react2.default.createElement(
+        'div',
+        { id: 'mypinframe' },
+        _react2.default.createElement(
+          'h3',
+          { id: 'username' },
+          this.props.user.user.displayname
+        ),
+        _react2.default.createElement(
+          'div',
+          { id: 'creatpinwrapper', onClick: function onClick() {
+              _this2.pinForm();
+            } },
+          _react2.default.createElement(
+            'div',
+            { id: 'createpin' },
+            _react2.default.createElement('i', { className: 'fa fa-plus-circle', 'aria-hidden': 'true' })
+          ),
+          _react2.default.createElement(
+            'h3',
+            { id: 'createpintext' },
+            'Create Pin'
+          )
+        ),
+        _react2.default.createElement(_pincreatemodal2.default, {
+          message: this.state.displayPinCreate,
+          reset: function reset() {
+            return _this2.setState({ displayPinCreate: false });
+          },
+          userInfo: this.props.user.user
+        })
+      );
+    }
+  }]);
+
+  return Mypins;
+}(_react.Component);
+
+function mapStateToProps(state) {
+  return state;
+}
+exports.default = (0, _reactRedux.connect)(mapStateToProps)(Mypins);
+
+/***/ }),
+/* 585 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+ //displays modal on user interaction
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+var _react = __webpack_require__(0);
+
+var _react2 = _interopRequireDefault(_react);
+
+var _reactBootstrap = __webpack_require__(304);
+
+var _reactDom = __webpack_require__(15);
+
+var _reactMasonryComponent = __webpack_require__(464);
+
+var _reactMasonryComponent2 = _interopRequireDefault(_reactMasonryComponent);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+var PinCreate = function (_Component) {
+  _inherits(PinCreate, _Component);
+
+  function PinCreate(props) {
+    _classCallCheck(this, PinCreate);
+
+    //initialize modal show state to false
+    var _this = _possibleConstructorReturn(this, (PinCreate.__proto__ || Object.getPrototypeOf(PinCreate)).call(this, props));
+
+    _this.state = {
+      show: false,
+      picPreview: ""
+    };
+    return _this;
+  }
+
+  _createClass(PinCreate, [{
+    key: 'componentDidUpdate',
+    value: function componentDidUpdate(prevProps, prevState) {
+      if (prevProps.message === false && this.props.message === true) {
+        this.setState({
+          show: true
+        });
+      }
+    }
+  }, {
+    key: 'open',
+    value: function open() {
+      this.setState({
+        show: true
+      });
+    }
+  }, {
+    key: 'close',
+    value: function close() {
+      var _this2 = this;
+
+      //note my modified modal now sends a reset callback after closing modalstate which clears
+      //the message field
+      this.setState({
+        show: false,
+        picPreview: ""
+      }, function () {
+        return _this2.props.reset();
+      });
+    }
+  }, {
+    key: 'picprocess',
+    value: function picprocess(e) {
+      this.setState({
+        picPreview: e.target.value
+      });
+    }
+  }, {
+    key: 'savePic',
+    value: function savePic() {
+
+      var picDescription = (0, _reactDom.findDOMNode)(this.refs.imgdesc).value.trim();
+      var picLink = (0, _reactDom.findDOMNode)(this.refs.imglink).value.trim();
+      if ((picDescription && picLink) === "") {
+        return;
+      }
+      var storeJSON = {
+        owner: this.props.userInfo.username,
+        imgDescription: picDescription,
+        imgLink: picLink
+      };
+      console.log(storeJSON);
+    }
+  }, {
+    key: 'addpin',
+    value: function addpin() {
+      var _this3 = this;
+
+      var preview = this.state.picPreview.length ? this.state.picPreview : '/images/NO-IMAGE.png';
+      return _react2.default.createElement(
+        'div',
+        { id: 'addpin' },
+        _react2.default.createElement(
+          'div',
+          { id: 'picdisplay' },
+          _react2.default.createElement(
+            _reactMasonryComponent2.default,
+            null,
+            _react2.default.createElement('img', { className: 'pinTest', src: preview })
+          )
+        ),
+        _react2.default.createElement(
+          'div',
+          { id: 'formarea' },
+          _react2.default.createElement(
+            'p',
+            null,
+            'Add a description'
+          ),
+          _react2.default.createElement('textarea', {
+            ref: 'imgdesc',
+            id: 'textdesc',
+            placeholder: 'Description...'
+          }),
+          _react2.default.createElement(
+            'p',
+            null,
+            'Paste Link to Image'
+          ),
+          _react2.default.createElement('textarea', {
+            ref: 'imglink',
+            id: 'textlink',
+            placeholder: 'http://',
+            onChange: function onChange(e) {
+              return _this3.picprocess(e);
+            }
+          })
+        )
+      );
+    }
+  }, {
+    key: 'render',
+    value: function render() {
+      var _this4 = this;
+
+      return _react2.default.createElement(
+        _reactBootstrap.Modal,
+        {
+          show: this.state.show,
+          onHide: this.close.bind(this),
+          container: this,
+          'aria-labelledby': 'contained-modal-title'
+        },
+        _react2.default.createElement(
+          _reactBootstrap.Modal.Header,
+          { closeButton: true },
+          _react2.default.createElement(
+            _reactBootstrap.Modal.Title,
+            { id: 'contained-modal-title' },
+            'Create Pin'
+          )
+        ),
+        _react2.default.createElement(
+          _reactBootstrap.Modal.Body,
+          null,
+          this.addpin()
+        ),
+        _react2.default.createElement(
+          _reactBootstrap.Modal.Footer,
+          null,
+          _react2.default.createElement(
+            _reactBootstrap.Button,
+            { bsStyle: 'danger', onClick: function onClick() {
+                return _this4.savePic();
+              } },
+            'Save'
+          )
+        )
+      );
+    }
+  }]);
+
+  return PinCreate;
+}(_react.Component);
+
+exports.default = PinCreate;
 
 /***/ })
 /******/ ]);
