@@ -48,6 +48,33 @@ app.get('/:user',function(req,res){//gets books depending on request type per us
     res.json(pins)
   })
 })
+
+app.delete('/:_id', function(req,res){//deletes a book by id
+  var query = {_id: req.params._id};
+  pins.remove(query, function(err, pin){
+    if(err){
+    throw err;
+    }
+    res.json(pin);
+  })
+})
+
+//update polls from db
+app.put('/:_id', function(req, res){
+   var pinToUpdate = req.body;
+   var pinID = req.params._id;
+   // if the field doesn't exist $set will set a new field
+   // change to findByIdAndUpdate to make it congruent with delete
+   var update = { '$set': {savedBy: pinToUpdate}};
+   // When true returns the updated document
+   var modified = {new: true};
+   pins.findByIdAndUpdate(pinID, update, modified, function(err, pin){
+       if(err){
+         throw err;
+       }
+       res.json(pin);
+   })
+})
 //APIs end
 app.listen(3001,function(err){
   if(err){

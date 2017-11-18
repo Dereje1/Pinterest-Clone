@@ -3,7 +3,7 @@ import React, { Component } from 'react';
 import { Button,Modal} from 'react-bootstrap'
 import {findDOMNode} from 'react-dom';
 import Masonry from 'react-masonry-component';
-import $ from "jquery";
+
 class PinCreate extends Component {
   constructor(props) {
     super(props)
@@ -128,6 +128,7 @@ class PinCreate extends Component {
   render() {
     return (
       <Modal
+        id="createmodal"
         show={this.state.show}
         onHide={this.close.bind(this)}
         container={this}

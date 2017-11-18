@@ -4,7 +4,7 @@ body {
   margin: 0px;
 }
 
-body #mainframe {
+body #mainframe, body #userImageFrame {
   /*border: 3px solid black;*/
   margin-top: 5px;
   margin-left: 20px;
@@ -12,7 +12,7 @@ body #mainframe {
   padding: 50px;
 }
 
-body #mainframe .image-box {
+body #mainframe .image-box, body #userImageFrame .image-box {
   width: 400px;
   margin: 0px;
   padding-top: 20px;
@@ -22,11 +22,11 @@ body #mainframe .image-box {
   visibility: hidden;
 }
 
-body #mainframe .image-box:hover {
+body #mainframe .image-box:hover, body #userImageFrame .image-box:hover {
   visibility: visible;
 }
 
-body #mainframe .image-format {
+body #mainframe .image-format, body #userImageFrame .image-format {
   display: block;
   visibility: visible;
   margin: auto;
@@ -37,11 +37,12 @@ body #mainframe .image-format {
   cursor: zoom-in;
 }
 
-body #mainframe .image-format:hover {
+body #mainframe .image-format:hover, body #userImageFrame .image-format:hover {
   opacity: 0.7;
+  filter: brightness(50%);
 }
 
-body #mainframe .savebutton {
+body #mainframe .actionbutton, body #userImageFrame .actionbutton {
   position: absolute;
   top: 11%;
   left: 73%;
@@ -53,18 +54,20 @@ body #mainframe .savebutton {
   font-weight: 700;
   border-radius: 7px;
   border: none;
+  pointer: cursor;
 }
 
-body #mainframe .owner {
+body #mainframe .owner, body #userImageFrame .owner {
   position: absolute;
   top: 78%;
   left: 7%;
   color: white;
-  font-size: 12px;
+  font-size: 14px;
   font-weight: 700;
+  text-transform: full-width;
 }
 
-body #mainframe .description {
+body #mainframe .description, body #userImageFrame .description {
   font-weight: bold;
   font-size: 24px;
   color: #555;

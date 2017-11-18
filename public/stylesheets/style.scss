@@ -4,7 +4,7 @@ $a-tags: 'a, a:active, a:hover, a:visited, a:active, a:hover';
 body{
     background: white;
     margin:0px;
-    #mainframe{
+    #mainframe,#userImageFrame{
       /*border: 3px solid black;*/
       margin-top: 5px;
       margin-left: 20px;
@@ -33,9 +33,10 @@ body{
         cursor: zoom-in;
         &:hover{
           opacity:0.7;
+          filter: brightness(50%);
         }
       }
-      .savebutton{
+      .actionbutton{
         position: absolute;
         top:11%;
         left:73%;
@@ -47,14 +48,16 @@ body{
         font-weight: 700;
         border-radius: 7px;
         border: none;
+        pointer:cursor;
       }
       .owner{
         position: absolute;
         top:78%;
         left:7%;
         color: white;
-        font-size: 12px;
+        font-size: 14px;
         font-weight: 700;
+        text-transform: full-width;
       }
       .description{
         font-weight: bold;

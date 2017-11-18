@@ -24,8 +24,8 @@ export function getPins(query){
     })
   })
 }
-/*
-export function deleteBook(query){
+
+export function deletePin(query){
   return new Promise((resolve,reject)=>{
     axios.delete('/api/'+query)
     .then((response)=>{
@@ -37,9 +37,9 @@ export function deleteBook(query){
   })
 }
 
-export function tradeRequest(query,trader){
+export function updatePin(query,savedby){
   return new Promise((resolve,reject)=>{
-    axios.put('/api/'+query,trader)
+    axios.put('/api/'+query,savedby)
     .then((response)=>{
       resolve(response.data)
     })
@@ -48,4 +48,3 @@ export function tradeRequest(query,trader){
     })
   })
 }
-*/
