@@ -3,13 +3,17 @@ import {connect} from 'react-redux';
 import Masonry from 'react-masonry-component';
 import PinCreate from './pincreatemodal';
 import {addPin,getPins,deletePin,updatePin} from '../actions/pinactions' //adds book to db
+import PinZoom from './modalzoom';
+
 class Mypins extends Component {
 
   constructor(props) {
     super(props);
     this.state = {
       displayPinCreate:false,
-      pinList:[]
+      pinList:[],
+      displayPinZoom:false,
+      imageInfo:""
     }
   }
   componentDidMount() {
@@ -30,6 +34,12 @@ class Mypins extends Component {
       displayPinCreate:true
     })
   }
+  pinEnlarge(currentImg){
+    this.setState({
+      displayPinZoom:true,
+      imageInfo:currentImg
+    })
+  }
   deletePic(element){
     let pinListCopy = JSON.parse(JSON.stringify(this.state.pinList))
     let indexOfDeletion = pinListCopy.findIndex((p)=>{
@@ -37,7 +47,6 @@ class Mypins extends Component {
     })
     pinListCopy =[...pinListCopy.slice(0,indexOfDeletion),...pinListCopy.slice(indexOfDeletion+1)]
     if(element.owner!==this.props.user.user.username){//not owner so actually must do an update and not delete
-      console.log("Not Yours to fully delete")
       let toUpdate = [...element.savedBy]
       let indexOfUpdate = toUpdate.findIndex((saved)=>{
         return saved===this.props.user.user.username
@@ -66,7 +75,7 @@ class Mypins extends Component {
     var childElements = this.state.pinList.map((element,idx)=>{
     return (
         <div key={idx} className="image-box">
-            <img  className="image-format" src={element.imgLink} />
+            <img  className="image-format" src={element.imgLink} onClick={()=>this.pinEnlarge(element)}/>
             <div className="description text-center"> {element.imgDescription}</div>
             <button className="actionbutton" onClick={()=>this.deletePic(element)}>Delete</button>
             <div className="owner">Linked By: {element.owner}</div>
@@ -97,6 +106,11 @@ class Mypins extends Component {
           <Masonry>
             {this.buildImages()}
           </Masonry>
+          <PinZoom
+          message={this.state.displayPinZoom}
+          reset={()=>this.setState({displayPinZoom:false})}
+          zoomInfo={this.state.imageInfo}
+          />
         </div>
       </div>
     );

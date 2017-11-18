@@ -28,7 +28,7 @@ class Main extends React.Component{
       if(this.state.ready){
         return (
           <div>
-              <Menu/>
+              <Menu routeInfo={this.props.location.pathname}/>
               {this.props.children}
           </div>
         )

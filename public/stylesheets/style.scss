@@ -71,11 +71,12 @@ body{
       margin-top: 5px;
       margin-left: 20px;
       margin-right: 20px;
-      padding: 50px;
+      padding: 0px;
       display: flex;
       flex-direction: column;
       align-items: center;
       #username{
+        margin-top: 50px;
         font-weight: 700;
         font-family: "Helvetica";
         font-size: 36px;
@@ -179,6 +180,30 @@ body{
         font-weight: bold;
         font-size: 30px;
       }
+      #contained-modal-title-zoom{
+        display:flex;
+        justify-content: space-around;
+        flex-wrap: wrap;
+        font-weight: bold;
+        font-size: 24px;
+        color: #555;
+        font-family: "Helvetica";
+      }
+      #zoomarea{
+        width: 100%;
+        .pinZoom{
+          width:100%;
+          border-radius: 5px;
+        }
+      }
+      #zoomfooter{
+        display:flex;
+        justify-content: flex-start;
+        #zoomtack{
+          font-size: 32px;
+          font-weight: 700;
+        }
+      }
     }
     #cover{
       background: rgba(0, 0, 0,0.6);
@@ -201,6 +226,12 @@ body{
         align-items: center;
         background: white;
         border-radius: 10px;
+        #logo{
+          display: flex;
+          justify-content: center;
+          font-size: 40px;
+          color:#b20e0e;
+        }
         #welcome{
               font-family: 'Helvetica Neue', Helvetica, 'ヒラギノ角ゴ Pro W3', 'Hiragino Kaku Gothic Pro', メイリオ, Meiryo, 'ＭＳ Ｐゴシック', arial, sans-serif;
               font-size: 28px;
@@ -210,6 +241,12 @@ body{
         #subheader{
           font-weight: bold;
           color: #ccc;
+          font-size: 18px;
+          text-align: center;
+        }
+        #disclaimer{
+          font-weight: bold;
+          color: red;
           font-size: 18px;
           text-align: center;
         }
@@ -271,5 +308,12 @@ body{
         }
       }
     }
-
+    .navbar-default .navbar-nav>li>a{
+      font-size: 14px;
+      color:black;
+    }
+    .navbar-default .navbar-nav>.active>a{
+      font-size: 16px;
+      font-weight: 700;
+    }
   }

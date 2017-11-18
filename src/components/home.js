@@ -11,7 +11,7 @@ class Home extends Component {
       ready:false,
       pinList:[],
       displayPinZoom:false,
-      zoomImage:""
+      imageInfo:""
     };
   }
   componentDidMount() {
@@ -29,7 +29,6 @@ class Home extends Component {
     })
     let updated = [...element.savedBy,this.props.user.user.username]
     pinListCopy[indexOfUpdate].savedBy = updated;
-    console.log(updated)
     this.setState({
       pinList:pinListCopy
     },()=>{updatePin(element._id,updated)})
@@ -70,8 +69,7 @@ class Home extends Component {
     var childElements = this.state.pinList.map((element,idx)=>{
     return (
         <div key={idx} className="image-box">
-            <img  className="image-format" src={element.imgLink} onClick={()=>this.pinEnlarge(element.imgLink)}/>
-            <div className="fake"></div>
+            <img  className="image-format" src={element.imgLink} onClick={()=>this.pinEnlarge(element)}/>
             <div className="description text-center"> {element.imgDescription}</div>
             {this.imageStatus(element)}
             <div className="owner">Linked By: {element.owner}</div>
@@ -83,7 +81,7 @@ class Home extends Component {
   pinEnlarge(currentImg){
     this.setState({
       displayPinZoom:true,
-      zoomImage:currentImg
+      imageInfo:currentImg
     })
   }
   render() {
@@ -97,7 +95,7 @@ class Home extends Component {
         <PinZoom
         message={this.state.displayPinZoom}
         reset={()=>this.setState({displayPinZoom:false})}
-        imgSrc={this.state.zoomImage}
+        zoomInfo={this.state.imageInfo}
         />
       </div>
       );

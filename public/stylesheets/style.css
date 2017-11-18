@@ -78,13 +78,14 @@ body #mypinframe {
   margin-top: 5px;
   margin-left: 20px;
   margin-right: 20px;
-  padding: 50px;
+  padding: 0px;
   display: flex;
   flex-direction: column;
   align-items: center;
 }
 
 body #mypinframe #username {
+  margin-top: 50px;
   font-weight: 700;
   font-family: "Helvetica";
   font-size: 36px;
@@ -205,6 +206,35 @@ body .modal .btn-danger {
   font-size: 30px;
 }
 
+body .modal #contained-modal-title-zoom {
+  display: flex;
+  justify-content: space-around;
+  flex-wrap: wrap;
+  font-weight: bold;
+  font-size: 24px;
+  color: #555;
+  font-family: "Helvetica";
+}
+
+body .modal #zoomarea {
+  width: 100%;
+}
+
+body .modal #zoomarea .pinZoom {
+  width: 100%;
+  border-radius: 5px;
+}
+
+body .modal #zoomfooter {
+  display: flex;
+  justify-content: flex-start;
+}
+
+body .modal #zoomfooter #zoomtack {
+  font-size: 32px;
+  font-weight: 700;
+}
+
 body #cover {
   background: rgba(0, 0, 0, 0.6);
   height: 100%;
@@ -230,6 +260,13 @@ body #cover #logincard {
   border-radius: 10px;
 }
 
+body #cover #logincard #logo {
+  display: flex;
+  justify-content: center;
+  font-size: 40px;
+  color: #b20e0e;
+}
+
 body #cover #logincard #welcome {
   font-family: 'Helvetica Neue', Helvetica, 'ヒラギノ角ゴ Pro W3', 'Hiragino Kaku Gothic Pro', メイリオ, Meiryo, 'ＭＳ Ｐゴシック', arial, sans-serif;
   font-size: 28px;
@@ -240,6 +277,13 @@ body #cover #logincard #welcome {
 body #cover #logincard #subheader {
   font-weight: bold;
   color: #ccc;
+  font-size: 18px;
+  text-align: center;
+}
+
+body #cover #logincard #disclaimer {
+  font-weight: bold;
+  color: red;
   font-size: 18px;
   text-align: center;
 }
@@ -303,4 +347,14 @@ body #cover #logincard #guestbutton {
 body #cover #logincard #guestbutton #guest {
   font-size: 30px;
   padding-left: 3px;
+}
+
+body .navbar-default .navbar-nav > li > a {
+  font-size: 14px;
+  color: black;
+}
+
+body .navbar-default .navbar-nav > .active > a {
+  font-size: 16px;
+  font-weight: 700;
 }

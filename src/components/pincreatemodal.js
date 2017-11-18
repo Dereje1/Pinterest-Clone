@@ -111,6 +111,7 @@ class PinCreate extends Component {
           ref="imgdesc"
           id="textdesc"
           placeholder="Description..."
+          maxLength="28"
           onChange={(e)=>this.discprocess(e)}
            />
            <p>Paste Link to Image</p>
@@ -128,7 +129,6 @@ class PinCreate extends Component {
   render() {
     return (
       <Modal
-        id="createmodal"
         show={this.state.show}
         onHide={this.close.bind(this)}
         container={this}

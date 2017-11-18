@@ -15,14 +15,24 @@ class Menu extends Component {
   handleLogin(){
     window.location="/auth/twitter"
   }
+  findActive(){
+    if(this.props.routeInfo==="/pins"){
+      return 3
+    }
+    else if(this.props.routeInfo==="/"){
+      return 2
+    }
+  }
+
   render() {
+
     if(!this.props.user.user.authenticated){
       if(this.props.user.user.username==="Guest"){
         return(
           <Navbar fixedTop>
               <Navbar.Header>
                 <Navbar.Brand>
-                  <a href="/">P Clone</a>
+                  <a href="/"><i className="fa fa-pinterest" aria-hidden="true"></i> Clone</a>
                 </Navbar.Brand>
                 <Navbar.Toggle />
               </Navbar.Header>
@@ -39,8 +49,10 @@ class Menu extends Component {
           <div id="cover">
             <div id="logincard">
               <div>
-                <div id="welcome">Welcome to PClone</div>
+                <div id="logo"><i className="fa fa-pinterest" aria-hidden="true"></i></div>
+                <div id="welcome">Welcome to Pinterest</div>
                 <div id="subheader">Find new ideas to try</div>
+                <div id="disclaimer">For Educational Purposes Only!</div>
               </div>
               <div>
                 <button id="guestbutton" onClick={()=>this.handleGuest()}><span id="guest"><i className="fa fa-question-circle" aria-hidden="true"></i></span><span className="buttontext">Continue As Guest</span></button>
@@ -56,13 +68,13 @@ class Menu extends Component {
         <Navbar fixedTop>
             <Navbar.Header>
               <Navbar.Brand>
-                <a href="/">P Clone</a>
+                <a href="/"><i className="fa fa-pinterest" aria-hidden="true"></i> Clone</a>
               </Navbar.Brand>
               <Navbar.Toggle />
             </Navbar.Header>
             <Navbar.Collapse>
-                <Nav pullRight>
-                  <NavItem eventKey={2} href="/"><strong>Home</strong></NavItem>
+                <Nav pullRight activeKey={this.findActive()}>
+                  <NavItem eventKey={2} href="/">Home</NavItem>
                   <NavItem eventKey={3} href="/pins">My Pins</NavItem>
                   <NavItem eventKey={5} href="/logout">Logout {this.props.user.user.displayname.split(' ')[0]}</NavItem>
                 </Nav>

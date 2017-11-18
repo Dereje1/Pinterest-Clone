@@ -43,21 +43,30 @@ class PinZoom extends Component {
   }
 
   render() {
+
+    let totalPins = (this.props.zoomInfo.savedBy) ? this.props.zoomInfo.savedBy.length : 0
     return (
       <Modal
-        id="zoommodal"
         show={this.state.show}
         onHide={this.close.bind(this)}
         container={this}
         aria-labelledby="contained-modal-title"
       >
       <Modal.Header closeButton>
-        <Modal.Title id="contained-modal-title">Pin Zoom</Modal.Title>
+        <Modal.Title id="contained-modal-title-zoom">
+          <div>{this.props.zoomInfo.imgDescription}</div>
+          <div>Linked By: {this.props.zoomInfo.owner}</div>
+        </Modal.Title>
       </Modal.Header>
       <Modal.Body>
-          <img src={this.props.imgSrc}/>
+          <div id="zoomarea">
+            <Masonry>
+              <img className="pinZoom" src={this.props.zoomInfo.imgLink}/>
+            </Masonry>
+          </div>
       </Modal.Body>
-      <Modal.Footer>
+      <Modal.Footer id="zoomfooter">
+          <span id="zoomtack"><i  className="fa fa-thumb-tack" aria-hidden="true"></i> {totalPins}</span>
       </Modal.Footer>
     </Modal>
     );
