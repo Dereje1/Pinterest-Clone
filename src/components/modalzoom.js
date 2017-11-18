@@ -54,8 +54,8 @@ class PinZoom extends Component {
       >
       <Modal.Header closeButton>
         <Modal.Title id="contained-modal-title-zoom">
-          <div>{this.props.zoomInfo.imgDescription}</div>
-          <div>Linked By: {this.props.zoomInfo.owner}</div>
+          <div id="zoomdesc">{this.props.zoomInfo.imgDescription}</div>
+          <div id="zoomowner">Linked By: {this.props.zoomInfo.owner}</div>
         </Modal.Title>
       </Modal.Header>
       <Modal.Body>

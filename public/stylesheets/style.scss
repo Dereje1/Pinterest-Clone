@@ -63,7 +63,7 @@ body{
         font-weight: bold;
         font-size: 24px;
         color: #555;
-        font-family: "Helvetica";
+        font-family: 'Berkshire Swash', cursive;
       }
     }
 
@@ -188,6 +188,13 @@ body{
         font-size: 24px;
         color: #555;
         font-family: "Helvetica";
+        #zoomdesc{
+          font-family: 'Berkshire Swash', cursive;
+        }
+        #zoomowner{
+          font-family:'Spectral SC', serif;
+          color: #b20e0e;
+        }
       }
       #zoomarea{
         width: 100%;
@@ -205,8 +212,24 @@ body{
         }
       }
     }
+
+    #cover:before {
+      content: "";
+      position: absolute;
+      width: 200%;
+      height: 200%;
+      top: -50%;
+      left: -50%;
+      z-index: -1;
+      background: url('/images/backscreen.png');
+      animation-name: bkimage;
+      animation-duration: 33s;
+      animation-timing-function: linear;
+      animation-iteration-count: 1;
+    }
     #cover{
-      background: rgba(0, 0, 0,0.6);
+      position: relative;
+      overflow: hidden;
       height:100%;
       width:100%;
       #logincard{
@@ -247,8 +270,21 @@ body{
         #disclaimer{
           font-weight: bold;
           color: red;
-          font-size: 18px;
+          font-size: 14px;
           text-align: center;
+          margin-top: 10px;
+        }
+        #gitsource{
+          margin-top: 10px;
+          text-align: center;
+          text-decoration: none;
+          text-transform: full-width;
+          font-weight: 900;
+          font-size: 18px;
+          color:
+          a:hover{
+            text-decoration: none;
+          }
         }
         .buttontext{
           padding-right: 45px;
@@ -316,4 +352,19 @@ body{
       font-size: 16px;
       font-weight: 700;
     }
+    .navbar-default .navbar-brand{
+        font-size: 30px;
+        color:#b20e0e;
+    }
   }
+
+@keyframes bkimage {
+  0%{
+    -webkit-transform: translateY(400px);
+     transform: translateY(350px);
+  }
+  100%{
+    -webkit-transform: translateY(0px);
+     transform: translateY(0px);
+  }
+}

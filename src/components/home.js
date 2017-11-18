@@ -86,19 +86,26 @@ class Home extends Component {
   }
   render() {
 
+  let userStatus = (this.props.user.user.username===null) ? false : true
 
-  return (
-      <div id="mainframe">
-        <Masonry>
-          {this.buildImages()}
-        </Masonry>
-        <PinZoom
-        message={this.state.displayPinZoom}
-        reset={()=>this.setState({displayPinZoom:false})}
-        zoomInfo={this.state.imageInfo}
-        />
-      </div>
-      );
+  if (userStatus){
+    return (
+        <div id="mainframe">
+          <Masonry>
+            {this.buildImages()}
+          </Masonry>
+          <PinZoom
+          message={this.state.displayPinZoom}
+          reset={()=>this.setState({displayPinZoom:false})}
+          zoomInfo={this.state.imageInfo}
+          />
+        </div>
+        );
+  }
+  else{
+    return (null);
+  }
+
   }
 }
 

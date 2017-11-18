@@ -37632,7 +37632,18 @@ var Menu = function (_Component) {
                 _react2.default.createElement(
                   'div',
                   { id: 'disclaimer' },
-                  'For Educational Purposes Only!'
+                  'A Clone For Educational Purposes Only!'
+                ),
+                _react2.default.createElement(
+                  'div',
+                  { id: 'gitsource' },
+                  _react2.default.createElement(
+                    'a',
+                    { href: 'https://github.com/Dereje1/Pinterest-Clone', target: '_blank' },
+                    ' ',
+                    _react2.default.createElement('i', { className: 'fa fa-github', 'aria-hidden': 'true' }),
+                    ' Github'
+                  )
                 )
               ),
               _react2.default.createElement(
@@ -50056,22 +50067,28 @@ var Home = function (_Component) {
     value: function render() {
       var _this5 = this;
 
-      return _react2.default.createElement(
-        'div',
-        { id: 'mainframe' },
-        _react2.default.createElement(
-          _reactMasonryComponent2.default,
-          null,
-          this.buildImages()
-        ),
-        _react2.default.createElement(_modalzoom2.default, {
-          message: this.state.displayPinZoom,
-          reset: function reset() {
-            return _this5.setState({ displayPinZoom: false });
-          },
-          zoomInfo: this.state.imageInfo
-        })
-      );
+      var userStatus = this.props.user.user.username === null ? false : true;
+
+      if (userStatus) {
+        return _react2.default.createElement(
+          'div',
+          { id: 'mainframe' },
+          _react2.default.createElement(
+            _reactMasonryComponent2.default,
+            null,
+            this.buildImages()
+          ),
+          _react2.default.createElement(_modalzoom2.default, {
+            message: this.state.displayPinZoom,
+            reset: function reset() {
+              return _this5.setState({ displayPinZoom: false });
+            },
+            zoomInfo: this.state.imageInfo
+          })
+        );
+      } else {
+        return null;
+      }
     }
   }]);
 
@@ -57625,12 +57642,12 @@ var PinZoom = function (_Component) {
             { id: 'contained-modal-title-zoom' },
             _react2.default.createElement(
               'div',
-              null,
+              { id: 'zoomdesc' },
               this.props.zoomInfo.imgDescription
             ),
             _react2.default.createElement(
               'div',
-              null,
+              { id: 'zoomowner' },
               'Linked By: ',
               this.props.zoomInfo.owner
             )

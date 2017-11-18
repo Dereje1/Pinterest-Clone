@@ -52,7 +52,8 @@ class Menu extends Component {
                 <div id="logo"><i className="fa fa-pinterest" aria-hidden="true"></i></div>
                 <div id="welcome">Welcome to Pinterest</div>
                 <div id="subheader">Find new ideas to try</div>
-                <div id="disclaimer">For Educational Purposes Only!</div>
+                <div id="disclaimer">A Clone For Educational Purposes Only!</div>
+                <div id="gitsource"><a href="https://github.com/Dereje1/Pinterest-Clone" target="_blank"> <i className="fa fa-github" aria-hidden="true"></i> Github</a></div>
               </div>
               <div>
                 <button id="guestbutton" onClick={()=>this.handleGuest()}><span id="guest"><i className="fa fa-question-circle" aria-hidden="true"></i></span><span className="buttontext">Continue As Guest</span></button>
