@@ -4,7 +4,7 @@ export function userStatusReducer(state={user:[]},action){
     case "GET_USER_STATUS":
       return {user: action.payload};
       break;
-    case "SET_GET_STATUS":
+    case "SET_GUEST_STATUS":
       return {user:action.payload};
       break;
   }

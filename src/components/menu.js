@@ -1,21 +1,22 @@
-"use strict" //home page for both authorized and unauthorized users
+"use strict" //menu bar
 import React, { Component } from 'react';
 import {connect} from 'react-redux';
 import {bindActionCreators} from 'redux';
 import {Nav, NavItem, Navbar, Button} from 'react-bootstrap';
 
-import {setGuest} from '../actions/authentication'
+import {setGuest} from '../actions/authentication'//sets fake guest account
+
 class Menu extends Component {
   constructor(props) {
     super(props);
   }
-  handleGuest(){
+  handleGuest(){//set guest user
     this.props.setGuest()
   }
-  handleLogin(){
+  handleLogin(){//twitter authentication
     window.location="/auth/twitter"
   }
-  findActive(){
+  findActive(){//return the currently active route from router to display active menu
     if(this.props.routeInfo==="/pins"){
       return 3
     }
@@ -25,9 +26,8 @@ class Menu extends Component {
   }
 
   render() {
-
-    if(!this.props.user.user.authenticated){
-      if(this.props.user.user.username==="Guest"){
+    if(!this.props.user.user.authenticated){//for non authenticated users
+      if(this.props.user.user.username==="Guest"){//for guests
         return(
           <Navbar fixedTop>
               <Navbar.Header>
@@ -44,7 +44,7 @@ class Menu extends Component {
          </Navbar>
         )
       }
-      else{
+      else{//display only login and welcome card if null username
         return (
           <div id="cover">
             <div id="logincard">
@@ -52,7 +52,7 @@ class Menu extends Component {
                 <div id="logo"><i className="fa fa-pinterest" aria-hidden="true"></i></div>
                 <div id="welcome">Welcome to Pinterest</div>
                 <div id="subheader">Find new ideas to try</div>
-                <div id="disclaimer">A Clone For Educational Purposes Only!</div>
+                <div id="disclaimer">Cloned For Educational Purposes Only!</div>
                 <div id="gitsource"><a href="https://github.com/Dereje1/Pinterest-Clone" target="_blank"> <i className="fa fa-github" aria-hidden="true"></i> Github</a></div>
               </div>
               <div>
@@ -64,7 +64,7 @@ class Menu extends Component {
         );
       }
     }
-    else{
+    else{//for twitter authenticated users
       return(
         <Navbar fixedTop>
             <Navbar.Header>

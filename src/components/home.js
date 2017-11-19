@@ -1,6 +1,8 @@
+"use strict"//homepage for both logged in and guest users
 import React, { Component } from 'react';
-import Masonry from 'react-masonry-component';
 import {connect} from 'react-redux';
+import Masonry from 'react-masonry-component';
+
 import {getPins,deletePin,updatePin} from '../actions/pinactions' //adds book to db
 import PinZoom from './modalzoom';
 
@@ -8,64 +10,65 @@ class Home extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      ready:false,
-      pinList:[],
-      displayPinZoom:false,
-      imageInfo:""
+      pinList:[],//stores all pins in db in state
+      displayPinZoom:false,//for zoom modal
+      imageInfo:""//to send to zoom modal
     };
   }
   componentDidMount() {
-    getPins("All").then((pinsFromDB)=>{
+    getPins("All").then((pinsFromDB)=>{//get all pins then setstate
       this.setState({
         pinList:pinsFromDB
       })
     })
   }
-  savePic(element){
+  savePic(element){//saves a pic owned by somebody else into current users repo
+    //can not do this unless logged in
     if(this.props.user.user.username==="Guest"){window.location='/auth/twitter'}
+    //copy pinlist --> avoid mutation at all cost
     let pinListCopy = JSON.parse(JSON.stringify(this.state.pinList))
     let indexOfUpdate = pinListCopy.findIndex((p)=>{
       return p._id===element._id
     })
+    //add current username to saved by array of pin
     let updated = [...element.savedBy,this.props.user.user.username]
+    //update client then update db
     pinListCopy[indexOfUpdate].savedBy = updated;
     this.setState({
       pinList:pinListCopy
     },()=>{updatePin(element._id,updated)})
   }
-  deletePic(element){
+
+  deletePic(element){//deletes a pic that user owns
     let pinListCopy = JSON.parse(JSON.stringify(this.state.pinList))
     let indexOfDeletion = pinListCopy.findIndex((p)=>{
       return p._id===element._id
     })
+    //update copy -->no mutation and then delete from db
     pinListCopy =[...pinListCopy.slice(0,indexOfDeletion),...pinListCopy.slice(indexOfDeletion+1)]
     this.setState({
       pinList:pinListCopy
     },()=>deletePin(element._id))
   }
-  imageStatus(element){
-    if(element.owner!==this.props.user.user.username){
-      if(element.savedBy.includes(this.props.user.user.username)){
-        return null;
+  imageStatus(element){//find the status of image to determine what kind of
+    //button to place on pic
+    if(element.owner!==this.props.user.user.username){//If the user is not owner of the pin
+      if(element.savedBy.includes(this.props.user.user.username)){//If the user has already saved this pin
+        return null; //no button
       }
-      else{
+      else{//user has not saved this pin show save button
         return(
           <button className="actionbutton" onClick={()=>this.savePic(element)}><i className="fa fa-thumb-tack" aria-hidden="true"></i> Save</button>
         )
       }
     }
-    else{
+    else{//user owns pin show delete button
         return(
           <button className="actionbutton" onClick={()=>this.deletePic(element)}>Delete</button>
         )
     }
   }
-  buildImages(){
-    var masonryOptions = {
-      transitionDuration: 0
-    };
-    let images = ["https://shorten-my-link.glitch.me/LGe0i","https://shorten-my-link.glitch.me/LV10f","https://shorten-my-link.glitch.me/JkFcl","https://shorten-my-link.glitch.me/LV10f","https://shorten-my-link.glitch.me/LGe0i","https://shorten-my-link.glitch.me/JkFcl"]
-    //console.log()
+  buildImages(){//build the images in frame using masonry
     var childElements = this.state.pinList.map((element,idx)=>{
     return (
         <div key={idx} className="image-box">
@@ -78,7 +81,7 @@ class Home extends Component {
     });
     return childElements
   }
-  pinEnlarge(currentImg){
+  pinEnlarge(currentImg){//calls zoom in modal for the clicked picture
     this.setState({
       displayPinZoom:true,
       imageInfo:currentImg
@@ -86,6 +89,7 @@ class Home extends Component {
   }
   render() {
 
+  //render nothing if no guest or authenticated status
   let userStatus = (this.props.user.user.username===null) ? false : true
 
   if (userStatus){

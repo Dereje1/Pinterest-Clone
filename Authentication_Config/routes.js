@@ -11,12 +11,12 @@ module.exports = function(app, passport) {
                 authenticated: true,
                 userip: ip,
                 username: req.user.twitter.username,
-                displayname: req.user.twitter.displayName
+                displayname: req.user.twitter.displayName //only expose username and displayname
             });
     });
     //wether a user is logged in or not json data will show up on the profile page
 
-    //guest login path -- not logged in but provides persistence instaed of doing it on client side
+    //guest login path -- fake authentication to provide semi/persistence instaed of doing it on client side
     app.get('/guest',function(req, res) {
       let headerObject = req.headers //need for ip
       let ip = (headerObject['x-forwarded-for']||req.socket.remoteAddress).split(",")[0];

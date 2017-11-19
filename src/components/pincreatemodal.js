@@ -1,4 +1,4 @@
-"use strict" //displays modal on user interaction
+"use strict" //displays modal that creates pin
 import React, { Component } from 'react';
 import { Button,Modal} from 'react-bootstrap'
 import {findDOMNode} from 'react-dom';
@@ -10,14 +10,14 @@ class PinCreate extends Component {
     //initialize modal show state to false
     this.state={
       show:false,
-      picPreview:'/images/NO-IMAGE.png',
-      saveDisabled:true,
-      picValid:false,
-      descriptionValid:false
+      picPreview:'/images/NO-IMAGE.png',//on erroneous image links
+      saveDisabled:true,//parameter controls save button state
+      picValid:false,//erroneous image flag
+      descriptionValid:false//no description flag
     }
   }
 
-  componentDidUpdate(prevProps, prevState) {
+  componentDidUpdate(prevProps, prevState) {//compare previous props to current efore showing
     if((prevProps.message===false)&&(this.props.message===true)){
       this.setState({
         show:true
@@ -31,62 +31,63 @@ class PinCreate extends Component {
   }
   close(){
     //note my modified modal now sends a reset callback after closing modalstate which clears
-    //the message field
+    //the message field, not also to reset pic url to erroneous image png before exit
     this.setState({
       show: false,
       picPreview:'/images/NO-IMAGE.png'
     },()=>this.props.reset());
   }
-  picprocess(e){
-    if (this.state.descriptionValid){
+
+  picprocess(e){//processes picture on change of text box
+    if (this.state.descriptionValid){//check also if a description has been entered
       this.setState({
-        picPreview:e.target.value,
-        picValid:true,
-        saveDisabled:false
+        picPreview:e.target.value,//set attempting pic url
+        picValid:true,//if on error has not fired must be ok
+        saveDisabled:false//can proceed to saving as we have a description and valid pic
       })
     }
-    else{
+    else{//no description
       this.setState({
-        picPreview:e.target.value,
-        picValid:true,
-        saveDisabled:true
+        picPreview:e.target.value,//set attempting pic url
+        picValid:true,//if on error has not fired must be ok
+        saveDisabled:true//can not vaidate save button as there is no description
       })
     }
   }
-  discprocess(e){
-    if(e.target.value.length){
-      if(this.state.picValid){
+  discprocess(e){//processes description entered for new pin
+    if(e.target.value.length){//check if something is entered
+      if(this.state.picValid){//check also if there is no error / broken image
         this.setState({
           descriptionValid:true,
-          saveDisabled:false
+          saveDisabled:false//ready to save
         })
       }
       else{
         this.setState({
           descriptionValid:true,
-          saveDisabled:true
+          saveDisabled:true//broken image can not save even if we have a description
         })
       }
 
     }
-    else{
+    else{//no description can not save anything
       this.setState({
         descriptionValid:false,
         saveDisabled:true
       })
     }
   }
-  invalidImage(){
+  invalidImage(){//error handler for invalid/broken pic routes can not save in this state
     this.setState({
       picPreview:'/images/NO-IMAGE.png',
       picValid:false,
       saveDisabled:true
     })
   }
-  savePic(){
+  savePic(){//ready to save pin
     let picDescription = findDOMNode(this.refs.imgdesc).value.trim()
     let picLink = findDOMNode(this.refs.imglink).value.trim()
-
+    //prepare JSON for POST api
     let pinJSON={
       owner:this.props.userInfo.username,
       imgDescription:picDescription,
@@ -94,10 +95,11 @@ class PinCreate extends Component {
       timeStamp:Date.now(),
       savedBy: []
     }
+    //save into db and close modal
     this.props.savePin(pinJSON)
     this.close()
   }
-  addpin(){
+  addpin(){//body of modal
     return(
       <div id="addpin">
         <div id="picdisplay">

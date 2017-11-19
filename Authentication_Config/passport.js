@@ -8,14 +8,11 @@ var User = require('../models/user');
 
 // load the auth variables
 var configAuth = {
-
     'twitterAuth' : {
       'consumerKey'       : process.env.TWITTER_CONSUMER_KEY,
       'consumerSecret'    : process.env.TWITTER_CONSUMER_SECRET,
       'callbackURL'       : process.env.TWITTER_CALLBACK
     }
-//http://localhost:3000/auth/twitter/callback
-//https://fcc-voting-app-dereje1.herokuapp.com/auth/twitter/callback
 }
 
 module.exports = function(passport) {

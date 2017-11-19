@@ -1,5 +1,5 @@
 {
-  "name": "Book-Trading",
+  "name": "Pinterest-Clone",
   "version": "0.0.0",
   "private": true,
   "scripts": {
@@ -42,12 +42,12 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/Dereje1/Book-Trading.git"
+    "url": "git+https://github.com/Dereje1/Pinterest-Clone.git"
   },
   "author": "Dereje Getahun",
   "license": "ISC",
   "bugs": {
-    "url": "https://github.com/Dereje1/Book-Trading/issues"
+    "url": "https://github.com/Dereje1/Pinterest-Clone/issues"
   },
-  "homepage": "https://github.com/Dereje1/Book-Trading#readme"
+  "homepage": "https://dereje-pclone.herokuapp.com/"
 }

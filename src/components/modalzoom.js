@@ -1,6 +1,6 @@
-"use strict" //displays modal on user interaction
+"use strict" //displays pin zoom modal
 import React, { Component } from 'react';
-import { Button,Modal} from 'react-bootstrap'
+import {Button,Modal} from 'react-bootstrap'
 import {findDOMNode} from 'react-dom';
 import Masonry from 'react-masonry-component';
 
@@ -10,7 +10,7 @@ class PinZoom extends Component {
     //initialize modal show state to false
     this.state={
       show:false,
-      picPreview:'/images/NO-IMAGE.png'
+      picPreview:'/images/NO-IMAGE.png'//for error or no pics
     }
   }
 
@@ -43,7 +43,8 @@ class PinZoom extends Component {
   }
 
   render() {
-
+    //use total pins to display how many have saved image
+    //components brings in as prop zoominfo etire object containing pin information
     let totalPins = (this.props.zoomInfo.savedBy) ? this.props.zoomInfo.savedBy.length : 0
     return (
       <Modal

@@ -16,7 +16,7 @@ app.use('/api',function(req,res){
 })
 
 //end proxy setup
-var db = require('./models/db')
+var db = require('./models/db')//establishes db connection
 
 require('./authserver')//add authentication
 

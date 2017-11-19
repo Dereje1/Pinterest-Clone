@@ -13,20 +13,17 @@ import {Router, Route, IndexRoute,browserHistory} from 'react-router';
 //Import all Created react components that are associated with the router
 //standard menu (non-authenticated) components
 import Main from './main'
-
 import Home from './components/home'
 import Mypins from './components/mypins'
 //import combined reducer to pass to store here
 import reducers from './reducers/index'
 
 //use logger for debugging only
-const middleware = applyMiddleware(thunk,logger)
-//const middleware = applyMiddleware(thunk)
+//const middleware = applyMiddleware(thunk,logger)
+const middleware = applyMiddleware(thunk)
 const store = createStore(reducers,middleware)
 
-//decalre all routes of application below note that /profileadd,/passchange ,/mybooks actually
-//do not have a link going to them , instead they are included in the routes for serving
-//authneticating/authenticated actions
+//decalre all routes of application below
 const Routes = (
 <Provider store={store}>
   <Router history={browserHistory}>

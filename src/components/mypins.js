@@ -1,8 +1,10 @@
+"user strict" //user page only for authenticated users
 import React, { Component } from 'react';
 import {connect} from 'react-redux';
 import Masonry from 'react-masonry-component';
+
 import PinCreate from './pincreatemodal';
-import {addPin,getPins,deletePin,updatePin} from '../actions/pinactions' //adds book to db
+import {addPin,getPins,deletePin,updatePin} from '../actions/pinactions' //pin CRUD
 import PinZoom from './modalzoom';
 
 class Mypins extends Component {
@@ -10,13 +12,14 @@ class Mypins extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      displayPinCreate:false,
-      pinList:[],
-      displayPinZoom:false,
-      imageInfo:""
+      displayPinCreate:false,//controls pin creation modal
+      pinList:[],//collects the pins user owns and saved
+      displayPinZoom:false,//controls pin zoom modal
+      imageInfo:""//used to send to pin zoom
     }
   }
   componentDidMount() {
+    //get all pins and filter by owned and saved and then concatenate and set state
     getPins("All").then((pinsFromDB)=>{
       let ownerFilter = pinsFromDB.filter((pin)=>{
         return pin.owner === this.props.user.user.username
@@ -29,40 +32,50 @@ class Mypins extends Component {
       })
     })
   }
-  pinForm(){
+
+  pinForm(){//display pin creation modal
     this.setState({
       displayPinCreate:true
     })
   }
-  pinEnlarge(currentImg){
+
+  pinEnlarge(currentImg){//display pin zoom modal and passes image info
     this.setState({
       displayPinZoom:true,
       imageInfo:currentImg
     })
   }
-  deletePic(element){
+
+  deletePic(element){//deletes a picture
+    //however if not owner must only do an update as you MUST be owner to completely delete it from
+    //database but can delete from client state
     let pinListCopy = JSON.parse(JSON.stringify(this.state.pinList))
     let indexOfDeletion = pinListCopy.findIndex((p)=>{
       return p._id===element._id
     })
     pinListCopy =[...pinListCopy.slice(0,indexOfDeletion),...pinListCopy.slice(indexOfDeletion+1)]
-    if(element.owner!==this.props.user.user.username){//not owner so actually must do an update and not delete
-      let toUpdate = [...element.savedBy]
+    if(element.owner!==this.props.user.user.username){//not an owner of the pin
+      //ready to update pin
+      let toUpdate = [...element.savedBy]//copy all users who have saved pin
       let indexOfUpdate = toUpdate.findIndex((saved)=>{
         return saved===this.props.user.user.username
       })
+      //remove user from list
       toUpdate=[...toUpdate.slice(0,indexOfUpdate),...toUpdate.slice(indexOfUpdate+1)]
+      //update state with deleted pin but update db with updated pin
       this.setState({
         pinList:pinListCopy
       },()=>updatePin(element._id,toUpdate))
     }
-    else{
+    else{//user owns pin can delete both from state and db
       this.setState({
         pinList:pinListCopy
       },()=>deletePin(element._id))
     }
   }
-  addPic(pinJSON){
+
+  addPic(pinJSON){//adds a pin to the db
+    //copy then add pin to db and then update client state (in that order)
     let pinListCopy = JSON.parse(JSON.stringify(this.state.pinList))
     addPin(pinJSON).then((newPin)=>{
       pinListCopy=[...pinListCopy,newPin]
@@ -71,7 +84,7 @@ class Mypins extends Component {
       })
     })
   }
-  buildImages(){
+  buildImages(){//bulds images using masonry very similar to home component (may merge in future)
     var childElements = this.state.pinList.map((element,idx)=>{
     return (
         <div key={idx} className="image-box">

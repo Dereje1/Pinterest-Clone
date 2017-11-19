@@ -26,9 +26,9 @@ app.use(cookieParser());
 
 //APIs Start
 var db = require('./models/db') //mongoose required common db
-var pins = require('./models/pins')//schema for books
+var pins = require('./models/pins')//schema for pins
 
-app.post('/newpin',function(req,res){//adds a new book to the db
+app.post('/newpin',function(req,res){//adds a new pin to the db
   var addedpin = req.body;
   pins.create(addedpin,function(err,pin){
     if(err){
@@ -38,7 +38,7 @@ app.post('/newpin',function(req,res){//adds a new book to the db
   })
 })
 
-app.get('/:user',function(req,res){//gets books depending on request type per user or all books
+app.get('/:user',function(req,res){//gets pins depending on request type per user or all books, although I am doing all filtering on client side
   let userName = req.params.user
   let query = (userName==="All") ? {} : {owner: userName};
   pins.find(query,function(err,pins){
@@ -49,7 +49,7 @@ app.get('/:user',function(req,res){//gets books depending on request type per us
   })
 })
 
-app.delete('/:_id', function(req,res){//deletes a book by id
+app.delete('/:_id', function(req,res){//deletes a pin by id
   var query = {_id: req.params._id};
   pins.remove(query, function(err, pin){
     if(err){
@@ -59,13 +59,13 @@ app.delete('/:_id', function(req,res){//deletes a book by id
   })
 })
 
-//update polls from db
+//update pins in db
 app.put('/:_id', function(req, res){
    var pinToUpdate = req.body;
    var pinID = req.params._id;
-   // if the field doesn't exist $set will set a new field
-   // change to findByIdAndUpdate to make it congruent with delete
-   var update = { '$set': {savedBy: pinToUpdate}};
+
+   var update = { '$set': {savedBy: pinToUpdate}};//comes formatted from client side to only include the array
+   //that contains the "pin saved by" property
    // When true returns the updated document
    var modified = {new: true};
    pins.findByIdAndUpdate(pinID, update, modified, function(err, pin){

@@ -1,5 +1,5 @@
 "use strict"
-//mongoose shcema on what to store fror venue goers?
+//mongoose shcema on what to store fror pins?
 var mongoose = require('mongoose');
 var pinSchema = mongoose.Schema({
   owner: String,

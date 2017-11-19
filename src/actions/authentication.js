@@ -21,20 +21,19 @@ export function getUser(){
 }
 
 export function setGuest(){
-  // action gets user authentication status from /profile that is generated
-  //and updates store
+  // fake guest account setter look at backend /authconfig/routes
   return function (dispatch){
     axios.get('/guest')
       .then(function(response){
           dispatch(
               {
-                type:"SET_GET_STATUS",
+                type:"SET_GUEST_STATUS",
                 payload:response.data
               }
             )
         })
       .catch(function(err){
-        dispatch({type:"GET_USER_STATUS_REJECTED",payload:err})
+        dispatch({type:"SET_GUEST_STATUS_REJECTED",payload:err})
       })
     }
 }

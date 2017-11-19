@@ -120,98 +120,6 @@ body{
         }
       }
     }
-    .modal{
-      top:10%;
-      left:-20%;
-      .close{
-        font-size: 42px;
-      }
-      .modal-content{
-        width: 125%;
-      }
-      #contained-modal-title{
-        text-align: center;
-        font-weight: bold;
-        font-size: 24px;
-        color: #555;
-        font-family: "Helvetica";
-      }
-      #addpin{
-        width:100%;
-        display: flex;
-        flex-direction: row;
-        #picdisplay{
-          width:50%;
-          border-radius: 5px;
-          background:#eaebed;
-          .pinTest{
-            width:100%;
-            border-radius: 5px;
-          }
-        }
-        #formarea{
-          width:50%;
-          padding-left: 5%;
-          display: flex;
-          flex-direction: column;
-          #textdesc{
-            width:90%;
-            height:15%;
-            resize: none;
-            padding:10px;
-            border:none;
-            border-radius: 5px;
-            background: #eaebed;
-            margin-bottom: 10px;
-          }
-          #textlink{
-            width:90%;
-            height:7%;
-            resize: none;
-            padding:10px;
-            border:none;
-            border-radius: 5px;
-            background: #eaebed;
-          }
-        }
-      }
-      .btn-danger{
-        width:100%;
-        font-weight: bold;
-        font-size: 30px;
-      }
-      #contained-modal-title-zoom{
-        display:flex;
-        justify-content: space-around;
-        flex-wrap: wrap;
-        font-weight: bold;
-        font-size: 24px;
-        color: #555;
-        font-family: "Helvetica";
-        #zoomdesc{
-          font-family: 'Berkshire Swash', cursive;
-        }
-        #zoomowner{
-          font-family:'Spectral SC', serif;
-          color: #b20e0e;
-        }
-      }
-      #zoomarea{
-        width: 100%;
-        .pinZoom{
-          width:100%;
-          border-radius: 5px;
-        }
-      }
-      #zoomfooter{
-        display:flex;
-        justify-content: flex-start;
-        #zoomtack{
-          font-size: 32px;
-          font-weight: 700;
-        }
-      }
-    }
 
     #cover:before {
       content: "";
@@ -341,6 +249,98 @@ body{
             font-size: 30px;
             padding-left: 3px;
           }
+        }
+      }
+    }
+    .modal{
+      top:10%;
+      left:-20%;
+      .close{
+        font-size: 42px;
+      }
+      .modal-content{
+        width: 125%;
+      }
+      #contained-modal-title{
+        text-align: center;
+        font-weight: bold;
+        font-size: 24px;
+        color: #555;
+        font-family: "Helvetica";
+      }
+      #addpin{
+        width:100%;
+        display: flex;
+        flex-direction: row;
+        #picdisplay{
+          width:50%;
+          border-radius: 5px;
+          background:#eaebed;
+          .pinTest{
+            width:100%;
+            border-radius: 5px;
+          }
+        }
+        #formarea{
+          width:50%;
+          padding-left: 5%;
+          display: flex;
+          flex-direction: column;
+          #textdesc{
+            width:90%;
+            height:15%;
+            resize: none;
+            padding:10px;
+            border:none;
+            border-radius: 5px;
+            background: #eaebed;
+            margin-bottom: 10px;
+          }
+          #textlink{
+            width:90%;
+            height:7%;
+            resize: none;
+            padding:10px;
+            border:none;
+            border-radius: 5px;
+            background: #eaebed;
+          }
+        }
+      }
+      .btn-danger{
+        width:100%;
+        font-weight: bold;
+        font-size: 30px;
+      }
+      #contained-modal-title-zoom{
+        display:flex;
+        justify-content: space-around;
+        flex-wrap: wrap;
+        font-weight: bold;
+        font-size: 24px;
+        color: #555;
+        font-family: "Helvetica";
+        #zoomdesc{
+          font-family: 'Berkshire Swash', cursive;
+        }
+        #zoomowner{
+          font-family:'Spectral SC', serif;
+          color: #b20e0e;
+        }
+      }
+      #zoomarea{
+        width: 100%;
+        .pinZoom{
+          width:100%;
+          border-radius: 5px;
+        }
+      }
+      #zoomfooter{
+        display:flex;
+        justify-content: flex-start;
+        #zoomtack{
+          font-size: 32px;
+          font-weight: 700;
         }
       }
     }

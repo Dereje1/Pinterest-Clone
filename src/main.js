@@ -12,7 +12,7 @@ class Main extends React.Component{
   constructor(props) {
     super(props);
     this.state = {
-      ready:false
+      ready:false //new addition to only proceed after communication with the store
     }
   }
   componentDidMount(){
@@ -20,11 +20,12 @@ class Main extends React.Component{
     this.props.getUser()
   }
   componentDidUpdate(prevProps, prevState) {
-    if(prevProps.user.user!==this.props.user.user){
+    if(prevProps.user.user!==this.props.user.user){//once user info comes from cdm proceed to rendering
       this.setState({ready:true})
     }
   }
     render(){
+      //send current route from router to menu
       if(this.state.ready){
         return (
           <div>
@@ -34,9 +35,7 @@ class Main extends React.Component{
         )
       }
       else{
-        return (
-          <div></div>
-        )
+        return null
       }
     }
 }
