@@ -39,16 +39,21 @@ class PinCreate extends Component {
   }
 
   picprocess(e){//processes picture on change of text box
+    let imglinkHttps = e.target.value
+    //convert to https to avoid mixed content warning in console
+    if(e.target.value.split(":")[0]==="http"){
+      imglinkHttps = e.target.value.split(":")[0]+"s:"+e.target.value.split(":")[1]
+    }
     if (this.state.descriptionValid){//check also if a description has been entered
       this.setState({
-        picPreview:e.target.value,//set attempting pic url
+        picPreview:imglinkHttps,//set attempting pic url
         picValid:true,//if on error has not fired must be ok
         saveDisabled:false//can proceed to saving as we have a description and valid pic
       })
     }
     else{//no description
       this.setState({
-        picPreview:e.target.value,//set attempting pic url
+        picPreview:imglinkHttps,//set attempting pic url
         picValid:true,//if on error has not fired must be ok
         saveDisabled:true//can not vaidate save button as there is no description
       })
@@ -86,12 +91,11 @@ class PinCreate extends Component {
   }
   savePic(){//ready to save pin
     let picDescription = findDOMNode(this.refs.imgdesc).value.trim()
-    let picLink = findDOMNode(this.refs.imglink).value.trim()
     //prepare JSON for POST api
     let pinJSON={
       owner:this.props.userInfo.username,
       imgDescription:picDescription,
-      imgLink:picLink,
+      imgLink:this.state.picPreview,
       timeStamp:Date.now(),
       savedBy: []
     }
