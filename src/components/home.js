@@ -24,7 +24,10 @@ class Home extends Component {
   }
   savePic(element){//saves a pic owned by somebody else into current users repo
     //can not do this unless logged in
-    if(this.props.user.user.username==="Guest"){window.location='/auth/twitter'}
+    if(this.props.user.user.username==="Guest"){
+      window.location='/auth/twitter'
+      return;
+    }
     //copy pinlist --> avoid mutation at all cost
     let pinListCopy = JSON.parse(JSON.stringify(this.state.pinList))
     let indexOfUpdate = pinListCopy.findIndex((p)=>{
