@@ -71,11 +71,27 @@ class Home extends Component {
         )
     }
   }
+  onBrokenImage(id){//handles broken image links
+    //basically same as delete pic function but just removes from state and not the databse as image
+    //could become reactivated in a future time still keep in database records until owner deletes
+    console.log("Broken Image Found",id)
+    let pinListCopy = JSON.parse(JSON.stringify(this.state.pinList))
+    let indexOfDeletion = pinListCopy.findIndex((p)=>{
+      return p._id===id
+    })
+    //update copy -->no mutation but do not delete from db
+    pinListCopy =[...pinListCopy.slice(0,indexOfDeletion),...pinListCopy.slice(indexOfDeletion+1)]
+    this.setState({
+      pinList:pinListCopy
+    })
+  }
+
   buildImages(){//build the images in frame using masonry
+
     var childElements = this.state.pinList.map((element,idx)=>{
     return (
         <div key={idx} className="image-box">
-            <img  className="image-format" src={element.imgLink} onClick={()=>this.pinEnlarge(element)}/>
+            <img onError={()=>this.onBrokenImage(element._id)} className="image-format" src={element.imgLink} onClick={()=>this.pinEnlarge(element)}/>
             <div className="description text-center"> {element.imgDescription}</div>
             {this.imageStatus(element)}
             <div className="owner">Linked By: {element.owner}</div>
