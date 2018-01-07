@@ -84,11 +84,27 @@ class Mypins extends Component {
       })
     })
   }
+  onBrokenImage(id){//handles broken image links on user page
+    //if the image is broken it will modify link to placeholder only on client side
+    //keeps original link in db, in case image becomes activated in the future
+    console.log("Broken Image Found",id)
+    let pinListCopy = JSON.parse(JSON.stringify(this.state.pinList))
+    let indexOfModification = pinListCopy.findIndex((p)=>{
+      return p._id===id
+    })
+    //update copy of image link and description
+    pinListCopy[indexOfModification].imgLink = '/images/NO-IMAGE.png'
+    pinListCopy[indexOfModification].imgDescription = pinListCopy[indexOfModification].imgDescription +' Is Broken'
+  
+    this.setState({
+      pinList:pinListCopy
+    })
+  }
   buildImages(){//bulds images using masonry very similar to home component (may merge in future)
     var childElements = this.state.pinList.map((element,idx)=>{
     return (
         <div key={idx} className="image-box">
-            <img  className="image-format" src={element.imgLink} onClick={()=>this.pinEnlarge(element)}/>
+            <img  onError={()=>this.onBrokenImage(element._id)} className="image-format" src={element.imgLink} onClick={()=>this.pinEnlarge(element)}/>
             <div className="description text-center"> {element.imgDescription}</div>
             <button className="actionbutton" onClick={()=>this.deletePic(element)}>Delete</button>
             <div className="owner">Linked By: {element.owner}</div>
