@@ -22,6 +22,12 @@ body #mainframe .image-box, body #userImageFrame .image-box {
   visibility: hidden;
 }
 
+@media screen and (max-width: 500px) {
+  body #mainframe .image-box, body #userImageFrame .image-box {
+    width: 100%;
+  }
+}
+
 body #mainframe .image-box:hover, body #userImageFrame .image-box:hover {
   visibility: visible;
 }
@@ -284,12 +290,24 @@ body .modal {
   left: -20%;
 }
 
+@media screen and (max-width: 800px) {
+  body .modal {
+    left: 0%;
+  }
+}
+
 body .modal .close {
   font-size: 42px;
 }
 
 body .modal .modal-content {
   width: 125%;
+}
+
+@media screen and (max-width: 800px) {
+  body .modal .modal-content {
+    width: 100%;
+  }
 }
 
 body .modal #contained-modal-title {

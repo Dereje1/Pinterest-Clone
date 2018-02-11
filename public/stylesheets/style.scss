@@ -12,6 +12,9 @@ body{
       padding: 50px;
       .image-box{
         width:400px;
+        @media screen and (max-width: 500px){
+          width:100%;
+        }
         margin:0px;
         padding-top: 20px;
         /*border: 3px solid black;*/
@@ -255,11 +258,17 @@ body{
     .modal{
       top:10%;
       left:-20%;
+      @media screen and (max-width: 800px){
+        left: 0%;
+      }
       .close{
         font-size: 42px;
       }
       .modal-content{
         width: 125%;
+        @media screen and (max-width: 800px){
+          width: 100%;
+        }
       }
       #contained-modal-title{
         text-align: center;
