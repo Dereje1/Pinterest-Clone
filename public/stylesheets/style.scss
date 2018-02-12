@@ -62,9 +62,13 @@ body{
         top:78%;
         left:7%;
         color: white;
-        font-size: 14px;
+        font-size: 1.5rem;
         font-weight: 700;
         text-transform: full-width;
+        @media screen and (max-width: 500px){
+          top:70%;
+          font-size: 1rem;
+        }
       }
       .description{
         font-weight: bold;
@@ -340,7 +344,7 @@ body{
             -ms-flex-direction: row;
                 flex-direction: row;
         #picdisplay{
-          width:50%;
+          width:100%;
           border-radius: 5px;
           background:#eaebed;
           .pinTest{

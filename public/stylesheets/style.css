@@ -75,9 +75,16 @@ body #mainframe .owner, body #userImageFrame .owner {
   top: 78%;
   left: 7%;
   color: white;
-  font-size: 14px;
+  font-size: 1.5rem;
   font-weight: 700;
   text-transform: full-width;
+}
+
+@media screen and (max-width: 500px) {
+  body #mainframe .owner, body #userImageFrame .owner {
+    top: 70%;
+    font-size: 1rem;
+  }
 }
 
 body #mainframe .description, body #userImageFrame .description {
@@ -386,7 +393,7 @@ body .modal #addpin {
 }
 
 body .modal #addpin #picdisplay {
-  width: 50%;
+  width: 100%;
   border-radius: 5px;
   background: #eaebed;
 }
