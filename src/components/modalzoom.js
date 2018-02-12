@@ -20,6 +20,11 @@ class PinZoom extends Component {
         show:true
       })
     }
+    if((prevProps.message===true)&&(this.props.message===false)){
+      this.setState({
+        show:false
+      })
+    }
   }
   open(){
   this.setState({
@@ -45,7 +50,11 @@ class PinZoom extends Component {
   render() {
     //use total pins to display how many have saved image
     //components brings in as prop zoominfo etire object containing pin information
-    let totalPins = (this.props.zoomInfo.savedBy) ? this.props.zoomInfo.savedBy.length : 0
+    if(!this.props.zoomInfo.length){return null}
+    let pinInformation = this.props.zoomInfo[0]
+    let buttonInformation = this.props.zoomInfo[1]
+
+    let totalPins = (pinInformation.savedBy) ? pinInformation.savedBy.length : 0
     return (
       <Modal
         show={this.state.show}
@@ -55,19 +64,20 @@ class PinZoom extends Component {
       >
       <Modal.Header closeButton>
         <Modal.Title id="contained-modal-title-zoom">
-          <div id="zoomdesc">{this.props.zoomInfo.imgDescription}</div>
-          <div id="zoomowner">Linked By: {this.props.zoomInfo.owner}</div>
+          <div id="zoomdesc">{pinInformation.imgDescription}</div>
+          <div id="zoomowner">Linked By: {pinInformation.owner}</div>
         </Modal.Title>
       </Modal.Header>
       <Modal.Body>
           <div id="zoomarea">
             <Masonry>
-              <img className="pinZoom" src={this.props.zoomInfo.imgLink}/>
+              <img className="pinZoom" src={pinInformation.imgLink}/>
             </Masonry>
           </div>
       </Modal.Body>
       <Modal.Footer id="zoomfooter">
           <span id="zoomtack"><i  className="fa fa-thumb-tack" aria-hidden="true"></i> {totalPins}</span>
+          {buttonInformation}
       </Modal.Footer>
     </Modal>
     );

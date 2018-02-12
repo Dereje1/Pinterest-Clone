@@ -38,7 +38,8 @@ class Home extends Component {
     //update client then update db
     pinListCopy[indexOfUpdate].savedBy = updated;
     this.setState({
-      pinList:pinListCopy
+      pinList:pinListCopy,
+      displayPinZoom:false
     },()=>{updatePin(element._id,updated)})
   }
 
@@ -50,7 +51,8 @@ class Home extends Component {
     //update copy -->no mutation and then delete from db
     pinListCopy =[...pinListCopy.slice(0,indexOfDeletion),...pinListCopy.slice(indexOfDeletion+1)]
     this.setState({
-      pinList:pinListCopy
+      pinList:pinListCopy,
+      displayPinZoom:false
     },()=>deletePin(element._id))
   }
   imageStatus(element){//find the status of image to determine what kind of
@@ -103,7 +105,7 @@ class Home extends Component {
   pinEnlarge(currentImg){//calls zoom in modal for the clicked picture
     this.setState({
       displayPinZoom:true,
-      imageInfo:currentImg
+      imageInfo:[currentImg,this.imageStatus(currentImg)]
     })
   }
   render() {

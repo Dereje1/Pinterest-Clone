@@ -42,7 +42,7 @@ class Mypins extends Component {
   pinEnlarge(currentImg){//display pin zoom modal and passes image info
     this.setState({
       displayPinZoom:true,
-      imageInfo:currentImg
+      imageInfo:[currentImg,<button className="actionbutton" onClick={()=>this.deletePic(currentImg)}>Delete</button>]
     })
   }
 
@@ -64,12 +64,14 @@ class Mypins extends Component {
       toUpdate=[...toUpdate.slice(0,indexOfUpdate),...toUpdate.slice(indexOfUpdate+1)]
       //update state with deleted pin but update db with updated pin
       this.setState({
-        pinList:pinListCopy
+        pinList:pinListCopy,
+        displayPinZoom:false
       },()=>updatePin(element._id,toUpdate))
     }
     else{//user owns pin can delete both from state and db
       this.setState({
-        pinList:pinListCopy
+        pinList:pinListCopy,
+        displayPinZoom:false
       },()=>deletePin(element._id))
     }
   }
@@ -95,7 +97,7 @@ class Mypins extends Component {
     //update copy of image link and description
     pinListCopy[indexOfModification].imgLink = '/images/NO-IMAGE.png'
     pinListCopy[indexOfModification].imgDescription = pinListCopy[indexOfModification].imgDescription +' Is Broken'
-  
+
     this.setState({
       pinList:pinListCopy
     })

@@ -63,6 +63,13 @@ body #mainframe .actionbutton, body #userImageFrame .actionbutton {
   pointer: cursor;
 }
 
+@media screen and (max-width: 500px) {
+  body #mainframe .actionbutton, body #userImageFrame .actionbutton {
+    font-size: 8px;
+    border-radius: 3px;
+  }
+}
+
 body #mainframe .owner, body #userImageFrame .owner {
   position: absolute;
   top: 78%;
@@ -399,12 +406,39 @@ body .modal #zoomarea .pinZoom {
 
 body .modal #zoomfooter {
   display: flex;
-  justify-content: flex-start;
+  justify-content: space-between;
 }
 
 body .modal #zoomfooter #zoomtack {
+  width: 50%;
+  text-align: left;
   font-size: 32px;
   font-weight: 700;
+}
+
+@media screen and (max-width: 500px) {
+  body .modal #zoomfooter #zoomtack {
+    font-size: 16px;
+  }
+}
+
+body .modal #zoomfooter .actionbutton {
+  width: 20%;
+  height: auto;
+  background-color: #a80b0b;
+  color: white;
+  font-size: 16px;
+  font-weight: 700;
+  border-radius: 7px;
+  border: none;
+  pointer: cursor;
+}
+
+@media screen and (max-width: 500px) {
+  body .modal #zoomfooter .actionbutton {
+    font-size: 8px;
+    border-radius: 3px;
+  }
 }
 
 body .navbar-default .navbar-nav > li > a {

@@ -52,6 +52,10 @@ body{
         border-radius: 7px;
         border: none;
         pointer:cursor;
+        @media screen and (max-width: 500px){
+          font-size: 8px;
+          border-radius: 3px;
+        }
       }
       .owner{
         position: absolute;
@@ -346,10 +350,31 @@ body{
       }
       #zoomfooter{
         display:flex;
-        justify-content: flex-start;
+        justify-content: space-between;
+
         #zoomtack{
+          width:50%;
+          text-align: left;
           font-size: 32px;
           font-weight: 700;
+          @media screen and (max-width: 500px){
+            font-size: 16px;
+          }
+        }
+        .actionbutton{
+          width:20%;
+          height:auto;
+          background-color: #a80b0b;
+          color: white;
+          font-size: 16px;
+          font-weight: 700;
+          border-radius: 7px;
+          border: none;
+          pointer:cursor;
+          @media screen and (max-width: 500px){
+            font-size: 8px;
+            border-radius: 3px;
+          }
         }
       }
     }
