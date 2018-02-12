@@ -38,13 +38,13 @@ body #mainframe .image-format, body #userImageFrame .image-format {
   margin: auto;
   width: 90%;
   border-radius: 5px;
-  cursor: -moz-zoom-in;
   cursor: -webkit-zoom-in;
   cursor: zoom-in;
 }
 
 body #mainframe .image-format:hover, body #userImageFrame .image-format:hover {
   opacity: 0.7;
+  -webkit-filter: brightness(50%);
   filter: brightness(50%);
 }
 
@@ -92,8 +92,15 @@ body #mypinframe {
   margin-left: 20px;
   margin-right: 20px;
   padding: 0px;
+  display: -webkit-box;
+  display: -ms-flexbox;
   display: flex;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+  -ms-flex-direction: column;
   flex-direction: column;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
   align-items: center;
 }
 
@@ -110,7 +117,12 @@ body #mypinframe #username {
 
 body #mypinframe #creatpinwrapper {
   margin: 0 auto;
+  display: -webkit-box;
+  display: -ms-flexbox;
   display: flex;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+  -ms-flex-direction: column;
   flex-direction: column;
   background: rgba(0, 0, 0, 0.05);
   border-radius: 8px;
@@ -126,8 +138,14 @@ body #mypinframe #creatpinwrapper:hover {
 body #mypinframe #creatpinwrapper #createpin {
   height: 200px;
   width: 301px;
+  display: -webkit-box;
+  display: -ms-flexbox;
   display: flex;
+  -webkit-box-pack: center;
+  -ms-flex-pack: center;
   justify-content: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
   align-items: center;
   background: rgba(0, 0, 0, 0.05);
   border-radius: 8px;
@@ -156,9 +174,13 @@ body #cover:before {
   left: -50%;
   z-index: -1;
   background: url("/images/backscreen.png");
+  -webkit-animation-name: bkimage;
   animation-name: bkimage;
+  -webkit-animation-duration: 33s;
   animation-duration: 33s;
+  -webkit-animation-timing-function: linear;
   animation-timing-function: linear;
+  -webkit-animation-iteration-count: 1;
   animation-iteration-count: 1;
 }
 
@@ -179,17 +201,30 @@ body #cover #logincard {
   left: 50%;
   top: 50%;
   position: absolute;
+  -webkit-transform: translateX(-50%);
   transform: translateX(-50%);
+  display: -webkit-box;
+  display: -ms-flexbox;
   display: flex;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+  -ms-flex-direction: column;
   flex-direction: column;
+  -ms-flex-pack: distribute;
   justify-content: space-around;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
   align-items: center;
   background: white;
   border-radius: 10px;
 }
 
 body #cover #logincard #logo {
+  display: -webkit-box;
+  display: -ms-flexbox;
   display: flex;
+  -webkit-box-pack: center;
+  -ms-flex-pack: center;
   justify-content: center;
   font-size: 40px;
   color: #b20e0e;
@@ -238,8 +273,14 @@ body #cover #logincard .buttontext {
 body #cover #logincard #loginbutton {
   border: 0px;
   height: 40px;
+  display: -webkit-box;
+  display: -ms-flexbox;
   display: flex;
+  -webkit-box-pack: justify;
+  -ms-flex-pack: justify;
   justify-content: space-between;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
   align-items: center;
   border-radius: 2px;
   -webkit-font-smoothing: antialiased;
@@ -252,6 +293,7 @@ body #cover #logincard #loginbutton {
   box-shadow: none;
   cursor: pointer;
   background-clip: padding-box;
+  -webkit-transition: opacity .2s linear;
   transition: opacity .2s linear;
   width: 268px;
   background-color: #4285f4;
@@ -266,8 +308,14 @@ body #cover #logincard #loginbutton #twitter {
 body #cover #logincard #guestbutton {
   border: 0px;
   height: 40px;
+  display: -webkit-box;
+  display: -ms-flexbox;
   display: flex;
+  -webkit-box-pack: justify;
+  -ms-flex-pack: justify;
   justify-content: space-between;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
   align-items: center;
   border-radius: 2px;
   -webkit-font-smoothing: antialiased;
@@ -280,6 +328,7 @@ body #cover #logincard #guestbutton {
   box-shadow: none;
   cursor: pointer;
   background-clip: padding-box;
+  -webkit-transition: opacity .2s linear;
   transition: opacity .2s linear;
   width: 268px;
   background-color: #ffb45e;
@@ -327,7 +376,12 @@ body .modal #contained-modal-title {
 
 body .modal #addpin {
   width: 100%;
+  display: -webkit-box;
+  display: -ms-flexbox;
   display: flex;
+  -webkit-box-orient: horizontal;
+  -webkit-box-direction: normal;
+  -ms-flex-direction: row;
   flex-direction: row;
 }
 
@@ -345,7 +399,12 @@ body .modal #addpin #picdisplay .pinTest {
 body .modal #addpin #formarea {
   width: 50%;
   padding-left: 5%;
+  display: -webkit-box;
+  display: -ms-flexbox;
   display: flex;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+  -ms-flex-direction: column;
   flex-direction: column;
 }
 
@@ -377,8 +436,12 @@ body .modal .btn-danger {
 }
 
 body .modal #contained-modal-title-zoom {
+  display: -webkit-box;
+  display: -ms-flexbox;
   display: flex;
+  -ms-flex-pack: distribute;
   justify-content: space-around;
+  -ms-flex-wrap: wrap;
   flex-wrap: wrap;
   font-weight: bold;
   font-size: 24px;
@@ -405,7 +468,11 @@ body .modal #zoomarea .pinZoom {
 }
 
 body .modal #zoomfooter {
+  display: -webkit-box;
+  display: -ms-flexbox;
   display: flex;
+  -webkit-box-pack: justify;
+  -ms-flex-pack: justify;
   justify-content: space-between;
 }
 
@@ -454,6 +521,17 @@ body .navbar-default .navbar-nav > .active > a {
 body .navbar-default .navbar-brand {
   font-size: 30px;
   color: #b20e0e;
+}
+
+@-webkit-keyframes bkimage {
+  0% {
+    -webkit-transform: translateY(400px);
+    transform: translateY(350px);
+  }
+  100% {
+    -webkit-transform: translateY(0px);
+    transform: translateY(0px);
+  }
 }
 
 @keyframes bkimage {
