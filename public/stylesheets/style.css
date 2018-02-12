@@ -65,7 +65,11 @@ body #mainframe .actionbutton, body #userImageFrame .actionbutton {
 
 @media screen and (max-width: 500px) {
   body #mainframe .actionbutton, body #userImageFrame .actionbutton {
-    font-size: 8px;
+    font-size: 12px;
+    width: 25%;
+    left: 65%;
+    top: 15%;
+    height: 30px;
     border-radius: 3px;
   }
 }
@@ -446,6 +450,7 @@ body .modal #contained-modal-title-zoom {
   display: -webkit-box;
   display: -ms-flexbox;
   display: flex;
+  flex-direction: column;
   -ms-flex-pack: distribute;
   justify-content: space-around;
   -ms-flex-wrap: wrap;
@@ -510,7 +515,7 @@ body .modal #zoomfooter .actionbutton {
 
 @media screen and (max-width: 500px) {
   body .modal #zoomfooter .actionbutton {
-    font-size: 8px;
+    font-size: 12px;
     border-radius: 3px;
   }
 }
