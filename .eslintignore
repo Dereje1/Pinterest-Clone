@@ -1,0 +1,6 @@
+node_modules
+# Ignore linting on CRA created files
+/client/src/serviceWorker.js
+/client/src/components/game/game._backup.jsx
+/client/src/components/game/scripts/canvas.1.js
+/client/src/components/oponnent/opponent_bkup.jsx

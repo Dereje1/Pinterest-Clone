@@ -1,41 +1,41 @@
-"use strict"
-var express = require('express');
-var path = require('path');
+const express = require('express');
+const path = require('path');
 
-var app = module.exports = express();
+const app = module.exports = express();
 
-var httpProxy = require('http-proxy');
+const httpProxy = require('http-proxy');
 // Set up PROXY server with the module from above
 const apiProxy = httpProxy.createProxyServer(
-  {target:"http://localhost:3001"}
-)
-//apply middleware that intercepts all requests to the /api and retrieves the resources from the prxy
+  { target: 'http://localhost:3001' },
+);
+// apply middleware that intercepts all requests to the
+// api and retrieves the resources from the prxy
 
-app.use('/api',function(req,res){
-  apiProxy.web(req,res)
-})
+app.use('/api', (req, res) => {
+  apiProxy.web(req, res);
+});
 
-//end proxy setup
-var db = require('./models/db')//establishes db connection
+// end proxy setup
+const db = require('./models/db'); // establishes db connection
 
-require('./authserver')//add authentication
+require('./authserver'); // add authentication
 
-//server primary route
+// server primary route
 app.use(express.static(path.join(__dirname, 'public')));
 
-app.get('*', function(req, res){
-   res.sendFile(path.resolve(__dirname, 'public', 'index.html'))
-  });
+app.get('*', (req, res) => {
+  res.sendFile(path.resolve(__dirname, 'public', 'index.html'))
+});
 
 // catch 404 and forward to error handler
-app.use(function(req, res, next) {
-  var err = new Error('Not Found');
+app.use((req, res, next) => {
+  const err = new Error('Not Found');
   err.status = 404;
   next(err);
 });
 
 // error handler
-app.use(function(err, req, res, next) {
+app.use((err, req, res, next) => {
   // set locals, only providing error in development
   res.locals.message = err.message;
   res.locals.error = req.app.get('env') === 'development' ? err : {};
