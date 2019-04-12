@@ -2,6 +2,7 @@
 import React, { Component } from 'react';
 import { Modal } from 'react-bootstrap';
 import Masonry from 'react-masonry-component';
+import PropTypes from 'prop-types';
 
 class PinZoom extends Component {
 
@@ -10,7 +11,6 @@ class PinZoom extends Component {
     // initialize modal show state to false
     this.state = {
       show: false,
-      picPreview: '/images/NO-IMAGE.png', // for error or no pics
     };
   }
 
@@ -34,19 +34,12 @@ class PinZoom extends Component {
     const { reset } = this.props;
     this.setState({
       show: false,
-      picPreview: '/images/NO-IMAGE.png',
     }, () => reset());
   }
 
   open() {
     this.setState({
       show: true,
-    });
-  }
-
-  invalidImage() {
-    this.setState({
-      picPreview: '/images/NO-IMAGE.png',
     });
   }
 
@@ -94,3 +87,10 @@ class PinZoom extends Component {
 }
 
 export default PinZoom;
+
+
+PinZoom.propTypes = {
+  message: PropTypes.bool.isRequired,
+  zoomInfo: PropTypes.arrayOf(PropTypes.any).isRequired,
+  reset: PropTypes.func.isRequired,
+};

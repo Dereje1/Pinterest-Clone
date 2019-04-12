@@ -2,6 +2,7 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import Masonry from 'react-masonry-component';
+import PropTypes from 'prop-types';
 
 import PinCreate from './pincreatemodal';
 import {
@@ -17,8 +18,8 @@ class Mypins extends Component {
       displayPinCreate: false, // controls pin creation modal
       pinList: [], // collects the pins user owns and saved
       displayPinZoom: false, // controls pin zoom modal
-      imageInfo: '', // used to send to pin zoom
-    }
+      imageInfo: [], // used to send to pin zoom
+    };
   }
 
   componentDidMount() {
@@ -112,15 +113,23 @@ class Mypins extends Component {
   }
 
 
-  buildImages() {// bulds images using masonry very similar to home component (may merge in future)
+  buildImages() { // bulds images using masonry very similar to home component (may merge in future)
     const { pinList } = this.state;
-    const childElements = pinList.map((element, idx) => (
-      <div key={idx} className="image-box">
+    const childElements = pinList.map(element => (
+      <div
+        key={element._id}
+        role="button"
+        className="image-box"
+        onClick={() => this.pinEnlarge(element)}
+        onKeyDown={() => {}}
+        tabIndex={0}
+      >
         <img
-         onError={() => this.onBrokenImage(element._id)}
-         className="image-format" src={element.imgLink}
-         onClick={() => this.pinEnlarge(element)}
-         />
+          alt={element.imgDescription}
+          onError={() => this.onBrokenImage(element._id)}
+          className="image-format"
+          src={element.imgLink}
+        />
         <div className="description text-center">
           {element.imgDescription}
         </div>
@@ -144,7 +153,13 @@ class Mypins extends Component {
       <div>
         <div id="mypinframe">
           <h3 id="username">{user.user.displayname}</h3>
-          <div id="creatpinwrapper" onClick={() => {this.pinForm()}}>
+          <div
+            id="creatpinwrapper"
+            onClick={() => this.pinForm()}
+            role="button"
+            onKeyDown={() => {}}
+            tabIndex={0}
+          >
             <div id="createpin">
               <i className="fa fa-plus-circle" aria-hidden="true" />
             </div>
@@ -176,3 +191,11 @@ class Mypins extends Component {
 const mapStateToProps = state => state;
 
 export default connect(mapStateToProps)(Mypins);
+
+Mypins.defaultProps = {
+  user: {},
+};
+
+Mypins.propTypes = {
+  user: PropTypes.shape(PropTypes.shape),
+};

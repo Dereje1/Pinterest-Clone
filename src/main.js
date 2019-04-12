@@ -1,11 +1,12 @@
 // root of the frontend get /set primary store vars here
 import React from 'react';
-import {connect} from 'react-redux'
-import {bindActionCreators} from 'redux';
+import { connect } from 'react-redux';
+import { bindActionCreators } from 'redux';
+import PropTypes from 'prop-types';
 
-import Menu from './components/menu'
+import Menu from './components/menu';
 // action gets user info on every mount of this component
-import {getUser} from './actions/authentication';
+import { getUser } from './actions/authentication';
 
 class Main extends React.Component {
 
@@ -17,12 +18,12 @@ class Main extends React.Component {
   }
 
   componentDidMount() {
-    const { getUser } = this.props;
-    console.log('CDM Mounted for Main')
-    getUser();
+    const { getUser: getUserStatus } = this.props;
+    console.log('CDM Mounted for Main');
+    getUserStatus();
   }
 
-  componentDidUpdate(prevProps, prevState) {
+  componentDidUpdate(prevProps) {
     const { user } = this.props;
     if (prevProps.user.user !== user.user) { // once user info comes from cdm proceed to rendering
       this.setState({ ready: true });
@@ -53,3 +54,16 @@ const mapDispatchToProps = dispatch => (
   }, dispatch)
 );
 export default connect(mapStateToProps, mapDispatchToProps)(Main);
+
+Main.defaultProps = {
+  user: {},
+};
+
+Main.propTypes = {
+  getUser: PropTypes.func.isRequired,
+  user: PropTypes.shape(PropTypes.shape),
+  location: PropTypes.shape({
+    pathname: PropTypes.string,
+  }).isRequired,
+  children: PropTypes.element.isRequired,
+};

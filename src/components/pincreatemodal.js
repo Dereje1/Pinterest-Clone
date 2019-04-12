@@ -1,8 +1,8 @@
 // displays modal that creates pin
 import React, { Component } from 'react';
 import { Button, Modal } from 'react-bootstrap';
-import { findDOMNode } from 'react-dom';
 import Masonry from 'react-masonry-component';
+import PropTypes from 'prop-types';
 
 class PinCreate extends Component {
 
@@ -12,13 +12,12 @@ class PinCreate extends Component {
     this.state = {
       show: false,
       picPreview: '/images/NO-IMAGE.png', // on erroneous image links
+      description: '',
       saveDisabled: true, // parameter controls save button state
-      picValid: false, // erroneous image flag
-      descriptionValid: false, // no description flag
     };
   }
 
-  componentDidUpdate(prevProps, prevState) { // compare previous props to current efore showing
+  componentDidUpdate(prevProps) { // compare previous props to current efore showing
     const { message } = this.props;
     if ((prevProps.message === false) && (message === true)) {
       this.setState({
@@ -37,73 +36,50 @@ class PinCreate extends Component {
     }, () => reset());
   }
 
-  open() {
+  open = () => {
     this.setState({
       show: true,
+      saveDisabled: true,
     });
   }
 
-  picprocess(e) { // processes picture on change of text box
+  picprocess = (e) => { // processes picture on change of text box
     let imglinkHttps = e.target.value;
-    const { descriptionValid } = this.state;
     // convert to https to avoid mixed content warning in console
     if (e.target.value.split(':')[0] === 'http') {
-      imglinkHttps = `e.target.value.split(':')[0] + 's:' + e.target.value.split(':')[1]`;
+      imglinkHttps = `${e.target.value.split(':')[0]}s:${e.target.value.split(':')[1]}`;
     }
-    if (descriptionValid) { // check also if a description has been entered
-      this.setState({
-        picPreview: imglinkHttps, // set attempting pic url
-        picValid: true, // if on error has not fired must be ok
-        saveDisabled: false, // can proceed to saving as we have a description and valid pic
-      });
-    }
-    else { // no description
-      this.setState({
-        picPreview: imglinkHttps, // set attempting pic url
-        picValid: true, // if on error has not fired must be ok
-        saveDisabled: true, // can not vaidate save button as there is no description
-      });
-    }
+    this.setState({
+      picPreview: imglinkHttps,
+    }, () => this.validation());
   }
 
-  discprocess(e) { // processes description entered for new pin
-    const { picValid } = this.state;
-    if (e.target.value.length) { // check if something is entered
-      if (picValid) { // check also if there is no error / broken image
-        this.setState({
-          descriptionValid: true,
-          saveDisabled: false, // ready to save
-        });
-      } else {
-        this.setState({
-          descriptionValid: true,
-          saveDisabled: true, // broken image can not save even if we have a description
-        });
-      }
-    } else { // no description can not save anything
-      this.setState({
-        descriptionValid: false,
-        saveDisabled: true, 
-      });
-    }
+  discprocess = (e) => { // processes description entered for new pin
+    this.setState({ description: e.target.value }, () => this.validation());
   }
 
-  invalidImage() { // error handler for invalid/broken pic routes can not save in this state
+  invalidImage = () => { // error handler for invalid/broken pic routes can not save in this state
     this.setState({
       picPreview: '/images/NO-IMAGE.png',
-      picValid: false,
       saveDisabled: true,
+    });
+  }
+
+  validation = () => {
+    const { description } = this.state;
+    this.setState({
+      saveDisabled: description.trim().length < 5,
     });
   }
 
   savePic() { // ready to save pin
     const { userInfo, savePin } = this.props;
-    const { picPreview } = this.state;
-    const picDescription = findDOMNode(this.refs.imgdesc).value.trim();
+    const { picPreview, description, saveDisabled } = this.state;
+    if (saveDisabled) return;
     // prepare JSON for POST api
     const pinJSON = {
       owner: userInfo.username,
-      imgDescription: picDescription,
+      imgDescription: description,
       imgLink: picPreview,
       timeStamp: Date.now(),
       savedBy: [],
@@ -125,7 +101,6 @@ class PinCreate extends Component {
         <div id="formarea">
           <p>Add a description</p>
           <textarea
-            ref="imgdesc"
             id="textdesc"
             placeholder="Description..."
             maxLength="28"
@@ -133,7 +108,6 @@ class PinCreate extends Component {
           />
           <p>Paste Link to Image</p>
           <textarea
-            ref="imglink"
             id="textlink"
             placeholder="http://"
             onChange={e => this.picprocess(e)}
@@ -169,3 +143,11 @@ class PinCreate extends Component {
 }
 
 export default PinCreate;
+
+
+PinCreate.propTypes = {
+  message: PropTypes.bool.isRequired,
+  userInfo: PropTypes.shape(PropTypes.shape).isRequired,
+  reset: PropTypes.func.isRequired,
+  savePin: PropTypes.func.isRequired,
+};

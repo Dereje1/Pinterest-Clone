@@ -2,6 +2,7 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import Masonry from 'react-masonry-component';
+import PropTypes from 'prop-types';
 
 import { getPins, deletePin, updatePin } from '../actions/pinactions'; // adds book to db
 import PinZoom from './modalzoom';
@@ -13,7 +14,7 @@ class Home extends Component {
     this.state = {
       pinList: [], // stores all pins in db in state
       displayPinZoom: false, // for zoom modal
-      imageInfo: '', // to send to zoom modal
+      imageInfo: [], // to send to zoom modal
     };
   }
 
@@ -111,14 +112,20 @@ class Home extends Component {
 
   buildImages() { // build the images in frame using masonry
     const { pinList } = this.state;
-    const childElements = pinList.map((element, idx) => (
-      <div key={idx} className="image-box">
+    const childElements = pinList.map(element => (
+      <div
+        key={element._id}
+        role="button"
+        className="image-box"
+        onClick={() => this.pinEnlarge(element)}
+        onKeyDown={() => {}}
+        tabIndex={0}
+      >
         <img
-          alt=""
+          alt={element.imgDescription}
           onError={() => this.onBrokenImage(element._id)}
           className="image-format"
           src={element.imgLink}
-          onClick={() => this.pinEnlarge(element)}
         />
         <div className="description text-center">
           {element.imgDescription}
@@ -166,3 +173,11 @@ class Home extends Component {
 const mapStateToProps = state => state;
 
 export default connect(mapStateToProps)(Home);
+
+Home.defaultProps = {
+  user: {},
+};
+
+Home.propTypes = {
+  user: PropTypes.shape(PropTypes.shape),
+};
