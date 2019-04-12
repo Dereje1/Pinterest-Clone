@@ -7,6 +7,7 @@ const session = require('express-session');
 const MongoStore = require('connect-mongo')(session);
 
 const app = express();
+const isLoggedIn = require('./Authentication_Config/isloggedin');
 // not using session in this project but good to have incase
 app.use(session(
   {
@@ -24,17 +25,18 @@ app.use(cookieParser());
 
 // APIs Start
 require('./models/db'); // mongoose required common db
+require('./Authentication_Config/authserver')(app);
 const pins = require('./models/pins'); // schema for pins
 
 // adds a new pin to the db
-app.post('/newpin', (req, res) => {
+app.post('/newpin', isLoggedIn, (req, res) => {
   const addedpin = req.body;
   pins.create(addedpin, (err, pin) => {
     if (err) throw err;
     res.json(pin);
   });
 });
-// gets pins depending on request type per user or all books,
+// gets pins depending on request type per user or all,
 // although I am doing all filtering on client side
 app.get('/:user', (req, res) => {
   const userName = req.params.user;
@@ -45,7 +47,7 @@ app.get('/:user', (req, res) => {
   });
 });
 // deletes a pin by id
-app.delete('/:_id', (req, res) => {
+app.delete('/:_id', isLoggedIn, (req, res) => {
   const query = { id: req.params._id };
   pins.remove(query, (err, pin) => {
     if (err) throw err;
@@ -54,7 +56,7 @@ app.delete('/:_id', (req, res) => {
 });
 
 // update pins in db
-app.put('/:_id', (req, res) => {
+app.put('/:_id', isLoggedIn, (req, res) => {
   const pinToUpdate = req.body;
   const pinID = req.params._id;
   // comes formatted from client side to only include the array
