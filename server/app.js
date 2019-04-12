@@ -4,6 +4,7 @@ const path = require('path');
 const app = express();
 
 const httpProxy = require('http-proxy');
+
 // Set up PROXY server with the module from above
 const apiProxy = httpProxy.createProxyServer(
   { target: 'http://localhost:3001' },
@@ -14,11 +15,6 @@ const apiProxy = httpProxy.createProxyServer(
 app.use('/api', (req, res) => {
   apiProxy.web(req, res);
 });
-
-// end proxy setup
-require('./models/db'); // establishes db connection
-
-require('./Authentication_Config/authserver')(app); // add authentication
 
 // server primary route
 app.use(express.static(path.join(__dirname, '../client/public')));
