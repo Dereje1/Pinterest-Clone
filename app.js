@@ -1,7 +1,7 @@
 const express = require('express');
 const path = require('path');
 
-const app = module.exports = express();
+const app = express();
 
 const httpProxy = require('http-proxy');
 // Set up PROXY server with the module from above
@@ -16,15 +16,15 @@ app.use('/api', (req, res) => {
 });
 
 // end proxy setup
-const db = require('./models/db'); // establishes db connection
+require('./models/db'); // establishes db connection
 
-require('./authserver'); // add authentication
+require('./authserver')(app); // add authentication
 
 // server primary route
 app.use(express.static(path.join(__dirname, 'public')));
 
 app.get('*', (req, res) => {
-  res.sendFile(path.resolve(__dirname, 'public', 'index.html'))
+  res.sendFile(path.resolve(__dirname, 'public', 'index.html'));
 });
 
 // catch 404 and forward to error handler
@@ -35,7 +35,7 @@ app.use((req, res, next) => {
 });
 
 // error handler
-app.use((err, req, res, next) => {
+app.use((err, req, res) => {
   // set locals, only providing error in development
   res.locals.message = err.message;
   res.locals.error = req.app.get('env') === 'development' ? err : {};
