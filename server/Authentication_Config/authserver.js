@@ -10,8 +10,8 @@ const MongoStore = require('connect-mongo')(session);
 
 
 // configuration  for authentication===============================================================
-const passportConfig = require('./Authentication_Config/passport');
-const authRoutes = require('./Authentication_Config/routes.js');
+const passportConfig = require('./passport');
+const authRoutes = require('./routes');
 
 const configEntry = (app) => {
   passportConfig(passport); // pass passport for configuration

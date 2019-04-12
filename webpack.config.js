@@ -1,10 +1,10 @@
 const path = require('path');
 
 const configMain = {
-  entry: './src/client.js',
+  entry: './client/src/index.js',
   output: {
     filename: 'bundle.js',
-    path: path.resolve(__dirname, 'public'),
+    path: path.resolve(__dirname, './client/public'),
   },
   watch: true,
   module: {

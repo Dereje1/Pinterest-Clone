@@ -6,7 +6,7 @@
 process.env.DEBUG = 'Pinterest-Clone:server';
 const debug = require('debug')('Pinterest-Clone:server');
 const http = require('http');
-const app = require('../app');
+const app = require('../server/app');
 /**
  * Normalize a port into a number, string, or false.
  */

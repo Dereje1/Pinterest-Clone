@@ -3,7 +3,7 @@
   "version": "0.0.0",
   "private": true,
   "scripts": {
-    "start": "node ./bin/www  | node apiserver.js",
+    "start": "node ./bin/www  | node ./server/apiserver.js",
     "client": "webpack --mode development"
   },
   "dependencies": {

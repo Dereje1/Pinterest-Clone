@@ -18,13 +18,12 @@ app.use('/api', (req, res) => {
 // end proxy setup
 require('./models/db'); // establishes db connection
 
-require('./authserver')(app); // add authentication
+require('./Authentication_Config/authserver')(app); // add authentication
 
 // server primary route
-app.use(express.static(path.join(__dirname, 'public')));
-
+app.use(express.static(path.join(__dirname, '../client/public')));
 app.get('*', (req, res) => {
-  res.sendFile(path.resolve(__dirname, 'public', 'index.html'));
+  res.sendFile(path.resolve(__dirname, '../client/public', 'index.html'));
 });
 
 // catch 404 and forward to error handler
