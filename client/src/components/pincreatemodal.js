@@ -11,7 +11,7 @@ class PinCreate extends Component {
     // initialize modal show state to false
     this.state = {
       show: false,
-      picPreview: '/images/NO-IMAGE.png', // on erroneous image links
+      picPreview: '../client/public/images/NO-IMAGE.png', // on erroneous image links
       description: '',
       saveDisabled: true, // parameter controls save button state
     };
@@ -32,7 +32,7 @@ class PinCreate extends Component {
     const { reset } = this.props;
     this.setState({
       show: false,
-      picPreview: '/images/NO-IMAGE.png',
+      picPreview: '../client/public/images/NO-IMAGE.png',
     }, () => reset());
   }
 
@@ -60,7 +60,7 @@ class PinCreate extends Component {
 
   invalidImage = () => { // error handler for invalid/broken pic routes can not save in this state
     this.setState({
-      picPreview: '/images/NO-IMAGE.png',
+      picPreview: '../client/public/images/NO-IMAGE.png',
       saveDisabled: true,
     });
   }

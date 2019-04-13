@@ -31,12 +31,12 @@ body{
         margin:auto;
         width:90%;
         border-radius: 5px;
-        cursor: -moz-zoom-in;
         cursor: -webkit-zoom-in;
         cursor: zoom-in;
         &:hover{
           opacity:0.7;
-          filter: brightness(50%);
+          -webkit-filter: brightness(50%);
+                  filter: brightness(50%);
         }
       }
       .actionbutton{
@@ -53,7 +53,11 @@ body{
         border: none;
         pointer:cursor;
         @media screen and (max-width: 500px){
-          font-size: 8px;
+          font-size: 12px;
+          width:25%;
+          left:65%;
+          top:15%;
+          height:30px;
           border-radius: 3px;
         }
       }
@@ -62,9 +66,13 @@ body{
         top:78%;
         left:7%;
         color: white;
-        font-size: 14px;
+        font-size: 1.5rem;
         font-weight: 700;
         text-transform: full-width;
+        @media screen and (max-width: 500px){
+          top:70%;
+          font-size: 1rem;
+        }
       }
       .description{
         font-weight: bold;
@@ -79,9 +87,16 @@ body{
       margin-left: 20px;
       margin-right: 20px;
       padding: 0px;
+      display: -webkit-box;
+      display: -ms-flexbox;
       display: flex;
-      flex-direction: column;
-      align-items: center;
+      -webkit-box-orient: vertical;
+      -webkit-box-direction: normal;
+          -ms-flex-direction: column;
+              flex-direction: column;
+      -webkit-box-align: center;
+          -ms-flex-align: center;
+              align-items: center;
       #username{
         margin-top: 50px;
         font-weight: 700;
@@ -94,8 +109,13 @@ body{
       }
       #creatpinwrapper{
         margin: 0 auto;
+        display: -webkit-box;
+        display: -ms-flexbox;
         display: flex;
-        flex-direction: column;
+        -webkit-box-orient: vertical;
+        -webkit-box-direction: normal;
+            -ms-flex-direction: column;
+                flex-direction: column;
         background: rgba(0, 0, 0, 0.05);
         border-radius: 8px;
         padding: 10px;
@@ -107,9 +127,15 @@ body{
         #createpin{
           height:200px;
           width:301px;
+          display: -webkit-box;
+          display: -ms-flexbox;
           display: flex;
-          justify-content: center;
-          align-items: center;
+          -webkit-box-pack: center;
+              -ms-flex-pack: center;
+                  justify-content: center;
+          -webkit-box-align: center;
+              -ms-flex-align: center;
+                  align-items: center;
           background: rgba(0, 0, 0, 0.05);
           border-radius: 8px;
           visibility: visible;
@@ -136,11 +162,15 @@ body{
       top: -50%;
       left: -50%;
       z-index: -1;
-      background: url('/images/backscreen.png');
-      animation-name: bkimage;
-      animation-duration: 33s;
-      animation-timing-function: linear;
-      animation-iteration-count: 1;
+      background: url('/client/public/images/backscreen.png');
+      -webkit-animation-name: bkimage;
+              animation-name: bkimage;
+      -webkit-animation-duration: 33s;
+              animation-duration: 33s;
+      -webkit-animation-timing-function: linear;
+              animation-timing-function: linear;
+      -webkit-animation-iteration-count: 1;
+              animation-iteration-count: 1;
     }
     #cover{
       position: relative;
@@ -157,16 +187,29 @@ body{
         left: 50%;
         top: 50%;
         position: absolute;
-        transform: translateX(-50%);
+        -webkit-transform: translateX(-50%);
+                transform: translateX(-50%);
+        display: -webkit-box;
+        display: -ms-flexbox;
         display: flex;
-        flex-direction: column;
-        justify-content: space-around;
-        align-items: center;
+        -webkit-box-orient: vertical;
+        -webkit-box-direction: normal;
+            -ms-flex-direction: column;
+                flex-direction: column;
+        -ms-flex-pack: distribute;
+            justify-content: space-around;
+        -webkit-box-align: center;
+            -ms-flex-align: center;
+                align-items: center;
         background: white;
         border-radius: 10px;
         #logo{
+          display: -webkit-box;
+          display: -ms-flexbox;
           display: flex;
-          justify-content: center;
+          -webkit-box-pack: center;
+              -ms-flex-pack: center;
+                  justify-content: center;
           font-size: 40px;
           color:#b20e0e;
         }
@@ -196,7 +239,6 @@ body{
           text-transform: full-width;
           font-weight: 900;
           font-size: 18px;
-          color:
           a:hover{
             text-decoration: none;
           }
@@ -207,9 +249,15 @@ body{
         #loginbutton{
           border: 0px;
           height: 40px;
+          display: -webkit-box;
+          display: -ms-flexbox;
           display: flex;
-          justify-content: space-between;
-          align-items: center;
+          -webkit-box-pack: justify;
+              -ms-flex-pack: justify;
+                  justify-content: space-between;
+          -webkit-box-align: center;
+              -ms-flex-align: center;
+                  align-items: center;
           border-radius: 2px;
           -webkit-font-smoothing: antialiased;
           -moz-osx-font-smoothing: grayscale;
@@ -221,6 +269,7 @@ body{
           box-shadow: none;
           cursor: pointer;
           background-clip: padding-box;
+          -webkit-transition: opacity .2s linear;
           transition: opacity .2s linear;
           width: 268px;
           background-color: #4285f4;
@@ -233,9 +282,15 @@ body{
         #guestbutton{
           border: 0px;
           height: 40px;
+          display: -webkit-box;
+          display: -ms-flexbox;
           display: flex;
-          justify-content: space-between;
-          align-items: center;
+          -webkit-box-pack: justify;
+              -ms-flex-pack: justify;
+                  justify-content: space-between;
+          -webkit-box-align: center;
+              -ms-flex-align: center;
+                  align-items: center;
           border-radius: 2px;
           -webkit-font-smoothing: antialiased;
           -moz-osx-font-smoothing: grayscale;
@@ -247,6 +302,7 @@ body{
           box-shadow: none;
           cursor: pointer;
           background-clip: padding-box;
+          -webkit-transition: opacity .2s linear;
           transition: opacity .2s linear;
           width: 268px;
           background-color: #ffb45e;
@@ -283,10 +339,15 @@ body{
       }
       #addpin{
         width:100%;
+        display: -webkit-box;
+        display: -ms-flexbox;
         display: flex;
-        flex-direction: row;
+        -webkit-box-orient: horizontal;
+        -webkit-box-direction: normal;
+            -ms-flex-direction: row;
+                flex-direction: row;
         #picdisplay{
-          width:50%;
+          width:100%;
           border-radius: 5px;
           background:#eaebed;
           .pinTest{
@@ -297,8 +358,13 @@ body{
         #formarea{
           width:50%;
           padding-left: 5%;
+          display: -webkit-box;
+          display: -ms-flexbox;
           display: flex;
-          flex-direction: column;
+          -webkit-box-orient: vertical;
+          -webkit-box-direction: normal;
+              -ms-flex-direction: column;
+                  flex-direction: column;
           #textdesc{
             width:90%;
             height:15%;
@@ -326,9 +392,14 @@ body{
         font-size: 30px;
       }
       #contained-modal-title-zoom{
+        display:-webkit-box;
+        display:-ms-flexbox;
         display:flex;
-        justify-content: space-around;
-        flex-wrap: wrap;
+        flex-direction: column;
+        -ms-flex-pack: distribute;
+            justify-content: space-around;
+        -ms-flex-wrap: wrap;
+            flex-wrap: wrap;
         font-weight: bold;
         font-size: 24px;
         color: #555;
@@ -349,8 +420,12 @@ body{
         }
       }
       #zoomfooter{
+        display:-webkit-box;
+        display:-ms-flexbox;
         display:flex;
-        justify-content: space-between;
+        -webkit-box-pack: justify;
+            -ms-flex-pack: justify;
+                justify-content: space-between;
 
         #zoomtack{
           width:50%;
@@ -372,7 +447,7 @@ body{
           border: none;
           pointer:cursor;
           @media screen and (max-width: 500px){
-            font-size: 8px;
+            font-size: 12px;
             border-radius: 3px;
           }
         }
@@ -391,6 +466,17 @@ body{
         color:#b20e0e;
     }
   }
+
+@-webkit-keyframes bkimage {
+  0%{
+    -webkit-transform: translateY(400px);
+     transform: translateY(350px);
+  }
+  100%{
+    -webkit-transform: translateY(0px);
+     transform: translateY(0px);
+  }
+}
 
 @keyframes bkimage {
   0%{

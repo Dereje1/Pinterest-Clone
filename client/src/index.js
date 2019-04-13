@@ -21,6 +21,7 @@ import Mypins from './components/mypins';
 // import combined reducer to pass to store here
 import reducers from './reducers/index';
 
+import './index.scss';
 // use logger for debugging only
 // const middleware = applyMiddleware(thunk,logger)
 const middleware = applyMiddleware(thunk, logger);
