@@ -51,7 +51,7 @@ class Home extends Component {
     const { user } = this.props;
     const { pinList } = this.state;
     if (user.user.username === 'Guest') {
-      window.location = '/auth/twitter';
+      window.location = '/api/auth/twitter';
       return;
     }
     // copy pinlist --> avoid mutation at all cost
@@ -117,7 +117,7 @@ class Home extends Component {
         key={element._id}
         role="button"
         className="image-box"
-        onClick={() => this.pinEnlarge(element)}
+        onClick={e => this.pinEnlarge(e, element)}
         onKeyDown={() => {}}
         tabIndex={0}
       >
@@ -137,7 +137,8 @@ class Home extends Component {
     return childElements;
   }
 
-  pinEnlarge(currentImg) { // calls zoom in modal for the clicked picture
+  pinEnlarge(e, currentImg) { // calls zoom in modal for the clicked picture
+    if (e.target.type === 'submit') return;
     this.setState({
       displayPinZoom: true,
       imageInfo: [currentImg, this.imageStatus(currentImg)],

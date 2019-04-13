@@ -56,7 +56,8 @@ class Mypins extends Component {
     });
   }
 
-  pinEnlarge(currentImg) { // display pin zoom modal and passes image info
+  pinEnlarge(e, currentImg) { // display pin zoom modal and passes image info
+    if (e.target.type === 'submit') return;
     this.setState({
       displayPinZoom: true,
       imageInfo: [currentImg,
@@ -120,7 +121,7 @@ class Mypins extends Component {
         key={element._id}
         role="button"
         className="image-box"
-        onClick={() => this.pinEnlarge(element)}
+        onClick={e => this.pinEnlarge(e, element)}
         onKeyDown={() => {}}
         tabIndex={0}
       >
