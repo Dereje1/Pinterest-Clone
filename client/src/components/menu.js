@@ -11,7 +11,7 @@ import { setGuest } from '../actions/authentication'; // sets fake guest account
 class Menu extends Component {
 
   handleLogin = () => { // twitter authentication
-    window.location = '/api/auth/twitter'
+    window.location = '/auth/twitter'
   }
 
   handleGuest = () => { // set guest user
@@ -37,14 +37,14 @@ class Menu extends Component {
               <Navbar.Brand>
                 <a href="/">
                   <i className="fa fa-pinterest" aria-hidden="true" />
-                  {'Clone'}
+                  {' Clone'}
                 </a>
               </Navbar.Brand>
               <Navbar.Toggle />
             </Navbar.Header>
             <Navbar.Collapse>
               <Nav pullRight>
-                <NavItem eventKey={5} href="/api/auth/twitter">Login with Twitter</NavItem>
+                <NavItem eventKey={5} href="/auth/twitter">Login with Twitter</NavItem>
               </Nav>
             </Navbar.Collapse>
           </Navbar>
@@ -112,7 +112,7 @@ class Menu extends Component {
           <Nav pullRight activeKey={this.findActive()}>
             <NavItem eventKey={2} href="/">Home</NavItem>
             <NavItem eventKey={3} href="/pins">My Pins</NavItem>
-            <NavItem eventKey={5} href="/api/logout">{`Logout ${user.user.displayname.split(' ')[0]}`}</NavItem>
+            <NavItem eventKey={5} href="/auth/logout">{`Logout ${user.user.displayname.split(' ')[0]}`}</NavItem>
           </Nav>
         </Navbar.Collapse>
       </Navbar>

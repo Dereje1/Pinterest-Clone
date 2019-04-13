@@ -29,6 +29,7 @@ const configMain = {
   devServer: {
     proxy: {
       '/api': 'http://localhost:3000',
+      '/auth': 'http://localhost:3000',
     },
     historyApiFallback: true, // router will not work without this?
   },

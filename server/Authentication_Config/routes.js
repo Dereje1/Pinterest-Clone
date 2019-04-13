@@ -3,7 +3,7 @@ const isLoggedIn = require('./isloggedin');
 
 const authRoutes = (app, passport) => {
 // wether a user is logged in or not json data will show up on the profile page
-  app.get('/profile', isLoggedIn, (req, res) => {
+  app.get('/auth/profile', isLoggedIn, (req, res) => {
     const headerObject = req.headers; // need for ip
     let ip = (headerObject['x-forwarded-for'] || req.socket.remoteAddress).split(',')[0];
     ip = (ip === '::1') ? 'local' : ip;
@@ -17,7 +17,7 @@ const authRoutes = (app, passport) => {
 
   // guest login path -- fake authentication to provide
   // semi/persistence instaed of doing it on client side
-  app.get('/guest', (req, res) => {
+  app.get('/auth/guest', (req, res) => {
     const headerObject = req.headers; // need for ip
     let ip = (headerObject['x-forwarded-for'] || req.socket.remoteAddress).split(',')[0];
     ip = (ip === '::1') ? 'local' : ip;
@@ -29,7 +29,7 @@ const authRoutes = (app, passport) => {
     });
   });
   // route for logging out
-  app.get('/logout', (req, res) => {
+  app.get('/auth/logout', (req, res) => {
     req.logout();
     res.redirect('/');
   });

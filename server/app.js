@@ -1,23 +1,21 @@
+// primary module to interact with client
 const express = require('express');
 const path = require('path');
+const cookieParser = require('cookie-parser');
+const bodyParser = require('body-parser');
 
 const app = express();
 
-const httpProxy = require('http-proxy');
-
-// Set up PROXY server with the module from above
-const apiProxy = httpProxy.createProxyServer(
-  { target: 'http://localhost:3001' },
-);
-// apply middleware that intercepts all requests to the
-// api and retrieves the resources from the prxy
-
-app.use('/api', (req, res) => {
-  apiProxy.web(req, res);
-});
-
-// server primary route
+app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({ extended: false }));
+app.use(cookieParser());
 app.use(express.static(path.join(__dirname, '../client/public')));
+
+// APIs Start
+require('./models/db'); // mongoose required common db
+require('./Authentication_Config/authserver')(app);
+app.use(require('./crudroutes'));
+
 app.get('*', (req, res) => {
   res.sendFile(path.resolve(__dirname, '../client/public', 'index.html'));
 });
