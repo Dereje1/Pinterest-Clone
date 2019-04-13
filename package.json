@@ -15,6 +15,7 @@
     "connect-mongo": "^2.0.0",
     "cookie-parser": "~1.4.3",
     "debug": "~2.6.9",
+    "dotenv": "^7.0.0",
     "express": "~4.15.5",
     "express-session": "latest",
     "http-proxy": "^1.16.2",

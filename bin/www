@@ -4,6 +4,7 @@
  * Module dependencies.
  */
 process.env.DEBUG = 'Pinterest-Clone:server';
+require('dotenv').config();
 const debug = require('debug')('Pinterest-Clone:server');
 const http = require('http');
 const app = require('../server/app');
