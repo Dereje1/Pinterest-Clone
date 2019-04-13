@@ -4,7 +4,9 @@
   "private": true,
   "scripts": {
     "start": "node ./bin/www  | node ./server/apiserver.js",
-    "client": "webpack --mode development"
+    "client": "webpack --mode development",
+    "dev": "webpack-dev-server --mode development",
+    "build": "webpack --mode production"
   },
   "dependencies": {
     "axios": "latest",
@@ -44,6 +46,9 @@
     "eslint-plugin-import": "^2.14.0",
     "eslint-plugin-jsx-a11y": "^6.1.2",
     "eslint-plugin-react": "^7.12.3",
+    "html-loader": "^0.5.5",
+    "html-webpack-plugin": "^3.2.0",
+    "http-proxy-middleware": "^0.19.1",
     "redux-logger": "^3.0.6",
     "webpack": "^4.29.6",
     "webpack-cli": "^3.3.0",
