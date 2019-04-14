@@ -1,0 +1,138 @@
+.modal{
+    top:10%;
+    left:-20%;
+    @media screen and (max-width: 800px){
+      left: 0%;
+    }
+    .close{
+      font-size: 42px;
+    }
+    .modal-content{
+      width: 125%;
+      @media screen and (max-width: 800px){
+        width: 100%;
+      }
+    }
+    #contained-modal-title{
+      text-align: center;
+      font-weight: bold;
+      font-size: 24px;
+      color: #555;
+      font-family: "Helvetica";
+    }
+    #addpin{
+      width:100%;
+      display: -webkit-box;
+      display: -ms-flexbox;
+      display: flex;
+      -webkit-box-orient: horizontal;
+      -webkit-box-direction: normal;
+          -ms-flex-direction: row;
+              flex-direction: row;
+      #picdisplay{
+        width:100%;
+        border-radius: 5px;
+        background:#eaebed;
+        .pinTest{
+          width:100%;
+          border-radius: 5px;
+        }
+      }
+      #formarea{
+        width:50%;
+        padding-left: 5%;
+        display: -webkit-box;
+        display: -ms-flexbox;
+        display: flex;
+        -webkit-box-orient: vertical;
+        -webkit-box-direction: normal;
+            -ms-flex-direction: column;
+                flex-direction: column;
+        #textdesc{
+          width:90%;
+          height:15%;
+          resize: none;
+          padding:10px;
+          border:none;
+          border-radius: 5px;
+          background: #eaebed;
+          margin-bottom: 10px;
+        }
+        #textlink{
+          width:90%;
+          height:7%;
+          resize: none;
+          padding:10px;
+          border:none;
+          border-radius: 5px;
+          background: #eaebed;
+        }
+      }
+    }
+    .btn-danger{
+      width:100%;
+      font-weight: bold;
+      font-size: 30px;
+    }
+    #contained-modal-title-zoom{
+      display:-webkit-box;
+      display:-ms-flexbox;
+      display:flex;
+      flex-direction: column;
+      -ms-flex-pack: distribute;
+          justify-content: space-around;
+      -ms-flex-wrap: wrap;
+          flex-wrap: wrap;
+      font-weight: bold;
+      font-size: 24px;
+      color: #555;
+      font-family: "Helvetica";
+      #zoomdesc{
+        font-family: 'Berkshire Swash', cursive;
+      }
+      #zoomowner{
+        font-family:'Spectral SC', serif;
+        color: #b20e0e;
+      }
+    }
+    #zoomarea{
+      width: 100%;
+      .pinZoom{
+        width:100%;
+        border-radius: 5px;
+      }
+    }
+    #zoomfooter{
+      display:-webkit-box;
+      display:-ms-flexbox;
+      display:flex;
+      -webkit-box-pack: justify;
+          -ms-flex-pack: justify;
+              justify-content: space-between;
+
+      #zoomtack{
+        width:50%;
+        text-align: left;
+        font-size: 32px;
+        font-weight: 700;
+        @media screen and (max-width: 500px){
+          font-size: 16px;
+        }
+      }
+      .actionbutton{
+        width:20%;
+        height:auto;
+        background-color: #a80b0b;
+        color: white;
+        font-size: 16px;
+        font-weight: 700;
+        border-radius: 7px;
+        border: none;
+        pointer:cursor;
+        @media screen and (max-width: 500px){
+          font-size: 12px;
+          border-radius: 3px;
+        }
+      }
+    }
+  }

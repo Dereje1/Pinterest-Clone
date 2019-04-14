@@ -1,0 +1,183 @@
+#cover:before {
+    content: "";
+    position: absolute;
+    width: 200%;
+    height: 200%;
+    top: -50%;
+    left: -50%;
+    z-index: -1;
+    background: url('./backscreen.png');
+    -webkit-animation-name: bkimage;
+            animation-name: bkimage;
+    -webkit-animation-duration: 33s;
+            animation-duration: 33s;
+    -webkit-animation-timing-function: linear;
+            animation-timing-function: linear;
+    -webkit-animation-iteration-count: 1;
+            animation-iteration-count: 1;
+  }
+  #cover{
+    position: relative;
+    overflow: hidden;
+    height:100%;
+    width:100%;
+    #logincard{
+      z-index: 15;
+      background-color: #fff;
+      border-radius: 8px;
+      min-height: 533px;
+      margin-top: -266px;
+      width: 400px;
+      left: 50%;
+      top: 50%;
+      position: absolute;
+      -webkit-transform: translateX(-50%);
+              transform: translateX(-50%);
+      display: -webkit-box;
+      display: -ms-flexbox;
+      display: flex;
+      -webkit-box-orient: vertical;
+      -webkit-box-direction: normal;
+          -ms-flex-direction: column;
+              flex-direction: column;
+      -ms-flex-pack: distribute;
+          justify-content: space-around;
+      -webkit-box-align: center;
+          -ms-flex-align: center;
+              align-items: center;
+      background: white;
+      border-radius: 10px;
+      #logo{
+        display: -webkit-box;
+        display: -ms-flexbox;
+        display: flex;
+        -webkit-box-pack: center;
+            -ms-flex-pack: center;
+                justify-content: center;
+        font-size: 40px;
+        color:#b20e0e;
+      }
+      #welcome{
+            font-family: 'Helvetica Neue', Helvetica, 'ヒラギノ角ゴ Pro W3', 'Hiragino Kaku Gothic Pro', メイリオ, Meiryo, 'ＭＳ Ｐゴシック', arial, sans-serif;
+            font-size: 28px;
+            font-weight: bold;
+            color:#555;
+      }
+      #subheader{
+        font-weight: bold;
+        color: #ccc;
+        font-size: 18px;
+        text-align: center;
+      }
+      #disclaimer{
+        font-weight: bold;
+        color: red;
+        font-size: 14px;
+        text-align: center;
+        margin-top: 10px;
+      }
+      #gitsource{
+        margin-top: 10px;
+        text-align: center;
+        text-decoration: none;
+        text-transform: full-width;
+        font-weight: 900;
+        font-size: 18px;
+        a:hover{
+          text-decoration: none;
+        }
+      }
+      .buttontext{
+        padding-right: 45px;
+      }
+      #loginbutton{
+        border: 0px;
+        height: 40px;
+        display: -webkit-box;
+        display: -ms-flexbox;
+        display: flex;
+        -webkit-box-pack: justify;
+            -ms-flex-pack: justify;
+                justify-content: space-between;
+        -webkit-box-align: center;
+            -ms-flex-align: center;
+                align-items: center;
+        border-radius: 2px;
+        -webkit-font-smoothing: antialiased;
+        -moz-osx-font-smoothing: grayscale;
+        padding: 1px;
+        font-size: 15px;
+        font-weight: bold;
+        outline: none;
+        -webkit-box-shadow: none;
+        box-shadow: none;
+        cursor: pointer;
+        background-clip: padding-box;
+        -webkit-transition: opacity .2s linear;
+        transition: opacity .2s linear;
+        width: 268px;
+        background-color: #4285f4;
+        color:white;
+        #twitter{
+          font-size: 30px;
+          padding-left: 3px;
+        }
+      }
+      #guestbutton{
+        border: 0px;
+        height: 40px;
+        display: -webkit-box;
+        display: -ms-flexbox;
+        display: flex;
+        -webkit-box-pack: justify;
+            -ms-flex-pack: justify;
+                justify-content: space-between;
+        -webkit-box-align: center;
+            -ms-flex-align: center;
+                align-items: center;
+        border-radius: 2px;
+        -webkit-font-smoothing: antialiased;
+        -moz-osx-font-smoothing: grayscale;
+        padding: 1px;
+        font-size: 15px;
+        font-weight: bold;
+        outline: none;
+        -webkit-box-shadow: none;
+        box-shadow: none;
+        cursor: pointer;
+        background-clip: padding-box;
+        -webkit-transition: opacity .2s linear;
+        transition: opacity .2s linear;
+        width: 268px;
+        background-color: #ffb45e;
+        color:white;
+        margin-bottom: 10px;
+        #guest{
+          font-size: 30px;
+          padding-left: 3px;
+        }
+      }
+    }
+  }
+
+  @-webkit-keyframes bkimage {
+    0%{
+      -webkit-transform: translateY(400px);
+       transform: translateY(350px);
+    }
+    100%{
+      -webkit-transform: translateY(0px);
+       transform: translateY(0px);
+    }
+  }
+  
+  @keyframes bkimage {
+    0%{
+      -webkit-transform: translateY(400px);
+       transform: translateY(350px);
+    }
+    100%{
+      -webkit-transform: translateY(0px);
+       transform: translateY(0px);
+    }
+  }
