@@ -8,6 +8,7 @@ import PinCreate from './pincreatemodal';
 import {
   addPin, getPins, deletePin, updatePin,
 } from '../../actions/pinactions'; // pin CRUD
+import Menu from '../menu/menu';
 import PinZoom from '../modal/modalzoom';
 import './mypins.scss';
 
@@ -151,40 +152,44 @@ class Mypins extends Component {
   render() {
     const { user } = this.props;
     const { displayPinCreate, displayPinZoom, imageInfo } = this.state;
+    if (!user.user.authenticated) window.location.assign('/');
     return (
-      <div>
-        <div id="mypinframe">
-          <h3 id="username">{user.user.displayname}</h3>
-          <div
-            id="creatpinwrapper"
-            onClick={() => this.pinForm()}
-            role="button"
-            onKeyDown={() => {}}
-            tabIndex={0}
-          >
-            <div id="createpin">
-              <i className="fa fa-plus-circle" aria-hidden="true" />
+      <React.Fragment>
+        <Menu user={user} />
+        <div>
+          <div id="mypinframe">
+            <h3 id="username">{user.user.displayname}</h3>
+            <div
+              id="creatpinwrapper"
+              onClick={() => this.pinForm()}
+              role="button"
+              onKeyDown={() => {}}
+              tabIndex={0}
+            >
+              <div id="createpin">
+                <i className="fa fa-plus-circle" aria-hidden="true" />
+              </div>
+              <h3 id="createpintext">Create Pin</h3>
             </div>
-            <h3 id="createpintext">Create Pin</h3>
+            <PinCreate
+              message={displayPinCreate}
+              reset={() => this.setState({ displayPinCreate: false })}
+              userInfo={user.user}
+              savePin={pinJSON => this.addPic(pinJSON)}
+            />
           </div>
-          <PinCreate
-            message={displayPinCreate}
-            reset={() => this.setState({ displayPinCreate: false })}
-            userInfo={user.user}
-            savePin={pinJSON => this.addPic(pinJSON)}
-          />
+          <div id="mainframe">
+            <Masonry>
+              {this.buildImages()}
+            </Masonry>
+            <PinZoom
+              message={displayPinZoom}
+              reset={() => this.setState({ displayPinZoom: false })}
+              zoomInfo={imageInfo}
+            />
+          </div>
         </div>
-        <div id="mainframe">
-          <Masonry>
-            {this.buildImages()}
-          </Masonry>
-          <PinZoom
-            message={displayPinZoom}
-            reset={() => this.setState({ displayPinZoom: false })}
-            zoomInfo={imageInfo}
-          />
-        </div>
-      </div>
+      </React.Fragment>
     );
   }
 

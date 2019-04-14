@@ -5,6 +5,7 @@ import Masonry from 'react-masonry-component';
 import PropTypes from 'prop-types';
 
 import { getPins, deletePin, updatePin } from '../../actions/pinactions'; // adds book to db
+import Menu from '../menu/menu';
 import PinZoom from '../modal/modalzoom';
 import './home.scss';
 
@@ -63,7 +64,7 @@ class Home extends Component {
     const { user } = this.props;
     const { pinList } = this.state;
     if (user.user.username === 'Guest') {
-      window.location = '/api/auth/twitter';
+      window.location = '/auth/twitter';
       return;
     }
     // copy pinlist --> avoid mutation at all cost
@@ -165,16 +166,19 @@ class Home extends Component {
 
     if (userStatus) {
       return (
-        <div id="mainframe">
-          <Masonry>
-            {this.buildImages()}
-          </Masonry>
-          <PinZoom
-            message={displayPinZoom}
-            reset={() => this.setState({ displayPinZoom: false })}
-            zoomInfo={imageInfo}
-          />
-        </div>
+        <React.Fragment>
+          <Menu user={user} />
+          <div id="mainframe">
+            <Masonry>
+              {this.buildImages()}
+            </Masonry>
+            <PinZoom
+              message={displayPinZoom}
+              reset={() => this.setState({ displayPinZoom: false })}
+              zoomInfo={imageInfo}
+            />
+          </div>
+        </React.Fragment>
       );
     }
 
