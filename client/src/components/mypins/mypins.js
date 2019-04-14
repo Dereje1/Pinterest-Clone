@@ -7,8 +7,9 @@ import PropTypes from 'prop-types';
 import PinCreate from './pincreatemodal';
 import {
   addPin, getPins, deletePin, updatePin,
-} from '../actions/pinactions'; // pin CRUD
-import PinZoom from './modalzoom';
+} from '../../actions/pinactions'; // pin CRUD
+import PinZoom from '../modal/modalzoom';
+import './mypins.scss';
 
 class Mypins extends Component {
 

@@ -3,6 +3,7 @@ import React, { Component } from 'react';
 import { Button, Modal } from 'react-bootstrap';
 import Masonry from 'react-masonry-component';
 import PropTypes from 'prop-types';
+import imageBroken from './NO-IMAGE.png';
 
 class PinCreate extends Component {
 
@@ -11,7 +12,7 @@ class PinCreate extends Component {
     // initialize modal show state to false
     this.state = {
       show: false,
-      picPreview: '../client/public/images/NO-IMAGE.png', // on erroneous image links
+      picPreview: imageBroken, // on erroneous image links
       description: '',
       saveDisabled: true, // parameter controls save button state
     };
@@ -32,7 +33,7 @@ class PinCreate extends Component {
     const { reset } = this.props;
     this.setState({
       show: false,
-      picPreview: '../client/public/images/NO-IMAGE.png',
+      picPreview: imageBroken,
     }, () => reset());
   }
 
@@ -60,7 +61,7 @@ class PinCreate extends Component {
 
   invalidImage = () => { // error handler for invalid/broken pic routes can not save in this state
     this.setState({
-      picPreview: '../client/public/images/NO-IMAGE.png',
+      picPreview: imageBroken,
       saveDisabled: true,
     });
   }

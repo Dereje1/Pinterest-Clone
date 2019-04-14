@@ -3,6 +3,7 @@ import React, { Component } from 'react';
 import { Modal } from 'react-bootstrap';
 import Masonry from 'react-masonry-component';
 import PropTypes from 'prop-types';
+import './modal.scss';
 
 class PinZoom extends Component {
 
@@ -76,7 +77,7 @@ class PinZoom extends Component {
         <Modal.Footer id="zoomfooter">
           <span id="zoomtack">
             <i className="fa fa-thumb-tack" aria-hidden="true" />
-            {totalPins}
+            {`  ${totalPins}`}
           </span>
           {buttonInformation}
         </Modal.Footer>

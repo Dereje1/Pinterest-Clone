@@ -4,7 +4,7 @@ import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import PropTypes from 'prop-types';
 
-import Menu from './components/menu';
+import Menu from './components/menu/menu';
 // action gets user info on every mount of this component
 import { getUser } from './actions/authentication';
 

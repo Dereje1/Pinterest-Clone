@@ -4,8 +4,9 @@ import { connect } from 'react-redux';
 import Masonry from 'react-masonry-component';
 import PropTypes from 'prop-types';
 
-import { getPins, deletePin, updatePin } from '../actions/pinactions'; // adds book to db
-import PinZoom from './modalzoom';
+import { getPins, deletePin, updatePin } from '../../actions/pinactions'; // adds book to db
+import PinZoom from '../modal/modalzoom';
+import './home.scss';
 
 class Home extends Component {
 
@@ -94,7 +95,7 @@ class Home extends Component {
           onClick={() => this.savePic(element)}
         >
           <i className="fa fa-thumb-tack" aria-hidden="true" />
-          {'Save'}
+          {' Save'}
         </button>
       );
     }
