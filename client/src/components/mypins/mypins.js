@@ -174,7 +174,7 @@ class Mypins extends Component {
             savePin={pinJSON => this.addPic(pinJSON)}
           />
         </div>
-        <div id="userImageFrame">
+        <div id="mainframe">
           <Masonry>
             {this.buildImages()}
           </Masonry>

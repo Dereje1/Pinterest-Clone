@@ -35,8 +35,8 @@
     }
     .actionbutton{
       position: absolute;
-      top:11%;
-      left:73%;
+      top:25px;
+      right:30px;
       width:20%;
       height:35px;
       background-color: #a80b0b;
@@ -47,25 +47,24 @@
       border: none;
       cursor: pointer;
       @media screen and (max-width: 500px){
-        font-size: 12px;
+        font-size: 10px;
         width:25%;
-        left:65%;
-        top:15%;
+        right:20px;
         height:30px;
         border-radius: 3px;
       }
     }
     .owner{
       position: absolute;
-      top:78%;
-      left:7%;
+      bottom: 35px;
+      left:25px;
       color: white;
       font-size: 1.5rem;
       font-weight: 700;
       text-transform: full-width;
       @media screen and (max-width: 500px){
-        top:70%;
         font-size: 1rem;
+        bottom: 30px;
       }
     }
     .description{
@@ -73,5 +72,8 @@
       font-size: 24px;
       color: #555;
       font-family: 'Berkshire Swash', cursive;
+      @media screen and (max-width: 500px){
+        font-size: 2rem;
+      }
     }
   }
