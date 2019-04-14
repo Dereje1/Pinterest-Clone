@@ -9,14 +9,11 @@ import thunk from 'redux-thunk';
 import React from 'react';
 import { render } from 'react-dom';
 import { Provider } from 'react-redux';
-import {
-  Router, Route, IndexRoute, browserHistory,
-} from 'react-router';
+import { BrowserRouter, Route, Switch } from 'react-router-dom';
 
 // Import all Created react components that are associated with the router
 // standard menu (non-authenticated) components
 import Main from './main';
-import Home from './components/home/home';
 import Mypins from './components/mypins/mypins';
 // import combined reducer to pass to store here
 import reducers from './reducers/index';
@@ -30,13 +27,15 @@ const store = createStore(reducers, middleware);
 // decalre all routes of application below
 const Routes = (
   <Provider store={store}>
-    <Router history={browserHistory}>
-      <Route path="/" component={Main}>
-        <IndexRoute component={Home} />
+    <BrowserRouter>
+      <Switch>
+        <Route path="/" exact component={Main} />
         <Route path="/pins" component={Mypins} />
-      </Route>
-    </Router>
+      </Switch>
+    </BrowserRouter>
   </Provider>
 );
 // render routes
 render(Routes, document.getElementById('app'));
+
+export default store;
