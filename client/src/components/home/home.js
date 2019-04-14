@@ -22,7 +22,7 @@ class Home extends Component {
   componentDidMount() {
     getPins('All').then((pinsFromDB) => { // get all pins then setstate
       this.setState({
-        pinList: pinsFromDB,
+        pinList: this.shuffleImages([...pinsFromDB]),
       });
     });
   }
@@ -45,6 +45,17 @@ class Home extends Component {
     this.setState({
       pinList: pinListCopy,
     });
+  }
+
+
+  shuffleImages = (arr) => {
+    const shuffled = [];
+    while (arr.length) {
+      const randIndex = Math.floor(Math.random() * arr.length);
+      const removed = arr.splice(randIndex, 1);
+      shuffled.push(removed[0]);
+    }
+    return shuffled;
   }
 
   savePic(element) { // saves a pic owned by somebody else into current users repo

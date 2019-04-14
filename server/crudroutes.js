@@ -23,7 +23,7 @@ router.get('/api/:user', (req, res) => {
 });
 // deletes a pin by id
 router.delete('/api/:_id', isLoggedIn, (req, res) => {
-  const query = { id: req.params._id };
+  const query = { _id: req.params._id };
   pins.remove(query, (err, pin) => {
     if (err) throw err;
     res.json(pin);
