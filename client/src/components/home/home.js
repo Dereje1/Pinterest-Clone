@@ -17,6 +17,7 @@ class Home extends Component {
       pinList: [], // stores all pins in db in state
       displayPinZoom: false, // for zoom modal
       imageInfo: [], // to send to zoom modal
+      imagesLoaded: false,
     };
   }
 
@@ -57,6 +58,12 @@ class Home extends Component {
       shuffled.push(removed[0]);
     }
     return shuffled;
+  }
+
+  layoutComplete = () => {
+    const { imagesLoaded } = this.state;
+    if (imagesLoaded) return;
+    this.setState({ imagesLoaded: true });
   }
 
   savePic(element) { // saves a pic owned by somebody else into current users repo
@@ -124,7 +131,7 @@ class Home extends Component {
   }
 
   buildImages() { // build the images in frame using masonry
-    const { pinList } = this.state;
+    const { pinList, imagesLoaded } = this.state;
     const childElements = pinList.map(element => (
       <div
         key={element._id}
@@ -139,6 +146,7 @@ class Home extends Component {
           onError={() => this.onBrokenImage(element._id)}
           className="image-format"
           src={element.imgLink}
+          style={{ visibility: imagesLoaded ? 'visible' : 'hidden' }}
         />
         <div className="description text-center">
           {element.imgDescription}
@@ -163,13 +171,14 @@ class Home extends Component {
     const { user } = this.props;
     const { displayPinZoom, imageInfo } = this.state;
     const userStatus = user.user.username !== null;
-
     if (userStatus) {
       return (
         <React.Fragment>
           <Menu user={user} />
           <div id="mainframe">
-            <Masonry>
+            <Masonry
+              onImagesLoaded={() => this.layoutComplete()}
+            >
               {this.buildImages()}
             </Masonry>
             <PinZoom

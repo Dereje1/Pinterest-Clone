@@ -45,7 +45,7 @@ const Menu = ({ user }) => {
           <React.Fragment>
             <NavLink exact to="/">Home</NavLink>
             <NavLink exact to="/pins">My Pins</NavLink>
-            <NavLink to="/another" onClick={() => window.location.assign('auth/logout')}>{`Logout ${user.user.displayname.split(' ')[0]}`}</NavLink>
+            <NavLink to="/another" onClick={() => window.location.assign('auth/logout')}>Logout</NavLink>
           </React.Fragment>
         </Nav>
       </Navbar.Collapse>
