@@ -1,14 +1,17 @@
 .zoom{
-  width: 50%;
+  width: 90%;
   height: auto;
   position: absolute;
-  top: 80;
+  top: 0;
   left: 0;
   right: 0;
   margin-left: auto;
   margin-right: auto;
   background: white;
   overflow: auto;
+  border: 2px solid black;
+  padding-left: 5%;
+  padding-right: 5%;
   &.show{
     display: flex;
     flex-direction: column;
@@ -17,6 +20,7 @@
     display: none;
   }
   .pinzoom{
-    width:100%
+    display: block;
+    margin: auto;
   }
 }

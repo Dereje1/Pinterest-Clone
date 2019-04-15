@@ -10,15 +10,17 @@ class PinZoom extends Component {
     // initialize modal show state to false
     this.state = {
       show: false,
-      styles: { width: '80%', visibility: 'hidden' },
+      imgStyle: { width: '90%', visibility: 'hidden' },
+      parentDivStyle: { top: 80 },
     };
   }
 
   componentDidUpdate(prevProps) {
-    const { message } = this.props;
+    const { message, zoomInfo } = this.props;
     if ((prevProps.message === false) && (message === true)) {
       this.setState({
         show: true,
+        parentDivStyle: { top: zoomInfo[2] + 80 },
       });
     }
     if ((prevProps.message === true) && (message === false)) {
@@ -34,7 +36,6 @@ class PinZoom extends Component {
     const { reset } = this.props;
     this.setState({
       show: false,
-      styles: { width: '80%', visibility: 'hidden' },
     }, () => reset());
   }
 
@@ -42,20 +43,18 @@ class PinZoom extends Component {
     const { width, height } = i.target;
     const { innerWidth, innerHeight } = window;
     const ans = (width / height) / (innerWidth / innerHeight);
-    let styles;
+    let imgStyle;
     if (ans < 1.3) {
-      styles = {
-        width: `${Math.floor(ans * 70)}%`,
-        visibility: 'visible',
+      imgStyle = {
+        width: `${Math.floor(ans * 80)}%`,
       };
     } else {
-      styles = {
+      imgStyle = {
         width: '100%',
-        visibility: 'visible',
       };
     }
 
-    this.setState({ styles });
+    this.setState({ imgStyle });
   }
 
   open() {
@@ -69,7 +68,7 @@ class PinZoom extends Component {
     // use total pins to display how many have saved image
     // components brings in as prop zoominfo etire object containing pin information
     const { zoomInfo } = this.props;
-    const { show, styles } = this.state;
+    const { show, imgStyle, parentDivStyle } = this.state;
     if (!zoomInfo.length) return null;
     const pinInformation = zoomInfo[0];
     const buttonInformation = zoomInfo[1];
@@ -78,6 +77,7 @@ class PinZoom extends Component {
     return (
       <div
         className={show ? 'zoom show' : 'zoom hide'}
+        style={parentDivStyle}
       >
         <div className="header">
           <span id="zoomtitle">
@@ -86,11 +86,15 @@ class PinZoom extends Component {
           </span>
           <button type="submit" onClick={this.close}>Close</button>
         </div>
-        <div className="content">
-          <div id="zoomarea">
-            <img alt="" className="pinzoom" src={pinInformation.imgLink} onLoad={this.handleImage} />
-          </div>
-        </div>
+
+        <img
+          alt=""
+          className="pinzoom"
+          style={imgStyle}
+          src={pinInformation.imgLink}
+          onLoad={this.handleImage}
+        />
+
         <div className="footer">
           <span id="zoomtack">
             <i className="fa fa-thumb-tack" aria-hidden="true" />

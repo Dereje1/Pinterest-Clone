@@ -162,7 +162,7 @@ class Home extends Component {
     if (e.target.type === 'submit') return;
     this.setState({
       displayPinZoom: true,
-      imageInfo: [currentImg, this.imageStatus(currentImg)],
+      imageInfo: [currentImg, this.imageStatus(currentImg), e.pageY - e.clientY],
     });
   }
 
