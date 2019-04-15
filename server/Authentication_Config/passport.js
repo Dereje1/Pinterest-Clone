@@ -31,14 +31,7 @@ const configMain = (passport) => {
   // =========================================================================
   // TWITTER =================================================================
   // =========================================================================
-  passport.use(new TwitterStrategy({
-
-    consumerKey: configAuth.twitterAuth.consumerKey,
-    consumerSecret: configAuth.twitterAuth.consumerSecret,
-    callbackURL: configAuth.twitterAuth.callbackURL,
-
-  },
-  ((token, tokenSecret, profile, done) => {
+  passport.use(new TwitterStrategy(configAuth.twitterAuth, ((token, tokenSecret, profile, done) => {
     // make the code asynchronous
     // User.findOne won't fire until we have all our data back from Twitter
     process.nextTick(() => {
@@ -52,14 +45,16 @@ const configMain = (passport) => {
           return done(null, user); // user found, return that user
         }
         // if there is no user, create them
-        const newUser = new User();
-
+        const { id, username, displayName } = profile;
         // set all of the user data that we need
-        newUser.twitter.id = profile.id;
-        newUser.twitter.token = token;
-        newUser.twitter.username = profile.username;
-        newUser.twitter.displayName = profile.displayName;
-
+        const newUser = new User({
+          twitter: {
+            id,
+            token,
+            username,
+            displayName,
+          },
+        });
         // save our user into the database
         newUser.save((saveErr) => {
           if (saveErr) throw saveErr;
