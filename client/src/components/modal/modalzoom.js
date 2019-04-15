@@ -1,7 +1,6 @@
 // displays pin zoom modal
 import React, { Component } from 'react';
 import { Modal } from 'react-bootstrap';
-import Masonry from 'react-masonry-component';
 import PropTypes from 'prop-types';
 import './modal.scss';
 
@@ -12,6 +11,7 @@ class PinZoom extends Component {
     // initialize modal show state to false
     this.state = {
       show: false,
+      styles: { width: '80%', visibility: 'hidden' },
     };
   }
 
@@ -35,7 +35,28 @@ class PinZoom extends Component {
     const { reset } = this.props;
     this.setState({
       show: false,
+      styles: { width: '80%', visibility: 'hidden' },
     }, () => reset());
+  }
+
+  handleImage = (i) => {
+    const { width, height } = i.target;
+    const { innerWidth, innerHeight } = window;
+    const ans = (width / height) / (innerWidth / innerHeight);
+    let styles;
+    if (ans < 1.3) {
+      styles = {
+        width: `${Math.floor(ans * 70)}%`,
+        visibility: 'visible',
+      };
+    } else {
+      styles = {
+        width: '100%',
+        visibility: 'visible',
+      };
+    }
+
+    this.setState({ styles });
   }
 
   open() {
@@ -44,11 +65,12 @@ class PinZoom extends Component {
     });
   }
 
+
   render() {
     // use total pins to display how many have saved image
     // components brings in as prop zoominfo etire object containing pin information
     const { zoomInfo } = this.props;
-    const { show } = this.state;
+    const { show, styles } = this.state;
     if (!zoomInfo.length) return null;
     const pinInformation = zoomInfo[0];
     const buttonInformation = zoomInfo[1];
@@ -60,6 +82,8 @@ class PinZoom extends Component {
         onHide={this.close}
         container={this}
         aria-labelledby="contained-modal-title"
+        dialogClassName="testmodal"
+        style={styles}
       >
         <Modal.Header closeButton>
           <Modal.Title id="contained-modal-title-zoom">
@@ -69,9 +93,7 @@ class PinZoom extends Component {
         </Modal.Header>
         <Modal.Body>
           <div id="zoomarea">
-            <Masonry>
-              <img alt="" className="pinZoom" src={pinInformation.imgLink} />
-            </Masonry>
+            <img alt="" className="pinZoom" src={pinInformation.imgLink} onLoad={this.handleImage} />
           </div>
         </Modal.Body>
         <Modal.Footer id="zoomfooter">
