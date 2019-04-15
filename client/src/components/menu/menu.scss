@@ -35,4 +35,8 @@
         color: #b20e0e;
       }
     }
+    @media screen and (max-width: 500px){
+      flex-direction: column;
+      height: auto;
+    }
   }
