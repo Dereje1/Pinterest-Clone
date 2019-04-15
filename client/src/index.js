@@ -3,7 +3,7 @@
 // redux modules
 import { applyMiddleware, createStore } from 'redux';
 // eslint-disable-next-line import/no-extraneous-dependencies
-import logger from 'redux-logger';
+// import logger from 'redux-logger';
 import thunk from 'redux-thunk';
 // react modules
 import React from 'react';
@@ -21,7 +21,7 @@ import reducers from './reducers/index';
 import './index.scss';
 // use logger for debugging only
 // const middleware = applyMiddleware(thunk,logger)
-const middleware = applyMiddleware(thunk, logger);
+const middleware = applyMiddleware(thunk);
 const store = createStore(reducers, middleware);
 
 // decalre all routes of application below
