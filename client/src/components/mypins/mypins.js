@@ -71,6 +71,7 @@ class Mypins extends Component {
         >
           {'Delete'}
         </button>,
+        e.pageY - e.clientY,
       ],
     });
   }

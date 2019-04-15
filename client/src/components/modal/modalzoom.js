@@ -10,9 +10,14 @@ class PinZoom extends Component {
     // initialize modal show state to false
     this.state = {
       show: false,
+      firstShow: false,
       imgStyle: { width: '90%', visibility: 'hidden' },
       parentDivStyle: { top: 80 },
     };
+  }
+
+  componentDidMount() {
+    window.addEventListener('click', this.outsideClick);
   }
 
   componentDidUpdate(prevProps) {
@@ -20,6 +25,7 @@ class PinZoom extends Component {
     if ((prevProps.message === false) && (message === true)) {
       this.setState({
         show: true,
+        firstShow: true,
         parentDivStyle: { top: zoomInfo[2] + 80 },
       });
     }
@@ -28,6 +34,20 @@ class PinZoom extends Component {
         show: false,
       });
     }
+  }
+
+  componentWillUnmount() {
+    window.removeEventListener('click', this.outsideClick);
+  }
+
+  outsideClick = (e) => {
+    const { show, firstShow } = this.state;
+    const closestElement = e.target.closest('.zoom');
+    if (!closestElement && firstShow) {
+      this.setState({ firstShow: false });
+      return;
+    }
+    if (!closestElement && show) this.close();
   }
 
   close = () => {
