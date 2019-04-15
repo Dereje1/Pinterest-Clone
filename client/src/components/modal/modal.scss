@@ -1,123 +1,22 @@
-.modal{
-    
-    margin: auto;
-    .testmodal{
-      width:auto;
-    }
-    .close{
-      font-size: 42px;
-    }
-    #contained-modal-title{
-      text-align: center;
-      font-weight: bold;
-      font-size: 24px;
-      color: #555;
-      font-family: "Helvetica";
-    }
-    #addpin{
-      width:100%;
-      display: -webkit-box;
-      display: -ms-flexbox;
-      display: flex;
-      -webkit-box-orient: horizontal;
-      -webkit-box-direction: normal;
-          -ms-flex-direction: row;
-              flex-direction: row;
-      #picdisplay{
-        width:100%;
-        border-radius: 5px;
-        background:#eaebed;
-        .pinTest{
-          width:100%;
-          border-radius: 5px;
-        }
-      }
-      #formarea{
-        width:50%;
-        padding-left: 5%;
-        display: -webkit-box;
-        display: -ms-flexbox;
-        display: flex;
-        -webkit-box-orient: vertical;
-        -webkit-box-direction: normal;
-            -ms-flex-direction: column;
-                flex-direction: column;
-        #textdesc{
-          width:90%;
-          height:15%;
-          resize: none;
-          padding:10px;
-          border:none;
-          border-radius: 5px;
-          background: #eaebed;
-          margin-bottom: 10px;
-        }
-        #textlink{
-          width:90%;
-          height:7%;
-          resize: none;
-          padding:10px;
-          border:none;
-          border-radius: 5px;
-          background: #eaebed;
-        }
-      }
-    }
-    .btn-danger{
-      width:100%;
-      font-weight: bold;
-      font-size: 30px;
-    }
-    #contained-modal-title-zoom{
-      display:-webkit-box;
-      display:-ms-flexbox;
-      display:flex;
-      flex-direction: column;
-      -ms-flex-pack: distribute;
-          justify-content: space-around;
-      -ms-flex-wrap: wrap;
-          flex-wrap: wrap;
-      font-weight: bold;
-      
-      color: #555;
-      font-family: "Helvetica";
-      #zoomdesc{
-        font-size: 3rem;
-        font-family: 'Berkshire Swash', cursive;
-      }
-      #zoomowner{
-        font-size: 1.5rem;
-        font-family:'Spectral SC', serif;
-        color: #b20e0e;
-      }
-    }
-    #zoomarea{
-      width: 100%;
-      .pinZoom{
-        width:100%;
-        border-radius: 5px;
-      }
-    }
-    #zoomfooter{
-      display:-webkit-box;
-      display:-ms-flexbox;
-      display:flex;
-      justify-content: space-between;
-      align-items: center;
-      #zoomtack{
-        font-size: 4rem;
-        font-weight: 700;
-      }
-      .actionbutton{
-        width:30%;
-        height:50px;
-        background-color: #a80b0b;
-        color: white;
-        font-size: 2rem;
-        font-weight: 700;
-        border-radius: .5rem;
-        border: none;
-        cursor: pointer;
-      }
-    }
+.zoom{
+  width: 50%;
+  height: auto;
+  position: absolute;
+  top: 80;
+  left: 0;
+  right: 0;
+  margin-left: auto;
+  margin-right: auto;
+  background: white;
+  overflow: auto;
+  &.show{
+    display: flex;
+    flex-direction: column;
   }
+  &.hide{
+    display: none;
+  }
+  .pinzoom{
+    width:100%
+  }
+}

@@ -1,5 +1,6 @@
 // displays pin zoom modal
 import React, { Component } from 'react';
+import { Modal } from 'react-bootstrap';
 import PropTypes from 'prop-types';
 import './modal.scss';
 
@@ -76,29 +77,33 @@ class PinZoom extends Component {
 
     const totalPins = (pinInformation.savedBy) ? pinInformation.savedBy.length : 0;
     return (
-      <div
-        className={show ? 'zoom show' : 'zoom hide'}
+      <Modal
+        show={show}
+        onHide={this.close}
+        container={this}
+        aria-labelledby="contained-modal-title"
+        dialogClassName="testmodal"
+        style={styles}
       >
-        <div className="header">
-          <span id="zoomtitle">
+        <Modal.Header closeButton>
+          <Modal.Title id="contained-modal-title-zoom">
             <div id="zoomdesc">{pinInformation.imgDescription}</div>
             <div id="zoomowner">{`Linked By: ${pinInformation.owner}`}</div>
-          </span>
-          <button type="submit" onClick={this.close}>Close</button>
-        </div>
-        <div className="content">
+          </Modal.Title>
+        </Modal.Header>
+        <Modal.Body>
           <div id="zoomarea">
-            <img alt="" className="pinzoom" src={pinInformation.imgLink} onLoad={this.handleImage} />
+            <img alt="" className="pinZoom" src={pinInformation.imgLink} onLoad={this.handleImage} />
           </div>
-        </div>
-        <div className="footer">
+        </Modal.Body>
+        <Modal.Footer id="zoomfooter">
           <span id="zoomtack">
             <i className="fa fa-thumb-tack" aria-hidden="true" />
             {`  ${totalPins}`}
           </span>
           {buttonInformation}
-        </div>
-      </div>
+        </Modal.Footer>
+      </Modal>
     );
   }
 
