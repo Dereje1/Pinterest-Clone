@@ -1,13 +1,17 @@
 #mainframe{
     /*border: 3px solid black;*/
     margin-top: 5px;
-    margin-left: 20px;
-    margin-right: 20px;
     padding: 50px;
+    margin-left: auto;
+    margin-right: auto;
+    @media screen and (max-width: 500px){
+      padding-left:0px;
+      padding-right:0px;
+    }
     .image-box{
       width:400px;
       @media screen and (max-width: 500px){
-        width:100%;
+        width:175px;
       }
       margin:0px;
       padding-top: 20px;
@@ -15,6 +19,7 @@
       border-radius: 6px;
       background: #eae8ea;
       visibility: hidden;
+      outline: none;
       &:hover{
         visibility: visible;
       }
@@ -47,7 +52,7 @@
         cursor: pointer;
         @media screen and (max-width: 500px){
           font-size: 10px;
-          width:25%;
+          width:30%;
           right:20px;
           height:30px;
           border-radius: 3px;
@@ -63,7 +68,7 @@
         text-transform: full-width;
         @media screen and (max-width: 500px){
           font-size: 1rem;
-          bottom: 30px;
+          bottom: 15px;
         }
       }
       .description{
@@ -72,8 +77,9 @@
         color: #555;
         font-family: 'Berkshire Swash', cursive;
         @media screen and (max-width: 500px){
-          font-size: 2rem;
+          font-size: 1rem;
         }
       }
     }
   }
+

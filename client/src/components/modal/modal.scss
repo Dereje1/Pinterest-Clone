@@ -1,5 +1,4 @@
 .zoom{
-  width: 90%;
   height: auto;
   position: absolute;
   top: 0;
@@ -7,20 +6,118 @@
   right: 0;
   margin-left: auto;
   margin-right: auto;
+  padding-left: 2%;
+  padding-right: 2%;
   background: white;
   overflow: auto;
-  border: 2px solid black;
-  padding-left: 5%;
-  padding-right: 5%;
-  &.show{
-    display: flex;
+  box-shadow: 0 5px 15px rgba(0,0,0,.5);
+  box-sizing: border-box;
+  border: 1px solid rgba(0,0,0,.2);
+  border-radius: 6px;
+  &.cshow{
+    display: inline-block;
     flex-direction: column;
+    animation-name: modalshow;
+    animation-duration: 1s;
+    animation-timing-function: cubic-bezier(0.075, 0.82, 0.165, 1);
+    animation-iteration-count: 1;
   }
-  &.hide{
-    display: none;
+  &.chide{
+    display: block;
+    visibility: hidden;
+    animation-name: modalhide;
+    animation-duration: 1s;
+    animation-timing-function: cubic-bezier(0.075, 0.82, 0.165, 1);
+    animation-iteration-count: .5;
   }
   .pinzoom{
-    display: block;
     margin: auto;
+    width: 100%;
+  }
+  .header{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-weight: bold;
+    color: #555;
+    font-family: "Helvetica";
+    #zoomdesc{
+      font-size: 3rem;
+      font-family: 'Berkshire Swash', cursive;
+    }
+    #zoomowner{
+      font-size: 1.5rem;
+      font-family:'Spectral SC', serif;
+      color: #b20e0e;
+    }
+    i{
+      font-size: 3rem;
+      cursor: pointer;
+    }
+    @media screen and (max-width: 500px){
+      #zoomdesc{
+        font-size: 1.5rem;
+      }
+      #zoomowner{
+        font-size: .75rem;
+      }
+      i{
+        font-size: 1.5rem;
+      }
+    }
+  }
+  .footer{
+    display:-webkit-box;
+    display:-ms-flexbox;
+    display:flex;
+    justify-content: space-between;
+    align-items: center;
+    #zoomtack{
+      font-size: 4rem;
+      font-weight: 700;
+      flex-grow: 1;
+    }
+    .actionbutton{
+      flex-grow: 3;
+      height:50px;
+      background-color: #a80b0b;
+      color: white;
+      font-size: 2rem;
+      font-weight: 700;
+      border-radius: .5rem;
+      border: none;
+      cursor: pointer;
+    }
+    @media screen and (max-width: 500px){
+      #zoomtack{
+        font-size: 2rem;
+      }
+      .actionbutton{
+        height:25px;
+        font-size: 1rem;
+        border-radius: .25rem;
+      }
+    }
+  }
+}
+
+@keyframes modalshow {
+  0%{
+    opacity: 0;
+    transform: scale(0)
+  }
+  100%{
+    opacity: 1;
+    transform: scale(1)
+  }
+}
+
+@keyframes modalhide {
+  0%{
+    transform: scale(1) rotate(0deg);
+    visibility: visible;
+  }
+  100%{
+    transform: scale(0) rotate(360deg);
   }
 }
