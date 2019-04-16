@@ -159,7 +159,9 @@ class Home extends Component {
   }
 
   pinEnlarge(e, currentImg) { // calls zoom in modal for the clicked picture
+    const { displayPinZoom } = this.state;
     if (e.target.type === 'submit') return;
+    if (displayPinZoom) return;
     this.setState({
       displayPinZoom: true,
       imageInfo: [currentImg, this.imageStatus(currentImg), e.pageY - e.clientY],
@@ -181,12 +183,12 @@ class Home extends Component {
             >
               {this.buildImages()}
             </Masonry>
-            <PinZoom
-              message={displayPinZoom}
-              reset={() => this.setState({ displayPinZoom: false })}
-              zoomInfo={imageInfo}
-            />
           </div>
+          <PinZoom
+            message={displayPinZoom}
+            reset={() => this.setState({ displayPinZoom: false })}
+            zoomInfo={imageInfo}
+          />
         </React.Fragment>
       );
     }

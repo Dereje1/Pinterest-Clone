@@ -59,7 +59,9 @@ class Mypins extends Component {
   }
 
   pinEnlarge(e, currentImg) { // display pin zoom modal and passes image info
+    const { displayPinZoom } = this.state;
     if (e.target.type === 'submit') return;
+    if (displayPinZoom) return;
     this.setState({
       displayPinZoom: true,
       imageInfo: [currentImg,
