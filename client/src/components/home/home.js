@@ -110,7 +110,7 @@ class Home extends Component {
       return (
         <button
           type="submit"
-          className="actionbutton"
+          className="actionbutton save"
           onClick={() => this.savePic(element)}
         >
           <i className="fa fa-thumb-tack" aria-hidden="true" />
@@ -122,7 +122,7 @@ class Home extends Component {
     return (
       <button
         type="submit"
-        className="actionbutton"
+        className="actionbutton delete"
         onClick={() => this.deletePic(element)}
       >
         {'Delete'}

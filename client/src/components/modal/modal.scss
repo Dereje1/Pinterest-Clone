@@ -50,6 +50,14 @@
       font-family:'Spectral SC', serif;
       color: #b20e0e;
     }
+    #zoomtack{
+      font-size: 4rem;
+      font-weight: 700;
+      cursor: help;
+      >i{
+        cursor: help;
+      }
+    }
     i{
       font-size: 3rem;
       cursor: pointer;
@@ -61,37 +69,29 @@
       #zoomowner{
         font-size: .75rem;
       }
+      #zoomtack{
+        font-size: 2rem;
+      }
       i{
         font-size: 1.5rem;
       }
     }
   }
   .footer{
-    display:-webkit-box;
-    display:-ms-flexbox;
-    display:flex;
-    justify-content: space-between;
-    align-items: center;
-    #zoomtack{
-      font-size: 4rem;
-      font-weight: 700;
-      flex-grow: 1;
-    }
+    margin-top: 1%;
+    margin-bottom: 1%;
     .actionbutton{
-      flex-grow: 3;
       height:50px;
-      background-color: #a80b0b;
+      width: 100%;
       color: white;
       font-size: 2rem;
       font-weight: 700;
       border-radius: .5rem;
       border: none;
       cursor: pointer;
+      background-color: #b20e0e;
     }
     @media screen and (max-width: 500px){
-      #zoomtack{
-        font-size: 2rem;
-      }
       .actionbutton{
         height:25px;
         font-size: 1rem;
