@@ -34,6 +34,7 @@ class PinZoom extends Component {
       });
     }
     if ((prevProps.message === true) && (message === false)) {
+      document.body.classList.remove('overlay');
       this.setState({
         show: false,
       });

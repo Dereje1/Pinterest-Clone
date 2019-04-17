@@ -37,11 +37,11 @@ class Home extends Component {
     could become reactivated in a future time
     still keep in database records until owner deletes
     */
-    console.log('Broken Image Found', id);
     const { pinList } = this.state;
     let pinListCopy = JSON.parse(JSON.stringify(pinList));
     const indexOfDeletion = pinListCopy.findIndex(p => p._id === id);
     // update copy -->no mutation but do not delete from db
+    console.log('Broken Image Found - ', pinListCopy[indexOfDeletion].imgDescription);
     pinListCopy = [...pinListCopy.slice(0, indexOfDeletion),
       ...pinListCopy.slice(indexOfDeletion + 1)];
     this.setState({
