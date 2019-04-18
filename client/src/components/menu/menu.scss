@@ -1,33 +1,97 @@
-.navbar-default .navbar-nav>li>a{
-    text-decoration: none;
+  .menu{
+    position: fixed;
+    display: flex;
+    top: 0;
+    left: 0;
+    width: 100%;
+    background: #f8f8f8;
+    justify-content: space-between;
+    align-items: center;
+    padding-left: 5%;
+    padding-right: 5%;
     font-family: "Helvetica Neue",Helvetica,Arial,sans-serif;
     font-size: 1.7rem;
     font-weight: bold;
     color: #5e6870;
-  }
-  .navbar-default .navbar-nav>.active>a{
-    font-size: 16px;
-    font-weight: 700;
-  }
-  .navbar-default .navbar-brand{
-      font-size: 30px;
-      color:#b20e0e;
+    z-index: 1000;
+    .brand{
+      >a{
+        text-decoration: none;
+        font-size: 30px;
+        color:#b20e0e;
+      }
+    }
+    .items{
+      height: 50px;
+      >a{
+        color: #5e6870;
+        text-decoration: none;
+        line-height: 50px;
+      }
+      &.extended{
+        width: 400px;
+        display: flex;
+        justify-content: space-between;
+        a{
+          height: 100%;
+          width: 100%;
+          text-align: center;
+          line-height: 50px;
+          text-decoration: none;
+          font-family: "Helvetica Neue",Helvetica,Arial,sans-serif;
+          font-size: 1.7rem;
+          font-weight: bold;
+          color: #5e6870;
+          &.active{
+            background: #e5e4e4;
+            color: #b20e0e;
+          }
+        }
+      }
+      &.collapsed{
+        &.burger{
+          >i{
+            padding-top: 4px;
+            font-size: 4rem;
+            cursor: pointer;
+          }
+        }
+      }
+    }
   }
 
-  .loggedInMenu{
-    width: 400px;
-    height: 50px;
+  .responsivemenu{
+    position: fixed;
+    z-index: 1500;
+    top: -350;
     display: flex;
+    flex-direction: column;
     justify-content: space-between;
     align-items: center;
+    width: 100%;
+    background: #f8f8f8;
+    &.drop{
+      top: 50px;
+      animation-name: dropmenu;
+      animation-duration: 1s;
+      animation-timing-function: cubic-bezier(0.075, 0.82, 0.165, 1);
+      animation-iteration-count: 1;
+    }
+    &.lift{
+      top: -350px;
+      animation-name: liftmenu;
+      animation-duration: .75s;
+      animation-timing-function: ease-out;
+      animation-iteration-count: 1;
+    }
     a{
-      width:100%;
       height: 100%;
+      width: 100%;
       text-align: center;
-      line-height: 50px;
+      line-height: 100px;
       text-decoration: none;
       font-family: "Helvetica Neue",Helvetica,Arial,sans-serif;
-      font-size: 1.7rem;
+      font-size: 4rem;
       font-weight: bold;
       color: #5e6870;
       &.active{
@@ -35,8 +99,22 @@
         color: #b20e0e;
       }
     }
-    @media screen and (max-width: 500px){
-      flex-direction: column;
-      height: auto;
+  }
+
+  @keyframes dropmenu {
+    0%{
+      top: -350;
+    }
+    100%{
+      top: 50;
+    }
+  }
+
+  @keyframes liftmenu {
+    0%{
+      top: 50;
+    }
+    100%{
+      top: -350;
     }
   }

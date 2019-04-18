@@ -1,58 +1,114 @@
 /* eslint-disable semi */
 // menu bar
 import React from 'react';
-import { Nav, NavItem, Navbar } from 'react-bootstrap';
 import PropTypes from 'prop-types';
 import { NavLink } from 'react-router-dom';
 import './menu.scss';
 
+class Menu extends React.Component {
 
-const Menu = ({ user }) => {
-  if (!user.user.authenticated) { // for non authenticated users
+  constructor(props) {
+    super(props);
+    this.state = {
+      menuIsCollapsed: window.innerWidth < 600,
+      collapseToggle: false,
+    };
+  }
+
+  componentDidMount() {
+    console.log('Menu just Mounted')
+    this.setState(
+      {
+        menuIsCollapsed: window.innerWidth < 600,
+        collapseToggle: false,
+      },
+    );
+  }
+
+  componentDidUpdate(prevProps) {
+    const { message } = this.props;
+    const { collapseToggle } = this.state;
+    if ((prevProps.message === false) && (message === true) && (collapseToggle)) {
+      this.setState({ collapseToggle: !collapseToggle })
+    }
+    return null;
+  }
+
+  toggleCollapse = () => {
+    const { collapseToggle } = this.state;
+    this.setState({ collapseToggle: !collapseToggle })
+  }
+
+  collapsedMenu = () => (
+    <div className="items collapsed burger">
+      <i
+        className="fa fa-bars"
+        aria-hidden="true"
+        onClick={this.toggleCollapse}
+      />
+    </div>
+  )
+
+  render() {
+    const { menuIsCollapsed, collapseToggle } = this.state;
+    const { user } = this.props;
+    if (!user.user.authenticated) { // for non authenticated users
+      return (
+        <div className="menu">
+          <div className="header">
+            <div className="brand">
+              <a href="/">
+                <i className="fa fa-pinterest" aria-hidden="true" />
+                {' Clone'}
+              </a>
+            </div>
+          </div>
+          <div className="items">
+            <a href="/auth/twitter">Login with Twitter</a>
+          </div>
+        </div>
+      )
+    }
+    // for twitter authenticated users
     return (
-      <Navbar fixedTop>
-        <Navbar.Header>
-          <Navbar.Brand>
-            <a href="/">
-              <i className="fa fa-pinterest" aria-hidden="true" />
-              {' Clone'}
-            </a>
-          </Navbar.Brand>
-          <Navbar.Toggle />
-        </Navbar.Header>
-        <Navbar.Collapse>
-          <Nav pullRight>
-            <NavItem eventKey={5} href="/auth/twitter">Login with Twitter</NavItem>
-          </Nav>
-        </Navbar.Collapse>
-      </Navbar>
+      <React.Fragment>
+        <div className="menu">
+          <div className="header">
+            <div className="brand">
+              <a href="/">
+                <i className="fa fa-pinterest" aria-hidden="true" />
+                {' Clone'}
+              </a>
+            </div>
+          </div>
+          {
+            !menuIsCollapsed
+              ? (
+                <div className="items extended">
+                  <NavLink exact to="/">Home</NavLink>
+                  <NavLink exact to="/pins">My Pins</NavLink>
+                  <NavLink to="/another" onClick={() => window.location.assign('auth/logout')}>Logout</NavLink>
+                </div>
+              )
+              : this.collapsedMenu()
+          }
+        </div>
+        {
+          menuIsCollapsed
+            ? (
+              <div className={collapseToggle ? 'responsivemenu drop' : 'responsivemenu lift'}>
+                <NavLink exact to="/" onClick={this.toggleCollapse}>Home</NavLink>
+                <NavLink exact to="/pins" onClick={this.toggleCollapse}>My Pins</NavLink>
+                <NavLink to="/another" onClick={() => window.location.assign('auth/logout')}>Logout</NavLink>
+              </div>
+            )
+            : null
+        }
+      </React.Fragment>
     )
   }
-  // for twitter authenticated users
-  return (
-    <Navbar fixedTop>
-      <Navbar.Header>
-        <Navbar.Brand>
-          <a href="/">
-            <i className="fa fa-pinterest" aria-hidden="true" />
-            {' Clone'}
-          </a>
-        </Navbar.Brand>
-        <Navbar.Toggle />
-      </Navbar.Header>
-      <Navbar.Collapse>
-        <Nav pullRight className="loggedinmenu">
-          <React.Fragment>
-            <NavLink exact to="/">Home</NavLink>
-            <NavLink exact to="/pins">My Pins</NavLink>
-            <NavLink to="/another" onClick={() => window.location.assign('auth/logout')}>Logout</NavLink>
-          </React.Fragment>
-        </Nav>
-      </Navbar.Collapse>
-    </Navbar>
-  )
-}
 
+}
 
 export default Menu;
 
@@ -62,4 +118,5 @@ Menu.defaultProps = {
 
 Menu.propTypes = {
   user: PropTypes.shape(PropTypes.shape),
+  message: PropTypes.bool.isRequired,
 };

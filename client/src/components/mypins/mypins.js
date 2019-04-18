@@ -159,7 +159,7 @@ class Mypins extends Component {
     if (!user.user.authenticated) window.location.assign('/');
     return (
       <React.Fragment>
-        <Menu user={user} />
+        <Menu user={user} message={displayPinZoom || displayPinCreate} />
         <div>
           <div id="mypinframe">
             <h3 id="username">{user.user.displayname}</h3>

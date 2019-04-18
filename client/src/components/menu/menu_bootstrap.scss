@@ -1,0 +1,42 @@
+.navbar-default .navbar-nav>li>a{
+    text-decoration: none;
+    font-family: "Helvetica Neue",Helvetica,Arial,sans-serif;
+    font-size: 1.7rem;
+    font-weight: bold;
+    color: #5e6870;
+  }
+  .navbar-default .navbar-nav>.active>a{
+    font-size: 16px;
+    font-weight: 700;
+  }
+  .navbar-default .navbar-brand{
+      font-size: 30px;
+      color:#b20e0e;
+  }
+
+  .loggedInMenu{
+    width: 400px;
+    height: 50px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    a{
+      width:100%;
+      height: 100%;
+      text-align: center;
+      line-height: 50px;
+      text-decoration: none;
+      font-family: "Helvetica Neue",Helvetica,Arial,sans-serif;
+      font-size: 1.7rem;
+      font-weight: bold;
+      color: #5e6870;
+      &.active{
+        background: #e5e4e4;
+        color: #b20e0e;
+      }
+    }
+    @media screen and (max-width: 500px){
+      flex-direction: column;
+      height: auto;
+    }
+  }

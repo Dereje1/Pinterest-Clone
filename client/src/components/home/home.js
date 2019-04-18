@@ -176,7 +176,7 @@ class Home extends Component {
     if (userStatus) {
       return (
         <React.Fragment>
-          <Menu user={user} />
+          <Menu user={user} message={displayPinZoom} />
           <div id="mainframe">
             <Masonry
               onImagesLoaded={() => this.layoutComplete()}
