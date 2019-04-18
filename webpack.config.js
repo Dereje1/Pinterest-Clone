@@ -23,6 +23,7 @@ const configMain = {
         use: [
           'style-loader',
           'css-loader',
+          'postcss-loader',
           'sass-loader',
         ],
       },
@@ -35,7 +36,7 @@ const configMain = {
   plugins: [
     new HtmlWebPackPlugin({
       title: 'React Template',
-      template: './client/public/template.html',
+      template: './client/template.html',
     }),
   ],
   devServer: {

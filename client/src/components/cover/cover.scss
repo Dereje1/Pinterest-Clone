@@ -7,14 +7,10 @@
     left: -50%;
     z-index: -1;
     background: url('./backscreen.png');
-    -webkit-animation-name: bkimage;
-            animation-name: bkimage;
-    -webkit-animation-duration: 33s;
-            animation-duration: 33s;
-    -webkit-animation-timing-function: linear;
-            animation-timing-function: linear;
-    -webkit-animation-iteration-count: 1;
-            animation-iteration-count: 1;
+    animation-name: bkimage;
+    animation-duration: 33s;
+    animation-timing-function: linear;
+    animation-iteration-count: 1;
   }
   #cover{
     position: relative;
@@ -136,14 +132,6 @@
     }
   }
 
-  @-webkit-keyframes bkimage {
-    0%{
-       transform: translateY(350px);
-    }
-    100%{
-       transform: translateY(0px);
-    }
-  }
   
   @keyframes bkimage {
     0%{
