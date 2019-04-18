@@ -55,13 +55,11 @@ class Menu extends React.Component {
     if (!user.user.authenticated) { // for non authenticated users
       return (
         <div className="menu">
-          <div className="header">
-            <div className="brand">
-              <a href="/">
-                <i className="fa fa-pinterest" aria-hidden="true" />
-                {' Clone'}
-              </a>
-            </div>
+          <div className="brand">
+            <a href="/">
+              <i className="fa fa-pinterest" aria-hidden="true" />
+              {' Clone'}
+            </a>
           </div>
           <div className="items">
             <a href="/auth/twitter">Login with Twitter</a>
@@ -73,13 +71,11 @@ class Menu extends React.Component {
     return (
       <React.Fragment>
         <div className="menu">
-          <div className="header">
-            <div className="brand">
-              <a href="/">
-                <i className="fa fa-pinterest" aria-hidden="true" />
-                {' Clone'}
-              </a>
-            </div>
+          <div className="brand">
+            <a href="/">
+              <i className="fa fa-pinterest" aria-hidden="true" />
+              {' Clone'}
+            </a>
           </div>
           {
             !menuIsCollapsed

@@ -40,9 +40,9 @@
       font-weight: bold;
       color: #555;
       font-family: "Helvetica";
-      font-size: 2rem;
+      font-size: 1rem;
       i{
-        font-size: 3rem;
+        font-size: 1.5rem;
         cursor: pointer;
       }
     }
@@ -95,9 +95,9 @@
         margin-top: 1%;
         background-color: #a80b0b;
         color: white;
-        font-size: 2rem;
+        font-size: 1rem;
         font-weight: 700;
-        border-radius: .5rem;
+        border-radius: .25rem;
         border: none;
         cursor: pointer;
         &:disabled{

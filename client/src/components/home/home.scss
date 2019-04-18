@@ -60,24 +60,25 @@
       }
       .owner{
         position: absolute;
-        bottom: 35px;
+        bottom: 40px;
         left:25px;
         color: white;
-        font-size: 1.5rem;
+        font-size: 1rem;
         font-weight: 700;
         text-transform: full-width;
         @media screen and (max-width: 500px){
-          font-size: 1rem;
-          bottom: 15px;
+          font-size: .5rem;
+          bottom: 25px;
         }
       }
       .description{
         font-weight: bold;
-        font-size: 24px;
+        font-size: 1.5rem;
+        text-align: center;
         color: #555;
         font-family: 'Berkshire Swash', cursive;
         @media screen and (max-width: 500px){
-          font-size: 1rem;
+          font-size: .75rem;
         }
       }
     }

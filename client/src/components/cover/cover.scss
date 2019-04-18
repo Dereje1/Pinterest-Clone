@@ -31,58 +31,54 @@
       left: 50%;
       top: 50%;
       position: absolute;
-      -webkit-transform: translateX(-50%);
-              transform: translateX(-50%);
-      display: -webkit-box;
-      display: -ms-flexbox;
+      transform: translateX(-50%);
       display: flex;
-      -webkit-box-orient: vertical;
-      -webkit-box-direction: normal;
-          -ms-flex-direction: column;
-              flex-direction: column;
-      -ms-flex-pack: distribute;
-          justify-content: space-around;
-      -webkit-box-align: center;
-          -ms-flex-align: center;
-              align-items: center;
+      flex-direction: column;
+      justify-content: space-around;
+      align-items: center;
       background: white;
       border-radius: 10px;
       #logo{
-        display: -webkit-box;
-        display: -ms-flexbox;
         display: flex;
-        -webkit-box-pack: center;
-            -ms-flex-pack: center;
-                justify-content: center;
+        justify-content: center;
         font-size: 40px;
         color:#b20e0e;
       }
       #welcome{
+            margin-top: 20px;
             font-family: 'Helvetica Neue', Helvetica, 'ヒラギノ角ゴ Pro W3', 'Hiragino Kaku Gothic Pro', メイリオ, Meiryo, 'ＭＳ Ｐゴシック', arial, sans-serif;
             font-size: 28px;
             font-weight: bold;
             color:#555;
       }
       #subheader{
+        margin-top: 10px;
+        margin-bottom: 10px;
         font-weight: bold;
         color: #ccc;
-        font-size: 18px;
+        font-size: 24px;
         text-align: center;
       }
       #disclaimer{
+        margin-top: 30px;
         font-weight: bold;
-        color: red;
-        font-size: 14px;
+        color: #ee2323;
+        font-size: 18px;
         text-align: center;
         margin-top: 10px;
       }
       #gitsource{
-        margin-top: 10px;
+        margin-top: 20px;
         text-align: center;
         text-decoration: none;
         text-transform: full-width;
         font-weight: 900;
         font-size: 18px;
+        >a{
+          text-decoration: none;
+          color: #2c5ca1;
+          font-size: 24px;
+        }
         a:hover{
           text-decoration: none;
         }
@@ -93,27 +89,17 @@
       #loginbutton{
         border: 0px;
         height: 40px;
-        display: -webkit-box;
-        display: -ms-flexbox;
         display: flex;
-        -webkit-box-pack: justify;
-            -ms-flex-pack: justify;
-                justify-content: space-between;
-        -webkit-box-align: center;
-            -ms-flex-align: center;
-                align-items: center;
+        justify-content: space-between;
+        align-items: center;
         border-radius: 2px;
-        -webkit-font-smoothing: antialiased;
-        -moz-osx-font-smoothing: grayscale;
         padding: 1px;
         font-size: 15px;
         font-weight: bold;
         outline: none;
-        -webkit-box-shadow: none;
         box-shadow: none;
         cursor: pointer;
         background-clip: padding-box;
-        -webkit-transition: opacity .2s linear;
         transition: opacity .2s linear;
         width: 268px;
         background-color: #4285f4;
@@ -126,27 +112,17 @@
       #guestbutton{
         border: 0px;
         height: 40px;
-        display: -webkit-box;
-        display: -ms-flexbox;
         display: flex;
-        -webkit-box-pack: justify;
-            -ms-flex-pack: justify;
-                justify-content: space-between;
-        -webkit-box-align: center;
-            -ms-flex-align: center;
-                align-items: center;
+        justify-content: space-between;
+        align-items: center;
         border-radius: 2px;
-        -webkit-font-smoothing: antialiased;
-        -moz-osx-font-smoothing: grayscale;
         padding: 1px;
         font-size: 15px;
         font-weight: bold;
         outline: none;
-        -webkit-box-shadow: none;
         box-shadow: none;
         cursor: pointer;
         background-clip: padding-box;
-        -webkit-transition: opacity .2s linear;
         transition: opacity .2s linear;
         width: 268px;
         background-color: #ffb45e;
@@ -162,22 +138,18 @@
 
   @-webkit-keyframes bkimage {
     0%{
-      -webkit-transform: translateY(400px);
        transform: translateY(350px);
     }
     100%{
-      -webkit-transform: translateY(0px);
        transform: translateY(0px);
     }
   }
   
   @keyframes bkimage {
     0%{
-      -webkit-transform: translateY(400px);
        transform: translateY(350px);
     }
     100%{
-      -webkit-transform: translateY(0px);
        transform: translateY(0px);
     }
   }

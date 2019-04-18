@@ -7,14 +7,13 @@
     background: #f8f8f8;
     justify-content: space-between;
     align-items: center;
-    padding-left: 5%;
-    padding-right: 5%;
     font-family: "Helvetica Neue",Helvetica,Arial,sans-serif;
-    font-size: 1.7rem;
+    font-size: .85rem;
     font-weight: bold;
     color: #5e6870;
     z-index: 1000;
     .brand{
+      margin-left: 5%;
       >a{
         text-decoration: none;
         font-size: 30px;
@@ -23,6 +22,7 @@
     }
     .items{
       height: 50px;
+      margin-right: 5%;
       >a{
         color: #5e6870;
         text-decoration: none;
@@ -39,7 +39,7 @@
           line-height: 50px;
           text-decoration: none;
           font-family: "Helvetica Neue",Helvetica,Arial,sans-serif;
-          font-size: 1.7rem;
+          font-size: .85rem;
           font-weight: bold;
           color: #5e6870;
           &.active{
@@ -50,9 +50,10 @@
       }
       &.collapsed{
         &.burger{
+          margin-right: 5%;
           >i{
             padding-top: 4px;
-            font-size: 4rem;
+            font-size: 2rem;
             cursor: pointer;
           }
         }
@@ -91,7 +92,7 @@
       line-height: 100px;
       text-decoration: none;
       font-family: "Helvetica Neue",Helvetica,Arial,sans-serif;
-      font-size: 4rem;
+      font-size: 2rem;
       font-weight: bold;
       color: #5e6870;
       &.active{

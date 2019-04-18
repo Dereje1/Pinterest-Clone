@@ -148,7 +148,7 @@ class Home extends Component {
           src={element.imgLink}
           style={{ visibility: imagesLoaded ? 'visible' : 'hidden' }}
         />
-        <div className="description text-center">
+        <div className="description">
           {element.imgDescription}
         </div>
         {this.imageStatus(element)}

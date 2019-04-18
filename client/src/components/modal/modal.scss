@@ -42,16 +42,16 @@
     color: #555;
     font-family: "Helvetica";
     #zoomdesc{
-      font-size: 3rem;
+      font-size: 1.5rem;
       font-family: 'Berkshire Swash', cursive;
     }
     #zoomowner{
-      font-size: 1.5rem;
+      font-size: .75rem;
       font-family:'Spectral SC', serif;
       color: #b20e0e;
     }
     #zoomtack{
-      font-size: 4rem;
+      font-size: 2rem;
       font-weight: 700;
       cursor: help;
       >i{
@@ -59,21 +59,21 @@
       }
     }
     i{
-      font-size: 3rem;
+      font-size: 1.5rem;
       cursor: pointer;
     }
     @media screen and (max-width: 500px){
       #zoomdesc{
-        font-size: 1.5rem;
-      }
-      #zoomowner{
         font-size: .75rem;
       }
+      #zoomowner{
+        font-size: .5rem;
+      }
       #zoomtack{
-        font-size: 2rem;
+        font-size: 1rem;
       }
       i{
-        font-size: 1.5rem;
+        font-size: .75rem;
       }
     }
   }
@@ -84,9 +84,9 @@
       height:50px;
       width: 100%;
       color: white;
-      font-size: 2rem;
+      font-size: 1rem;
       font-weight: 700;
-      border-radius: .5rem;
+      border-radius: .25rem;
       border: none;
       cursor: pointer;
       background-color: #b20e0e;
@@ -94,8 +94,8 @@
     @media screen and (max-width: 500px){
       .actionbutton{
         height:25px;
-        font-size: 1rem;
-        border-radius: .25rem;
+        font-size: .5rem;
+        border-radius: .125rem;
       }
     }
   }

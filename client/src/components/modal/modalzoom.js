@@ -78,11 +78,9 @@ class PinZoom extends Component {
     this.setState({ parentDivStyle: pcopy });
   }
 
-  pinners = (pinInformation) => {
-    return pinInformation.savedBy.length > 3
-      ? `${pinInformation.savedBy.slice(0, 2).join(', ')} and ${pinInformation.savedBy.length - 3} others`
-      : pinInformation.savedBy.join(', ');
-  }
+  pinners = pinInformation => (pinInformation.savedBy.length > 3
+    ? `${pinInformation.savedBy.slice(0, 2).join(', ')} and ${pinInformation.savedBy.length - 3} others`
+    : pinInformation.savedBy.join(', '))
 
   render() {
     // use total pins to display how many have saved image
