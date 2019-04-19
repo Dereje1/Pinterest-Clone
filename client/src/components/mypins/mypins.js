@@ -8,7 +8,6 @@ import PinCreate from './pincreatemodal';
 import {
   addPin, getPins, deletePin, updatePin,
 } from '../../actions/pinactions'; // pin CRUD
-import Menu from '../menu/menu';
 import PinZoom from '../modal/modalzoom';
 import './mypins.scss';
 
@@ -159,7 +158,6 @@ class Mypins extends Component {
     if (!user.user.authenticated) window.location.assign('/');
     return (
       <React.Fragment>
-        <Menu user={user} message={displayPinZoom || displayPinCreate} />
         <div>
           <div id="mypinframe">
             <h3 id="username">{user.user.displayname}</h3>

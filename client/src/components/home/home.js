@@ -3,9 +3,7 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import Masonry from 'react-masonry-component';
 import PropTypes from 'prop-types';
-
 import { getPins, deletePin, updatePin } from '../../actions/pinactions'; // adds book to db
-import Menu from '../menu/menu';
 import PinZoom from '../modal/modalzoom';
 import './home.scss';
 
@@ -176,7 +174,6 @@ class Home extends Component {
     if (userStatus) {
       return (
         <React.Fragment>
-          <Menu user={user} message={displayPinZoom} />
           <div id="mainframe">
             <Masonry
               onImagesLoaded={() => this.layoutComplete()}
