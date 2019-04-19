@@ -25,6 +25,7 @@ class PinCreate extends Component {
   componentDidUpdate(prevProps) { // compare previous props to current efore showing
     const { message } = this.props;
     if ((prevProps.message === false) && (message === true)) {
+      window.scrollTo(0, 0);
       document.body.classList.add('overlay');
       this.setState({
         show: true,
