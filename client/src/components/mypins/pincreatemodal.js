@@ -1,9 +1,8 @@
 // displays modal that creates pin
 import React, { Component } from 'react';
-import { Button, Modal } from 'react-bootstrap';
-import Masonry from 'react-masonry-component';
 import PropTypes from 'prop-types';
 import imageBroken from './NO-IMAGE.png';
+import './pincreate.scss';
 
 class PinCreate extends Component {
 
@@ -18,11 +17,22 @@ class PinCreate extends Component {
     };
   }
 
+  componentDidMount() {
+    this.setState({ justMounted: true });
+  }
+
+
   componentDidUpdate(prevProps) { // compare previous props to current efore showing
     const { message } = this.props;
     if ((prevProps.message === false) && (message === true)) {
+      window.scrollTo(0, 0);
+      document.body.classList.add('overlay');
       this.setState({
         show: true,
+        description: '',
+        picPreview: imageBroken,
+        saveDisabled: true,
+        justMounted: false,
       });
     }
   }
@@ -30,18 +40,12 @@ class PinCreate extends Component {
   close = () => {
     // note my modified modal now sends a reset callback after closing modalstate which clears
     // the message field, not also to reset pic url to erroneous image png before exit
+    document.body.classList.remove('overlay');
     const { reset } = this.props;
     this.setState({
       show: false,
       picPreview: imageBroken,
     }, () => reset());
-  }
-
-  open = () => {
-    this.setState({
-      show: true,
-      saveDisabled: true,
-    });
   }
 
   picprocess = (e) => { // processes picture on change of text box
@@ -91,53 +95,49 @@ class PinCreate extends Component {
   }
 
   addpin() { // body of modal
-    const { picPreview } = this.state;
+    const { picPreview, description } = this.state;
     return (
-      <div id="addpin">
-        <div id="picdisplay">
-          <Masonry>
-            <img alt="" onError={() => this.invalidImage()} className="pinTest" src={picPreview} />
-          </Masonry>
+      <React.Fragment>
+        <div className="newpinholder">
+          <img alt="newpin" onError={() => this.invalidImage()} className="pinTest" src={picPreview} />
         </div>
-        <div id="formarea">
-          <p>Add a description</p>
+        <div className="formarea">
           <textarea
-            id="textdesc"
+            className="textdesc"
             placeholder="Description..."
             maxLength="28"
             onChange={e => this.discprocess(e)}
+            value={description}
           />
-          <p>Paste Link to Image</p>
           <textarea
-            id="textlink"
+            className="textlink"
             placeholder="http://"
             onChange={e => this.picprocess(e)}
+            value={picPreview === imageBroken ? '' : picPreview}
           />
-
         </div>
-      </div>
+      </React.Fragment>
     );
   }
 
   render() {
-    const { show, saveDisabled } = this.state;
+    const { show, saveDisabled, justMounted } = this.state;
+    if (justMounted) return null;
     return (
-      <Modal
-        show={show}
-        onHide={this.close}
-        container={this}
-        aria-labelledby="contained-modal-title"
+      <div
+        className={show ? 'pincreate cshow' : 'pincreate chide'}
       >
-        <Modal.Header closeButton>
-          <Modal.Title id="contained-modal-title">Create Pin</Modal.Title>
-        </Modal.Header>
-        <Modal.Body>
-          {this.addpin()}
-        </Modal.Body>
-        <Modal.Footer>
-          <Button bsStyle="danger" onClick={() => this.savePic()} disabled={saveDisabled}>Save</Button>
-        </Modal.Footer>
-      </Modal>
+        <div className="header">
+          <span id="pincreatetitle">
+            <div id="pincreatedesc">Create Pin</div>
+          </span>
+          <i className="fa fa-close" onClick={this.close} aria-hidden="true" />
+        </div>
+        {this.addpin()}
+        <div className="footer">
+          <button type="submit" onClick={() => this.savePic()} className="savebutton" disabled={saveDisabled}>Save</button>
+        </div>
+      </div>
     );
   }
 

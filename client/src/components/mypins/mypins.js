@@ -8,7 +8,6 @@ import PinCreate from './pincreatemodal';
 import {
   addPin, getPins, deletePin, updatePin,
 } from '../../actions/pinactions'; // pin CRUD
-import Menu from '../menu/menu';
 import PinZoom from '../modal/modalzoom';
 import './mypins.scss';
 
@@ -59,7 +58,9 @@ class Mypins extends Component {
   }
 
   pinEnlarge(e, currentImg) { // display pin zoom modal and passes image info
+    const { displayPinZoom, displayPinCreate } = this.state;
     if (e.target.type === 'submit') return;
+    if (displayPinZoom || displayPinCreate) return;
     this.setState({
       displayPinZoom: true,
       imageInfo: [currentImg,
@@ -71,6 +72,7 @@ class Mypins extends Component {
         >
           {'Delete'}
         </button>,
+        e.pageY - e.clientY,
       ],
     });
   }
@@ -79,7 +81,8 @@ class Mypins extends Component {
     // however if not owner must only do an update as you MUST be owner to completely delete it from
     // database but can delete from client state
     const { user } = this.props;
-    const { pinList } = this.state;
+    const { pinList, displayPinCreate } = this.state;
+    if (displayPinCreate) return;
     let pinListCopy = JSON.parse(JSON.stringify(pinList));
     const indexOfDeletion = pinListCopy.findIndex(p => p._id === element._id);
     pinListCopy = [...pinListCopy.slice(0, indexOfDeletion),
@@ -155,7 +158,6 @@ class Mypins extends Component {
     if (!user.user.authenticated) window.location.assign('/');
     return (
       <React.Fragment>
-        <Menu user={user} />
         <div>
           <div id="mypinframe">
             <h3 id="username">{user.user.displayname}</h3>
@@ -182,12 +184,12 @@ class Mypins extends Component {
             <Masonry>
               {this.buildImages()}
             </Masonry>
-            <PinZoom
-              message={displayPinZoom}
-              reset={() => this.setState({ displayPinZoom: false })}
-              zoomInfo={imageInfo}
-            />
           </div>
+          <PinZoom
+            message={displayPinZoom}
+            reset={() => this.setState({ displayPinZoom: false })}
+            zoomInfo={imageInfo}
+          />
         </div>
       </React.Fragment>
     );

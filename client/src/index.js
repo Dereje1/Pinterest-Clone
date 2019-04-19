@@ -13,7 +13,8 @@ import { BrowserRouter, Route, Switch } from 'react-router-dom';
 
 // Import all Created react components that are associated with the router
 // standard menu (non-authenticated) components
-import Main from './main';
+import Menu from './components/menu/menu';
+import Home from './components/home/home';
 import Mypins from './components/mypins/mypins';
 // import combined reducer to pass to store here
 import reducers from './reducers/index';
@@ -28,8 +29,9 @@ const store = createStore(reducers, middleware);
 const Routes = (
   <Provider store={store}>
     <BrowserRouter>
+      <Menu />
       <Switch>
-        <Route path="/" exact component={Main} />
+        <Route path="/" exact component={Home} />
         <Route path="/pins" component={Mypins} />
       </Switch>
     </BrowserRouter>

@@ -3,9 +3,7 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import Masonry from 'react-masonry-component';
 import PropTypes from 'prop-types';
-
 import { getPins, deletePin, updatePin } from '../../actions/pinactions'; // adds book to db
-import Menu from '../menu/menu';
 import PinZoom from '../modal/modalzoom';
 import './home.scss';
 
@@ -37,11 +35,11 @@ class Home extends Component {
     could become reactivated in a future time
     still keep in database records until owner deletes
     */
-    console.log('Broken Image Found', id);
     const { pinList } = this.state;
     let pinListCopy = JSON.parse(JSON.stringify(pinList));
     const indexOfDeletion = pinListCopy.findIndex(p => p._id === id);
     // update copy -->no mutation but do not delete from db
+    console.log('Broken Image Found - ', pinListCopy[indexOfDeletion].imgDescription);
     pinListCopy = [...pinListCopy.slice(0, indexOfDeletion),
       ...pinListCopy.slice(indexOfDeletion + 1)];
     this.setState({
@@ -110,7 +108,7 @@ class Home extends Component {
       return (
         <button
           type="submit"
-          className="actionbutton"
+          className="actionbutton save"
           onClick={() => this.savePic(element)}
         >
           <i className="fa fa-thumb-tack" aria-hidden="true" />
@@ -122,7 +120,7 @@ class Home extends Component {
     return (
       <button
         type="submit"
-        className="actionbutton"
+        className="actionbutton delete"
         onClick={() => this.deletePic(element)}
       >
         {'Delete'}
@@ -148,7 +146,7 @@ class Home extends Component {
           src={element.imgLink}
           style={{ visibility: imagesLoaded ? 'visible' : 'hidden' }}
         />
-        <div className="description text-center">
+        <div className="description">
           {element.imgDescription}
         </div>
         {this.imageStatus(element)}
@@ -159,10 +157,12 @@ class Home extends Component {
   }
 
   pinEnlarge(e, currentImg) { // calls zoom in modal for the clicked picture
+    const { displayPinZoom } = this.state;
     if (e.target.type === 'submit') return;
+    if (displayPinZoom) return;
     this.setState({
       displayPinZoom: true,
-      imageInfo: [currentImg, this.imageStatus(currentImg)],
+      imageInfo: [currentImg, this.imageStatus(currentImg), e.pageY - e.clientY],
     });
   }
 
@@ -174,19 +174,18 @@ class Home extends Component {
     if (userStatus) {
       return (
         <React.Fragment>
-          <Menu user={user} />
           <div id="mainframe">
             <Masonry
               onImagesLoaded={() => this.layoutComplete()}
             >
               {this.buildImages()}
             </Masonry>
-            <PinZoom
-              message={displayPinZoom}
-              reset={() => this.setState({ displayPinZoom: false })}
-              zoomInfo={imageInfo}
-            />
           </div>
+          <PinZoom
+            message={displayPinZoom}
+            reset={() => this.setState({ displayPinZoom: false })}
+            zoomInfo={imageInfo}
+          />
         </React.Fragment>
       );
     }
