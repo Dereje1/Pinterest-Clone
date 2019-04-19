@@ -41,39 +41,55 @@
     font-weight: bold;
     color: #555;
     font-family: "Helvetica";
-    #zoomdesc{
-      font-size: 1.5rem;
-      font-family: 'Berkshire Swash', cursive;
-    }
-    #zoomowner{
-      font-size: .75rem;
-      font-family:'Spectral SC', serif;
-      color: #b20e0e;
+    height: 50px;
+    padding: 5px;
+    #zoomtitle{
+      font-size: 1rem;
+      #zoomdesc{
+        font-family: 'Berkshire Swash', cursive;
+      }
+      #zoomowner{
+        font-size: 75%;
+        font-family:'Spectral SC', serif;
+        color: #b20e0e;
+      }
     }
     #zoomtack{
-      font-size: 2rem;
       font-weight: 700;
+      font-size: 2rem;
+      &.small{
+        font-size: 1rem;
+        cursor: help;
+        >i{
+          font-size: rem;
+          cursor: help;
+        }
+        i{
+          font-size: 1rem;
+          cursor: pointer;
+        }
+      }
       cursor: help;
       >i{
         cursor: help;
       }
     }
     i{
-      font-size: 1.5rem;
+      font-size: 2rem;
       cursor: pointer;
     }
-    @media screen and (max-width: 500px){
-      #zoomdesc{
-        font-size: .75rem;
-      }
-      #zoomowner{
+    @media screen and (max-width: 500px), screen and (max-height: 500px){
+      height: 25px;
+      padding: 2.5px;
+      #zoomtitle{
         font-size: .5rem;
       }
       #zoomtack{
         font-size: 1rem;
       }
       i{
-        font-size: .75rem;
+        font-size: 1rem;
+        cursor: pointer;
       }
     }
   }
@@ -91,7 +107,7 @@
       cursor: pointer;
       background-color: #b20e0e;
     }
-    @media screen and (max-width: 500px){
+    @media screen and (max-width: 500px), screen and (max-height: 500px){
       .actionbutton{
         height:25px;
         font-size: .5rem;
