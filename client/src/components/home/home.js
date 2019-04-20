@@ -46,7 +46,6 @@ class Home extends Component {
     });
   }
 
-
   shuffleImages = (arr) => {
     const shuffled = [];
     while (arr.length) {
@@ -165,7 +164,6 @@ class Home extends Component {
         </React.Fragment>
       );
     }
-
     return null;
   }
 

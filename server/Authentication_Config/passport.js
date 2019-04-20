@@ -1,6 +1,4 @@
-// config/passport.js
-
-// load all the things we need
+// config/passport.js for twitter
 const TwitterStrategy = require('passport-twitter').Strategy;
 
 // load up the user model
@@ -37,13 +35,11 @@ const configMain = (passport) => {
     process.nextTick(() => {
       User.findOne({ 'twitter.id': profile.id }, (err, user) => {
         // if there is an error, stop everything and return that
-        // ie an error connecting to the database
         if (err) return done(err);
 
         // if the user is found then log them in
-        if (user) {
-          return done(null, user); // user found, return that user
-        }
+        if (user) return done(null, user);
+
         // if there is no user, create them
         const { id, username, displayName } = profile;
         // set all of the user data that we need
