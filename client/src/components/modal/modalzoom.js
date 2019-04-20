@@ -15,10 +15,6 @@ class PinZoom extends Component {
     };
   }
 
-  componentDidMount() {
-    window.addEventListener('click', this.outsideClick);
-  }
-
   componentDidUpdate(prevProps) {
     const { message, zoomInfo } = this.props;
     const { parentDivStyle } = this.state;
@@ -30,7 +26,9 @@ class PinZoom extends Component {
         divCopy.width = window.innerWidth;
       }
       // add overlay class to body outside of react root app
-      document.body.classList.add('overlay');
+      window.addEventListener('click', this.outsideClick);
+      window.addEventListener('touchstart', this.outsideClick);
+      window.addEventListener('scroll', this.disableScroll);
       this.setState({
         show: true,
         firstShow: true,
@@ -38,7 +36,6 @@ class PinZoom extends Component {
       });
     }
     if ((prevProps.message === true) && (message === false)) {
-      document.body.classList.remove('overlay');
       this.setState({
         show: false,
       });
@@ -47,11 +44,14 @@ class PinZoom extends Component {
 
   componentWillUnmount() {
     window.removeEventListener('click', this.outsideClick);
+    window.removeEventListener('scroll', this.disableScroll);
+    window.removeEventListener('touchstart', this.outsideClick);
   }
 
   outsideClick = (e) => {
     const { show, firstShow } = this.state;
     const closestElement = e.target.closest('.zoom');
+    // prevent keyframe animation on running with first load
     if (!closestElement && firstShow) {
       this.setState({ firstShow: false });
       return;
@@ -59,11 +59,18 @@ class PinZoom extends Component {
     if (!closestElement && show) this.close();
   }
 
+  disableScroll = () => {
+    const { zoomInfo: zoomDist } = this.props;
+    window.scrollTo(0, zoomDist[2]);
+  }
+
   close = () => {
     // note my modified modal now sends a reset callback after closing modalstate which clears
     // the message field
     const { reset } = this.props;
-    document.body.classList.remove('overlay');
+    window.removeEventListener('click', this.outsideClick);
+    window.removeEventListener('touchstart', this.outsideClick);
+    window.removeEventListener('scroll', this.disableScroll);
     this.setState({
       show: false,
     }, () => reset());
