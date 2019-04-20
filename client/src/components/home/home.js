@@ -186,6 +186,7 @@ class Home extends Component {
             reset={() => this.setState({ displayPinZoom: false })}
             zoomInfo={imageInfo}
           />
+          <div className={displayPinZoom ? 'modal-overlay' : ''} />
         </React.Fragment>
       );
     }

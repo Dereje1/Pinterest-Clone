@@ -190,6 +190,7 @@ class Mypins extends Component {
             reset={() => this.setState({ displayPinZoom: false })}
             zoomInfo={imageInfo}
           />
+          <div className={displayPinZoom || displayPinCreate ? 'modal-overlay' : ''} />
         </div>
       </React.Fragment>
     );

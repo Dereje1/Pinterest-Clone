@@ -15,18 +15,20 @@ class PinZoom extends Component {
     };
   }
 
-  componentDidMount() {
-    window.addEventListener('click', this.outsideClick);
-  }
-
   componentDidUpdate(prevProps) {
     const { message, zoomInfo } = this.props;
     const { parentDivStyle } = this.state;
     if ((prevProps.message === false) && (message === true)) {
       const divCopy = JSON.parse(JSON.stringify(parentDivStyle));
       divCopy.top = zoomInfo[2] + 70;
+      if (prevProps.zoomInfo.length
+        && prevProps.zoomInfo[0].imgDescription !== zoomInfo[0].imgDescription) {
+        divCopy.width = window.innerWidth;
+      }
       // add overlay class to body outside of react root app
-      document.body.classList.add('overlay');
+      window.addEventListener('click', this.outsideClick);
+      window.addEventListener('touchstart', this.outsideClick);
+      window.addEventListener('scroll', this.disableScroll);
       this.setState({
         show: true,
         firstShow: true,
@@ -34,7 +36,6 @@ class PinZoom extends Component {
       });
     }
     if ((prevProps.message === true) && (message === false)) {
-      document.body.classList.remove('overlay');
       this.setState({
         show: false,
       });
@@ -43,11 +44,14 @@ class PinZoom extends Component {
 
   componentWillUnmount() {
     window.removeEventListener('click', this.outsideClick);
+    window.removeEventListener('scroll', this.disableScroll);
+    window.removeEventListener('touchstart', this.outsideClick);
   }
 
   outsideClick = (e) => {
     const { show, firstShow } = this.state;
     const closestElement = e.target.closest('.zoom');
+    // prevent keyframe animation on running with first load
     if (!closestElement && firstShow) {
       this.setState({ firstShow: false });
       return;
@@ -55,27 +59,61 @@ class PinZoom extends Component {
     if (!closestElement && show) this.close();
   }
 
+  disableScroll = () => {
+    const { zoomInfo: zoomDist } = this.props;
+    window.scrollTo(0, zoomDist[2]);
+  }
+
   close = () => {
     // note my modified modal now sends a reset callback after closing modalstate which clears
     // the message field
     const { reset } = this.props;
-    document.body.classList.remove('overlay');
+    window.removeEventListener('click', this.outsideClick);
+    window.removeEventListener('touchstart', this.outsideClick);
+    window.removeEventListener('scroll', this.disableScroll);
     this.setState({
       show: false,
     }, () => reset());
   }
 
+  getNewImageWidth = (imgDim) => {
+    const { naturalWidth: width, naturalHeight: height } = imgDim;
+    let { innerWidth, innerHeight } = window;
+    // parameter for innerwidth/height adjustment with mobile consideration
+    // top(70) + headingheight(50 / 25) + button height (50 / 25)
+    innerHeight = innerHeight < 500 ? innerHeight - 120 : innerHeight - 170;
+    // minor width adjustment for padding too
+    innerWidth -= (innerWidth * 0.02);
+    const aspectRatio = width / height;
+    let newWidth;
+    // already fits just return value
+    if (width < innerWidth && height < innerHeight) {
+      newWidth = width < 500 && innerWidth > 500 ? 500 : width;
+    } else if (width > innerWidth) {
+      newWidth = innerWidth;
+      // test new height with Aspect ratio
+      const newHeight = newWidth / aspectRatio;
+      // test again if new height is less than screen height
+      newWidth = newHeight < innerHeight
+        ? newWidth
+        : aspectRatio * innerHeight;
+    } else { // means height > innerheight
+      newWidth = aspectRatio * innerHeight;
+    }
+    // send also reduction size for fontsizing
+    return newWidth;
+  }
+
   handleImage = (i) => {
-    const { width, height } = i.target;
+    const { naturalWidth, naturalHeight } = i.target;
     const { parentDivStyle } = this.state;
-    const { innerWidth, innerHeight } = window;
-    const ans = (width / height) / (innerWidth / innerHeight);
-    let computedWidth;
-    if (ans < 1.3) computedWidth = `${Math.floor(ans * 80)}%`;
-    else computedWidth = '80%';
+    const newWidth = this.getNewImageWidth({ naturalWidth, naturalHeight });
     const pcopy = JSON.parse(JSON.stringify(parentDivStyle));
-    pcopy.width = computedWidth;
-    this.setState({ parentDivStyle: pcopy });
+    pcopy.width = `${newWidth}px`;
+    pcopy.small = newWidth < 350;
+    this.setState({
+      parentDivStyle: pcopy,
+    });
   }
 
   pinners = pinInformation => (pinInformation.savedBy.length > 3
@@ -102,7 +140,7 @@ class PinZoom extends Component {
             <div id="zoomdesc">{pinInformation.imgDescription}</div>
             <div id="zoomowner">{`Linked By: ${pinInformation.owner}`}</div>
           </span>
-          <span id="zoomtack" title={pinnedBy}>
+          <span id="zoomtack" title={pinnedBy} className={parentDivStyle.small ? 'small' : ''}>
             <i className="fa fa-thumb-tack" aria-hidden="true" />
             {`  ${totalPins}`}
           </span>
