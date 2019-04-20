@@ -71,9 +71,9 @@ class PinCreate extends Component {
   }
 
   validation = () => {
-    const { description } = this.state;
+    const { description, picPreview } = this.state;
     this.setState({
-      saveDisabled: description.trim().length < 5,
+      saveDisabled: (description.trim().length < 5) || picPreview === imageBroken,
     });
   }
 
