@@ -1,17 +1,20 @@
-// primary module to interact with client
 const express = require('express');
 const path = require('path');
-const cookieParser = require('cookie-parser');
+const cookieSession = require('cookie-session');
 const bodyParser = require('body-parser');
+const logger = require('morgan');
 
 const app = express();
 
+app.use(logger('dev')); // log every request to the console
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
-app.use(cookieParser());
+app.use(cookieSession({
+  maxAge: 21 * 24 * 60 * 60 * 1000,
+  keys: [process.env.SESSION_SECRET],
+}));
 app.use(express.static(path.join(__dirname, '../client/public')));
 
-// APIs Start
 require('./models/db'); // mongoose required common db
 require('./Authentication_Config/authserver')(app);
 app.use(require('./crudroutes'));

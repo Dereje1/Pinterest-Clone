@@ -1,4 +1,3 @@
-/* eslint-disable semi */
 // menu bar
 import React from 'react';
 import PropTypes from 'prop-types';
@@ -22,15 +21,15 @@ class Menu extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      ready: false,
-      initialLoad: true,
-      menuIsCollapsed: window.innerWidth < 600,
-      collapseToggle: false,
+      ready: false, // component ready for render
+      initialLoad: true, // used to avoid keyframe anim on initial load
+      menuIsCollapsed: window.innerWidth < 600, // test for screen size
+      collapseToggle: false, // turns responsive hamburger on/off
     };
   }
 
   componentDidMount() {
-    console.log('Menu just Mounted')
+    console.log('Menu just Mounted');
     const { getUser: getUserStatus } = this.props;
     getUserStatus();
     this.setState(
@@ -50,13 +49,12 @@ class Menu extends React.Component {
     }
     if (prevState.collapseToggle === false && collapseToggle) {
       // don't display responsive menu on initial load
-      if (initialLoad) this.setState({ initialLoad: false })
-      window.addEventListener('click', this.listenForOutClicks)
+      if (initialLoad) this.setState({ initialLoad: false });
+      window.addEventListener('click', this.listenForOutClicks);
     }
     if (prevState.collapseToggle === true && !collapseToggle) {
-      window.removeEventListener('click', this.listenForOutClicks)
+      window.removeEventListener('click', this.listenForOutClicks);
     }
-    return null;
   }
 
   handleLogin = () => { // twitter authentication
@@ -69,12 +67,14 @@ class Menu extends React.Component {
   }
 
   listenForOutClicks = (e) => {
-    if (!e.target.closest('.menu')) this.toggleCollapse()
+    // clicks outside an extended menu will collpase it
+    if (!e.target.closest('.menu')) this.toggleCollapse();
   }
 
   toggleCollapse = () => {
+    // burger click handler for responsive mode
     const { collapseToggle } = this.state;
-    this.setState({ collapseToggle: !collapseToggle })
+    this.setState({ collapseToggle: !collapseToggle });
   }
 
   collapsedMenu = () => (
@@ -88,17 +88,20 @@ class Menu extends React.Component {
   )
 
   render() {
+    // render cover/guest / logged in menu bar
     const {
       menuIsCollapsed, collapseToggle, ready, initialLoad,
     } = this.state;
     const { user } = this.props;
     if (!ready) return null;
     if (!user.user.username) {
+      // render cover
       document.body.classList.add('cover');
-      return <Cover handleGuest={this.handleGuest} handleLogin={this.handleLogin} />
+      return <Cover handleGuest={this.handleGuest} handleLogin={this.handleLogin} />;
     }
-    if (!user.user.authenticated) { // for non authenticated users
-      document.body.classList.remove('cover');
+    document.body.classList.remove('cover');
+    if (!user.user.authenticated) {
+      // render guest menu bar
       return (
         <div className="menu">
           <div className="brand">
@@ -111,10 +114,9 @@ class Menu extends React.Component {
             <a href="/auth/twitter">Login with Twitter</a>
           </div>
         </div>
-      )
+      );
     }
-    document.body.classList.remove('cover');
-    // for twitter authenticated users
+    // render authenticated menu bar
     return (
       <React.Fragment>
         <div className="menu">
@@ -148,7 +150,7 @@ class Menu extends React.Component {
             : null
         }
       </React.Fragment>
-    )
+    );
   }
 
 }
@@ -160,7 +162,10 @@ Menu.defaultProps = {
 };
 
 Menu.propTypes = {
+  // stored authentication info from redux
   user: PropTypes.shape(PropTypes.shape),
+  // redux action to get user status from server
   getUser: PropTypes.func.isRequired,
+  // redux action to set guest user status on server
   setGuest: PropTypes.func.isRequired,
 };

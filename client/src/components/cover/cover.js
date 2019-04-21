@@ -50,6 +50,7 @@ const Cover = ({ handleGuest, handleLogin }) => (
 export default Cover;
 
 Cover.propTypes = {
+  // callback to menu to initiate, guest and user login respectively
   handleGuest: PropTypes.func.isRequired,
   handleLogin: PropTypes.func.isRequired,
 };

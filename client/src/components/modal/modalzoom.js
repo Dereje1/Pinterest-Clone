@@ -20,14 +20,14 @@ class PinZoom extends Component {
     const { parentDivStyle } = this.state;
     if ((prevProps.message === false) && (message === true)) {
       const divCopy = JSON.parse(JSON.stringify(parentDivStyle));
+      // use scroll dist on zoom call to set top of zoom div
       divCopy.top = zoomInfo[2] + 70;
       if (prevProps.zoomInfo.length
         && prevProps.zoomInfo[0].imgDescription !== zoomInfo[0].imgDescription) {
         divCopy.width = window.innerWidth;
       }
-      // add overlay class to body outside of react root app
       window.addEventListener('click', this.outsideClick);
-      window.addEventListener('touchstart', this.outsideClick);
+      window.addEventListener('touchmove', this.outsideClick);
       window.addEventListener('scroll', this.disableScroll);
       this.setState({
         show: true,
@@ -38,17 +38,22 @@ class PinZoom extends Component {
     if ((prevProps.message === true) && (message === false)) {
       this.setState({
         show: false,
-      });
+      }, () => this.removeListeners());
     }
   }
 
   componentWillUnmount() {
+    this.removeListeners();
+  }
+
+  removeListeners = () => {
     window.removeEventListener('click', this.outsideClick);
     window.removeEventListener('scroll', this.disableScroll);
-    window.removeEventListener('touchstart', this.outsideClick);
+    window.removeEventListener('touchmove', this.outsideClick);
   }
 
   outsideClick = (e) => {
+    // if modal and outside click/touch remove modal
     const { show, firstShow } = this.state;
     const closestElement = e.target.closest('.zoom');
     // prevent keyframe animation on running with first load
@@ -65,29 +70,29 @@ class PinZoom extends Component {
   }
 
   close = () => {
-    // note my modified modal now sends a reset callback after closing modalstate which clears
+    // sends a reset callback after closing modalstate which clears
     // the message field
     const { reset } = this.props;
-    window.removeEventListener('click', this.outsideClick);
-    window.removeEventListener('touchstart', this.outsideClick);
-    window.removeEventListener('scroll', this.disableScroll);
+    this.removeListeners();
     this.setState({
       show: false,
     }, () => reset());
   }
 
   getNewImageWidth = (imgDim) => {
+    // dynamically resize image
     const { naturalWidth: width, naturalHeight: height } = imgDim;
     let { innerWidth, innerHeight } = window;
     // parameter for innerwidth/height adjustment with mobile consideration
     // top(70) + headingheight(50 / 25) + button height (50 / 25)
     innerHeight = innerHeight < 500 ? innerHeight - 120 : innerHeight - 170;
-    // minor width adjustment for padding too
+    // minor x direction adjustment for padding too
     innerWidth -= (innerWidth * 0.02);
     const aspectRatio = width / height;
     let newWidth;
-    // already fits just return value
     if (width < innerWidth && height < innerHeight) {
+      // already fits, return value if above 500 or else
+      // expand to 500
       newWidth = width < 500 && innerWidth > 500 ? 500 : width;
     } else if (width > innerWidth) {
       newWidth = innerWidth;
@@ -100,7 +105,6 @@ class PinZoom extends Component {
     } else { // means height > innerheight
       newWidth = aspectRatio * innerHeight;
     }
-    // send also reduction size for fontsizing
     return newWidth;
   }
 
@@ -121,8 +125,6 @@ class PinZoom extends Component {
     : pinInformation.savedBy.join(', '))
 
   render() {
-    // use total pins to display how many have saved image
-    // components brings in as prop zoominfo etire object containing pin information
     const { zoomInfo } = this.props;
     const { show, parentDivStyle } = this.state;
     if (!zoomInfo.length) return null;
@@ -167,7 +169,10 @@ export default PinZoom;
 
 
 PinZoom.propTypes = {
+  // turns modal on/off based on change
   message: PropTypes.bool.isRequired,
+  // [picobject, overlay button type, last scroll distance]
   zoomInfo: PropTypes.arrayOf(PropTypes.any).isRequired,
+  // callback to caller to turn modal off
   reset: PropTypes.func.isRequired,
 };

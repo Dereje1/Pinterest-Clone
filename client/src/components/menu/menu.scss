@@ -104,18 +104,22 @@
 
   @keyframes dropmenu {
     0%{
+      opacity: 0;
       top: -350;
     }
     100%{
+      opacity: 1;
       top: 50;
     }
   }
 
   @keyframes liftmenu {
     0%{
+      opacity: 1;
       top: 50;
     }
     100%{
+      opacity: 0;
       top: -350;
     }
   }

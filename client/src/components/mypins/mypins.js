@@ -1,15 +1,16 @@
 // user page only for authenticated users
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import Masonry from 'react-masonry-component';
 import PropTypes from 'prop-types';
 
 import PinCreate from './pincreatemodal';
+import ImageBuild from '../imagebuild/imagebuild';
 import {
   addPin, getPins, deletePin, updatePin,
 } from '../../actions/pinactions'; // pin CRUD
 import PinZoom from '../modal/modalzoom';
 import './mypins.scss';
+import imageBroken from './NO-IMAGE.png';
 
 class Mypins extends Component {
 
@@ -20,6 +21,7 @@ class Mypins extends Component {
       pinList: [], // collects the pins user owns and saved
       displayPinZoom: false, // controls pin zoom modal
       imageInfo: [], // used to send to pin zoom
+      imagesLoaded: false,
     };
   }
 
@@ -35,7 +37,7 @@ class Mypins extends Component {
     });
   }
 
-  onBrokenImage(id) { // handles broken image links on user page
+  onBrokenImage = (id) => { // handles broken image links on user page
     // if the image is broken it will modify link to placeholder only on client side
     // keeps original link in db, in case image becomes activated in the future
     console.log('Broken Image Found', id);
@@ -43,7 +45,7 @@ class Mypins extends Component {
     const pinListCopy = JSON.parse(JSON.stringify(pinList));
     const indexOfModification = pinListCopy.findIndex(p => p._id === id);
     // update copy of image link and description
-    pinListCopy[indexOfModification].imgLink = '/images/NO-IMAGE.png';
+    pinListCopy[indexOfModification].imgLink = imageBroken;
     pinListCopy[indexOfModification].imgDescription = `${pinListCopy[indexOfModification].imgDescription} Is Broken`;
 
     this.setState({
@@ -51,13 +53,13 @@ class Mypins extends Component {
     });
   }
 
-  pinForm() { // display pin creation modal
-    this.setState({
-      displayPinCreate: true,
-    });
+  layoutComplete = () => {
+    const { imagesLoaded } = this.state;
+    if (imagesLoaded) return;
+    this.setState({ imagesLoaded: true });
   }
 
-  pinEnlarge(e, currentImg) { // display pin zoom modal and passes image info
+  pinEnlarge = (e, currentImg) => { // display pin zoom modal and passes image info
     const { displayPinZoom, displayPinCreate } = this.state;
     if (e.target.type === 'submit') return;
     if (displayPinZoom || displayPinCreate) return;
@@ -76,6 +78,16 @@ class Mypins extends Component {
       ],
     });
   }
+
+  imageStatus = element => (
+    <button
+      type="submit"
+      className="actionbutton"
+      onClick={() => this.deletePic(element)}
+    >
+      {'Delete'}
+    </button>
+  )
 
   deletePic(element) { // deletes a picture
     // however if not owner must only do an update as you MUST be owner to completely delete it from
@@ -118,43 +130,17 @@ class Mypins extends Component {
     });
   }
 
-
-  buildImages() { // bulds images using masonry very similar to home component (may merge in future)
-    const { pinList } = this.state;
-    const childElements = pinList.map(element => (
-      <div
-        key={element._id}
-        role="button"
-        className="image-box"
-        onClick={e => this.pinEnlarge(e, element)}
-        onKeyDown={() => {}}
-        tabIndex={0}
-      >
-        <img
-          alt={element.imgDescription}
-          onError={() => this.onBrokenImage(element._id)}
-          className="image-format"
-          src={element.imgLink}
-        />
-        <div className="description text-center">
-          {element.imgDescription}
-        </div>
-        <button
-          type="submit"
-          className="actionbutton"
-          onClick={() => this.deletePic(element)}
-        >
-          {'Delete'}
-        </button>
-        <div className="owner">{`Linked By: ${element.owner}`}</div>
-      </div>
-    ));
-    return childElements;
+  pinForm() { // display pin creation modal
+    this.setState({
+      displayPinCreate: true,
+    });
   }
 
   render() {
     const { user } = this.props;
-    const { displayPinCreate, displayPinZoom, imageInfo } = this.state;
+    const {
+      displayPinCreate, displayPinZoom, imageInfo, pinList, imagesLoaded,
+    } = this.state;
     if (!user.user.authenticated) window.location.assign('/');
     return (
       <React.Fragment>
@@ -180,11 +166,14 @@ class Mypins extends Component {
               savePin={pinJSON => this.addPic(pinJSON)}
             />
           </div>
-          <div id="mainframe">
-            <Masonry>
-              {this.buildImages()}
-            </Masonry>
-          </div>
+          <ImageBuild
+            layoutComplete={this.layoutComplete}
+            pinEnlarge={this.pinEnlarge}
+            onBrokenImage={this.onBrokenImage}
+            status={this.imageStatus}
+            pinList={pinList}
+            imagesLoaded={imagesLoaded}
+          />
           <PinZoom
             message={displayPinZoom}
             reset={() => this.setState({ displayPinZoom: false })}
@@ -207,5 +196,6 @@ Mypins.defaultProps = {
 };
 
 Mypins.propTypes = {
+  // authentication info from redux
   user: PropTypes.shape(PropTypes.shape),
 };
