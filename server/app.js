@@ -1,4 +1,3 @@
-// primary module to interact with client
 const express = require('express');
 const path = require('path');
 const cookieSession = require('cookie-session');
@@ -16,7 +15,6 @@ app.use(cookieSession({
 }));
 app.use(express.static(path.join(__dirname, '../client/public')));
 
-// APIs Start
 require('./models/db'); // mongoose required common db
 require('./Authentication_Config/authserver')(app);
 app.use(require('./crudroutes'));

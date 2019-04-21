@@ -26,7 +26,7 @@ class PinCreate extends Component {
     const { message } = this.props;
     if ((prevProps.message === false) && (message === true)) {
       window.scrollTo(0, 0);
-      document.body.classList.add('overlay');
+      window.addEventListener('scroll', this.disableScroll);
       this.setState({
         show: true,
         description: '',
@@ -37,10 +37,16 @@ class PinCreate extends Component {
     }
   }
 
+  componentWillUnmount() {
+    window.removeEventListener('scroll', this.disableScroll);
+  }
+
+  disableScroll = () => window.scrollTo(0, 0);
+
   close = () => {
     // note my modified modal now sends a reset callback after closing modalstate which clears
     // the message field, not also to reset pic url to erroneous image png before exit
-    document.body.classList.remove('overlay');
+    window.removeEventListener('scroll', this.disableScroll);
     const { reset } = this.props;
     this.setState({
       show: false,
@@ -71,6 +77,7 @@ class PinCreate extends Component {
   }
 
   validation = () => {
+    // check for both valid pic and description before allowing save
     const { description, picPreview } = this.state;
     this.setState({
       saveDisabled: (description.trim().length < 5) || picPreview === imageBroken,
@@ -147,8 +154,12 @@ export default PinCreate;
 
 
 PinCreate.propTypes = {
+  // turns modal on/off based on change
   message: PropTypes.bool.isRequired,
+  // data used for pin creation
   userInfo: PropTypes.shape(PropTypes.shape).isRequired,
+  // callback in mypins to turn modal off
   reset: PropTypes.func.isRequired,
+  // POST request via axios
   savePin: PropTypes.func.isRequired,
 };

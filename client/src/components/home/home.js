@@ -2,7 +2,7 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
-import { getPins, deletePin, updatePin } from '../../actions/pinactions'; // adds book to db
+import { getPins, deletePin, updatePin } from '../../actions/pinactions';
 import ImageBuild from '../imagebuild/imagebuild';
 import PinZoom from '../modal/modalzoom';
 
@@ -14,7 +14,7 @@ class Home extends Component {
       pinList: [], // stores all pins in db in state
       displayPinZoom: false, // for zoom modal
       imageInfo: [], // to send to zoom modal
-      imagesLoaded: false,
+      imagesLoaded: false, // masonry callback
     };
   }
 
@@ -50,25 +50,28 @@ class Home extends Component {
     const shuffled = [];
     while (arr.length) {
       const randIndex = Math.floor(Math.random() * arr.length);
-      const removed = arr.splice(randIndex, 1);
-      shuffled.push(removed[0]);
+      const [removed] = arr.splice(randIndex, 1);
+      shuffled.push(removed);
     }
     return shuffled;
   }
 
   layoutComplete = () => {
+    // fired by masonry call back
     const { imagesLoaded } = this.state;
+    // only set state on first true load
     if (imagesLoaded) return;
     this.setState({ imagesLoaded: true });
   }
 
-  imageStatus = (element) => { // find the status of image to determine what kind of
-    // button to place on pic
+  imageStatus = (element) => {
+    // finds the status of image to determine what kind of button to place on pic
     const { user } = this.props;
     if (element.owner !== user.user.username) { // If the user is not owner of the pin
       if (element.savedBy.includes(user.user.username)) { // If the user has already saved this pin
         return null; // no button
-      } // user has not saved this pin show save button
+      }
+      // user has not saved this pin show save button
       return (
         <button
           type="submit"
@@ -115,7 +118,7 @@ class Home extends Component {
     }, () => deletePin(element._id));
   }
 
-  savePic(element) { // saves a pic owned by somebody else into current users repo
+  savePic(element) { // saves a pic owned by somebody else into current users profile
     // can not do this unless logged in
     const { user } = this.props;
     const { pinList } = this.state;
@@ -138,7 +141,6 @@ class Home extends Component {
 
 
   render() {
-  // render nothing if no guest or authenticated status
     const { user } = this.props;
     const {
       displayPinZoom, imageInfo, pinList, imagesLoaded,
@@ -178,5 +180,6 @@ Home.defaultProps = {
 };
 
 Home.propTypes = {
+  // authentication info from redux
   user: PropTypes.shape(PropTypes.shape),
 };

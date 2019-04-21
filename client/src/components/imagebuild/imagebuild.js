@@ -2,7 +2,7 @@ import React from 'react';
 import Masonry from 'react-masonry-component';
 import PropTypes from 'prop-types';
 import './imagebuild.scss';
-
+// builds images, component shared by both home and mypins
 const ImageBuild = ({
   layoutComplete,
   pinEnlarge,

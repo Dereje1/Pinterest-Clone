@@ -196,5 +196,6 @@ Mypins.defaultProps = {
 };
 
 Mypins.propTypes = {
+  // authentication info from redux
   user: PropTypes.shape(PropTypes.shape),
 };
