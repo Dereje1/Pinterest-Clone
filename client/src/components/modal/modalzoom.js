@@ -38,11 +38,15 @@ class PinZoom extends Component {
     if ((prevProps.message === true) && (message === false)) {
       this.setState({
         show: false,
-      });
+      }, () => this.removeListeners());
     }
   }
 
   componentWillUnmount() {
+    this.removeListeners();
+  }
+
+  removeListeners = () => {
     window.removeEventListener('click', this.outsideClick);
     window.removeEventListener('scroll', this.disableScroll);
     window.removeEventListener('touchmove', this.outsideClick);
@@ -69,9 +73,7 @@ class PinZoom extends Component {
     // sends a reset callback after closing modalstate which clears
     // the message field
     const { reset } = this.props;
-    window.removeEventListener('click', this.outsideClick);
-    window.removeEventListener('touchmove', this.outsideClick);
-    window.removeEventListener('scroll', this.disableScroll);
+    this.removeListeners();
     this.setState({
       show: false,
     }, () => reset());
