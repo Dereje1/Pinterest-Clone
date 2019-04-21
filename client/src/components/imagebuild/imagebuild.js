@@ -11,39 +11,46 @@ const ImageBuild = ({
   pinList,
   imagesLoaded,
 }) => (
-  <div id="mainframe">
-    <Masonry
-      onImagesLoaded={() => layoutComplete()}
-    >
-      {
-        pinList.map(element => (
-          <div
-            key={element._id}
-            role="button"
-            className="image-box"
-            onClick={e => pinEnlarge(e, element)}
-            onKeyDown={() => {}}
-            tabIndex={0}
-          >
-            <img
-              alt={element.imgDescription}
-              onError={() => onBrokenImage(element._id)}
-              className="image-format"
-              src={element.imgLink}
-              style={{ visibility: imagesLoaded ? 'visible' : 'hidden' }}
-            />
-            <div className="description">
-              {element.imgDescription}
+  <React.Fragment>
+    <div id="bubblecontainer" style={{ display: imagesLoaded ? 'none' : 'flex' }}>
+      <div className="bubbles A" />
+      <div className="bubbles B" />
+      <div className="bubbles C" />
+    </div>
+    <div id="mainframe">
+      <Masonry
+        onImagesLoaded={() => layoutComplete()}
+      >
+        {
+          pinList.map(element => (
+            <div
+              key={element._id}
+              role="button"
+              className="image-box"
+              onClick={e => pinEnlarge(e, element)}
+              onKeyDown={() => {}}
+              tabIndex={0}
+            >
+              <img
+                alt={element.imgDescription}
+                onError={() => onBrokenImage(element._id)}
+                className="image-format"
+                src={element.imgLink}
+                style={{ visibility: imagesLoaded ? 'visible' : 'hidden' }}
+              />
+              <div className="description">
+                {element.imgDescription}
+              </div>
+              {status(element)}
+              <div className="owner">{`Linked By: ${element.owner}`}</div>
             </div>
-            {status(element)}
-            <div className="owner">{`Linked By: ${element.owner}`}</div>
-          </div>
-        ))
-      }
-    </Masonry>
-  </div>
-);
+          ))
+        }
+      </Masonry>
+    </div>
+  </React.Fragment>
 
+);
 export default ImageBuild;
 
 ImageBuild.defaultProps = {
@@ -61,6 +68,6 @@ ImageBuild.propTypes = {
   status: PropTypes.func.isRequired,
   // caller will send list of pins after AJAX request complete
   pinList: PropTypes.arrayOf(PropTypes.any),
-  // if image has error caller sets this flag
+  // Turns on once Masonry runs loaded callback
   imagesLoaded: PropTypes.bool.isRequired,
 };
