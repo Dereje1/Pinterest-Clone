@@ -26,7 +26,6 @@ class PinCreate extends Component {
     const { message } = this.props;
     if ((prevProps.message === false) && (message === true)) {
       window.scrollTo(0, 0);
-      window.addEventListener('scroll', this.disableScroll);
       this.setState({
         show: true,
         description: '',
@@ -37,16 +36,11 @@ class PinCreate extends Component {
     }
   }
 
-  componentWillUnmount() {
-    window.removeEventListener('scroll', this.disableScroll);
-  }
-
   disableScroll = () => window.scrollTo(0, 0);
 
   close = () => {
     // note my modified modal now sends a reset callback after closing modalstate which clears
     // the message field, not also to reset pic url to erroneous image png before exit
-    window.removeEventListener('scroll', this.disableScroll);
     const { reset } = this.props;
     this.setState({
       show: false,
