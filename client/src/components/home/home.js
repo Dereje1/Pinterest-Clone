@@ -2,7 +2,7 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
-import { getPins, deletePin, updatePin } from '../../actions/pinactions';
+import { getPins, updatePin } from '../../actions/pinactions';
 import ImageBuild from '../imagebuild/imagebuild';
 import PinZoom from '../modal/modalzoom';
 
@@ -66,31 +66,18 @@ class Home extends Component {
 
   imageStatus = (element) => {
     // finds the status of image to determine what kind of button to place on pic
-    const { user } = this.props;
-    if (element.owner !== user.user.username) { // If the user is not owner of the pin
-      if (element.savedBy.includes(user.user.username)) { // If the user has already saved this pin
-        return null; // no button
-      }
-      // user has not saved this pin show save button
-      return (
-        <button
-          type="submit"
-          className="actionbutton save"
-          onClick={() => this.savePic(element)}
-        >
-          <i className="fa fa-thumb-tack" aria-hidden="true" />
-          {' Save'}
-        </button>
-      );
+    if (element.hasSaved || element.owns) { // If the user has already saved this pin
+      return null; // no button
     }
-    // user owns pin show delete button
+    // user has not saved this pin show save button
     return (
       <button
         type="submit"
-        className="actionbutton delete"
-        onClick={() => this.deletePic(element)}
+        className="actionbutton save"
+        onClick={() => this.savePic(element)}
       >
-        {'Delete'}
+        <i className="fa fa-thumb-tack" aria-hidden="true" />
+        {' Save'}
       </button>
     );
   }
@@ -105,19 +92,6 @@ class Home extends Component {
     });
   }
 
-  deletePic(element) { // deletes a pic that user owns
-    const { pinList } = this.state;
-    let pinListCopy = JSON.parse(JSON.stringify(pinList));
-    const indexOfDeletion = pinListCopy.findIndex(p => p._id === element._id);
-    // update copy -->no mutation and then delete from db
-    pinListCopy = [...pinListCopy.slice(0, indexOfDeletion),
-      ...pinListCopy.slice(indexOfDeletion + 1)];
-    this.setState({
-      pinList: pinListCopy,
-      displayPinZoom: false,
-    }, () => deletePin(element._id));
-  }
-
   savePic(element) { // saves a pic owned by somebody else into current users profile
     // can not do this unless logged in
     const { user } = this.props;
@@ -129,14 +103,20 @@ class Home extends Component {
     // copy pinlist --> avoid mutation at all cost
     const pinListCopy = JSON.parse(JSON.stringify(pinList));
     const indexOfUpdate = pinListCopy.findIndex(p => p._id === element._id);
-    // add current username to saved by array of pin
-    const updated = [...element.savedBy, user.user.username];
+    // add current pinner info to saved by array of pin
+    const newPinnerInfo = {
+      name: user.user.displayname,
+      service: user.user.service,
+      id: user.user.userID,
+    };
+    const updated = [...element.savedBy, user.user.displayname];
     // update client then update db
     pinListCopy[indexOfUpdate].savedBy = updated;
+    pinListCopy[indexOfUpdate].hasSaved = true;
     this.setState({
       pinList: pinListCopy,
       displayPinZoom: false,
-    }, () => updatePin(element._id, updated));
+    }, () => updatePin(element._id, newPinnerInfo));
   }
 
 
