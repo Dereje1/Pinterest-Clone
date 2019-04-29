@@ -2,6 +2,22 @@ const router = require('express').Router();
 
 const pins = require('./models/pins'); // schema for pins
 const isLoggedIn = require('./Authentication_Config/isloggedin');
+
+
+const filterPins = rawPins => rawPins.map((pin) => {
+  const {
+    _id, imgDescription, imgLink, owner, savedBy,
+  } = pin;
+  const { name } = owner;
+  const modifiedSavedBy = savedBy.map(pinner => pinner.name);
+  return {
+    _id,
+    imgDescription,
+    imgLink,
+    owner: name,
+    savedBy: modifiedSavedBy,
+  };
+});
 /* Crud Routes */
 // adds a new pin to the db
 router.post('/api/newpin', isLoggedIn, (req, res) => {
@@ -13,13 +29,23 @@ router.post('/api/newpin', isLoggedIn, (req, res) => {
 });
 // gets pins depending on request type per user or all,
 // although I am doing all filtering on client side
-router.get('/api/:user', (req, res) => {
-  const userName = req.params.user;
-  const query = (userName === 'All') ? {} : { owner: userName };
-  pins.find(query, (err, userPins) => {
-    if (err) res.json(err);
-    res.json(userPins);
-  });
+router.get('/api/', async (req, res) => {
+  if (req.query.type === 'profile') {
+    try {
+      const ownPins = await pins.find({ 'owner.id': req.user.twitter.id }).exec();
+      const savedPins = await pins.find({ 'savedBy.id': req.user.twitter.id }).exec();
+      res.json(filterPins([...ownPins, ...savedPins]));
+    } catch (error) {
+      res.json(error);
+    }
+  } else {
+    try {
+      const allPins = await pins.find({ }).exec();
+      res.json(filterPins(allPins));
+    } catch (error) {
+      res.json(error);
+    }
+  }
 });
 // deletes a pin by id
 router.delete('/api/:_id', isLoggedIn, (req, res) => {
