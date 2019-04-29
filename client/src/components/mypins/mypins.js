@@ -27,12 +27,9 @@ class Mypins extends Component {
 
   componentDidMount() {
     // get all pins and filter by owned and saved and then concatenate and set state
-    const { user } = this.props;
-    getPins('All').then((pinsFromDB) => {
-      const ownerFilter = pinsFromDB.filter(pin => pin.owner === user.user.username);
-      const savedFilter = pinsFromDB.filter(pin => pin.savedBy.includes(user.user.username));
+    getPins('profile').then((pinsFromDB) => {
       this.setState({
-        pinList: [...ownerFilter, ...savedFilter],
+        pinList: pinsFromDB,
       });
     });
   }
