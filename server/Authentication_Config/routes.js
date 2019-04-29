@@ -7,11 +7,14 @@ const authRoutes = (app, passport) => {
     const headerObject = req.headers; // need for ip
     let ip = (headerObject['x-forwarded-for'] || req.socket.remoteAddress).split(',')[0];
     ip = (ip === '::1') ? 'local' : ip;
+    const service = Object.keys(req.user._doc).filter(s => s !== '__v' && s !== '_id');
     res.json({
       authenticated: true,
       userip: ip,
       username: req.user.twitter.username,
-      displayname: req.user.twitter.displayName, // only expose username and displayname
+      userID: req.user.twitter.id,
+      displayname: req.user.twitter.displayName,
+      service: service[0],
     });
   });
 
