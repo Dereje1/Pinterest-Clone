@@ -4,11 +4,17 @@ const pins = require('./models/pins'); // schema for pins
 const isLoggedIn = require('./Authentication_Config/isloggedin');
 
 /* CRUD utilities */
+const getAuthService = (user) => {
+  if (!user) return null;
+  const [service] = Object.keys(user._doc).filter(s => s !== '__v' && s !== '_id');
+  return service;
+};
 /* return only required pin info to the client */
 const filterPins = (rawPins, user) => rawPins.map((pin) => {
   const {
     _id, imgDescription, imgLink, owner, savedBy,
   } = pin;
+  const authService = getAuthService(user);
   const savedIds = savedBy.map(s => s.id);
   const { name } = owner;
   const modifiedSavedBy = savedBy.map(pinner => pinner.name);
@@ -18,18 +24,19 @@ const filterPins = (rawPins, user) => rawPins.map((pin) => {
     imgLink,
     owner: name,
     savedBy: modifiedSavedBy,
-    owns: user ? user.twitter.id === owner.id : null,
-    hasSaved: user ? savedIds.includes(user.twitter.id) : null,
+    owns: user ? user[authService].id === owner.id : null,
+    hasSaved: user ? savedIds.includes(user[authService].id) : null,
   };
 });
 /* Checks if A pin has already been saved by the user
    If it hasn't return the savedBy Array for the pin
 */
 const hasSavedPin = async (pinID, userInfo) => {
+  const authService = getAuthService(userInfo);
   try {
     const pin = await pins.findById(pinID).exec();
     const savedIds = pin.savedBy.map(s => s.id);
-    return savedIds.includes(userInfo.twitter.id) ? [true, null] : [false, [...pin.savedBy]];
+    return savedIds.includes(userInfo[authService].id) ? [true, null] : [false, [...pin.savedBy]];
   } catch (error) {
     throw error;
   }
@@ -38,9 +45,10 @@ const hasSavedPin = async (pinID, userInfo) => {
    If it is not returns the savedBy Array for the pin
 */
 const isOwner = async (pinID, userInfo) => {
+  const authService = getAuthService(userInfo);
   try {
     const pin = await pins.findById(pinID).exec();
-    return userInfo.twitter.id === pin.owner.id ? [true, null] : [false, [...pin.savedBy]];
+    return userInfo[authService].id === pin.owner.id ? [true, null] : [false, [...pin.savedBy]];
   } catch (error) {
     throw error;
   }
@@ -49,8 +57,10 @@ const isOwner = async (pinID, userInfo) => {
 /* Crud Routes */
 // adds a new pin to the db
 router.post('/api/newpin', isLoggedIn, async (req, res) => {
+  const authService = getAuthService(req.user);
   try {
     const addedpin = await pins.create(req.body);
+    console.log(`${req.user[authService].displayName} added pin ${addedpin.imgDescription}`);
     res.json(addedpin);
   } catch (error) {
     res.json(error);
@@ -58,10 +68,11 @@ router.post('/api/newpin', isLoggedIn, async (req, res) => {
 });
 // gets pins: all or just user's saved and owned pins,
 router.get('/api/', async (req, res) => {
+  const authService = getAuthService(req.user);
   if (req.query.type === 'profile') {
     try {
-      const ownPins = await pins.find({ 'owner.id': req.user.twitter.id }).exec();
-      const savedPins = await pins.find({ 'savedBy.id': req.user.twitter.id }).exec();
+      const ownPins = await pins.find({ 'owner.id': req.user[authService].id }).exec();
+      const savedPins = await pins.find({ 'savedBy.id': req.user[authService].id }).exec();
       res.json(filterPins([...ownPins, ...savedPins], req.user));
     } catch (error) {
       res.json(error);
@@ -77,21 +88,22 @@ router.get('/api/', async (req, res) => {
 });
 // deletes a pin if owned by user or removes user from savedby List
 router.delete('/api/:_id', isLoggedIn, async (req, res) => {
+  const authService = getAuthService(req.user);
   const query = { _id: req.params._id };
   try {
     const [ownsPin, savedBy] = await isOwner(req.params._id, req.user);
     if (ownsPin) {
-      console.log('Removing Pin');
-      const removedPin = await pins.remove(query);
+      const removedPin = await pins.findOneAndRemove(query).exec();
+      console.log(`${req.user[authService].displayName} deleted pin ${removedPin.imgDescription}`);
       res.json(removedPin);
     } else {
-      console.log('Removing Pinner');
-      const indexOfDeletion = savedBy.findIndex(s => s.id === req.user.twitter.id);
+      const indexOfDeletion = savedBy.findIndex(s => s.id === req.user[authService].id);
       const pinToUpdate = [...savedBy.slice(0, indexOfDeletion),
         ...savedBy.slice(indexOfDeletion + 1)];
       const update = { $set: { savedBy: pinToUpdate } };
       const modified = { new: true };
       const updatedPin = await pins.findByIdAndUpdate(req.params._id, update, modified).exec();
+      console.log(`${req.user[authService].displayName} unpinned ${updatedPin.imgDescription}`);
       res.json(updatedPin);
     }
   } catch (error) {
@@ -103,6 +115,7 @@ router.delete('/api/:_id', isLoggedIn, async (req, res) => {
 router.put('/api/:_id', isLoggedIn, async (req, res) => {
   const newPinner = req.body;
   const pinID = req.params._id;
+  const authService = getAuthService(req.user);
   try {
     const [savedPin, savedBy] = await hasSavedPin(pinID, req.user);
     if (!savedPin) {
@@ -110,6 +123,7 @@ router.put('/api/:_id', isLoggedIn, async (req, res) => {
       const update = { $set: { savedBy: pinToUpdate } };
       const modified = { new: true };
       const updatedPin = await pins.findByIdAndUpdate(pinID, update, modified).exec();
+      console.log(`${req.user[authService].displayName} pinned ${updatedPin.imgDescription}`);
       res.json(updatedPin);
     } else {
       console.log('This user has the pin already saved');
