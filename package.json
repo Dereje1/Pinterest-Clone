@@ -18,6 +18,7 @@
     "mongoose": "^4.9.0",
     "morgan": "~1.9.0",
     "passport": "latest",
+    "passport-google-oauth": "^2.0.0",
     "passport-twitter": "latest",
     "prop-types": "^15.7.2",
     "react": "^16.0.0",
