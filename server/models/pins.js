@@ -9,14 +9,13 @@ const pinSchema = mongoose.Schema({
   },
   imgDescription: { type: String, required: true },
   imgLink: { type: String, required: true },
-  timeStamp: Number,
   savedBy: {
     type: [{
       name: { type: String, required: true },
       service: { type: String, required: true },
       id: { type: String, required: true },
     }],
-    required: true,
+    default: [],
   },
 }, { timestamps: true });
 
