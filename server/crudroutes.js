@@ -6,7 +6,8 @@ const isLoggedIn = require('./Authentication_Config/isloggedin');
 /* CRUD utilities */
 const getAuthService = (user) => {
   if (!user) return null;
-  const [service] = Object.keys(user._doc).filter(s => s !== '__v' && s !== '_id');
+  let service = Object.keys(user._doc).filter(s => s !== '__v' && s !== '_id');
+  [service] = service.filter(s => Object.keys(user._doc[s]).length);
   return service;
 };
 /* return only required pin info to the client */
