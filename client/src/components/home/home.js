@@ -5,6 +5,7 @@ import PropTypes from 'prop-types';
 import { getPins, updatePin } from '../../actions/pinactions';
 import ImageBuild from '../imagebuild/imagebuild';
 import PinZoom from '../modal/modalzoom';
+import SignIn from '../signin/signin';
 
 class Home extends Component {
 
@@ -15,6 +16,7 @@ class Home extends Component {
       displayPinZoom: false, // for zoom modal
       imageInfo: [], // to send to zoom modal
       imagesLoaded: false, // masonry callback
+      displaySignIn: false,
     };
   }
 
@@ -97,7 +99,10 @@ class Home extends Component {
     const { user } = this.props;
     const { pinList } = this.state;
     if (user.user.username === 'Guest') {
-      window.location = '/auth/twitter';
+      this.setState({
+        displaySignIn: true,
+        displayPinZoom: false,
+      });
       return;
     }
     // copy pinlist --> avoid mutation at all cost
@@ -123,12 +128,23 @@ class Home extends Component {
   render() {
     const { user } = this.props;
     const {
-      displayPinZoom, imageInfo, pinList, imagesLoaded,
+      displayPinZoom, imageInfo, pinList, imagesLoaded, displaySignIn,
     } = this.state;
     const userStatus = user.user.username !== null;
     if (userStatus) {
       return (
         <React.Fragment>
+          {
+            !user.user.authenticated
+              ? (
+                <SignIn
+                  show={displaySignIn}
+                  removeSignin={() => this.setState({ displaySignIn: false })}
+                  caller="home"
+                />
+              )
+              : null
+          }
           <ImageBuild
             layoutComplete={this.layoutComplete}
             pinEnlarge={this.pinEnlarge}

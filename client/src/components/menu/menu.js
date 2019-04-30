@@ -4,15 +4,15 @@ import PropTypes from 'prop-types';
 import { NavLink } from 'react-router-dom';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
-import { getUser, setGuest } from '../../actions/authentication';
+import { getUser } from '../../actions/authentication';
 import Cover from '../cover/cover';
+import SignIn from '../signin/signin';
 import './menu.scss';
 
 const mapStateToProps = state => state;
 const mapDispatchToProps = dispatch => (
   bindActionCreators({
     getUser,
-    setGuest,
   }, dispatch)
 );
 
@@ -25,6 +25,7 @@ class Menu extends React.Component {
       initialLoad: true, // used to avoid keyframe anim on initial load
       menuIsCollapsed: window.innerWidth < 600, // test for screen size
       collapseToggle: false, // turns responsive hamburger on/off
+      displaySignIn: false,
     };
   }
 
@@ -57,15 +58,6 @@ class Menu extends React.Component {
     }
   }
 
-  handleLogin = () => { // twitter authentication
-    window.location = '/auth/twitter';
-  }
-
-  handleGuest = () => { // set guest user
-    const { setGuest: setGuestStatus } = this.props;
-    setGuestStatus();
-  }
-
   listenForOutClicks = (e) => {
     // clicks outside an extended menu will collpase it
     if (!e.target.closest('.menu')) this.toggleCollapse();
@@ -90,14 +82,14 @@ class Menu extends React.Component {
   render() {
     // render cover/guest / logged in menu bar
     const {
-      menuIsCollapsed, collapseToggle, ready, initialLoad,
+      menuIsCollapsed, collapseToggle, ready, initialLoad, displaySignIn,
     } = this.state;
     const { user } = this.props;
     if (!ready) return null;
     if (!user.user.username) {
       // render cover
       document.body.classList.add('cover');
-      return <Cover handleGuest={this.handleGuest} handleLogin={this.handleLogin} />;
+      return <Cover />;
     }
     document.body.classList.remove('cover');
     if (!user.user.authenticated) {
@@ -110,9 +102,18 @@ class Menu extends React.Component {
               {' Clone'}
             </a>
           </div>
-          <div className="items">
-            <a href="/auth/twitter">Login with Twitter</a>
+          <div className="items signin">
+            <i
+              className="fa fa-sign-in"
+              aria-hidden="true"
+              onClick={() => this.setState({ displaySignIn: true })}
+            />
           </div>
+          <SignIn
+            show={displaySignIn}
+            removeSignin={() => this.setState({ displaySignIn: false })}
+            caller="menu"
+          />
         </div>
       );
     }
@@ -166,6 +167,4 @@ Menu.propTypes = {
   user: PropTypes.shape(PropTypes.shape),
   // redux action to get user status from server
   getUser: PropTypes.func.isRequired,
-  // redux action to set guest user status on server
-  setGuest: PropTypes.func.isRequired,
 };

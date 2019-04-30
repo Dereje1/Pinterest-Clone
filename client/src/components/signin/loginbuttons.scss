@@ -1,0 +1,39 @@
+#twitterloginbutton, #googleloginbutton,#guestbutton{
+    border: 0px;
+    height: 40px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-radius: 2px;
+    padding: 1px;
+    font-size: 15px;
+    font-weight: bold;
+    outline: none;
+    box-shadow: none;
+    cursor: pointer;
+    background-clip: padding-box;
+    transition: opacity .2s linear;
+    width: 268px;
+    margin-bottom: 10px;
+    color:white;
+    #twitter{
+      font-size: 30px;
+      padding-left: 3px;
+    }
+    #guest{
+        font-size: 30px;
+        padding-left: 3px;
+      }
+    .buttontext{
+        padding-right: 45px;
+      }
+  }
+  #googleloginbutton{
+    background-color: rgb(66, 133, 244);
+  }
+  #twitterloginbutton{
+    background-color: #38A1F3;
+  }
+  #guestbutton{
+    background-color: #ffb45e;
+  }
