@@ -4,13 +4,26 @@ const pins = require('./models/pins'); // schema for pins
 const isLoggedIn = require('./Authentication_Config/isloggedin');
 
 /* CRUD utilities */
+/* Isolate auth service used from req.user */
 const getAuthService = (user) => {
   if (!user) return null;
   let service = Object.keys(user._doc).filter(s => s !== '__v' && s !== '_id');
   [service] = service.filter(s => Object.keys(user._doc[s]).length);
   return service;
 };
-/* return only required pin info to the client */
+/* filterPins return only required pin info to the client */
+/*
+returns
+{
+    _id, // send full
+    imgDescription, // send full
+    imgLink, // send full
+    owner: name, // send only display name
+    savedBy: modifiedSavedBy, // send only display names of pinners
+    owns: // need for displaying action button on pin
+    hasSaved: // need for displaying action button on pin
+};
+*/
 const filterPins = (rawPins, user) => rawPins.map((pin) => {
   const {
     _id, imgDescription, imgLink, owner, savedBy,
