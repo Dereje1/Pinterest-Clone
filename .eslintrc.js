@@ -29,7 +29,7 @@ module.exports = {
         "specialLink": [ "to" ]
       }],
       'no-console': 0,
-      'no-underscore-dangle': ["error", { "allow": ["_id","_d"] }],
+      'no-underscore-dangle': ["error", { "allow": ["_id","_d","_doc"] }],
       'padded-blocks': ['error', {
         'blocks': 'never',
         'classes': 'always',

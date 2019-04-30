@@ -1,0 +1,51 @@
+#sign-in{
+    position: fixed;
+    left: 0;
+    right: 0;
+    width: 370px;
+    height: 250px;
+    z-index: 1500;
+    margin-left: auto;
+    margin-right: auto;
+    background-color: #0b0f19c4;
+    border-radius: 8px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-around;
+    align-items: center;
+    border-radius: 10px;
+    visibility: hidden;
+    &.signshow{
+        animation-name: dropdown;
+        animation-duration: 1s;
+        animation-timing-function: cubic-bezier();
+        animation-iteration-count: 1;
+        top: 200px;
+        visibility: visible;
+    }
+    &.signhide{
+        animation-name: pullup;
+        animation-duration: 1s;
+        animation-timing-function: linear;
+        animation-iteration-count: 1;
+    }
+}
+
+@keyframes dropdown{
+    0%{
+        transform: translateY(-300px);
+    }
+    100%{
+        transform: translateY(0px);
+    }
+}
+
+@keyframes pullup{
+    0%{
+        transform: translateY(200px);
+        visibility: visible;
+    }
+    100%{
+        transform: translateY(-300px);
+    }
+}

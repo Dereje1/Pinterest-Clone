@@ -6,7 +6,7 @@ import PropTypes from 'prop-types';
 import PinCreate from './pincreatemodal';
 import ImageBuild from '../imagebuild/imagebuild';
 import {
-  addPin, getPins, deletePin, updatePin,
+  addPin, getPins, deletePin,
 } from '../../actions/pinactions'; // pin CRUD
 import PinZoom from '../modal/modalzoom';
 import './mypins.scss';
@@ -27,12 +27,9 @@ class Mypins extends Component {
 
   componentDidMount() {
     // get all pins and filter by owned and saved and then concatenate and set state
-    const { user } = this.props;
-    getPins('All').then((pinsFromDB) => {
-      const ownerFilter = pinsFromDB.filter(pin => pin.owner === user.user.username);
-      const savedFilter = pinsFromDB.filter(pin => pin.savedBy.includes(user.user.username));
+    getPins('profile').then((pinsFromDB) => {
       this.setState({
-        pinList: [...ownerFilter, ...savedFilter],
+        pinList: pinsFromDB,
       });
     });
   }
@@ -89,33 +86,17 @@ class Mypins extends Component {
     </button>
   )
 
-  deletePic(element) { // deletes a picture
-    // however if not owner must only do an update as you MUST be owner to completely delete it from
-    // database but can delete from client state
-    const { user } = this.props;
+  deletePic(element) {
     const { pinList, displayPinCreate } = this.state;
     if (displayPinCreate) return;
     let pinListCopy = JSON.parse(JSON.stringify(pinList));
     const indexOfDeletion = pinListCopy.findIndex(p => p._id === element._id);
     pinListCopy = [...pinListCopy.slice(0, indexOfDeletion),
       ...pinListCopy.slice(indexOfDeletion + 1)];
-    if (element.owner !== user.user.username) { // not an owner of the pin
-      // ready to update pin
-      let toUpdate = [...element.savedBy]; // copy all users who have saved pin
-      const indexOfUpdate = toUpdate.findIndex(saved => saved === user.user.username);
-      // remove user from list
-      toUpdate = [...toUpdate.slice(0, indexOfUpdate), ...toUpdate.slice(indexOfUpdate + 1)];
-      // update state with deleted pin but update db with updated pin
-      this.setState({
-        pinList: pinListCopy,
-        displayPinZoom: false,
-      }, () => updatePin(element._id, toUpdate));
-    } else { // user owns pin can delete both from state and db
-      this.setState({
-        pinList: pinListCopy,
-        displayPinZoom: false,
-      }, () => deletePin(element._id));
-    }
+    this.setState({
+      pinList: pinListCopy,
+      displayPinZoom: false,
+    }, () => deletePin(element._id));
   }
 
   addPic(pinJSON) { // adds a pin to the db
@@ -123,7 +104,19 @@ class Mypins extends Component {
     const { pinList } = this.state;
     let pinListCopy = JSON.parse(JSON.stringify(pinList));
     addPin(pinJSON).then((newPin) => {
-      pinListCopy = [...pinListCopy, newPin];
+      const {
+        savedBy, owner, imgLink, imgDescription, _id,
+      } = newPin;
+      const pinAdd = {
+        _id,
+        imgDescription,
+        imgLink,
+        savedBy,
+        owner: owner.name,
+        owns: true,
+        hasSaved: false,
+      };
+      pinListCopy = [...pinListCopy, pinAdd];
       this.setState({
         pinList: pinListCopy,
       });

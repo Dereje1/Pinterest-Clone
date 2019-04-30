@@ -7,11 +7,15 @@ const authRoutes = (app, passport) => {
     const headerObject = req.headers; // need for ip
     let ip = (headerObject['x-forwarded-for'] || req.socket.remoteAddress).split(',')[0];
     ip = (ip === '::1') ? 'local' : ip;
+    let service = Object.keys(req.user._doc).filter(s => s !== '__v' && s !== '_id');
+    [service] = service.filter(s => Object.keys(req.user._doc[s]).length);
     res.json({
       authenticated: true,
       userip: ip,
-      username: req.user.twitter.username,
-      displayname: req.user.twitter.displayName, // only expose username and displayname
+      username: req.user[service].username,
+      userID: req.user[service].id,
+      displayname: req.user[service].displayName,
+      service,
     });
   });
 
@@ -37,7 +41,6 @@ const authRoutes = (app, passport) => {
   // =====================================
   // TWITTER ROUTES ======================
   // =====================================
-  // route for twitter authentication and login
   app.get('/auth/twitter', passport.authenticate('twitter'));
 
   // handle the callback after twitter has authenticated the user, just go back to home in my case
@@ -46,6 +49,18 @@ const authRoutes = (app, passport) => {
       successRedirect: '/',
       failureRedirect: '/',
     }));
+  // =====================================
+  // GOOGLE ROUTES =======================
+  // =====================================
+  // login route
+  app.get('/auth/google', passport.authenticate('google', { scope: ['profile', 'email'] }));
+  // redirect from google
+  app.get('/auth/google/redirect',
+    passport.authenticate('google', {
+      successRedirect: '/',
+      failureRedirect: '/',
+    }));
+  // logout route
 };
 
 module.exports = authRoutes;

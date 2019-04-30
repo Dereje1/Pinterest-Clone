@@ -84,11 +84,13 @@ class PinCreate extends Component {
     if (saveDisabled) return;
     // prepare JSON for POST api
     const pinJSON = {
-      owner: userInfo.username,
+      owner: {
+        name: userInfo.displayname,
+        service: userInfo.service,
+        id: userInfo.userID,
+      },
       imgDescription: description,
       imgLink: picPreview,
-      timeStamp: Date.now(),
-      savedBy: [],
     };
     // save into db and close modal
     savePin(pinJSON);

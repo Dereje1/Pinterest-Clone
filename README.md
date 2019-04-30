@@ -35,7 +35,7 @@ git pull https://github.com/Dereje1/Pinterest-Clone.git
 yarn
 ```
 
-If using mongoDB locally see below to start the db (if using mlab skip this step)
+If using mongoDB locally see below to start the db (if using mlab / Mongo DB Atlas skip this step)
 
 ```
 mkdir data
@@ -50,6 +50,10 @@ MONGOLAB_URI=<Mongo Connection URI>
 TWITTER_CONSUMER_KEY=< Get from Twitter Developer API >
 TWITTER_CONSUMER_SECRET=< Get from Twitter Developer API >
 TWITTER_CALLBACK=<Redirection address after Twitter Verifies account>
+GOOGLE_CLIENT_ID=< Get from Google Developer API >
+GOOGLE_CLIENT_SECRET=< Get from Google Developer API >
+GOOGLE_CALLBACK=<Redirection address after Twitter Verifies account>
+
 ```
 Run development environment
 ```

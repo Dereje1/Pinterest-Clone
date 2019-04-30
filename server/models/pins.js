@@ -2,11 +2,21 @@
 const mongoose = require('mongoose');
 
 const pinSchema = mongoose.Schema({
-  owner: String,
-  imgDescription: String,
-  imgLink: String,
-  timeStamp: Number,
-  savedBy: [String],
-});
+  owner: {
+    name: { type: String, required: true },
+    service: { type: String, required: true },
+    id: { type: String, required: true },
+  },
+  imgDescription: { type: String, required: true },
+  imgLink: { type: String, required: true },
+  savedBy: {
+    type: [{
+      name: { type: String, required: true },
+      service: { type: String, required: true },
+      id: { type: String, required: true },
+    }],
+    default: [],
+  },
+}, { timestamps: true });
 
 module.exports = mongoose.model('pin', pinSchema);

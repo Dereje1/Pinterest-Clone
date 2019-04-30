@@ -12,7 +12,7 @@ export const addPin = pinInfo => new Promise((resolve, reject) => {
 });
 
 export const getPins = query => new Promise((resolve, reject) => {
-  axios.get(`/api/${query}`)
+  axios.get(`/api/?type=${query}`)
     .then((response) => {
       resolve(response.data);
     })

@@ -140,7 +140,7 @@ class PinZoom extends Component {
         <div className="header">
           <span id="zoomtitle">
             <div id="zoomdesc">{pinInformation.imgDescription}</div>
-            <div id="zoomowner">{`Linked By: ${pinInformation.owner}`}</div>
+            <div id="zoomowner">{`${pinInformation.owner}`}</div>
           </span>
           <span id="zoomtack" title={pinnedBy} className={parentDivStyle.small ? 'small' : ''}>
             <i className="fa fa-thumb-tack" aria-hidden="true" />

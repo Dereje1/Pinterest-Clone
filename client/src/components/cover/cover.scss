@@ -79,56 +79,6 @@
           text-decoration: none;
         }
       }
-      .buttontext{
-        padding-right: 45px;
-      }
-      #loginbutton{
-        border: 0px;
-        height: 40px;
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-        border-radius: 2px;
-        padding: 1px;
-        font-size: 15px;
-        font-weight: bold;
-        outline: none;
-        box-shadow: none;
-        cursor: pointer;
-        background-clip: padding-box;
-        transition: opacity .2s linear;
-        width: 268px;
-        background-color: #4285f4;
-        color:white;
-        #twitter{
-          font-size: 30px;
-          padding-left: 3px;
-        }
-      }
-      #guestbutton{
-        border: 0px;
-        height: 40px;
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-        border-radius: 2px;
-        padding: 1px;
-        font-size: 15px;
-        font-weight: bold;
-        outline: none;
-        box-shadow: none;
-        cursor: pointer;
-        background-clip: padding-box;
-        transition: opacity .2s linear;
-        width: 268px;
-        background-color: #ffb45e;
-        color:white;
-        margin-bottom: 10px;
-        #guest{
-          font-size: 30px;
-          padding-left: 3px;
-        }
-      }
     }
   }
 

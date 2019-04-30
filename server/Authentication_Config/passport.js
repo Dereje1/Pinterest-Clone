@@ -1,6 +1,6 @@
 // config/passport.js for twitter
 const TwitterStrategy = require('passport-twitter').Strategy;
-
+const GoogleStrategy = require('passport-google-oauth').OAuth2Strategy;
 // load up the user model
 const User = require('../models/user');
 
@@ -10,6 +10,11 @@ const configAuth = {
     consumerKey: process.env.TWITTER_CONSUMER_KEY,
     consumerSecret: process.env.TWITTER_CONSUMER_SECRET,
     callbackURL: process.env.TWITTER_CALLBACK,
+  },
+  googleAuth: {
+    clientID: process.env.GOOGLE_CLIENT_ID,
+    clientSecret: process.env.GOOGLE_CLIENT_SECRET,
+    callbackURL: process.env.GOOGLE_CALLBACK,
   },
 };
 
@@ -29,6 +34,7 @@ const configMain = (passport) => {
   // =========================================================================
   // TWITTER =================================================================
   // =========================================================================
+
   passport.use(new TwitterStrategy(configAuth.twitterAuth, ((token, tokenSecret, profile, done) => {
     // make the code asynchronous
     // User.findOne won't fire until we have all our data back from Twitter
@@ -60,5 +66,31 @@ const configMain = (passport) => {
       });
     });
   })));
+
+  // =========================================================================
+  // GOOGLE =================================================================
+  // =========================================================================
+
+  passport.use(new GoogleStrategy(configAuth.googleAuth, (token, tokenSecret, profile, done) => {
+    User.findOne({ 'google.id': profile.id }, (err, user) => {
+      if (err) return done(err);
+      if (user) return done(null, user);
+      // create new user
+      const { id, emails, displayName } = profile;
+      const newUser = new User({
+        google: {
+          id,
+          token,
+          displayName,
+          username: emails[0].value,
+        },
+      });
+      newUser.save((saveErr) => {
+        if (saveErr) throw saveErr;
+        return done(null, newUser);
+      });
+      return false; // eslint needs return
+    });
+  }));
 };
 module.exports = configMain;
