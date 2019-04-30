@@ -42,7 +42,7 @@ const ImageBuild = ({
                 {element.imgDescription}
               </div>
               {status(element)}
-              <div className="owner">{`Linked By: ${element.owner}`}</div>
+              <div className="owner">{`${element.owner}`}</div>
             </div>
           ))
         }
