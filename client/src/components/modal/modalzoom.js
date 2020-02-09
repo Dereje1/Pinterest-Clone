@@ -121,7 +121,7 @@ class PinZoom extends Component {
   }
 
   pinners = pinInformation => (pinInformation.savedBy.length > 3
-    ? `${pinInformation.savedBy.slice(0, 2).join(', ')} and ${pinInformation.savedBy.length - 3} others`
+    ? `${pinInformation.savedBy.slice(0, 3).join(', ')} and ${pinInformation.savedBy.length - 3} others`
     : pinInformation.savedBy.join(', '))
 
   render() {
