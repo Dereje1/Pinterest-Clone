@@ -1,10 +1,10 @@
 // sets user status into store state
-const userStatusReducer = (state = { user: [] }, action) => {
+const userStatusReducer = (state = { }, action) => {
   switch (action.type) {
     case 'GET_USER_STATUS':
-      return { user: action.payload };
+      return action.payload;
     case 'SET_GUEST_STATUS':
-      return { user: action.payload };
+      return action.payload;
     default:
       return state;
   }

@@ -126,16 +126,16 @@ class Home extends Component {
 
 
   render() {
-    const { user } = this.props;
+    const { user: { authenticated, username } } = this.props;
     const {
       displayPinZoom, imageInfo, pinList, imagesLoaded, displaySignIn,
     } = this.state;
-    const userStatus = user.user.username !== null;
+    const userStatus = username !== null;
     if (userStatus) {
       return (
         <React.Fragment>
           {
-            !user.user.authenticated
+            !authenticated
               ? (
                 <SignIn
                   show={displaySignIn}

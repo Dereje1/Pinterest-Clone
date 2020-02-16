@@ -45,7 +45,7 @@ class Menu extends React.Component {
   componentDidUpdate(prevProps, prevState) {
     const { user } = this.props;
     const { collapseToggle, initialLoad } = this.state;
-    if (prevProps.user.user !== user.user) {
+    if (prevProps.user !== user) {
       this.setState({ ready: true }); // once user info comes from cdm proceed to rendering
     }
     if (prevState.collapseToggle === false && collapseToggle) {
@@ -84,15 +84,15 @@ class Menu extends React.Component {
     const {
       menuIsCollapsed, collapseToggle, ready, initialLoad, displaySignIn,
     } = this.state;
-    const { user } = this.props;
+    const { user: { authenticated, username } } = this.props;
     if (!ready) return null;
-    if (!user.user.username) {
+    if (!username) {
       // render cover
       document.body.classList.add('cover');
       return <Cover />;
     }
     document.body.classList.remove('cover');
-    if (!user.user.authenticated) {
+    if (!authenticated) {
       // render guest menu bar
       return (
         <div className="menu">

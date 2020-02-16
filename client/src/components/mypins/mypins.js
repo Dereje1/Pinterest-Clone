@@ -130,16 +130,16 @@ class Mypins extends Component {
   }
 
   render() {
-    const { user } = this.props;
+    const { user, user: { authenticated, displayname } } = this.props;
     const {
       displayPinCreate, displayPinZoom, imageInfo, pinList, imagesLoaded,
     } = this.state;
-    if (!user.user.authenticated) window.location.assign('/');
+    if (!authenticated) window.location.assign('/');
     return (
       <React.Fragment>
         <div>
           <div id="mypinframe">
-            <h3 id="username">{user.user.displayname}</h3>
+            <h3 id="username">{displayname}</h3>
             <div
               id="creatpinwrapper"
               onClick={() => this.pinForm()}
@@ -155,7 +155,7 @@ class Mypins extends Component {
             <PinCreate
               message={displayPinCreate}
               reset={() => this.setState({ displayPinCreate: false })}
-              userInfo={user.user}
+              userInfo={user}
               savePin={pinJSON => this.addPic(pinJSON)}
             />
           </div>
