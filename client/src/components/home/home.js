@@ -96,9 +96,13 @@ class Home extends Component {
 
   savePic(element) { // saves a pic owned by somebody else into current users profile
     // can not do this unless logged in
-    const { user } = this.props;
+    const {
+      user: {
+        displayname, username, service, userID,
+      },
+    } = this.props;
     const { pinList } = this.state;
-    if (user.user.username === 'Guest') {
+    if (username === 'Guest') {
       this.setState({
         displaySignIn: true,
         displayPinZoom: false,
@@ -110,11 +114,11 @@ class Home extends Component {
     const indexOfUpdate = pinListCopy.findIndex(p => p._id === element._id);
     // add current pinner info to saved by array of pin
     const newPinnerInfo = {
-      name: user.user.displayname,
-      service: user.user.service,
-      id: user.user.userID,
+      name: displayname,
+      service,
+      id: userID,
     };
-    const updated = [...element.savedBy, user.user.displayname];
+    const updated = [...element.savedBy, displayname];
     // update client then update db
     pinListCopy[indexOfUpdate].savedBy = updated;
     pinListCopy[indexOfUpdate].hasSaved = true;
