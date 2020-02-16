@@ -21,7 +21,7 @@ class PinZoom extends Component {
     if ((prevProps.message === false) && (message === true)) {
       const divCopy = JSON.parse(JSON.stringify(parentDivStyle));
       // use scroll dist on zoom call to set top of zoom div
-      divCopy.top = zoomInfo[2] + 70;
+      divCopy.top = zoomInfo[2] + 10;
       if (prevProps.zoomInfo.length
         && prevProps.zoomInfo[0].imgDescription !== zoomInfo[0].imgDescription) {
         divCopy.width = window.innerWidth;
