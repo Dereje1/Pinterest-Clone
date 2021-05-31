@@ -20,6 +20,8 @@ const ImageBuild = ({
     <div id="mainframe">
       <Masonry
         onImagesLoaded={() => layoutComplete()}
+        className="my-gallery-class"
+        options={{ fitWidth: true }}
       >
         {
           pinList.map(element => (

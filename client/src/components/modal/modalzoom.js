@@ -128,8 +128,7 @@ class PinZoom extends Component {
     const { zoomInfo } = this.props;
     const { show, parentDivStyle } = this.state;
     if (!zoomInfo.length) return null;
-    const pinInformation = zoomInfo[0];
-    const buttonInformation = zoomInfo[1];
+    const [pinInformation, buttonInformation] = zoomInfo;
     const totalPins = (pinInformation.savedBy) ? pinInformation.savedBy.length : 0;
     const pinnedBy = totalPins ? this.pinners(pinInformation) : '';
     return (
