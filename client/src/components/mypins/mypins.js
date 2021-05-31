@@ -5,9 +5,7 @@ import PropTypes from 'prop-types';
 
 import PinCreate from './pincreatemodal';
 import ImageBuild from '../imagebuild/imagebuild';
-import {
-  addPin, getPins, deletePin,
-} from '../../actions/pinactions'; // pin CRUD
+import RESTcall from '../../crud'; // pin CRUD
 import PinZoom from '../modal/modalzoom';
 import './mypins.scss';
 import imageBroken from './NO-IMAGE.png';
@@ -25,12 +23,14 @@ class Mypins extends Component {
     };
   }
 
-  componentDidMount() {
+  async componentDidMount() {
     // get all pins and filter by owned and saved and then concatenate and set state
-    getPins('profile').then((pinsFromDB) => {
-      this.setState({
-        pinList: pinsFromDB,
-      });
+    const pinsFromDB = await RESTcall({
+      address: '/api/?type=profile',
+      callType: 'get',
+    });
+    this.setState({
+      pinList: pinsFromDB,
     });
   }
 
@@ -69,7 +69,7 @@ class Mypins extends Component {
           className="actionbutton"
           onClick={() => this.deletePic(currentImg)}
         >
-          {'Delete'}
+          Delete
         </button>,
         e.pageY - e.clientY,
       ],
@@ -82,7 +82,7 @@ class Mypins extends Component {
       className="actionbutton"
       onClick={() => this.deletePic(element)}
     >
-      {'Delete'}
+      Delete
     </button>
   )
 
@@ -96,30 +96,39 @@ class Mypins extends Component {
     this.setState({
       pinList: pinListCopy,
       displayPinZoom: false,
-    }, () => deletePin(element._id));
+    }, async () => {
+      await RESTcall({
+        address: `/api/${element._id}`,
+        callType: 'delete',
+      });
+    });
   }
 
-  addPic(pinJSON) { // adds a pin to the db
+  async addPic(pinJSON) { // adds a pin to the db
     // copy then add pin to db and then update client state (in that order)
     const { pinList } = this.state;
     let pinListCopy = JSON.parse(JSON.stringify(pinList));
-    addPin(pinJSON).then((newPin) => {
-      const {
-        savedBy, owner, imgLink, imgDescription, _id,
-      } = newPin;
-      const pinAdd = {
-        _id,
-        imgDescription,
-        imgLink,
-        savedBy,
-        owner: owner.name,
-        owns: true,
-        hasSaved: false,
-      };
-      pinListCopy = [...pinListCopy, pinAdd];
-      this.setState({
-        pinList: pinListCopy,
-      });
+    const newPin = await RESTcall({
+      address: '/api/newpin',
+      callType: 'post',
+      payload: pinJSON,
+    });
+
+    const {
+      savedBy, owner, imgLink, imgDescription, _id,
+    } = newPin;
+    const pinAdd = {
+      _id,
+      imgDescription,
+      imgLink,
+      savedBy,
+      owner: owner.name,
+      owns: true,
+      hasSaved: false,
+    };
+    pinListCopy = [...pinListCopy, pinAdd];
+    this.setState({
+      pinList: pinListCopy,
     });
   }
 

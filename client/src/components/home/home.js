@@ -2,7 +2,7 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
-import { getPins, updatePin } from '../../actions/pinactions';
+import RESTcall from '../../crud';
 import ImageBuild from '../imagebuild/imagebuild';
 import PinZoom from '../modal/modalzoom';
 import SignIn from '../signin/signin';
@@ -20,11 +20,13 @@ class Home extends Component {
     };
   }
 
-  componentDidMount() {
-    getPins('All').then((pinsFromDB) => { // get all pins then setstate
-      this.setState({
-        pinList: this.shuffleImages([...pinsFromDB]),
-      });
+  async componentDidMount() {
+    const pinsFromDB = await RESTcall({
+      address: '/api/?type=All',
+      callType: 'get',
+    });
+    this.setState({
+      pinList: this.shuffleImages([...pinsFromDB]),
     });
   }
 
@@ -125,7 +127,13 @@ class Home extends Component {
     this.setState({
       pinList: pinListCopy,
       displayPinZoom: false,
-    }, () => updatePin(element._id, newPinnerInfo));
+    }, async () => {
+      await RESTcall({
+        address: `/api/${element._id}`,
+        callType: 'put',
+        payload: newPinnerInfo,
+      });
+    });
   }
 
 
