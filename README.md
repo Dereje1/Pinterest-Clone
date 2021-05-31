@@ -13,7 +13,6 @@ These instructions will get you a copy of the project up and running on your loc
 | Prerequisite                                | Version |
 | ------------------------------------------- | ------- |
 | [Node.js](http://nodejs.org) /  npm (comes with Node)  | `~ ^8.11.2` / `~^6.1.0` |
-| [yarn](https://yarnpkg.com/lang/en/docs/install/) | `~ ^1.3.2` |
 | [Git](https://git-scm.com/downloads) | `~ ^2` |
 | [MongoDB Community Server](https://docs.mongodb.com/manual/administration/install-community/) | `~ ^3.4.9`  |
 
@@ -23,23 +22,23 @@ These instructions will get you a copy of the project up and running on your loc
 Create a new directory and initialize git
 
 ```
-mkdir Pinterest-Clone
-cd Pinterest-Clone
-git init
+$ mkdir Pinterest-Clone
+$ cd Pinterest-Clone
+$ git init
 ```
 
 Pull from github and install packages
 
 ```
-git pull https://github.com/Dereje1/Pinterest-Clone.git
-yarn
+$ git pull https://github.com/Dereje1/Pinterest-Clone.git
+$ npm install
 ```
 
 If using mongoDB locally see below to start the db (if using mlab / Mongo DB Atlas skip this step)
 
 ```
-mkdir data
-mongod --port 27017 --dbpath=./data
+$ mkdir data
+$ mongod --port 27017 --dbpath=./data
 ```
 
 create .env files
@@ -52,12 +51,12 @@ TWITTER_CONSUMER_SECRET=< Get from Twitter Developer API >
 TWITTER_CALLBACK=<Redirection address after Twitter Verifies account>
 GOOGLE_CLIENT_ID=< Get from Google Developer API >
 GOOGLE_CLIENT_SECRET=< Get from Google Developer API >
-GOOGLE_CALLBACK=<Redirection address after Twitter Verifies account>
+GOOGLE_CALLBACK=<Redirection address after Google Verifies account>
 
 ```
 Run development environment
 ```
-yarn dev
+$ npm run dev
 ```
 You can now go to `http://localhost:8080/` and see the project running in dev mode.
 
