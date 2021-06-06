@@ -6,7 +6,6 @@ import PropTypes from 'prop-types';
 import PinCreate from './pincreatemodal';
 import ImageBuild from '../imagebuild/imagebuild';
 import RESTcall from '../../crud'; // pin CRUD
-import PinZoom from '../modal/modalzoom';
 import './mypins.scss';
 import imageBroken from './NO-IMAGE.png';
 
@@ -27,7 +26,7 @@ class Mypins extends Component {
     // get all pins and filter by owned and saved and then concatenate and set state
     const pinsFromDB = await RESTcall({
       address: '/api/?type=profile',
-      callType: 'get',
+      method: 'get',
     });
     this.setState({
       pinList: pinsFromDB,
@@ -99,7 +98,7 @@ class Mypins extends Component {
     }, async () => {
       await RESTcall({
         address: `/api/${element._id}`,
-        callType: 'delete',
+        method: 'delete',
       });
     });
   }
@@ -110,7 +109,7 @@ class Mypins extends Component {
     let pinListCopy = JSON.parse(JSON.stringify(pinList));
     const newPin = await RESTcall({
       address: '/api/newpin',
-      callType: 'post',
+      method: 'post',
       payload: pinJSON,
     });
 
@@ -172,13 +171,12 @@ class Mypins extends Component {
             layoutComplete={this.layoutComplete}
             pinEnlarge={this.pinEnlarge}
             onBrokenImage={this.onBrokenImage}
-            status={this.imageStatus}
+            pinImage={null}
+            deletePin={e => this.deletePic(e)}
             pinList={pinList}
             imagesLoaded={imagesLoaded}
-          />
-          <PinZoom
-            message={displayPinZoom}
-            reset={() => this.setState({ displayPinZoom: false })}
+            displayPinZoom={displayPinZoom}
+            resetModal={() => this.setState({ displayPinZoom: false })}
             zoomInfo={imageInfo}
           />
           <div className={displayPinZoom || displayPinCreate ? 'modal-overlay' : ''} />

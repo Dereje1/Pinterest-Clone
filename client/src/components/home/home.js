@@ -4,7 +4,6 @@ import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import RESTcall from '../../crud';
 import ImageBuild from '../imagebuild/imagebuild';
-import PinZoom from '../modal/modalzoom';
 import SignIn from '../signin/signin';
 
 class Home extends Component {
@@ -23,7 +22,7 @@ class Home extends Component {
   async componentDidMount() {
     const pinsFromDB = await RESTcall({
       address: '/api/?type=All',
-      callType: 'get',
+      method: 'get',
     });
     this.setState({
       pinList: this.shuffleImages([...pinsFromDB]),
@@ -130,7 +129,7 @@ class Home extends Component {
     }, async () => {
       await RESTcall({
         address: `/api/${element._id}`,
-        callType: 'put',
+        method: 'put',
         payload: newPinnerInfo,
       });
     });
@@ -161,13 +160,12 @@ class Home extends Component {
             layoutComplete={this.layoutComplete}
             pinEnlarge={this.pinEnlarge}
             onBrokenImage={this.onBrokenImage}
-            status={this.imageStatus}
+            pinImage={e => this.savePic(e)}
+            deletePin={null}
             pinList={pinList}
             imagesLoaded={imagesLoaded}
-          />
-          <PinZoom
-            message={displayPinZoom}
-            reset={() => this.setState({ displayPinZoom: false })}
+            displayPinZoom={displayPinZoom}
+            resetModal={() => this.setState({ displayPinZoom: false })}
             zoomInfo={imageInfo}
           />
           <div className={displayPinZoom ? 'modal-overlay' : ''} />

@@ -36,7 +36,7 @@ class LoginButtons extends React.Component {
               <i className="fa fa-question-circle" aria-hidden="true" />
             </span>
             <span className="buttontext">
-              {'Continue As Guest'}
+              Continue As Guest
             </span>
           </button>
           <button
@@ -48,7 +48,7 @@ class LoginButtons extends React.Component {
               <i className="fa fa-twitter" aria-hidden="true" />
             </span>
             <span className="buttontext">
-              {'Continue With Twitter'}
+              Continue With Twitter
             </span>
           </button>
           <button
@@ -60,7 +60,7 @@ class LoginButtons extends React.Component {
               <i className="fa fa-google" aria-hidden="true" />
             </span>
             <span className="buttontext">
-              {'Continue With Google'}
+              Continue With Google
             </span>
           </button>
         </React.Fragment>

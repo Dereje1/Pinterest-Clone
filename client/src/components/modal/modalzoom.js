@@ -1,6 +1,7 @@
 // displays pin zoom modal
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
+import HandleImage from '../imagebuild/HandleImage';
 import './modal.scss';
 
 class PinZoom extends Component {
@@ -16,9 +17,9 @@ class PinZoom extends Component {
   }
 
   componentDidUpdate(prevProps) {
-    const { message, zoomInfo } = this.props;
+    const { displayPinZoom, zoomInfo } = this.props;
     const { parentDivStyle } = this.state;
-    if ((prevProps.message === false) && (message === true)) {
+    if ((prevProps.displayPinZoom === false) && (displayPinZoom === true)) {
       const divCopy = JSON.parse(JSON.stringify(parentDivStyle));
       // use scroll dist on zoom call to set top of zoom div
       divCopy.top = zoomInfo[2] + 10;
@@ -35,7 +36,7 @@ class PinZoom extends Component {
         parentDivStyle: divCopy,
       });
     }
-    if ((prevProps.message === true) && (message === false)) {
+    if ((prevProps.displayPinZoom === true) && (displayPinZoom === false)) {
       this.setState({
         show: false,
       }, () => this.removeListeners());
@@ -79,9 +80,8 @@ class PinZoom extends Component {
     }, () => reset());
   }
 
-  getNewImageWidth = (imgDim) => {
+  getNewImageWidth = ({ naturalWidth: width, naturalHeight: height }) => {
     // dynamically resize image
-    const { naturalWidth: width, naturalHeight: height } = imgDim;
     let { innerWidth, innerHeight } = window;
     // parameter for innerwidth/height adjustment with mobile consideration
     // top(70) + headingheight(50 / 25) + button height (50 / 25)
@@ -125,10 +125,10 @@ class PinZoom extends Component {
     : pinInformation.savedBy.join(', '))
 
   render() {
-    const { zoomInfo } = this.props;
+    const { zoomInfo, pinImage, deletePin } = this.props;
     const { show, parentDivStyle } = this.state;
     if (!zoomInfo.length) return null;
-    const [pinInformation, buttonInformation] = zoomInfo;
+    const [pinInformation] = zoomInfo;
     const totalPins = (pinInformation.savedBy) ? pinInformation.savedBy.length : 0;
     const pinnedBy = totalPins ? this.pinners(pinInformation) : '';
     return (
@@ -156,7 +156,11 @@ class PinZoom extends Component {
         />
 
         <div className="footer">
-          {buttonInformation}
+          <HandleImage
+            element={pinInformation}
+            pinImage={pinImage || null}
+            deletePin={deletePin || null}
+          />
         </div>
       </div>
     );
@@ -167,11 +171,19 @@ class PinZoom extends Component {
 export default PinZoom;
 
 
+PinZoom.defaultProps = {
+  pinImage: null,
+  deletePin: null,
+};
+
 PinZoom.propTypes = {
   // turns modal on/off based on change
-  message: PropTypes.bool.isRequired,
+  displayPinZoom: PropTypes.bool.isRequired,
   // [picobject, overlay button type, last scroll distance]
   zoomInfo: PropTypes.arrayOf(PropTypes.any).isRequired,
   // callback to caller to turn modal off
   reset: PropTypes.func.isRequired,
+  // what type of button to place on pic/thumbnail executed by caller
+  pinImage: PropTypes.func,
+  deletePin: PropTypes.func,
 };

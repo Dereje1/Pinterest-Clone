@@ -1,15 +1,22 @@
 import React from 'react';
 import Masonry from 'react-masonry-component';
 import PropTypes from 'prop-types';
+import HandleImage from './HandleImage';
+import PinZoom from '../modal/modalzoom';
 import './imagebuild.scss';
+
 // builds images, component shared by both home and mypins
 const ImageBuild = ({
   layoutComplete,
   pinEnlarge,
   onBrokenImage,
-  status,
+  pinImage,
+  deletePin,
   pinList,
   imagesLoaded,
+  displayPinZoom,
+  resetModal,
+  zoomInfo,
 }) => (
   <React.Fragment>
     <div id="bubblecontainer" style={{ display: imagesLoaded ? 'none' : 'flex' }}>
@@ -43,12 +50,23 @@ const ImageBuild = ({
               <div className="description">
                 {element.imgDescription}
               </div>
-              {status(element)}
+              <HandleImage
+                element={element}
+                pinImage={pinImage}
+                deletePin={deletePin}
+              />
               <div className="owner">{`${element.owner}`}</div>
             </div>
           ))
         }
       </Masonry>
+      <PinZoom
+        displayPinZoom={displayPinZoom}
+        reset={resetModal}
+        zoomInfo={zoomInfo}
+        pinImage={pinImage}
+        deletePin={deletePin}
+      />
     </div>
   </React.Fragment>
 
@@ -57,6 +75,8 @@ export default ImageBuild;
 
 ImageBuild.defaultProps = {
   pinList: [null],
+  pinImage: null,
+  deletePin: null,
 };
 
 ImageBuild.propTypes = {
@@ -67,9 +87,14 @@ ImageBuild.propTypes = {
   // img onError callback executes this function in caller
   onBrokenImage: PropTypes.func.isRequired,
   // what type of button to place on pic/thumbnail executed by caller
-  status: PropTypes.func.isRequired,
+  pinImage: PropTypes.func,
+  deletePin: PropTypes.func,
   // caller will send list of pins after AJAX request complete
   pinList: PropTypes.arrayOf(PropTypes.any),
   // Turns on once Masonry runs loaded callback
   imagesLoaded: PropTypes.bool.isRequired,
+  // modal props
+  displayPinZoom: PropTypes.bool.isRequired,
+  resetModal: PropTypes.func.isRequired,
+  zoomInfo: PropTypes.arrayOf(PropTypes.any).isRequired,
 };

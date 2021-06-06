@@ -6,7 +6,8 @@
     "start": "node ./bin/www",
     "client": "webpack-dev-server --mode development",
     "build": "webpack --mode production",
-    "dev": "concurrently --kill-others-on-fail \"nodemon start\" \"nodemon --exec npm run client \""
+    "dev": "concurrently --kill-others-on-fail \"nodemon start\" \"nodemon --exec npm run client \"",
+    "lint": "./node_modules/.bin/eslint server client"
   },
   "dependencies": {
     "axios": "latest",
