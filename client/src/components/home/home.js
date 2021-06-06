@@ -161,14 +161,17 @@ class Home extends Component {
             layoutComplete={this.layoutComplete}
             pinEnlarge={this.pinEnlarge}
             onBrokenImage={this.onBrokenImage}
-            status={this.imageStatus}
+            pinImage={e => this.savePic(e)}
+            deletePin={null}
             pinList={pinList}
             imagesLoaded={imagesLoaded}
           />
           <PinZoom
-            message={displayPinZoom}
+            displayPinZoom={displayPinZoom}
             reset={() => this.setState({ displayPinZoom: false })}
             zoomInfo={imageInfo}
+            pinImage={e => this.savePic(e)}
+            deletePin={null}
           />
           <div className={displayPinZoom ? 'modal-overlay' : ''} />
         </React.Fragment>

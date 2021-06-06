@@ -172,14 +172,17 @@ class Mypins extends Component {
             layoutComplete={this.layoutComplete}
             pinEnlarge={this.pinEnlarge}
             onBrokenImage={this.onBrokenImage}
-            status={this.imageStatus}
+            pinImage={null}
+            deletePin={e => this.deletePic(e)}
             pinList={pinList}
             imagesLoaded={imagesLoaded}
           />
           <PinZoom
-            message={displayPinZoom}
+            displayPinZoom={displayPinZoom}
             reset={() => this.setState({ displayPinZoom: false })}
             zoomInfo={imageInfo}
+            pinImage={null}
+            deletePin={e => this.deletePic(e)}
           />
           <div className={displayPinZoom || displayPinCreate ? 'modal-overlay' : ''} />
         </div>
