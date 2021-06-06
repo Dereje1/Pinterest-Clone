@@ -2,6 +2,7 @@ import React from 'react';
 import Masonry from 'react-masonry-component';
 import PropTypes from 'prop-types';
 import HandleImage from './HandleImage';
+import PinZoom from '../modal/modalzoom';
 import './imagebuild.scss';
 
 // builds images, component shared by both home and mypins
@@ -13,6 +14,9 @@ const ImageBuild = ({
   deletePin,
   pinList,
   imagesLoaded,
+  displayPinZoom,
+  resetModal,
+  zoomInfo,
 }) => (
   <React.Fragment>
     <div id="bubblecontainer" style={{ display: imagesLoaded ? 'none' : 'flex' }}>
@@ -56,6 +60,13 @@ const ImageBuild = ({
           ))
         }
       </Masonry>
+      <PinZoom
+        displayPinZoom={displayPinZoom}
+        reset={resetModal}
+        zoomInfo={zoomInfo}
+        pinImage={pinImage}
+        deletePin={deletePin}
+      />
     </div>
   </React.Fragment>
 
@@ -82,4 +93,8 @@ ImageBuild.propTypes = {
   pinList: PropTypes.arrayOf(PropTypes.any),
   // Turns on once Masonry runs loaded callback
   imagesLoaded: PropTypes.bool.isRequired,
+  // modal props
+  displayPinZoom: PropTypes.bool.isRequired,
+  resetModal: PropTypes.func.isRequired,
+  zoomInfo: PropTypes.arrayOf(PropTypes.any).isRequired,
 };

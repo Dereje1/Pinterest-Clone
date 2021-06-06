@@ -6,7 +6,6 @@ import PropTypes from 'prop-types';
 import PinCreate from './pincreatemodal';
 import ImageBuild from '../imagebuild/imagebuild';
 import RESTcall from '../../crud'; // pin CRUD
-import PinZoom from '../modal/modalzoom';
 import './mypins.scss';
 import imageBroken from './NO-IMAGE.png';
 
@@ -176,13 +175,9 @@ class Mypins extends Component {
             deletePin={e => this.deletePic(e)}
             pinList={pinList}
             imagesLoaded={imagesLoaded}
-          />
-          <PinZoom
             displayPinZoom={displayPinZoom}
-            reset={() => this.setState({ displayPinZoom: false })}
+            resetModal={() => this.setState({ displayPinZoom: false })}
             zoomInfo={imageInfo}
-            pinImage={null}
-            deletePin={e => this.deletePic(e)}
           />
           <div className={displayPinZoom || displayPinCreate ? 'modal-overlay' : ''} />
         </div>

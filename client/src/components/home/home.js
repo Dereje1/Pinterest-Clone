@@ -4,7 +4,6 @@ import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import RESTcall from '../../crud';
 import ImageBuild from '../imagebuild/imagebuild';
-import PinZoom from '../modal/modalzoom';
 import SignIn from '../signin/signin';
 
 class Home extends Component {
@@ -165,13 +164,9 @@ class Home extends Component {
             deletePin={null}
             pinList={pinList}
             imagesLoaded={imagesLoaded}
-          />
-          <PinZoom
             displayPinZoom={displayPinZoom}
-            reset={() => this.setState({ displayPinZoom: false })}
+            resetModal={() => this.setState({ displayPinZoom: false })}
             zoomInfo={imageInfo}
-            pinImage={e => this.savePic(e)}
-            deletePin={null}
           />
           <div className={displayPinZoom ? 'modal-overlay' : ''} />
         </React.Fragment>
