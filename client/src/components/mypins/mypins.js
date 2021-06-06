@@ -27,7 +27,7 @@ class Mypins extends Component {
     // get all pins and filter by owned and saved and then concatenate and set state
     const pinsFromDB = await RESTcall({
       address: '/api/?type=profile',
-      callType: 'get',
+      method: 'get',
     });
     this.setState({
       pinList: pinsFromDB,
@@ -99,7 +99,7 @@ class Mypins extends Component {
     }, async () => {
       await RESTcall({
         address: `/api/${element._id}`,
-        callType: 'delete',
+        method: 'delete',
       });
     });
   }
@@ -110,7 +110,7 @@ class Mypins extends Component {
     let pinListCopy = JSON.parse(JSON.stringify(pinList));
     const newPin = await RESTcall({
       address: '/api/newpin',
-      callType: 'post',
+      method: 'post',
       payload: pinJSON,
     });
 

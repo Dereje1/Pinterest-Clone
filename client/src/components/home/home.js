@@ -23,7 +23,7 @@ class Home extends Component {
   async componentDidMount() {
     const pinsFromDB = await RESTcall({
       address: '/api/?type=All',
-      callType: 'get',
+      method: 'get',
     });
     this.setState({
       pinList: this.shuffleImages([...pinsFromDB]),
@@ -130,7 +130,7 @@ class Home extends Component {
     }, async () => {
       await RESTcall({
         address: `/api/${element._id}`,
-        callType: 'put',
+        method: 'put',
         payload: newPinnerInfo,
       });
     });
