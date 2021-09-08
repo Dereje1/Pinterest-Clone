@@ -4,8 +4,8 @@ https://dereje-pclone.herokuapp.com/
 
 ![Screenshot (45)](https://user-images.githubusercontent.com/23533048/56138593-34949880-5f65-11e9-8507-e4cb12e6bcce.png)
 
-## Getting Started
-
+# Getting Started
+# A) Local
 These instructions will get you a copy of the project up and running on your local machine for development and testing purposes.
 
 ### Prerequisites
@@ -59,6 +59,20 @@ Run development environment
 $ npm run dev
 ```
 You can now go to `http://localhost:8080/` and see the project running in dev mode.
+
+# B) Docker
+If you have docker installed and a `.env` file with contents from above, then from the root dir:
+1. Build the img
+```
+docker build . -t pintclone
+```
+2. Run the image
+```
+docker run -p 80:3000 pintclone
+```
+3. Go to  `http://localhost/`
+
+<br/>
 
 ## Built With
 
