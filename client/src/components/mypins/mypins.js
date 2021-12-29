@@ -91,7 +91,7 @@ class Mypins extends Component {
     let pinListCopy = JSON.parse(JSON.stringify(pinList));
     const indexOfDeletion = pinListCopy.findIndex(p => p._id === element._id);
     pinListCopy = [...pinListCopy.slice(0, indexOfDeletion),
-      ...pinListCopy.slice(indexOfDeletion + 1)];
+    ...pinListCopy.slice(indexOfDeletion + 1)];
     this.setState({
       pinList: pinListCopy,
       displayPinZoom: false,
@@ -137,22 +137,35 @@ class Mypins extends Component {
     });
   }
 
+  getServiceLogo = (user) => {
+    const obj = user.service === 'twitter' ?
+      { className: "fa fa-twitter", color: 'blue' } :
+      { className: "fa fa-google", color: 'green' }
+    return <>
+      <i className={obj.className} aria-hidden="true" style={{ fontSize: 30, marginTop: 80, color: obj.color }} />
+      <h3 id="username">
+        {user.displayname}
+      </h3>
+    </>
+  }
+
   render() {
     const { user, user: { authenticated, displayname } } = this.props;
     const {
       displayPinCreate, displayPinZoom, imageInfo, pinList, imagesLoaded,
     } = this.state;
     if (!authenticated) window.location.assign('/');
+
     return (
       <React.Fragment>
         <div>
           <div id="mypinframe">
-            <h3 id="username">{displayname}</h3>
+            {this.getServiceLogo(user)}
             <div
               id="creatpinwrapper"
               onClick={() => this.pinForm()}
               role="button"
-              onKeyDown={() => {}}
+              onKeyDown={() => { }}
               tabIndex={0}
             >
               <div id="createpin">
