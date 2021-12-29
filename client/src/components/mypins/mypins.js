@@ -137,16 +137,21 @@ class Mypins extends Component {
     });
   }
 
-  getServiceLogo = (user) => {
-    const obj = user.service === 'twitter' ?
+  getUserName = ({ service, displayname }) => {
+    const serviceStyle = service === 'twitter' ?
       { className: "fa fa-twitter", color: 'blue' } :
       { className: "fa fa-google", color: 'green' }
-    return <>
-      <i className={obj.className} aria-hidden="true" style={{ fontSize: 30, marginTop: 80, color: obj.color }} />
-      <h3 id="username">
-        {user.displayname}
-      </h3>
-    </>
+    return (
+      <>
+        <i
+          className={serviceStyle.className}
+          aria-hidden="true"
+          style={{ fontSize: 30, marginTop: 80, color: serviceStyle.color }} />
+        <h3 id="username">
+          {displayname}
+        </h3>
+      </>
+    )
   }
 
   render() {
@@ -160,7 +165,7 @@ class Mypins extends Component {
       <React.Fragment>
         <div>
           <div id="mypinframe">
-            {this.getServiceLogo(user)}
+            {this.getUserName(user)}
             <div
               id="creatpinwrapper"
               onClick={() => this.pinForm()}
