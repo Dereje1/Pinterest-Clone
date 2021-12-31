@@ -26,6 +26,7 @@ class Home extends Component {
     });
     this.setState({
       pinList: this.shuffleImages([...pinsFromDB]),
+      fullList: pinsFromDB
     });
   }
 
@@ -43,7 +44,7 @@ class Home extends Component {
     // update copy -->no mutation but do not delete from db
     console.log('Broken Image Found - ', pinListCopy[indexOfDeletion].imgDescription);
     pinListCopy = [...pinListCopy.slice(0, indexOfDeletion),
-      ...pinListCopy.slice(indexOfDeletion + 1)];
+    ...pinListCopy.slice(indexOfDeletion + 1)];
     this.setState({
       pinList: pinListCopy,
     });
@@ -62,9 +63,23 @@ class Home extends Component {
   layoutComplete = () => {
     // fired by masonry call back
     const { imagesLoaded } = this.state;
-    // only set state on first true load
+    // only set state on first true loads
     if (imagesLoaded) return;
-    this.setState({ imagesLoaded: true });
+    this.setState({ imagesLoaded: true }, this.handleBrokenImages);
+  }
+
+  handleBrokenImages = async () => {
+    const { pinList, fullList } = this.state;
+    const loadedListIds = pinList.map(p => p._id);
+    const brokenList = fullList
+      .filter(pin => !loadedListIds.includes(pin._id))
+      .map(pin => ({ pinId: pin._id, imgDescription: pin.imgDescription }))
+      console.log('Running!!!!!')
+    await RESTcall({
+      address: '/api/broken',
+      method: 'post',
+      payload: brokenList
+    });
   }
 
   imageStatus = (element) => {

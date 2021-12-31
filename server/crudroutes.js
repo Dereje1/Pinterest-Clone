@@ -1,6 +1,7 @@
 const router = require('express').Router();
 
 const pins = require('./models/pins'); // schema for pins
+const brokenPins = require('./models/brokenPins'); // schema for pins
 const isLoggedIn = require('./Authentication_Config/isloggedin');
 const { getUserProfile, filterPins } = require('./utils');
 
@@ -46,7 +47,7 @@ router.delete('/api/:_id', isLoggedIn, async (req, res) => {
     } else {
       const indexOfDeletion = pin.savedBy.findIndex(s => s.id === userId);
       const pinToUpdate = [...pin.savedBy.slice(0, indexOfDeletion),
-        ...pin.savedBy.slice(indexOfDeletion + 1)];
+      ...pin.savedBy.slice(indexOfDeletion + 1)];
       const update = { $set: { savedBy: pinToUpdate } };
       const modified = { new: true };
       const updatedPin = await pins.findByIdAndUpdate(pinID, update, modified).exec();
@@ -80,6 +81,32 @@ router.put('/api/:_id', isLoggedIn, async (req, res) => {
   } catch (error) {
     res.json(error);
   }
+});
+
+// broken image handling and garbage collection
+router.post('/api/broken', async (req, res) => {
+  const ts = new Date()
+  const currentBroken = req.body.map(brokenPin => ({ ...brokenPin, brokenSince: ts.toISOString() }))
+  const previousBroken = await brokenPins.find({}).exec();
+
+  const brokenUpdate = previousBroken.reduce((updatedList, storedBroken) => {
+    const currentIndex = currentBroken.findIndex(currBroken => storedBroken.pinId === currBroken.pinId)
+    // broken image exists - keep
+    if (currentIndex > -1) {
+      const { pinId, brokenSince, imgDescription } = storedBroken
+      return [...updatedList, { pinId, brokenSince, imgDescription }]
+    }
+    // broken image has become active/fixed - drop
+    return [...updatedList]
+  }, [])
+
+  // add newly broken
+  const previousBrokenIds = previousBroken.map(p => p.pinId);
+  const newlyBroken = currentBroken.filter(c => !previousBrokenIds.includes(c.pinId))
+
+  await brokenPins.deleteMany({}).exec();
+  await brokenPins.insertMany([...newlyBroken, ...brokenUpdate])
+  res.json({})
 });
 
 module.exports = router;
