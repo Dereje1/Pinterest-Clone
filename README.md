@@ -68,9 +68,9 @@ docker build . -t pintclone
 ```
 2. Run the image
 ```
-docker run -p 80:3000 pintclone
+docker run -p 8080:3000 pintclone
 ```
-3. Go to  `http://localhost/`
+3. Go to  `http://localhost:8080/`
 
 <br/>
 
