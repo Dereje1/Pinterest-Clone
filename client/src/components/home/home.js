@@ -74,7 +74,7 @@ class Home extends Component {
     const brokenList = fullList
       .filter(pin => !loadedListIds.includes(pin._id))
       .map(pin => ({ pinId: pin._id, imgDescription: pin.imgDescription }))
-      console.log('Running!!!!!')
+    if (!brokenList.length) return null
     await RESTcall({
       address: '/api/broken',
       method: 'post',

@@ -40,4 +40,13 @@ const filterPins = (rawPins, user) => rawPins.map((pin) => {
     };
 });
 
-module.exports = { getUserProfile, filterPins }
+const getExpiredBrokenImages = (brokenImages) => {
+    const EXPIRY_TIME = 30 * 24 * 60 * 60 * 1000
+    const expiredImageIds = brokenImages.slice().filter(img => {
+        const timeElapsed = new Date() - new Date(img.brokenSince)
+        return timeElapsed > EXPIRY_TIME
+    }).map(img => img.pinId)
+    return expiredImageIds
+}
+
+module.exports = { getUserProfile, filterPins, getExpiredBrokenImages }
