@@ -102,13 +102,16 @@ router.post('/api/broken', async (req, res) => {
       return [...updatedList]
     }, [])
 
-    // get newly broken pins
+    // get newly broken pins and combbine with previous
     const previouslyBrokenIds = previouslyBroken.map(p => p.pinId);
     const newlyBroken = currentlyBroken.filter(c => !previouslyBrokenIds.includes(c.pinId))
+    const allBroken = [...newlyBroken, ...brokenUpdate];
 
     // clear out and resync broken pins
-    await brokenPins.deleteMany({}).exec();
-    await brokenPins.insertMany([...newlyBroken, ...brokenUpdate]);
+    if (allBroken.length) {
+      await brokenPins.deleteMany({}).exec();
+      await brokenPins.insertMany(allBroken);
+    }
 
     // run garabage collection 
     const expiredImageIds = getExpiredBrokenImages(brokenUpdate);
