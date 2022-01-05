@@ -1,10 +1,8 @@
 const router = require('express').Router();
 
 const pins = require('./models/pins'); // schema for pins
-const brokenPins = require('./models/brokenPins'); // schema for pins
-const backupPins = require('./models/backupPins'); // schema for pins
 const isLoggedIn = require('./Authentication_Config/isloggedin');
-const { getUserProfile, filterPins, getExpiredBrokenImages } = require('./utils');
+const { getUserProfile, filterPins, runScan } = require('./utils');
 
 /* Crud Routes */
 // adds a new pin to the db
@@ -27,7 +25,7 @@ router.get('/api/', async (req, res) => {
       const savedPins = await pins.find({ 'savedBy.id': userId }).exec();
       res.json(filterPins([...ownPins, ...savedPins], req.user));
     } else {
-      const allPins = await pins.find({}).exec();
+      const allPins = await pins.find({ isBroken: false }).exec();
       res.json(filterPins(allPins, req.user));
     }
   } catch (error) {
@@ -85,50 +83,14 @@ router.put('/api/:_id', isLoggedIn, async (req, res) => {
 });
 
 // broken image handling and garbage collection
-router.post('/api/broken', async (req, res) => {
-  const ts = new Date()
-  const currentlyBroken = req.body.map(brokenPin => ({ ...brokenPin, brokenSince: ts.toISOString() }))
+router.get('/api/broken', async (req, res) => {
   try {
-    const previouslyBroken = await brokenPins.find({}).exec();
-
-    const brokenUpdate = previouslyBroken.reduce((updatedList, storedBroken) => {
-      const currentIndex = currentlyBroken.findIndex(currBroken => storedBroken.pinId === currBroken.pinId)
-      // broken image exists - keep
-      if (currentIndex > -1) {
-        const { pinId, brokenSince, imgDescription } = storedBroken
-        return [...updatedList, { pinId, brokenSince, imgDescription }]
-      }
-      // broken image has become active/fixed - drop
-      return [...updatedList]
-    }, [])
-
-    // get newly broken pins and combbine with previous
-    const previouslyBrokenIds = previouslyBroken.map(p => p.pinId);
-    const newlyBroken = currentlyBroken.filter(c => !previouslyBrokenIds.includes(c.pinId))
-    const allBroken = [...newlyBroken, ...brokenUpdate];
-
-    // clear out and resync broken pins
-    if (allBroken.length) {
-      await brokenPins.deleteMany({}).exec();
-      await brokenPins.insertMany(allBroken);
-    }
-
-    // run garabage collection 
-    const expiredImageIds = getExpiredBrokenImages(brokenUpdate);
-    if (expiredImageIds.length) {
-      // backup broken pins and delete
-      const expiredPins = await pins.find({ _id: { $in: expiredImageIds } }).exec();
-      await backupPins.create({ backup: expiredPins });
-      await pins.deleteMany({ _id: { $in: expiredImageIds } }).exec();
-      console.log(`Deleted Broken Pins, with IDs: ${expiredImageIds.join(',')}`)
-    }
-
+    await runScan();
     res.end();
   } catch (error) {
     console.log(error)
     res.json(error);
   }
-
 });
 
 module.exports = router;

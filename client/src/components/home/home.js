@@ -69,17 +69,7 @@ class Home extends Component {
   }
 
   handleBrokenImages = async () => {
-    const { pinList, fullList } = this.state;
-    const loadedListIds = pinList.map(p => p._id);
-    const brokenList = fullList
-      .filter(pin => !loadedListIds.includes(pin._id))
-      .map(pin => ({ pinId: pin._id, imgDescription: pin.imgDescription }))
-    if (!brokenList.length) return null
-    await RESTcall({
-      address: '/api/broken',
-      method: 'post',
-      payload: brokenList
-    });
+    await RESTcall({address: '/api/broken'});
   }
 
   imageStatus = (element) => {

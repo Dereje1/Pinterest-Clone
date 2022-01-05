@@ -17,6 +17,7 @@ const pinSchema = mongoose.Schema({
     }],
     default: [],
   },
+  isBroken: { type: Boolean }
 }, { timestamps: true });
 
 module.exports = mongoose.model('pin', pinSchema);
