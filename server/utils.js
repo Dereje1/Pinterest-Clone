@@ -46,7 +46,7 @@ const filterPins = (rawPins, user) => rawPins.map((pin) => {
 const isReadyToRun = (lastBackedUp) => {
     const CYCLE_TIME = 6 * 60 * 60 * 1000
     const timeElapsed = new Date() - new Date(lastBackedUp)
-    return timeElapsed > 0
+    return timeElapsed > CYCLE_TIME
 }
 
 const runScan = async () => {
