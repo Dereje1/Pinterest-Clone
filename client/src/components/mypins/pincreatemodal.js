@@ -11,9 +11,10 @@ class PinCreate extends Component {
     // initialize modal show state to false
     this.state = {
       show: false,
-      picPreview: imageBroken, // on erroneous image links
+      picPreview: '', // on erroneous image links
       description: '',
-      saveDisabled: true, // parameter controls save button state
+      isError: true,
+      showErrorImage: false
     };
   }
 
@@ -22,66 +23,69 @@ class PinCreate extends Component {
   }
 
 
-  componentDidUpdate(prevProps) { // compare previous props to current efore showing
+  componentDidUpdate(prevProps, prevState) { // compare previous props to current efore showing
     const { message } = this.props;
+    const { isError, showErrorImage } = this.state;
+    console.log({ isError, showErrorImage })
     if ((prevProps.message === false) && (message === true)) {
       window.scrollTo(0, 0);
       this.setState({
         show: true,
         description: '',
         picPreview: imageBroken,
-        saveDisabled: true,
         justMounted: false,
       });
     }
+    if (!prevState.isError && isError) {
+      this.setState({ showErrorImage: true })
+    }
+    if (prevState.isError && !isError) {
+      this.setState({ showErrorImage: false })
+    }
+
   }
 
   disableScroll = () => window.scrollTo(0, 0);
 
   close = () => {
-    // note my modified modal now sends a reset callback after closing modalstate which clears
-    // the message field, not also to reset pic url to erroneous image png before exit
     const { reset } = this.props;
     this.setState({
       show: false,
-      picPreview: imageBroken,
+      picPreview: '',
     }, () => reset());
   }
 
-  picprocess = (e) => { // processes picture on change of text box
-    let imglinkHttps = e.target.value;
-    // convert to https to avoid mixed content warning in console
-    if (e.target.value.split(':')[0] === 'http') {
-      imglinkHttps = `${e.target.value.split(':')[0]}s:${e.target.value.split(':')[1]}`;
+  validateURL = (string) => {
+    try {
+      const url = new URL(string);
+      if (url.protocol === "data:" || url.protocol === "https:") return string
+      if (url.protocol === "http:" ){
+        // convert to https to avoid mixed content warning in console
+        return `${string.split(':')[0]}s:${string.split(':')[1]}`
+      } 
+    } catch (_) {
+      return null;
     }
+    return null;
+  }
+
+  picprocess = (e) => { // processes picture on change of text box
+    let imgLink = this.validateURL(e.target.value);
+    if (!imgLink) return null;
     this.setState({
-      picPreview: imglinkHttps,
-    }, () => this.validation());
+      picPreview: imgLink,
+      isError: false
+    });
   }
 
   discprocess = (e) => { // processes description entered for new pin
-    this.setState({ description: e.target.value }, () => this.validation());
-  }
-
-  invalidImage = () => { // error handler for invalid/broken pic routes can not save in this state
-    this.setState({
-      picPreview: imageBroken,
-      saveDisabled: true,
-    });
-  }
-
-  validation = () => {
-    // check for both valid pic and description before allowing save
-    const { description, picPreview } = this.state;
-    this.setState({
-      saveDisabled: (description.trim().length < 5) || picPreview === imageBroken,
-    });
+    this.setState({ description: e.target.value });
   }
 
   savePic() { // ready to save pin
     const { userInfo, savePin } = this.props;
-    const { picPreview, description, saveDisabled } = this.state;
-    if (saveDisabled) return;
+    const { picPreview, description, showErrorImage } = this.state;
+    if (showErrorImage || description.length < 5) return;
     // prepare JSON for POST api
     const pinJSON = {
       owner: {
@@ -98,11 +102,15 @@ class PinCreate extends Component {
   }
 
   addpin() { // body of modal
-    const { picPreview, description } = this.state;
+    const { picPreview, description, isError, showErrorImage } = this.state;
     return (
       <React.Fragment>
         <div className="newpinholder">
-          <img alt="newpin" onError={() => this.invalidImage()} className="pinTest" src={picPreview} />
+          <img 
+            alt="newpin"
+            className="pinTest" src={showErrorImage ? imageBroken : picPreview}
+            onError={() => this.setState({ isError: true })}
+          />
         </div>
         <div className="formarea">
           <textarea
@@ -114,9 +122,9 @@ class PinCreate extends Component {
           />
           <textarea
             className="textlink"
-            placeholder="http://"
+            placeholder={`Paste image address here \nhttp://...`}
             onChange={e => this.picprocess(e)}
-            value={picPreview === imageBroken ? '' : picPreview}
+            value={isError ? '' : picPreview}
           />
         </div>
       </React.Fragment>
@@ -124,7 +132,7 @@ class PinCreate extends Component {
   }
 
   render() {
-    const { show, saveDisabled, justMounted } = this.state;
+    const { show, justMounted, description, showErrorImage } = this.state;
     if (justMounted) return null;
     return (
       <div
@@ -138,7 +146,7 @@ class PinCreate extends Component {
         </div>
         {this.addpin()}
         <div className="footer">
-          <button type="submit" onClick={() => this.savePic()} className="savebutton" disabled={saveDisabled}>Save</button>
+          <button type="submit" onClick={() => this.savePic()} className="savebutton" disabled={showErrorImage || description.length < 5}>Save</button>
         </div>
       </div>
     );
