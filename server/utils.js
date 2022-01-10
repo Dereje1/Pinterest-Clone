@@ -74,7 +74,6 @@ const runScan = async () => {
             await brokenPins.deleteMany({}).exec();
             await brokenPins.create({ broken: allInvalid });
         }
-        const ts = 
         console.log(`Finished scan : ${new Date().toISOString()}`)
     } catch (error) {
         console.log(error)

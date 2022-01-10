@@ -9,7 +9,7 @@ const { getUserProfile, filterPins, runScan } = require('./utils');
 router.post('/api/newpin', isLoggedIn, async (req, res) => {
   const { displayName } = getUserProfile(req.user);
   try {
-    const addedpin = await pins.create(req.body);
+    const addedpin = await pins.create({ ...req.body, isBroken: false });
     console.log(`${displayName} added pin ${addedpin.imgDescription}`);
     res.json(addedpin);
   } catch (error) {
