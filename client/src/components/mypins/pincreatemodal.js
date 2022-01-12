@@ -25,8 +25,7 @@ class PinCreate extends Component {
 
   componentDidUpdate(prevProps, prevState) { // compare previous props to current efore showing
     const { message } = this.props;
-    const { isError, showErrorImage } = this.state;
-    console.log({ isError, showErrorImage })
+    const { isError } = this.state;
     if ((prevProps.message === false) && (message === true)) {
       window.scrollTo(0, 0);
       this.setState({

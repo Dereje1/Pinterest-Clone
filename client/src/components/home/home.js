@@ -69,7 +69,7 @@ class Home extends Component {
   }
 
   handleBrokenImages = async () => {
-    await RESTcall({address: '/api/broken'});
+    await RESTcall({ address: '/api/broken' });
   }
 
   imageStatus = (element) => {
@@ -142,12 +142,14 @@ class Home extends Component {
 
 
   render() {
-    const { user: { authenticated, username } } = this.props;
+    const { user: { authenticated, username }, search } = this.props;
     const {
       displayPinZoom, imageInfo, pinList, imagesLoaded, displaySignIn,
     } = this.state;
-    const userStatus = username !== null;
-    if (userStatus) {
+    const filteredPins = search ?
+      pinList.filter(({ owner, imgDescription }) => imgDescription.toLowerCase().includes(search) || owner.toLowerCase().includes(search)) :
+      pinList
+    if (username !== null) {
       return (
         <React.Fragment>
           {
@@ -167,7 +169,7 @@ class Home extends Component {
             onBrokenImage={this.onBrokenImage}
             pinImage={e => this.savePic(e)}
             deletePin={null}
-            pinList={pinList}
+            pinList={filteredPins}
             imagesLoaded={imagesLoaded}
             displayPinZoom={displayPinZoom}
             resetModal={() => this.setState({ displayPinZoom: false })}
