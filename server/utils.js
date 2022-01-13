@@ -52,7 +52,7 @@ const isReadyToRun = (lastBackedUp) => {
 const runScan = async () => {
     try {
         const [backup] = await brokenPins.find({}).exec();
-        if(!isReadyToRun(backup.createdAt)){
+        if (backup && !isReadyToRun(backup.createdAt)) {
             return null
         }
         console.log(`Started scan : ${new Date().toISOString()}...`)
@@ -71,13 +71,29 @@ const runScan = async () => {
         await pins.updateMany({ _id: { $in: allValid } }, { isBroken: false }).exec();
         await pins.updateMany({ _id: { $in: allInvalid } }, { isBroken: true }).exec();
         if (allInvalid.length) {
+            const currentTimeStamp = new Date().toISOString();
+            const updatedInvalid = allInvalid.map(pin => {
+                const prevBrokenTimeStamp = backup ? getPrevBrokenTimeStamp(backup, pin._id) : null
+                return {
+                    ...pin,
+                    brokenSince: prevBrokenTimeStamp || currentTimeStamp
+                }
+            })
             await brokenPins.deleteMany({}).exec();
-            await brokenPins.create({ broken: allInvalid });
+            await brokenPins.create({ broken: updatedInvalid });
         }
         console.log(`Finished scan : ${new Date().toISOString()}`)
     } catch (error) {
         console.log(error)
     }
+}
+
+const getPrevBrokenTimeStamp = (prevBrokenPins, pinId) => {
+    const [prevBrokenPin] = prevBrokenPins.broken.filter(({_id}) => _id.toString() === pinId.toString())
+    if(prevBrokenPin){
+        return prevBrokenPin.brokenSince
+    }
+    return null;
 }
 
 const isValidEnpoint = (originalURL) => new Promise((resolve) => {
