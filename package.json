@@ -7,7 +7,8 @@
     "client": "webpack-dev-server --mode development",
     "build": "webpack --mode production",
     "dev": "concurrently --kill-others-on-fail \"nodemon start\" \"nodemon --exec npm run client \"",
-    "lint": "./node_modules/.bin/eslint server client"
+    "lint": "./node_modules/.bin/eslint server client",
+    "test": "jest"
   },
   "dependencies": {
     "@emotion/react": "^11.7.1",
@@ -38,6 +39,7 @@
   "devDependencies": {
     "@babel/core": "^7.4.3",
     "@babel/plugin-proposal-class-properties": "^7.4.0",
+    "@babel/plugin-transform-runtime": "^7.16.8",
     "@babel/preset-env": "^7.4.3",
     "@babel/preset-react": "^7.0.0",
     "acorn": "^6.4.2",
@@ -55,6 +57,7 @@
     "file-loader": "^3.0.1",
     "html-loader": "^0.5.5",
     "html-webpack-plugin": "^5.5.0",
+    "jest": "^27.4.7",
     "nodemon": "^2.0.15",
     "postcss-loader": "^3.0.0",
     "redux-logger": "^3.0.6",
@@ -64,6 +67,12 @@
     "webpack": "^5.65.0",
     "webpack-cli": "^4.9.1",
     "webpack-dev-server": "^4.7.2"
+  },
+  "jest": {
+    "moduleNameMapper": {
+      "\\.(jpg|jpeg|png|gif|eot|otf|webp|svg|ttf|woff|woff2|mp4|webm|wav|mp3|m4a|aac|oga)$": "<rootDir>/__mocks__/fileMock.js",
+      "\\.(css|less)$": "<rootDir>/__mocks__/styleMock.js"
+    }
   },
   "repository": {
     "type": "git",
