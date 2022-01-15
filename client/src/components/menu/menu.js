@@ -99,7 +99,7 @@ class Menu extends React.Component {
         <InputBase
           sx={{ ml: 1, flex: 1 }}
           placeholder="Search..."
-          inputProps={{ 'aria-label': 'search google maps' }}
+          inputProps={{ 'aria-label': 'search' }}
           onChange={(e) => this.onSearch(e.target.value, updateSearch)}
         />
       </Paper>

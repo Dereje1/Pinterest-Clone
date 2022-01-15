@@ -89,8 +89,8 @@ const runScan = async () => {
 }
 
 const getPrevBrokenTimeStamp = (prevBrokenPins, pinId) => {
-    const [prevBrokenPin] = prevBrokenPins.broken.filter(({_id}) => _id.toString() === pinId.toString())
-    if(prevBrokenPin){
+    const [prevBrokenPin] = prevBrokenPins.broken.filter(({ _id }) => _id.toString() === pinId.toString())
+    if (prevBrokenPin) {
         return prevBrokenPin.brokenSince
     }
     return null;
@@ -129,4 +129,7 @@ const validateURL = (string) => {
     return null;
 }
 
-module.exports = { getUserProfile, filterPins, runScan }
+module.exports = {
+    getUserProfile, filterPins, runScan,
+    isReadyToRun
+}
