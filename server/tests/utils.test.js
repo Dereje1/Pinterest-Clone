@@ -34,7 +34,7 @@ describe('filtering pins before returning to client', () => {
         expect(filterPins(rawPins, user)).toStrictEqual(
             [
                 {
-                    "_id": "mongoose _i",
+                    "_id": "mongoose _id",
                     "hasSaved": false,
                     "imgDescription": "description",
                     "imgLink": "https://stub",
