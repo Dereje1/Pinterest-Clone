@@ -7,6 +7,5 @@ test('Will signal to run the scan',()=>{
 
 test('Will signal not to run the scan',()=>{
     const lastBackedUpDate = new Date().toISOString();
-    console.log({lastBackedUpDate})
     expect(isReadyToRun(lastBackedUpDate)).toBe(false);
 })
