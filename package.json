@@ -45,10 +45,13 @@
     "acorn": "^6.4.2",
     "autoprefixer": "^9.5.1",
     "babel-eslint": "^10.0.1",
+    "babel-jest": "^27.4.6",
     "babel-loader": "^8.0.5",
     "babel-polyfill": "^6.26.0",
     "concurrently": "^6.5.1",
     "css-loader": "^2.1.1",
+    "enzyme": "^3.11.0",
+    "enzyme-adapter-react-16": "^1.15.6",
     "eslint": "8.6.0",
     "eslint-config-airbnb": "^17.1.0",
     "eslint-plugin-import": "^2.14.0",
@@ -69,10 +72,16 @@
     "webpack-dev-server": "^4.7.2"
   },
   "jest": {
+    "transform": {
+      "\\.js$": "<rootDir>/node_modules/babel-jest"
+    },
     "moduleNameMapper": {
-      "\\.(jpg|jpeg|png|gif|eot|otf|webp|svg|ttf|woff|woff2|mp4|webm|wav|mp3|m4a|aac|oga)$": "<rootDir>/__mocks__/fileMock.js",
-      "\\.(css|less)$": "<rootDir>/__mocks__/styleMock.js"
-    }
+      "\\.(jpg|jpeg|png|gif|eot|otf|webp|svg|ttf|woff|woff2|mp4|webm|wav|mp3|m4a|aac|oga)$": "babel-jest",
+      "\\.(css|less|scss)$": "babel-jest"
+    },
+    "setupFilesAfterEnv": [
+      "./enzymeSetup.js"
+    ]
   },
   "repository": {
     "type": "git",
