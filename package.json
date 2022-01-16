@@ -83,7 +83,8 @@
     },
     "setupFilesAfterEnv": [
       "./enzymeSetup.js"
-    ]
+    ],
+    "collectCoverageFrom": ["**/*.{js,jsx}", "!**/node_modules/**", "!**/vendor/**"]
   },
   "repository": {
     "type": "git",
