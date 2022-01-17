@@ -52,6 +52,7 @@
     "concurrently": "^6.5.1",
     "css-loader": "^2.1.1",
     "enzyme": "^3.11.0",
+    "enzyme-to-json": "^3.6.2",
     "enzyme-adapter-react-16": "^1.15.6",
     "eslint": "8.6.0",
     "eslint-config-airbnb": "^17.1.0",
@@ -84,7 +85,11 @@
     "setupFilesAfterEnv": [
       "./enzymeSetup.js"
     ],
-    "collectCoverageFrom": ["**/*.{js,jsx}", "!**/node_modules/**", "!**/vendor/**"]
+    "collectCoverageFrom": [
+      "**/*.{js,jsx}",
+      "!**/node_modules/**",
+      "!**/vendor/**"
+    ]
   },
   "repository": {
     "type": "git",
