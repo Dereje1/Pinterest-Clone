@@ -1,7 +1,7 @@
 import React from 'react';
 import { shallow } from 'enzyme';
-import { Home } from '../../../src/components/home/home'
-const { pinsStub } = require('../../pinsStub')
+import { Home } from '../../../../../client/src/components/home/home'
+const { pinsStub } = require('../../../pinsStub')
 
 describe('The Home Component', () => {
     let props;
