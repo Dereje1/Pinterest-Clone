@@ -1,5 +1,5 @@
 'use strict';
-const { pinsStub } = require('../client/tests/pinsStub')
+const { pinsStub } = require('../tests/client/pinsStub')
 module.exports = {
     get: () => {
         return Promise.resolve({

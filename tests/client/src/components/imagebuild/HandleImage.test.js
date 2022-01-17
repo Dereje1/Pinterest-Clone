@@ -1,6 +1,6 @@
 import React from 'react';
 import { shallow } from 'enzyme';
-import HandleImage from '../../../src/components/imagebuild/HandleImage';
+import HandleImage from '../../../../../client/src/components/imagebuild/HandleImage';
 
 describe('Handling image action buttons', () => {
     let props;

@@ -1,6 +1,6 @@
-const { filterPins, runScan } = require("../utils");
-const brokenPins = require('../models/brokenPins'); // schema for pins
-const pins = require('../models/pins'); // schema for pins
+const { filterPins, runScan } = require("../../server/utils");
+const brokenPins = require('../../server/models/brokenPins'); // schema for pins
+const pins = require('../../server/models/pins'); // schema for pins
 const nock = require('nock')
 
 const goodPinTemplate = {
