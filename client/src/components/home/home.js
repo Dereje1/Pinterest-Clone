@@ -6,7 +6,7 @@ import RESTcall from '../../crud';
 import ImageBuild from '../imagebuild/imagebuild';
 import SignIn from '../signin/signin';
 
-class Home extends Component {
+export class Home extends Component {
 
   constructor(props) {
     super(props);

@@ -3,7 +3,6 @@
 const mongoose = require('mongoose');
 
 // Build the connection string
-// const dbURI = 'mongodb://localhost:27017/votingapp';
 const dbURI = process.env.MONGOLAB_URI;
 mongoose.Promise = global.Promise;
 // Create the database connection

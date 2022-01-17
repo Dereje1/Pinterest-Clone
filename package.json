@@ -8,7 +8,8 @@
     "build": "webpack --mode production",
     "dev": "concurrently --kill-others-on-fail \"nodemon start\" \"nodemon --exec npm run client \"",
     "lint": "./node_modules/.bin/eslint server client",
-    "test": "jest"
+    "test": "jest",
+    "coverage": "jest --coverage"
   },
   "dependencies": {
     "@emotion/react": "^11.7.1",
@@ -61,6 +62,7 @@
     "html-loader": "^0.5.5",
     "html-webpack-plugin": "^5.5.0",
     "jest": "^27.4.7",
+    "nock": "^13.2.2",
     "nodemon": "^2.0.15",
     "postcss-loader": "^3.0.0",
     "redux-logger": "^3.0.6",
@@ -81,7 +83,8 @@
     },
     "setupFilesAfterEnv": [
       "./enzymeSetup.js"
-    ]
+    ],
+    "collectCoverageFrom": ["**/*.{js,jsx}", "!**/node_modules/**", "!**/vendor/**"]
   },
   "repository": {
     "type": "git",
