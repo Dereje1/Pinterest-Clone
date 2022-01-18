@@ -11,7 +11,6 @@ import Cover from '../cover/cover';
 import SignIn from '../signin/signin';
 import Paper from '@mui/material/Paper';
 import InputBase from '@mui/material/InputBase';
-import IconButton from '@mui/material/IconButton';
 import SearchIcon from '@mui/icons-material/Search';
 import './menu.scss';
 
@@ -21,7 +20,7 @@ const actionCreators = {
   updateSearch
 }
 
-class Menu extends React.Component {
+export class Menu extends React.Component {
 
   constructor(props) {
     super(props);
