@@ -1,3 +1,4 @@
+/* istanbul ignore file */
 // eslint-disable-next-line import/no-extraneous-dependencies
 const autoprefixer = require('autoprefixer');
 
