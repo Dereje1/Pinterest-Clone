@@ -1,3 +1,4 @@
+/* istanbul ignore file */
 const path = require('path');
 const HtmlWebPackPlugin = require('html-webpack-plugin');
 require('babel-polyfill');

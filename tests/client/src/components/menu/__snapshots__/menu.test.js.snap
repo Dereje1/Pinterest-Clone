@@ -1,0 +1,139 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`The Menu component will render for an authenticated user 1`] = `
+<Fragment>
+  <div
+    className="menu"
+  >
+    <div
+      className="brand"
+    >
+      <a
+        href="/"
+      >
+        <i
+          aria-hidden="true"
+          className="fa fa-pinterest"
+        />
+         Clone
+      </a>
+    </div>
+    <ForwardRef(Paper)
+      sx={
+        Object {
+          "alignItems": "center",
+          "background": "#f8f8f8",
+          "display": "flex",
+          "height": "80%",
+          "p": "2px 4px",
+          "width": "30%",
+        }
+      }
+      variant="string"
+    >
+      <Memo(ForwardRef(SearchIcon)) />
+      <ForwardRef(InputBase)
+        inputProps={
+          Object {
+            "aria-label": "search",
+          }
+        }
+        onChange={[Function]}
+        placeholder="Search..."
+        sx={
+          Object {
+            "flex": 1,
+            "ml": 1,
+          }
+        }
+      />
+    </ForwardRef(Paper)>
+    <div
+      className="items extended"
+    >
+      <NavLink
+        exact={true}
+        to="/"
+      >
+        Home
+      </NavLink>
+      <NavLink
+        exact={true}
+        to="/pins"
+      >
+        My Pins
+      </NavLink>
+      <NavLink
+        onClick={[Function]}
+        to="/another"
+      >
+        Logout
+      </NavLink>
+    </div>
+  </div>
+</Fragment>
+`;
+
+exports[`The Menu component will render for users authenticated as guest 1`] = `
+<div
+  className="menu"
+>
+  <div
+    className="brand"
+  >
+    <a
+      href="/"
+    >
+      <i
+        aria-hidden="true"
+        className="fa fa-pinterest"
+      />
+       Clone
+    </a>
+  </div>
+  <ForwardRef(Paper)
+    sx={
+      Object {
+        "alignItems": "center",
+        "background": "#f8f8f8",
+        "display": "flex",
+        "height": "80%",
+        "p": "2px 4px",
+        "width": "30%",
+      }
+    }
+    variant="string"
+  >
+    <Memo(ForwardRef(SearchIcon)) />
+    <ForwardRef(InputBase)
+      inputProps={
+        Object {
+          "aria-label": "search",
+        }
+      }
+      onChange={[Function]}
+      placeholder="Search..."
+      sx={
+        Object {
+          "flex": 1,
+          "ml": 1,
+        }
+      }
+    />
+  </ForwardRef(Paper)>
+  <div
+    className="items signin"
+  >
+    <i
+      aria-hidden="true"
+      className="fa fa-sign-in"
+      onClick={[Function]}
+    />
+  </div>
+  <SignIn
+    caller="menu"
+    removeSignin={[Function]}
+    show={false}
+  />
+</div>
+`;

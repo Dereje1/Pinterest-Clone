@@ -1,7 +1,10 @@
 import React from 'react';
 import { shallow } from 'enzyme';
 import { Home } from '../../../../../client/src/components/home/home'
-const { pinsStub } = require('../../../pinsStub')
+import RESTcall from '../../../../../client/src/crud';
+import { pinsStub } from '../../../pinsStub'
+jest.mock('../../../../../client/src/crud')
+
 
 describe('The Home Component', () => {
     let props;
@@ -16,6 +19,9 @@ describe('The Home Component', () => {
             },
             "search": null
         }
+    })
+    afterEach(() => {
+        RESTcall.mockClear()
     })
     test('Shall not include the sign in component for authenticated users', () => {
         const wrapper = shallow(<Home {...props} />);
@@ -32,25 +38,29 @@ describe('The Home Component', () => {
 
     test('ImageBuild sub-component shall recieve the pins on CDM as props', async () => {
         const wrapper = shallow(<Home {...props} />);
-        await wrapper.instance().componentDidMount()
+        await Promise.resolve()
         const imageBuild = wrapper.find('ImageBuild')
         const displayedPinList = imageBuild.props().pinList;
         displayedPinList.sort((a, b) => a._id - b._id)
         expect(displayedPinList).toStrictEqual(pinsStub)
+        expect(RESTcall).toHaveBeenCalledTimes(1)
+        expect(RESTcall).toHaveBeenCalledWith({ "address": "/api/?type=All", "method": "get" })
     })
 
-    test('ImageBuild sub-component will signal that the layout is complete', async () => {
+    test('ImageBuild sub-component will signal that the layout is complete and make an extra REST call', async () => {
         const wrapper = shallow(<Home {...props} />);
-        await wrapper.instance().componentDidMount()
+        await Promise.resolve()
         const imageBuild = wrapper.find('ImageBuild')
         expect(wrapper.state().imagesLoaded).toBe(false)
         imageBuild.props().layoutComplete()
         expect(wrapper.state().imagesLoaded).toBe(true)
+        expect(RESTcall).toHaveBeenCalledTimes(2)
+        expect(RESTcall.mock.calls).toEqual([[{ "address": "/api/?type=All", "method": "get" }], [{ "address": "/api/broken" }]])
     })
 
     test('ImageBuild sub-component will signal to enalrge the pin', async () => {
         const wrapper = shallow(<Home {...props} />);
-        await wrapper.instance().componentDidMount()
+        await Promise.resolve()
         const imageBuild = wrapper.find('ImageBuild')
         const pinEnlargeArgs = [
             {
@@ -73,19 +83,33 @@ describe('The Home Component', () => {
 
     test('ImageBuild sub-component will signal to pin/save an image', async () => {
         const wrapper = shallow(<Home {...props} />);
-        await wrapper.instance().componentDidMount()
+        await Promise.resolve()
         const imageBuild = wrapper.find('ImageBuild')
         let imageToPin = wrapper.state().pinList.filter(p => p._id === pinsStub[0]._id)[0];
         expect(imageToPin.savedBy.includes('tester displayname')).toBe(false)
         imageBuild.props().pinImage(pinsStub[0])
         imageToPin = wrapper.state().pinList.filter(p => p._id === pinsStub[0]._id)[0];
         expect(imageToPin.savedBy.includes('tester displayname')).toBe(true)
-        //TODO add assertions / couldn't get axios mock args to work)
+        expect(RESTcall).toHaveBeenCalledTimes(2)
+        expect(RESTcall.mock.calls).toEqual([
+            [{ address: '/api/?type=All', method: 'get' }],
+            [
+                {
+                    address: '/api/1',
+                    method: 'put',
+                    payload: {
+                        name: 'tester displayname',
+                        service: 'tester service',
+                        id: 'tester user Id'
+                    }
+                }
+            ]
+        ])
     })
 
     test('ImageBuild sub-component will signal to remove broken images from state', async () => {
         const wrapper = shallow(<Home {...props} />);
-        await wrapper.instance().componentDidMount()
+        await Promise.resolve()
         const imageBuild = wrapper.find('ImageBuild')
         let brokenPin = wrapper.state().pinList.some(p => p._id === 1);
         expect(brokenPin).toBe(true)
@@ -100,7 +124,7 @@ describe('The Home Component', () => {
             search: 'id-3'
         }
         const wrapper = shallow(<Home {...updatedProps} />);
-        await wrapper.instance().componentDidMount()
+        await Promise.resolve()
         const imageBuild = wrapper.find('ImageBuild')
         const displayedPinList = imageBuild.props().pinList;
         expect(displayedPinList).toStrictEqual([pinsStub[2]])
@@ -116,7 +140,7 @@ describe('The Home Component', () => {
             }
         }
         const wrapper = shallow(<Home {...updatedProps} />);
-        await wrapper.instance().componentDidMount()
+        await Promise.resolve()
         const imageBuild = wrapper.find('ImageBuild')
         imageBuild.props().pinImage(pinsStub[0])
 
