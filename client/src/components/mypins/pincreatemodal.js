@@ -14,7 +14,7 @@ class PinCreate extends Component {
       picPreview: '', // on erroneous image links
       description: '',
       isError: true,
-      showErrorImage: false
+      showErrorImage: true
     };
   }
 
