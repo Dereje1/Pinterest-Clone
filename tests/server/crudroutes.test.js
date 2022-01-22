@@ -2,7 +2,7 @@ const { addPin, getPins, pinImage, removePin, runScan } = require('../../server/
 const pins = require('../../server/models/pins'); // schema for pins
 const brokenPins = require('../../server/models/brokenPins');
 const nock = require('nock')
-const {user, rawPinsStub, allPinsResponse, badPinTemplate, scanStub} = require('./stub')
+const { user, rawPinsStub, allPinsResponse, badPinTemplate, scanStub } = require('./stub')
 
 
 const setupMocks = (response = rawPinsStub) => {
@@ -217,7 +217,7 @@ describe('Deleting/unpinning an image', () => {
     });
 
     test('will unpin an image if user is not an owner', async () => {
-        const updatedReq = {...req, params: { _id: 2 }}
+        const updatedReq = { ...req, params: { _id: 2 } }
         pins.findByIdAndUpdate = jest.fn().mockImplementation(
             () => ({
                 exec: jest.fn().mockResolvedValue({ ...rawPinsStub[1], savedBy: [] })

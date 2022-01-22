@@ -1,8 +1,5 @@
 const { filterPins } = require("../../server/utils");
 
-
-
-
 describe('filtering pins before returning to client', () => {
     const user = {
         twitter: {

@@ -156,4 +156,4 @@ const scanStub = {
     }
 }
 
-module.exports={user, rawPinsStub, allPinsResponse, badPinTemplate, scanStub}
+module.exports = { user, rawPinsStub, allPinsResponse, badPinTemplate, scanStub }

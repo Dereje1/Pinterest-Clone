@@ -81,40 +81,40 @@ const removePin = async (req, res) => {
 
 const runScan = async () => {
   try {
-      const [backup] = await brokenPins.find({}).exec();
-      if (backup && !isReadyToRun(backup.createdAt)) {
-          return null
+    const [backup] = await brokenPins.find({}).exec();
+    if (backup && !isReadyToRun(backup.createdAt)) {
+      return null
+    }
+    console.log(`Started scan : ${new Date().toISOString()}...`)
+    const allPins = await pins.find({}).exec();
+    const allInvalid = []
+    const allValid = []
+    for (const pin of allPins) {
+      const { _id, imgLink, imgDescription } = pin;
+      const { statusCode, statusMessage, valid } = await isValidEnpoint(imgLink)
+      if (valid) {
+        allValid.push({ statusCode, statusMessage, _id, imgLink, imgDescription })
+      } else {
+        allInvalid.push({ statusCode, statusMessage, _id, imgLink, imgDescription })
       }
-      console.log(`Started scan : ${new Date().toISOString()}...`)
-      const allPins = await pins.find({}).exec();
-      const allInvalid = []
-      const allValid = []
-      for (const pin of allPins) {
-          const { _id, imgLink, imgDescription } = pin;
-          const { statusCode, statusMessage, valid } = await isValidEnpoint(imgLink)
-          if (valid) {
-              allValid.push({ statusCode, statusMessage, _id, imgLink, imgDescription })
-          } else {
-              allInvalid.push({ statusCode, statusMessage, _id, imgLink, imgDescription })
-          }
-      }
-      await pins.updateMany({ _id: { $in: allValid } }, { isBroken: false }).exec();
-      await pins.updateMany({ _id: { $in: allInvalid } }, { isBroken: true }).exec();
-      if (allInvalid.length) {
-          const currentTimeStamp = new Date().toISOString();
-          const updatedInvalid = allInvalid.map(pin => {
-              const prevBrokenTimeStamp = backup ? getPrevBrokenTimeStamp(backup, pin._id) : null
-              return {
-                  ...pin,
-                  brokenSince: prevBrokenTimeStamp || currentTimeStamp
-              }
-          })
-          await brokenPins.deleteMany({}).exec();
-          await brokenPins.create({ broken: updatedInvalid });
-      }
-      console.log(`Finished scan : ${new Date().toISOString()}`)
+    }
+    await pins.updateMany({ _id: { $in: allValid } }, { isBroken: false }).exec();
+    await pins.updateMany({ _id: { $in: allInvalid } }, { isBroken: true }).exec();
+    if (allInvalid.length) {
+      const currentTimeStamp = new Date().toISOString();
+      const updatedInvalid = allInvalid.map(pin => {
+        const prevBrokenTimeStamp = backup ? getPrevBrokenTimeStamp(backup, pin._id) : null
+        return {
+          ...pin,
+          brokenSince: prevBrokenTimeStamp || currentTimeStamp
+        }
+      })
+      await brokenPins.deleteMany({}).exec();
+      await brokenPins.create({ broken: updatedInvalid });
+    }
+    console.log(`Finished scan : ${new Date().toISOString()}`)
   } catch (error) {
-      console.info(error)
+    console.info(error)
   }
 }
 // adds a new pin to the db
