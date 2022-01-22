@@ -1,62 +1,9 @@
-const { addPin, getPins, pinImage, removePin } = require('../../server/crudroutes')
+const { addPin, getPins, pinImage, removePin, runScan } = require('../../server/crudroutes')
 const pins = require('../../server/models/pins'); // schema for pins
+const brokenPins = require('../../server/models/brokenPins');
+const nock = require('nock')
+const {user, rawPinsStub, allPinsResponse, badPinTemplate, scanStub} = require('./stub')
 
-const user = {
-    twitter: {
-        id: 'twitter test id',
-        displayName: 'tester-twitter'
-    },
-    google: {}
-}
-const rawPinsStub = [{
-    _id: '1',
-    imgDescription: 'description-1',
-    imgLink: 'https://stub-1',
-    owner: { id: 'twitter test id', name: 'tester-twitter' },
-    savedBy: [{ id: 'google test id', name: 'tester-google' }],
-}, {
-    _id: '2',
-    imgDescription: 'description-2',
-    imgLink: 'https://stub-2',
-    owner: { id: 'google test id', name: 'tester-google' },
-    savedBy: [{ id: 'twitter test id', name: 'tester-twitter' }],
-}, {
-    _id: '3',
-    imgDescription: 'description-3',
-    imgLink: 'https://stub-3',
-    owner: { id: 'another test id', name: 'tester-another' },
-    savedBy: [{ id: 'another test id', name: 'tester-another' }],
-}]
-
-const allPinsResponse = [
-    {
-        _id: '1',
-        imgDescription: 'description-1',
-        imgLink: 'https://stub-1',
-        owner: 'tester-twitter',
-        savedBy: ['tester-google'],
-        owns: true,
-        hasSaved: false
-    },
-    {
-        _id: '2',
-        imgDescription: 'description-2',
-        imgLink: 'https://stub-2',
-        owner: 'tester-google',
-        savedBy: ['tester-twitter'],
-        owns: false,
-        hasSaved: true
-    },
-    {
-        _id: '3',
-        imgDescription: 'description-3',
-        imgLink: 'https://stub-3',
-        owner: 'tester-another',
-        savedBy: ['tester-another'],
-        owns: false,
-        hasSaved: false
-    },
-]
 
 const setupMocks = (response = rawPinsStub) => {
     pins.find = jest.fn().mockImplementation(
@@ -303,4 +250,173 @@ describe('Deleting/unpinning an image', () => {
         await removePin(req, res)
         expect(res.json).toHaveBeenCalledWith(Error('Mocked rejection'))
     });
+})
+
+describe('running the scan to find broken images', () => {
+    const setupScanMocks = ({
+        createdAt = new Date('01/16/2022').toISOString(),
+        broken = [],
+        mockHTTPSrequest = true,
+        pinsReturnType
+    }) => {
+        brokenPins.find = jest.fn().mockImplementationOnce(
+            () => ({
+                exec: jest.fn().mockResolvedValueOnce([{
+                    createdAt,
+                    broken
+                }])
+            })
+        );
+        pins.find = jest.fn().mockImplementationOnce(
+            () => ({
+                exec: jest.fn().mockResolvedValueOnce(scanStub.retrievedPinsModel[pinsReturnType])
+            })
+        );
+        pins.updateMany = jest.fn().mockImplementation(
+            () => ({ exec: jest.fn().mockResolvedValue([{}]) })
+        );
+        brokenPins.deleteMany = jest.fn().mockImplementationOnce(
+            () => ({ exec: jest.fn().mockResolvedValueOnce() })
+        );
+        brokenPins.create = jest.fn().mockImplementationOnce(
+            () => jest.fn().mockResolvedValueOnce()
+        );
+        if (mockHTTPSrequest) {
+            nock('https://badpin.com/')
+                .get('/')
+                .reply(500)
+            nock('https://goodpin.com/')
+                .get('/')
+                .reply(200)
+        }
+    }
+
+    afterEach(() => {
+        jest.restoreAllMocks();
+        nock.cleanAll()
+    })
+
+    test('It will Not run the scan if last run was recent', async () => {
+        setupScanMocks({ createdAt: new Date().toISOString() })
+        const scanResult = await runScan();
+        expect(brokenPins.find).toHaveBeenCalledTimes(1);
+        expect(scanResult).toBe(null);
+    })
+
+    test('It will run the full scan and update all images', async () => {
+        setupScanMocks({ pinsReturnType: 'allPins' })
+        await runScan();
+        expect(brokenPins.find).toHaveBeenCalledTimes(1);
+        expect(pins.find).toHaveBeenCalledTimes(1);
+        expect(pins.updateMany).toHaveBeenCalledTimes(2);
+        const [firstCall, secondCall] = pins.updateMany.mock.calls
+        expect(firstCall).toEqual(scanStub.updatePinsModel.goodPin)
+        expect(secondCall).toEqual(scanStub.updatePinsModel.brokenPin)
+        expect(brokenPins.deleteMany).toHaveBeenCalledTimes(1);
+        expect(brokenPins.create).toHaveBeenCalledTimes(1);
+        expect(brokenPins.create.mock.calls[0][0]).toStrictEqual(scanStub.updateBrokenPinsModel.badResponse)
+    })
+
+    test('It will run the full scan but not update broken images if none found', async () => {
+        setupScanMocks({ pinsReturnType: 'oneGoodPin' })
+        await runScan();
+        expect(brokenPins.find).toHaveBeenCalledTimes(1);
+        expect(pins.find).toHaveBeenCalledTimes(1);
+        expect(pins.updateMany).toHaveBeenCalledTimes(2);
+        const [firstCall, secondCall] = pins.updateMany.mock.calls
+        expect(firstCall).toEqual(scanStub.updatePinsModel.goodPin)
+        expect(secondCall).toEqual([{ _id: { '$in': [] } }, { isBroken: true }])
+        expect(brokenPins.deleteMany).not.toHaveBeenCalled();
+        expect(brokenPins.create).not.toHaveBeenCalled();
+    })
+
+    test('It will run the full scan and update broken images for invalid URLs', async () => {
+        setupScanMocks({ pinsReturnType: 'badURLPin' })
+        await runScan();
+        expect(brokenPins.find).toHaveBeenCalledTimes(1);
+        expect(pins.find).toHaveBeenCalledTimes(1);
+        expect(pins.updateMany).toHaveBeenCalledTimes(2);
+        const [firstCall, secondCall] = pins.updateMany.mock.calls
+        expect(firstCall).toEqual(
+            [{ _id: { '$in': [] } }, { isBroken: false }])
+        expect(secondCall).toEqual(scanStub.updatePinsModel.brokenPinInvalidURL)
+        expect(brokenPins.deleteMany).toHaveBeenCalledTimes(1);
+        expect(brokenPins.create).toHaveBeenCalledTimes(1);
+        expect(brokenPins.create.mock.calls[0][0]).toStrictEqual(scanStub.updateBrokenPinsModel.badURL)
+    })
+
+    test('It will run the full scan but not update broken images for data protocol URL', async () => {
+        setupScanMocks({ pinsReturnType: 'dataProtocolPin' })
+        await runScan();
+        expect(brokenPins.find).toHaveBeenCalledTimes(1);
+        expect(pins.find).toHaveBeenCalledTimes(1);
+        expect(pins.updateMany).toHaveBeenCalledTimes(2);
+        const [firstCall, secondCall] = pins.updateMany.mock.calls
+        expect(firstCall).toEqual(scanStub.updatePinsModel.goodPinDataProtocol)
+        expect(secondCall).toEqual(
+            [{ _id: { '$in': [] } }, { isBroken: true }]
+        )
+        expect(brokenPins.deleteMany).not.toHaveBeenCalled();
+        expect(brokenPins.create).not.toHaveBeenCalled();
+    })
+
+    test('It will preserve previously broken image time stamps', async () => {
+        setupScanMocks({
+            broken: [{
+                _id: '123',
+                brokenSince: 'over a year ago'
+            }],
+            pinsReturnType: 'oneBadPin'
+        })
+        await runScan();
+        expect(brokenPins.find).toHaveBeenCalledTimes(1);
+        expect(pins.find).toHaveBeenCalledTimes(1);
+        expect(pins.updateMany).toHaveBeenCalledTimes(2);
+        const [firstCall, secondCall] = pins.updateMany.mock.calls
+        expect(firstCall).toEqual(
+            [{ _id: { '$in': [] } }, { isBroken: false }],
+        )
+        expect(secondCall).toEqual(scanStub.updatePinsModel.brokenPin)
+        expect(brokenPins.deleteMany).toHaveBeenCalledTimes(1);
+        expect(brokenPins.create).toHaveBeenCalledTimes(1);
+        expect(brokenPins.create.mock.calls[0][0]).toStrictEqual(scanStub.updateBrokenPinsModel.keepTimeStamp)
+    })
+
+    test('It will run the full scan and update broken images for all other error in http response', async () => {
+        setupScanMocks({ mockHTTPSrequest: false, pinsReturnType: 'oneBadPin' })
+        nock('https://badpin.com/')
+            .get('/')
+            .replyWithError('Error in https request');
+        await runScan();
+        expect(brokenPins.find).toHaveBeenCalledTimes(1);
+        expect(pins.find).toHaveBeenCalledTimes(1);
+        expect(pins.updateMany).toHaveBeenCalledTimes(2);
+        const [firstCall, secondCall] = pins.updateMany.mock.calls
+        expect(firstCall).toEqual(
+            [{ _id: { '$in': [] } }, { isBroken: false }])
+        expect(secondCall).toEqual(
+            [{
+                _id: {
+                    '$in': [
+                        {
+                            ...badPinTemplate,
+                            statusCode: null,
+                            statusMessage: new Error('Error in https request')
+                        }]
+                }
+            }, { isBroken: true }]
+        )
+        expect(brokenPins.deleteMany).toHaveBeenCalledTimes(1);
+        expect(brokenPins.create).toHaveBeenCalledTimes(1);
+        expect(brokenPins.create.mock.calls[0][0]).toStrictEqual({
+            broken: [
+                {
+                    ...badPinTemplate,
+                    statusCode: null,
+                    statusMessage: new Error('Error in https request'),
+                    brokenSince: expect.any(String),
+                }
+            ]
+        })
+    })
 })
