@@ -12,7 +12,7 @@ These instructions will get you a copy of the project up and running on your loc
 
 | Prerequisite                                | Version |
 | ------------------------------------------- | ------- |
-| [Node.js](http://nodejs.org) /  npm (comes with Node)  | `~ ^8.11.2` / `~^6.1.0` |
+| [Node.js](http://nodejs.org) /  npm (comes with Node)  | `~ ^14.18.0` / `~^6.14.15` |
 | [Git](https://git-scm.com/downloads) | `~ ^2` |
 | [MongoDB Community Server](https://docs.mongodb.com/manual/administration/install-community/) | `~ ^3.4.9`  |
 
