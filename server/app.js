@@ -3,6 +3,7 @@ const path = require('path');
 const cookieSession = require('cookie-session');
 const bodyParser = require('body-parser');
 const logger = require('morgan');
+const {router} = require('./crudroutes')
 
 const app = express();
 
@@ -17,7 +18,7 @@ app.use(express.static(path.join(__dirname, '../client/public')));
 
 require('./models/db'); // mongoose required common db
 require('./Authentication_Config/authserver')(app);
-app.use(require('./crudroutes'));
+app.use(router);
 
 app.get('*', (req, res) => {
   res.sendFile(path.resolve(__dirname, '../client/public', 'index.html'));

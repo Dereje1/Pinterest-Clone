@@ -5,4 +5,5 @@ global.console = {
     warn: console.warn,
     info: console.info,
     debug: console.debug,
+    dir: console.dir,
   };
