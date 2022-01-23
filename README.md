@@ -52,7 +52,6 @@ TWITTER_CALLBACK=<Redirection address after Twitter Verifies account>
 GOOGLE_CLIENT_ID=< Get from Google Developer API >
 GOOGLE_CLIENT_SECRET=< Get from Google Developer API >
 GOOGLE_CALLBACK=<Redirection address after Google Verifies account>
-
 ```
 Run development environment
 ```
@@ -62,16 +61,12 @@ You can now go to `http://localhost:8080/` and see the project running in dev mo
 
 # B) Docker
 If you have docker installed and a `.env` file with contents from above, then from the root dir:
-1. Build the img
+1. Build and run the images
 ```
-docker build . -t pintclone
+docker-compose up
 ```
-2. Run the image
-```
-docker run -p 8080:3000 pintclone
-```
-3. Go to  `http://localhost:8080/`
-
+2. Go to  `http://localhost:8080/`
+* Note: MONGOLAB_URI is already incorporated in the local docker setup and is not needed for your env file.
 <br/>
 
 ## Built With
