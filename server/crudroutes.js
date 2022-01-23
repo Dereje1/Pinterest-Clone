@@ -81,20 +81,15 @@ const removePin = async (req, res) => {
 
 const runScan = async (req, res) => {
   const startedScan = new Date().toISOString()
-  const scanResponse = {
-    startedScan,
-  }
   try {
     const [backup] = await brokenPins.find({}).exec();
-    if (!backup) {
-      await brokenPins.create({ broken: [] });
-    }
-    if (backup.createdAt && !isReadyToRun(backup.createdAt)) {
-      res.json({ ...scanResponse, message: 'canceled' });
+    if (backup && backup.createdAt && !isReadyToRun(backup.createdAt)) {
+      res.json({ startedScan, message: 'canceled' });
+      return null
     }
     console.log(`Started scan : ${startedScan}...`)
     const allPins = await pins.find({}).exec();
-    const allInvalid = []
+    let allInvalid = []
     const allValid = []
     for (const pin of allPins) {
       const { _id, imgLink, imgDescription } = pin;
@@ -108,20 +103,19 @@ const runScan = async (req, res) => {
     await pins.updateMany({ _id: { $in: allValid } }, { isBroken: false }).exec();
     await pins.updateMany({ _id: { $in: allInvalid } }, { isBroken: true }).exec();
     if (allInvalid.length) {
-      const currentTimeStamp = new Date().toISOString();
-      const updatedInvalid = allInvalid.map(pin => {
+      allInvalid = allInvalid.map(pin => {
         const prevBrokenTimeStamp = backup ? getPrevBrokenTimeStamp(backup, pin._id) : null
         return {
           ...pin,
-          brokenSince: prevBrokenTimeStamp || currentTimeStamp
+          brokenSince: prevBrokenTimeStamp || startedScan
         }
       })
-      await brokenPins.deleteMany({}).exec();
-      await brokenPins.create({ broken: updatedInvalid });
     }
+    await brokenPins.deleteMany({}).exec();
+    await brokenPins.create({ broken: allInvalid });
     const finishedScan = new Date().toISOString()
     console.log(`Finished scan : ${finishedScan}`)
-    res.json({ ...scanResponse, finishedScan, message: `Found ${allInvalid.length} broken images` });
+    res.json({ startedScan, finishedScan, message: `Found ${allInvalid.length} broken images` });
   } catch (error) {
     res.json(error);
   }
