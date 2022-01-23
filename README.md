@@ -48,10 +48,10 @@ SESSION_SECRET=<Secret for Express Session>
 MONGOLAB_URI=<Mongo Connection URI>
 TWITTER_CONSUMER_KEY=< Get from Twitter Developer API >
 TWITTER_CONSUMER_SECRET=< Get from Twitter Developer API >
-TWITTER_CALLBACK=<Redirection address after Twitter Verifies account>
+TWITTER_CALLBACK=http://localhost:8080/auth/twitter/callback
 GOOGLE_CLIENT_ID=< Get from Google Developer API >
 GOOGLE_CLIENT_SECRET=< Get from Google Developer API >
-GOOGLE_CALLBACK=<Redirection address after Google Verifies account>
+GOOGLE_CALLBACK=http://localhost:8080/auth/google/redirect
 ```
 Run development environment
 ```
