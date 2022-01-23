@@ -79,13 +79,20 @@ const removePin = async (req, res) => {
   }
 }
 
-const runScan = async () => {
+const runScan = async (req, res) => {
+  const startedScan = new Date().toISOString()
+  const scanResponse = {
+    startedScan,
+  }
   try {
     const [backup] = await brokenPins.find({}).exec();
-    if (backup && !isReadyToRun(backup.createdAt)) {
-      return null
+    if (!backup) {
+      await brokenPins.create({ broken: [] });
     }
-    console.log(`Started scan : ${new Date().toISOString()}...`)
+    if (backup.createdAt && !isReadyToRun(backup.createdAt)) {
+      res.json({ ...scanResponse, message: 'canceled' });
+    }
+    console.log(`Started scan : ${startedScan}...`)
     const allPins = await pins.find({}).exec();
     const allInvalid = []
     const allValid = []
@@ -112,9 +119,11 @@ const runScan = async () => {
       await brokenPins.deleteMany({}).exec();
       await brokenPins.create({ broken: updatedInvalid });
     }
-    console.log(`Finished scan : ${new Date().toISOString()}`)
+    const finishedScan = new Date().toISOString()
+    console.log(`Finished scan : ${finishedScan}`)
+    res.json({ ...scanResponse, finishedScan, message: `Found ${allInvalid.length} broken images` });
   } catch (error) {
-    console.info(error)
+    res.json(error);
   }
 }
 // adds a new pin to the db
