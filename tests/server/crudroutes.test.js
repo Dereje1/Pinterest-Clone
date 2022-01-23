@@ -253,6 +253,7 @@ describe('Deleting/unpinning an image', () => {
 })
 
 describe('running the scan to find broken images', () => {
+    let res;
     const setupScanMocks = ({
         createdAt = new Date('01/16/2022').toISOString(),
         broken = [],
@@ -291,6 +292,10 @@ describe('running the scan to find broken images', () => {
         }
     }
 
+    beforeEach(() => {
+        res = { json: jest.fn(), end: jest.fn() }
+    })
+
     afterEach(() => {
         jest.restoreAllMocks();
         nock.cleanAll()
@@ -298,14 +303,14 @@ describe('running the scan to find broken images', () => {
 
     test('It will Not run the scan if last run was recent', async () => {
         setupScanMocks({ createdAt: new Date().toISOString() })
-        const scanResult = await runScan();
+        const scanResult = await runScan({}, res);
         expect(brokenPins.find).toHaveBeenCalledTimes(1);
-        expect(scanResult).toBe(null);
+        expect(res.json).toHaveBeenCalledWith({ startedScan: expect.any(String), message: 'canceled' });
     })
 
     test('It will run the full scan and update all images', async () => {
         setupScanMocks({ pinsReturnType: 'allPins' })
-        await runScan();
+        await runScan({}, res);
         expect(brokenPins.find).toHaveBeenCalledTimes(1);
         expect(pins.find).toHaveBeenCalledTimes(1);
         expect(pins.updateMany).toHaveBeenCalledTimes(2);
@@ -319,7 +324,7 @@ describe('running the scan to find broken images', () => {
 
     test('It will run the full scan but not update broken images if none found', async () => {
         setupScanMocks({ pinsReturnType: 'oneGoodPin' })
-        await runScan();
+        await runScan({}, res);
         expect(brokenPins.find).toHaveBeenCalledTimes(1);
         expect(pins.find).toHaveBeenCalledTimes(1);
         expect(pins.updateMany).toHaveBeenCalledTimes(2);
@@ -332,7 +337,7 @@ describe('running the scan to find broken images', () => {
 
     test('It will run the full scan and update broken images for invalid URLs', async () => {
         setupScanMocks({ pinsReturnType: 'badURLPin' })
-        await runScan();
+        await runScan({}, res);
         expect(brokenPins.find).toHaveBeenCalledTimes(1);
         expect(pins.find).toHaveBeenCalledTimes(1);
         expect(pins.updateMany).toHaveBeenCalledTimes(2);
@@ -347,7 +352,7 @@ describe('running the scan to find broken images', () => {
 
     test('It will run the full scan but not update broken images for data protocol URL', async () => {
         setupScanMocks({ pinsReturnType: 'dataProtocolPin' })
-        await runScan();
+        await runScan({}, res);
         expect(brokenPins.find).toHaveBeenCalledTimes(1);
         expect(pins.find).toHaveBeenCalledTimes(1);
         expect(pins.updateMany).toHaveBeenCalledTimes(2);
@@ -368,7 +373,7 @@ describe('running the scan to find broken images', () => {
             }],
             pinsReturnType: 'oneBadPin'
         })
-        await runScan();
+        await runScan({}, res);
         expect(brokenPins.find).toHaveBeenCalledTimes(1);
         expect(pins.find).toHaveBeenCalledTimes(1);
         expect(pins.updateMany).toHaveBeenCalledTimes(2);
@@ -387,7 +392,7 @@ describe('running the scan to find broken images', () => {
         nock('https://badpin.com/')
             .get('/')
             .replyWithError('Error in https request');
-        await runScan();
+        await runScan({}, res);
         expect(brokenPins.find).toHaveBeenCalledTimes(1);
         expect(pins.find).toHaveBeenCalledTimes(1);
         expect(pins.updateMany).toHaveBeenCalledTimes(2);

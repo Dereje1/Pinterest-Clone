@@ -1,0 +1,16 @@
+version: "3.8"
+services:
+  mongodb:
+    image: mongo:latest
+    restart: always
+    environment:
+      - MONGO_INITDB_ROOT_USERNAME=root
+      - MONGO_INITDB_ROOT_PASSWORD=123456
+    ports:
+      - 27017:27017
+  app:
+    build: .
+    ports:
+      - 8080:3000
+    environment:
+      - MONGOLAB_URI=mongodb://root:123456@mongodb:27017/
