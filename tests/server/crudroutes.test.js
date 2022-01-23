@@ -322,7 +322,7 @@ describe('running the scan to find broken images', () => {
         expect(brokenPins.create.mock.calls[0][0]).toStrictEqual(scanStub.updateBrokenPinsModel.badResponse)
     })
 
-    test('It will run the full scan but not update broken images if none found', async () => {
+    test('It will run the full scan and reset broken images if none found', async () => {
         setupScanMocks({ pinsReturnType: 'oneGoodPin' })
         await runScan({}, res);
         expect(brokenPins.find).toHaveBeenCalledTimes(1);
@@ -331,8 +331,8 @@ describe('running the scan to find broken images', () => {
         const [firstCall, secondCall] = pins.updateMany.mock.calls
         expect(firstCall).toEqual(scanStub.updatePinsModel.goodPin)
         expect(secondCall).toEqual([{ _id: { '$in': [] } }, { isBroken: true }])
-        expect(brokenPins.deleteMany).not.toHaveBeenCalled();
-        expect(brokenPins.create).not.toHaveBeenCalled();
+        expect(brokenPins.deleteMany).toHaveBeenCalledTimes(1);
+        expect(brokenPins.create).toHaveBeenCalledWith({ broken: [] });
     })
 
     test('It will run the full scan and update broken images for invalid URLs', async () => {
@@ -350,7 +350,7 @@ describe('running the scan to find broken images', () => {
         expect(brokenPins.create.mock.calls[0][0]).toStrictEqual(scanStub.updateBrokenPinsModel.badURL)
     })
 
-    test('It will run the full scan but not update broken images for data protocol URL', async () => {
+    test('It will run the full scan and reset broken images for data protocol URL', async () => {
         setupScanMocks({ pinsReturnType: 'dataProtocolPin' })
         await runScan({}, res);
         expect(brokenPins.find).toHaveBeenCalledTimes(1);
@@ -361,8 +361,8 @@ describe('running the scan to find broken images', () => {
         expect(secondCall).toEqual(
             [{ _id: { '$in': [] } }, { isBroken: true }]
         )
-        expect(brokenPins.deleteMany).not.toHaveBeenCalled();
-        expect(brokenPins.create).not.toHaveBeenCalled();
+        expect(brokenPins.deleteMany).toHaveBeenCalledTimes(1);
+        expect(brokenPins.create).toHaveBeenCalledWith({ broken: [] });
     })
 
     test('It will preserve previously broken image time stamps', async () => {
@@ -424,4 +424,14 @@ describe('running the scan to find broken images', () => {
             ]
         })
     })
+
+    test('will respond with error if GET is rejected', async () => {
+        brokenPins.find = jest.fn().mockImplementation(
+            () => ({
+                exec: jest.fn().mockRejectedValue(new Error('Mocked rejection'))
+            })
+        );
+        await runScan({}, res)
+        expect(res.json).toHaveBeenCalledWith(Error('Mocked rejection'))
+    });
 })
