@@ -104,7 +104,7 @@ export class Home extends Component {
     // can not do this unless logged in
     const {
       user: {
-        displayname, username, service, userID,
+        displayname, username, service, userId,
       },
     } = this.props;
     const { pinList } = this.state;
@@ -122,7 +122,7 @@ export class Home extends Component {
     const newPinnerInfo = {
       name: displayname,
       service,
-      id: userID,
+      id: userId,
     };
     const updated = [...element.savedBy, displayname];
     // update client then update db

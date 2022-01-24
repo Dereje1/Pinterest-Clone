@@ -15,7 +15,7 @@ describe('The Home Component', () => {
                 displayname: 'tester displayname',
                 username: 'tester username',
                 service: 'tester service',
-                userID: 'tester user Id'
+                userId: 'tester user Id'
             },
             "search": null
         }
