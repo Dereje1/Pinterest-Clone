@@ -26,7 +26,7 @@ const processLogin = async (token, tokenSecret, profile, done) => {
   }
 }
 
-const configMain = (passport) => {
+const passportConfig = (passport) => {
   const twitterApiKeys = getApiKeys('twitter');
   const googleApiKeys = getApiKeys('google');
   // used to serialize the user for the session
@@ -44,9 +44,9 @@ const configMain = (passport) => {
   if (twitterApiKeys) {
     passport.use(new TwitterStrategy(twitterApiKeys, processLogin));
   }
-  
+
   if (googleApiKeys) {
     passport.use(new GoogleStrategy(googleApiKeys, processLogin));
   };
 }
-module.exports = configMain;
+module.exports = { passportConfig, processLogin };
