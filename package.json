@@ -84,8 +84,8 @@
       "\\.(css|less|scss)$": "babel-jest"
     },
     "setupFilesAfterEnv": [
-      "./enzymeSetup.js",
-      "./jestSetup.js"
+      "./testingSetup/enzymeSetup.js",
+      "./testingSetup/jestSetup.js"
     ],
     "collectCoverageFrom": [
       "**/*.{js,jsx}",
