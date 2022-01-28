@@ -36,7 +36,7 @@ export class Menu extends React.Component {
   componentDidMount() {
     console.log('Menu just Mounted');
     const { getUser: getUserStatus } = this.props;
-    getUserStatus();
+    getUserStatus('/auth/profile');
     this.setState(
       {
         menuIsCollapsed: window.innerWidth < 600,

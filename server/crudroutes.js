@@ -87,6 +87,8 @@ const runScan = async (req, res) => {
       res.json({ startedScan, message: 'canceled' });
       return null
     }
+    // offload scan from req and resume
+    res.json({ startedScan, message: `scanning...` });
     console.log(`Started scan : ${startedScan}...`)
     const allPins = await pins.find({}).exec();
     let allInvalid = []
@@ -115,7 +117,6 @@ const runScan = async (req, res) => {
     await brokenPins.create({ broken: allInvalid });
     const finishedScan = new Date().toISOString()
     console.log(`Finished scan : ${finishedScan}`)
-    res.json({ startedScan, finishedScan, message: `Found ${allInvalid.length} broken images` });
   } catch (error) {
     res.json(error);
   }

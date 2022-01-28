@@ -16,7 +16,7 @@ describe('The Menu component', () => {
                 displayname: 'tester displayname',
                 username: 'tester username',
                 service: 'tester service',
-                userID: 'tester user Id'
+                userId: 'tester user Id'
             },
             search: null,
             location: {

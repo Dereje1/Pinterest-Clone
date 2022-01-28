@@ -90,7 +90,7 @@ class PinCreate extends Component {
       owner: {
         name: userInfo.displayname,
         service: userInfo.service,
-        id: userInfo.userID,
+        id: userInfo.userId,
       },
       imgDescription: description,
       imgLink: picPreview,

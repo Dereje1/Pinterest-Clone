@@ -19,31 +19,33 @@ These instructions will get you a copy of the project up and running on your loc
 
 ### Installing
 
-Create a new directory and initialize git
+>Create a new directory and initialize git
 
 ```
 $ mkdir Pinterest-Clone
 $ cd Pinterest-Clone
 $ git init
 ```
-
-Pull from github and install packages
+>Pull from github and install packages
 
 ```
 $ git pull https://github.com/Dereje1/Pinterest-Clone.git
 $ npm install
 ```
 
-If using mongoDB locally see below to start the db (if using mlab / Mongo DB Atlas skip this step)
+>To run mongoDB locally with docker :
+<br/>
 
-```
-$ mkdir data
-$ mongod --port 27017 --dbpath=./data
+In the root folder run
+`docker-compose up mongodb` and then use `mongodb://root:123456@localhost:27017` for `MONGOLAB_URI`
+in your `.env `file below, alternatively, you can get a connection string from mongodb Atlas after setting up your own db.
+
+
+>create .env files
+
+In the root of the project create a .env file with the following contents
 ```
 
-create .env files
->In the root of the project create a .env file with the following contents
-```
 SESSION_SECRET=<Secret for Express Session>
 MONGOLAB_URI=<Mongo Connection URI>
 TWITTER_CONSUMER_KEY=< Get from Twitter Developer API >
@@ -66,7 +68,7 @@ If you have docker installed and a `.env` file with contents from above, then fr
 docker-compose up
 ```
 2. Go to  `http://localhost:8080/`
-* Note: MONGOLAB_URI is already incorporated in the local docker setup and is not needed for your env file.
+* Note: MONGOLAB_URI is already incorporated in the local docker setup and is not needed for your env file if fully running with docker.
 <br/>
 
 ## Built With

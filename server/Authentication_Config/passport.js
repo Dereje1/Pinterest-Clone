@@ -5,7 +5,28 @@ const { getApiKeys } = require('./utils')
 // load up the user model
 const User = require('../models/user');
 
-const configMain = (passport) => {
+const processLogin = async (token, tokenSecret, profile, done) => {
+  const { provider, id, username, displayName, emails } = profile;
+  try {
+    const user = await User.findOne({ [`${provider}.id`]: id }).exec();
+    if (user) {
+      return done(null, user)
+    }
+    const newUser = await User.create({
+      [provider]: {
+        id,
+        token,
+        username: username || emails[0].value,
+        displayName
+      },
+    })
+    return done(null, newUser);
+  } catch (error) {
+    return done(error)
+  }
+}
+
+const passportConfig = (passport) => {
   const twitterApiKeys = getApiKeys('twitter');
   const googleApiKeys = getApiKeys('google');
   // used to serialize the user for the session
@@ -20,67 +41,12 @@ const configMain = (passport) => {
     });
   });
 
-  // =========================================================================
-  // TWITTER =================================================================
-  // =========================================================================
   if (twitterApiKeys) {
-    passport.use(new TwitterStrategy(twitterApiKeys, ((token, tokenSecret, profile, done) => {
-      // make the code asynchronous
-      // User.findOne won't fire until we have all our data back from Twitter
-      process.nextTick(() => {
-        User.findOne({ 'twitter.id': profile.id }, (err, user) => {
-          // if there is an error, stop everything and return that
-          if (err) return done(err);
-
-          // if the user is found then log them in
-          if (user) return done(null, user);
-
-          // if there is no user, create them
-          const { id, username, displayName } = profile;
-          // set all of the user data that we need
-          const newUser = new User({
-            twitter: {
-              id,
-              token,
-              username,
-              displayName,
-            },
-          });
-          // save our user into the database
-          newUser.save((saveErr) => {
-            if (saveErr) throw saveErr;
-            return done(null, newUser);
-          });
-          return null;
-        });
-      });
-    })));
+    passport.use(new TwitterStrategy(twitterApiKeys, processLogin));
   }
-  // =========================================================================
-  // GOOGLE =================================================================
-  // =========================================================================
+
   if (googleApiKeys) {
-    passport.use(new GoogleStrategy(googleApiKeys, (token, tokenSecret, profile, done) => {
-      User.findOne({ 'google.id': profile.id }, (err, user) => {
-        if (err) return done(err);
-        if (user) return done(null, user);
-        // create new user
-        const { id, emails, displayName } = profile;
-        const newUser = new User({
-          google: {
-            id,
-            token,
-            displayName,
-            username: emails[0].value,
-          },
-        });
-        newUser.save((saveErr) => {
-          if (saveErr) throw saveErr;
-          return done(null, newUser);
-        });
-        return false; // eslint needs return
-      });
-    }));
+    passport.use(new GoogleStrategy(googleApiKeys, processLogin));
   };
 }
-module.exports = configMain;
+module.exports = { passportConfig, processLogin };
