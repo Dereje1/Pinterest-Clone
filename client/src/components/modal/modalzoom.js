@@ -4,7 +4,7 @@ import PropTypes from 'prop-types';
 import HandleImage from '../imagebuild/HandleImage';
 import './modal.scss';
 
-class PinZoom extends Component {
+export class PinZoom extends Component {
 
   constructor(props) {
     super(props);
