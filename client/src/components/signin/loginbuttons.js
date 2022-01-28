@@ -20,7 +20,7 @@ class LoginButtons extends React.Component {
 
     handleGuest = () => { // set guest user
       const { setGuest: setGuestStatus, guest } = this.props;
-      setGuestStatus();
+      setGuestStatus('/auth/guest');
       guest(); // callback to hid login div
     }
 
