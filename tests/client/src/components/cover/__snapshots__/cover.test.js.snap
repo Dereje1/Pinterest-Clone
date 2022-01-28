@@ -1,0 +1,57 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`The landing page will display the cover 1`] = `
+<div
+  id="cover"
+>
+  <div
+    id="logincard"
+  >
+    <div>
+      <div
+        id="logo"
+      >
+        <i
+          aria-hidden="true"
+          className="fa fa-pinterest"
+        />
+      </div>
+      <div
+        id="welcome"
+      >
+        Welcome to Pinterest
+      </div>
+      <div
+        id="subheader"
+      >
+        Find new ideas to try
+      </div>
+      <div
+        id="disclaimer"
+      >
+        Cloned For Educational Purposes Only!
+      </div>
+      <div
+        id="gitsource"
+      >
+        <a
+          href="https://github.com/Dereje1/Pinterest-Clone"
+          rel="noopener noreferrer"
+          target="_blank"
+        >
+          <i
+            aria-hidden="true"
+            className="fa fa-github"
+          />
+           Github
+        </a>
+      </div>
+    </div>
+    <div>
+      <Connect(LoginButtons)
+        guest={[Function]}
+      />
+    </div>
+  </div>
+</div>
+`;
