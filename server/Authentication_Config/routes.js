@@ -7,9 +7,9 @@ const getProfile = (req, res) => {
   res.json({
     authenticated: true,
     userIp: ip.address(),
-    username: req.user[service].username,
-    userId: req.user[service].id,
-    displayname: req.user[service].displayName,
+    username: user[service].username,
+    userId: user[service].id,
+    displayname: user[service].displayName,
     service,
   });
 };
