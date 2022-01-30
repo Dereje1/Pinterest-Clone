@@ -12,11 +12,12 @@ const mapDispatchToProps = dispatch => (
   }, dispatch)
 );
 
-class LoginButtons extends React.Component {
+const handleLogin = (loc) => { // twitter/ google authentication
+  window.location = loc;
+};
 
-  handleLogin = (loc) => { // twitter/ google authentication
-    window.location = loc;
-  };
+
+class LoginButtons extends React.Component {
 
   handleGuest = () => { // set guest user
     const { setGuest: setGuestStatus, guest } = this.props;
@@ -42,7 +43,7 @@ class LoginButtons extends React.Component {
         <button
           type="submit"
           id="twitterloginbutton"
-          onClick={() => this.handleLogin('/auth/twitter')}
+          onClick={() => handleLogin('/auth/twitter')}
         >
           <span id="twitter">
             <i className="fa fa-twitter" aria-hidden="true" />
@@ -54,7 +55,7 @@ class LoginButtons extends React.Component {
         <button
           type="submit"
           id="googleloginbutton"
-          onClick={() => this.handleLogin('/auth/google')}
+          onClick={() => handleLogin('/auth/google')}
         >
           <span id="twitter">
             <i className="fa fa-google" aria-hidden="true" />

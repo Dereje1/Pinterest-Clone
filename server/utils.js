@@ -1,6 +1,4 @@
 const https = require('https');
-const brokenPins = require('./models/brokenPins'); // schema for pins
-const pins = require('./models/pins'); // schema for pins
 
 /* Isolate auth service used from req.user */
 const getUserProfile = (user) => {
@@ -50,34 +48,12 @@ const isReadyToRun = (lastBackedUp) => {
 };
 
 const getPrevBrokenTimeStamp = (prevBrokenPins, pinId) => {
-  const [prevBrokenPin] = prevBrokenPins.broken.filter(({ _id }) => _id.toString() === pinId.toString());
-  if (prevBrokenPin) {
-    return prevBrokenPin.brokenSince;
+  const [pinFound] = prevBrokenPins.broken.filter(({ _id }) => _id.toString() === pinId.toString());
+  if (pinFound) {
+    return pinFound.brokenSince;
   }
   return null;
 };
-
-const isValidEnpoint = originalURL => new Promise((resolve) => {
-  const url = validateURL(originalURL);
-  if (url === 'data protocol') resolve({ statusCode: null, statusMessage: 'data protocol', valid: true });
-  if (!url) resolve({ statusCode: null, statusMessage: 'Invalid URL', valid: false });
-
-  const inValidStatusMessages = ['Moved Permanently', 'Moved Temporarily'];
-  const request = https.request(url, (response) => {
-    const { statusCode, statusMessage } = response;
-    if (statusCode < 400 && !inValidStatusMessages.includes(statusMessage)) {
-      resolve({ statusCode, statusMessage, valid: true });
-    } else {
-      resolve({ statusCode, statusMessage, valid: false });
-    }
-  });
-
-  request.on('error', (error) => {
-    resolve({ statusCode: null, statusMessage: error, valid: false });
-  });
-
-  request.end();
-});
 
 const validateURL = (string) => {
   try {
@@ -89,6 +65,42 @@ const validateURL = (string) => {
   }
   return null;
 };
+
+const isValidEnpoint = imageInfo => new Promise((resolve) => {
+  const url = validateURL(imageInfo.imgLink);
+  if (url === 'data protocol') {
+    resolve({
+      ...imageInfo, statusCode: null, statusMessage: 'data protocol', valid: true,
+    });
+  }
+  if (!url) {
+    resolve({
+      ...imageInfo, statusCode: null, statusMessage: 'Invalid URL', valid: false,
+    });
+  }
+
+  const inValidStatusMessages = ['Moved Permanently', 'Moved Temporarily'];
+  const request = https.request(url, (response) => {
+    const { statusCode, statusMessage } = response;
+    if (statusCode < 400 && !inValidStatusMessages.includes(statusMessage)) {
+      resolve({
+        ...imageInfo, statusCode, statusMessage, valid: true,
+      });
+    } else {
+      resolve({
+        ...imageInfo, statusCode, statusMessage, valid: false,
+      });
+    }
+  });
+
+  request.on('error', (error) => {
+    resolve({
+      ...imageInfo, statusCode: null, statusMessage: error, valid: false,
+    });
+  });
+
+  request.end();
+});
 
 module.exports = {
   getUserProfile, filterPins, isReadyToRun, isValidEnpoint, getPrevBrokenTimeStamp,

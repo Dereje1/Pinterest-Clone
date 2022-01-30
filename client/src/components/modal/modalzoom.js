@@ -4,6 +4,38 @@ import PropTypes from 'prop-types';
 import HandleImage from '../imagebuild/HandleImage';
 import './modal.scss';
 
+const getNewImageWidth = ({ naturalWidth: width, naturalHeight: height }) => {
+  // dynamically resize image
+  let { innerWidth, innerHeight } = window;
+  // parameter for innerwidth/height adjustment with mobile consideration
+  // top(70) + headingheight(50 / 25) + button height (50 / 25)
+  innerHeight = innerHeight < 500 ? innerHeight - 120 : innerHeight - 170;
+  // minor x direction adjustment for padding too
+  innerWidth -= (innerWidth * 0.02);
+  const aspectRatio = width / height;
+  let newWidth;
+  if (width < innerWidth && height < innerHeight) {
+    // already fits, return value if above 500 or else
+    // expand to 500
+    newWidth = width < 500 && innerWidth > 500 ? 500 : width;
+  } else if (width > innerWidth) {
+    newWidth = innerWidth;
+    // test new height with Aspect ratio
+    const newHeight = newWidth / aspectRatio;
+    // test again if new height is less than screen height
+    newWidth = newHeight < innerHeight
+      ? newWidth
+      : aspectRatio * innerHeight;
+  } else { // means height > innerheight
+    newWidth = aspectRatio * innerHeight;
+  }
+  return newWidth;
+};
+
+const getPinners = pinInformation => (pinInformation.savedBy.length > 3
+  ? `${pinInformation.savedBy.slice(0, 3).join(', ')} and ${pinInformation.savedBy.length - 3} others`
+  : pinInformation.savedBy.join(', '));
+
 export class PinZoom extends Component {
 
   constructor(props) {
@@ -80,38 +112,10 @@ export class PinZoom extends Component {
     }, () => reset());
   };
 
-  getNewImageWidth = ({ naturalWidth: width, naturalHeight: height }) => {
-    // dynamically resize image
-    let { innerWidth, innerHeight } = window;
-    // parameter for innerwidth/height adjustment with mobile consideration
-    // top(70) + headingheight(50 / 25) + button height (50 / 25)
-    innerHeight = innerHeight < 500 ? innerHeight - 120 : innerHeight - 170;
-    // minor x direction adjustment for padding too
-    innerWidth -= (innerWidth * 0.02);
-    const aspectRatio = width / height;
-    let newWidth;
-    if (width < innerWidth && height < innerHeight) {
-      // already fits, return value if above 500 or else
-      // expand to 500
-      newWidth = width < 500 && innerWidth > 500 ? 500 : width;
-    } else if (width > innerWidth) {
-      newWidth = innerWidth;
-      // test new height with Aspect ratio
-      const newHeight = newWidth / aspectRatio;
-      // test again if new height is less than screen height
-      newWidth = newHeight < innerHeight
-        ? newWidth
-        : aspectRatio * innerHeight;
-    } else { // means height > innerheight
-      newWidth = aspectRatio * innerHeight;
-    }
-    return newWidth;
-  };
-
   handleImage = (i) => {
     const { naturalWidth, naturalHeight } = i.target;
     const { parentDivStyle } = this.state;
-    const newWidth = this.getNewImageWidth({ naturalWidth, naturalHeight });
+    const newWidth = getNewImageWidth({ naturalWidth, naturalHeight });
     const pcopy = JSON.parse(JSON.stringify(parentDivStyle));
     pcopy.width = `${newWidth}px`;
     pcopy.small = newWidth < 350;
@@ -120,17 +124,13 @@ export class PinZoom extends Component {
     });
   };
 
-  pinners = pinInformation => (pinInformation.savedBy.length > 3
-    ? `${pinInformation.savedBy.slice(0, 3).join(', ')} and ${pinInformation.savedBy.length - 3} others`
-    : pinInformation.savedBy.join(', '));
-
   render() {
     const { zoomInfo, pinImage, deletePin } = this.props;
     const { show, parentDivStyle } = this.state;
     if (!zoomInfo.length) return null;
     const [pinInformation] = zoomInfo;
     const totalPins = (pinInformation.savedBy) ? pinInformation.savedBy.length : 0;
-    const pinnedBy = totalPins ? this.pinners(pinInformation) : '';
+    const pinnedBy = totalPins ? getPinners(pinInformation) : '';
     return (
       <div
         className={show ? 'zoom cshow' : 'zoom chide'}

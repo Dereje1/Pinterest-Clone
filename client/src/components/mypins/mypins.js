@@ -9,6 +9,24 @@ import RESTcall from '../../crud'; // pin CRUD
 import './mypins.scss';
 import imageBroken from './NO-IMAGE.png';
 
+const getUserName = ({ service, displayname }) => {
+  const serviceStyle = service === 'twitter'
+    ? { className: 'fa fa-twitter', color: 'blue' }
+    : { className: 'fa fa-google', color: 'green' };
+  return (
+    <>
+      <i
+        className={serviceStyle.className}
+        aria-hidden="true"
+        style={{ fontSize: 30, marginTop: 80, color: serviceStyle.color }}
+      />
+      <h3 id="username">
+        {displayname}
+      </h3>
+    </>
+  );
+};
+
 export class Mypins extends Component {
 
   constructor(props) {
@@ -51,7 +69,7 @@ export class Mypins extends Component {
 
   layoutComplete = () => {
     const { imagesLoaded } = this.state;
-    if (imagesLoaded) return null;
+    if (imagesLoaded) return;
     this.setState({ imagesLoaded: true });
   };
 
@@ -73,23 +91,6 @@ export class Mypins extends Component {
       ],
     });
   };
-
-  deletePic(element) {
-    const { pinList, displayPinCreate } = this.state;
-    if (displayPinCreate) return;
-    let pinListCopy = JSON.parse(JSON.stringify(pinList));
-    const indexOfDeletion = pinListCopy.findIndex(p => p._id === element._id);
-    pinListCopy = [...pinListCopy.slice(0, indexOfDeletion),
-      ...pinListCopy.slice(indexOfDeletion + 1)];
-    this.setState({
-      pinList: pinListCopy, displayPinZoom: false,
-    }, async () => {
-      await RESTcall({
-        address: `/api/${element._id}`,
-        method: 'delete',
-      });
-    });
-  }
 
   async addPic(pinJSON) { // adds a pin to the db
     // copy then add pin to db and then update client state (in that order)
@@ -125,26 +126,25 @@ export class Mypins extends Component {
     });
   }
 
-  getUserName = ({ service, displayname }) => {
-    const serviceStyle = service === 'twitter'
-      ? { className: 'fa fa-twitter', color: 'blue' }
-      : { className: 'fa fa-google', color: 'green' };
-    return (
-      <>
-        <i
-          className={serviceStyle.className}
-          aria-hidden="true"
-          style={{ fontSize: 30, marginTop: 80, color: serviceStyle.color }}
-        />
-        <h3 id="username">
-          {displayname}
-        </h3>
-      </>
-    );
-  };
+  deletePic(element) {
+    const { pinList, displayPinCreate } = this.state;
+    if (displayPinCreate) return;
+    let pinListCopy = JSON.parse(JSON.stringify(pinList));
+    const indexOfDeletion = pinListCopy.findIndex(p => p._id === element._id);
+    pinListCopy = [...pinListCopy.slice(0, indexOfDeletion),
+      ...pinListCopy.slice(indexOfDeletion + 1)];
+    this.setState({
+      pinList: pinListCopy, displayPinZoom: false,
+    }, async () => {
+      await RESTcall({
+        address: `/api/${element._id}`,
+        method: 'delete',
+      });
+    });
+  }
 
   render() {
-    const { user, user: { authenticated, displayname } } = this.props;
+    const { user, user: { authenticated } } = this.props;
     const {
       displayPinCreate, displayPinZoom, imageInfo, pinList, imagesLoaded,
     } = this.state;
@@ -154,7 +154,7 @@ export class Mypins extends Component {
       <React.Fragment>
         <div>
           <div id="mypinframe">
-            {this.getUserName(user)}
+            {getUserName(user)}
             <div
               id="creatpinwrapper"
               onClick={() => this.pinForm()}

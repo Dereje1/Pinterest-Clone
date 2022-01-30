@@ -1,4 +1,3 @@
-const router = require('express').Router();
 const ip = require('ip');
 const isLoggedIn = require('./isloggedin');
 

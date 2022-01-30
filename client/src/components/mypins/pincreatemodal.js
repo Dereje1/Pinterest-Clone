@@ -4,6 +4,20 @@ import PropTypes from 'prop-types';
 import imageBroken from './NO-IMAGE.png';
 import './pincreate.scss';
 
+const validateURL = (string) => {
+  try {
+    const url = new URL(string);
+    if (url.protocol === 'data:' || url.protocol === 'https:') return string;
+    if (url.protocol === 'http:') {
+      // convert to https to avoid mixed content warning in console
+      return `${string.split(':')[0]}s:${string.split(':')[1]}`;
+    }
+  } catch (_) {
+    return null;
+  }
+  return null;
+};
+
 class PinCreate extends Component {
 
   constructor(props) {
@@ -43,7 +57,7 @@ class PinCreate extends Component {
     }
   }
 
-  disableScroll = () => window.scrollTo(0, 0);
+  // disableScroll = () => window.scrollTo(0, 0);
 
   close = () => {
     const { reset } = this.props;
@@ -54,23 +68,9 @@ class PinCreate extends Component {
     }, () => reset());
   };
 
-  validateURL = (string) => {
-    try {
-      const url = new URL(string);
-      if (url.protocol === 'data:' || url.protocol === 'https:') return string;
-      if (url.protocol === 'http:') {
-        // convert to https to avoid mixed content warning in console
-        return `${string.split(':')[0]}s:${string.split(':')[1]}`;
-      }
-    } catch (_) {
-      return null;
-    }
-    return null;
-  };
-
   processImage = (e) => { // processes picture on change of text box
-    const imgLink = this.validateURL(e.target.value);
-    if (!imgLink) return null;
+    const imgLink = validateURL(e.target.value);
+    if (!imgLink) return;
     this.setState({
       picPreview: imgLink,
       isError: false,

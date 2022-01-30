@@ -1,5 +1,4 @@
 const router = require('express').Router();
-
 const pins = require('./models/pins'); // schema for pins
 const brokenPins = require('./models/brokenPins');
 const isLoggedIn = require('./Authentication_Config/isloggedin');
@@ -87,7 +86,7 @@ const runScan = async (req, res) => {
     const [backup] = await brokenPins.find({}).exec();
     if (backup && backup.createdAt && !isReadyToRun(backup.createdAt)) {
       res.json({ startedScan, message: 'canceled' });
-      return null;
+      return;
     }
     // offload scan from req and resume
     res.json({ startedScan, message: 'scanning...' });
@@ -95,9 +94,20 @@ const runScan = async (req, res) => {
     const allPins = await pins.find({}).exec();
     let allInvalid = [];
     const allValid = [];
-    for (const pin of allPins) {
+    const responses = [];
+
+    allPins.forEach((pin) => {
       const { _id, imgLink, imgDescription } = pin;
-      const { statusCode, statusMessage, valid } = await isValidEnpoint(imgLink);
+      const result = isValidEnpoint({ _id, imgLink, imgDescription });
+      responses.push(result);
+    });
+
+    const allResults = await Promise.all(responses);
+
+    allResults.forEach((result) => {
+      const {
+        _id, imgLink, imgDescription, statusCode, statusMessage, valid,
+      } = result;
       if (valid) {
         allValid.push({
           statusCode, statusMessage, _id, imgLink, imgDescription,
@@ -107,7 +117,8 @@ const runScan = async (req, res) => {
           statusCode, statusMessage, _id, imgLink, imgDescription,
         });
       }
-    }
+    });
+
     await pins.updateMany({ _id: { $in: allValid } }, { isBroken: false }).exec();
     await pins.updateMany({ _id: { $in: allInvalid } }, { isBroken: true }).exec();
     if (allInvalid.length) {
