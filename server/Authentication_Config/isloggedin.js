@@ -1,5 +1,6 @@
 // middleware to verify a logged in user.
-const ip = require('ip')
+const ip = require('ip');
+
 module.exports = (req, res, next) => {
   // if user is authenticated in the session, carry on
   if (req.isAuthenticated()) return next();

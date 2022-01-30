@@ -3,7 +3,9 @@ const router = require('express').Router();
 const pins = require('./models/pins'); // schema for pins
 const brokenPins = require('./models/brokenPins');
 const isLoggedIn = require('./Authentication_Config/isloggedin');
-const { getUserProfile, filterPins, isReadyToRun, isValidEnpoint, getPrevBrokenTimeStamp } = require('./utils');
+const {
+  getUserProfile, filterPins, isReadyToRun, isValidEnpoint, getPrevBrokenTimeStamp,
+} = require('./utils');
 
 const addPin = async (req, res) => {
   const { displayName } = getUserProfile(req.user);
@@ -14,7 +16,7 @@ const addPin = async (req, res) => {
   } catch (error) {
     res.json(error);
   }
-}
+};
 
 const getPins = async (req, res) => {
   const { userId } = getUserProfile(req.user);
@@ -29,7 +31,7 @@ const getPins = async (req, res) => {
   } catch (error) {
     res.json(error);
   }
-}
+};
 
 const pinImage = async (req, res) => {
   const newPinner = req.body;
@@ -52,7 +54,7 @@ const pinImage = async (req, res) => {
   } catch (error) {
     res.json(error);
   }
-}
+};
 
 const removePin = async (req, res) => {
   const { userId, displayName } = getUserProfile(req.user);
@@ -67,7 +69,7 @@ const removePin = async (req, res) => {
     } else {
       const indexOfDeletion = pin.savedBy.findIndex(s => s.id === userId);
       const pinToUpdate = [...pin.savedBy.slice(0, indexOfDeletion),
-      ...pin.savedBy.slice(indexOfDeletion + 1)];
+        ...pin.savedBy.slice(indexOfDeletion + 1)];
       const update = { $set: { savedBy: pinToUpdate } };
       const modified = { new: true };
       const updatedPin = await pins.findByIdAndUpdate(pinID, update, modified).exec();
@@ -77,50 +79,54 @@ const removePin = async (req, res) => {
   } catch (error) {
     res.json(error);
   }
-}
+};
 
 const runScan = async (req, res) => {
-  const startedScan = new Date().toISOString()
+  const startedScan = new Date().toISOString();
   try {
     const [backup] = await brokenPins.find({}).exec();
     if (backup && backup.createdAt && !isReadyToRun(backup.createdAt)) {
       res.json({ startedScan, message: 'canceled' });
-      return null
+      return null;
     }
     // offload scan from req and resume
-    res.json({ startedScan, message: `scanning...` });
-    console.log(`Started scan : ${startedScan}...`)
+    res.json({ startedScan, message: 'scanning...' });
+    console.log(`Started scan : ${startedScan}...`);
     const allPins = await pins.find({}).exec();
-    let allInvalid = []
-    const allValid = []
+    let allInvalid = [];
+    const allValid = [];
     for (const pin of allPins) {
       const { _id, imgLink, imgDescription } = pin;
-      const { statusCode, statusMessage, valid } = await isValidEnpoint(imgLink)
+      const { statusCode, statusMessage, valid } = await isValidEnpoint(imgLink);
       if (valid) {
-        allValid.push({ statusCode, statusMessage, _id, imgLink, imgDescription })
+        allValid.push({
+          statusCode, statusMessage, _id, imgLink, imgDescription,
+        });
       } else {
-        allInvalid.push({ statusCode, statusMessage, _id, imgLink, imgDescription })
+        allInvalid.push({
+          statusCode, statusMessage, _id, imgLink, imgDescription,
+        });
       }
     }
     await pins.updateMany({ _id: { $in: allValid } }, { isBroken: false }).exec();
     await pins.updateMany({ _id: { $in: allInvalid } }, { isBroken: true }).exec();
     if (allInvalid.length) {
-      allInvalid = allInvalid.map(pin => {
-        const prevBrokenTimeStamp = backup ? getPrevBrokenTimeStamp(backup, pin._id) : null
+      allInvalid = allInvalid.map((pin) => {
+        const prevBrokenTimeStamp = backup ? getPrevBrokenTimeStamp(backup, pin._id) : null;
         return {
           ...pin,
-          brokenSince: prevBrokenTimeStamp || startedScan
-        }
-      })
+          brokenSince: prevBrokenTimeStamp || startedScan,
+        };
+      });
     }
     await brokenPins.deleteMany({}).exec();
     await brokenPins.create({ broken: allInvalid });
-    const finishedScan = new Date().toISOString()
-    console.log(`Finished scan : ${finishedScan}`)
+    const finishedScan = new Date().toISOString();
+    console.log(`Finished scan : ${finishedScan}`);
   } catch (error) {
     res.json(error);
   }
-}
+};
 // adds a new pin to the db
 router.post('/api/newpin', isLoggedIn, addPin);
 
@@ -136,4 +142,6 @@ router.delete('/api/:_id', isLoggedIn, removePin);
 // broken image handling and garbage collection
 router.get('/api/broken', runScan);
 
-module.exports = { router, addPin, getPins, pinImage, removePin, runScan };
+module.exports = {
+  router, addPin, getPins, pinImage, removePin, runScan,
+};

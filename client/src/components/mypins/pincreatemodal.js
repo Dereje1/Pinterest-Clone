@@ -14,7 +14,7 @@ class PinCreate extends Component {
       picPreview: '', // on erroneous image links
       description: '',
       isError: true,
-      showErrorImage: true
+      showErrorImage: true,
     };
   }
 
@@ -36,12 +36,11 @@ class PinCreate extends Component {
       });
     }
     if (!prevState.isError && isError) {
-      this.setState({ showErrorImage: true })
+      this.setState({ showErrorImage: true });
     }
     if (prevState.isError && !isError) {
-      this.setState({ showErrorImage: false })
+      this.setState({ showErrorImage: false });
     }
-
   }
 
   disableScroll = () => window.scrollTo(0, 0);
@@ -51,32 +50,32 @@ class PinCreate extends Component {
     this.setState({
       show: false,
       picPreview: '',
-      description:''
+      description: '',
     }, () => reset());
-  }
+  };
 
   validateURL = (string) => {
     try {
       const url = new URL(string);
-      if (url.protocol === "data:" || url.protocol === "https:") return string
-      if (url.protocol === "http:" ){
+      if (url.protocol === 'data:' || url.protocol === 'https:') return string;
+      if (url.protocol === 'http:') {
         // convert to https to avoid mixed content warning in console
-        return `${string.split(':')[0]}s:${string.split(':')[1]}`
-      } 
+        return `${string.split(':')[0]}s:${string.split(':')[1]}`;
+      }
     } catch (_) {
       return null;
     }
     return null;
-  }
+  };
 
   processImage = (e) => { // processes picture on change of text box
-    let imgLink = this.validateURL(e.target.value);
+    const imgLink = this.validateURL(e.target.value);
     if (!imgLink) return null;
     this.setState({
       picPreview: imgLink,
-      isError: false
+      isError: false,
     });
-  }
+  };
 
   savePic() { // ready to save pin
     const { userInfo, savePin } = this.props;
@@ -98,13 +97,15 @@ class PinCreate extends Component {
   }
 
   addpin() { // body of modal
-    const { picPreview, description, isError, showErrorImage } = this.state;
+    const {
+      picPreview, description, isError, showErrorImage,
+    } = this.state;
     return (
       <React.Fragment>
         <div className="newpinholder">
-          <img 
+          <img
             alt="newpin"
-            className="pinTest" 
+            className="pinTest"
             src={showErrorImage ? imageBroken : picPreview}
             onError={() => this.setState({ isError: true })}
           />
@@ -119,7 +120,7 @@ class PinCreate extends Component {
           />
           <textarea
             className="textlink"
-            placeholder={`Paste image address here \nhttp://...`}
+            placeholder={'Paste image address here \nhttp://...'}
             onChange={e => this.processImage(e)}
             value={isError ? '' : picPreview}
           />
@@ -129,7 +130,9 @@ class PinCreate extends Component {
   }
 
   render() {
-    const { show, justMounted, description, showErrorImage } = this.state;
+    const {
+      show, justMounted, description, showErrorImage,
+    } = this.state;
     if (justMounted) return null;
     return (
       <div

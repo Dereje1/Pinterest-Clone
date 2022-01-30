@@ -35,13 +35,13 @@ class SignIn extends React.Component {
       removeSignin();
       window.removeEventListener('click', this.listenForOutClicks);
     }
-  }
+  };
 
   resetGuest = () => {
     const { removeSignin } = this.props;
     removeSignin();
     window.removeEventListener('click', this.listenForOutClicks);
-  }
+  };
 
   render() {
     const { show } = this.props;

@@ -47,13 +47,13 @@ export class Mypins extends Component {
     this.setState({
       pinList: pinListCopy,
     });
-  }
+  };
 
   layoutComplete = () => {
     const { imagesLoaded } = this.state;
     if (imagesLoaded) return null;
     this.setState({ imagesLoaded: true });
-  }
+  };
 
   pinEnlarge = (e, currentImg) => { // display pin zoom modal and passes image info
     const { displayPinZoom, displayPinCreate } = this.state;
@@ -72,7 +72,7 @@ export class Mypins extends Component {
         e.pageY - e.clientY,
       ],
     });
-  }
+  };
 
   deletePic(element) {
     const { pinList, displayPinCreate } = this.state;
@@ -80,9 +80,9 @@ export class Mypins extends Component {
     let pinListCopy = JSON.parse(JSON.stringify(pinList));
     const indexOfDeletion = pinListCopy.findIndex(p => p._id === element._id);
     pinListCopy = [...pinListCopy.slice(0, indexOfDeletion),
-    ...pinListCopy.slice(indexOfDeletion + 1)];
+      ...pinListCopy.slice(indexOfDeletion + 1)];
     this.setState({
-            pinList: pinListCopy,displayPinZoom: false,
+      pinList: pinListCopy, displayPinZoom: false,
     }, async () => {
       await RESTcall({
         address: `/api/${element._id}`,
@@ -126,21 +126,22 @@ export class Mypins extends Component {
   }
 
   getUserName = ({ service, displayname }) => {
-    const serviceStyle = service === 'twitter' ?
-      { className: "fa fa-twitter", color: 'blue' } :
-      { className: "fa fa-google", color: 'green' }
+    const serviceStyle = service === 'twitter'
+      ? { className: 'fa fa-twitter', color: 'blue' }
+      : { className: 'fa fa-google', color: 'green' };
     return (
       <>
         <i
           className={serviceStyle.className}
           aria-hidden="true"
-          style={{ fontSize: 30, marginTop: 80, color: serviceStyle.color }} />
+          style={{ fontSize: 30, marginTop: 80, color: serviceStyle.color }}
+        />
         <h3 id="username">
           {displayname}
         </h3>
       </>
-    )
-  }
+    );
+  };
 
   render() {
     const { user, user: { authenticated, displayname } } = this.props;

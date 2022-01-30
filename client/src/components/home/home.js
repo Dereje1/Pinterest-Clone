@@ -26,7 +26,7 @@ export class Home extends Component {
     });
     this.setState({
       pinList: this.shuffleImages([...pinsFromDB]),
-      fullList: pinsFromDB
+      fullList: pinsFromDB,
     });
   }
 
@@ -44,11 +44,11 @@ export class Home extends Component {
     // update copy -->no mutation but do not delete from db
     console.log('Broken Image Found - ', pinListCopy[indexOfDeletion].imgDescription);
     pinListCopy = [...pinListCopy.slice(0, indexOfDeletion),
-    ...pinListCopy.slice(indexOfDeletion + 1)];
+      ...pinListCopy.slice(indexOfDeletion + 1)];
     this.setState({
       pinList: pinListCopy,
     });
-  }
+  };
 
   shuffleImages = (arr) => {
     const shuffled = [];
@@ -58,7 +58,7 @@ export class Home extends Component {
       shuffled.push(removed);
     }
     return shuffled;
-  }
+  };
 
   layoutComplete = () => {
     // fired by masonry call back
@@ -66,11 +66,11 @@ export class Home extends Component {
     // only set state on first true loads
     if (imagesLoaded) return;
     this.setState({ imagesLoaded: true }, this.handleBrokenImages);
-  }
+  };
 
   handleBrokenImages = async () => {
     await RESTcall({ address: '/api/broken' });
-  }
+  };
 
   imageStatus = (element) => {
     // finds the status of image to determine what kind of button to place on pic
@@ -88,7 +88,7 @@ export class Home extends Component {
         {' Save'}
       </button>
     );
-  }
+  };
 
   pinEnlarge = (e, currentImg) => { // calls zoom in modal for the clicked picture
     const { displayPinZoom } = this.state;
@@ -98,7 +98,7 @@ export class Home extends Component {
       displayPinZoom: true,
       imageInfo: [currentImg, this.imageStatus(currentImg), e.pageY - e.clientY],
     });
-  }
+  };
 
   savePic(element) { // saves a pic owned by somebody else into current users profile
     // can not do this unless logged in
@@ -146,9 +146,9 @@ export class Home extends Component {
     const {
       displayPinZoom, imageInfo, pinList, imagesLoaded, displaySignIn,
     } = this.state;
-    const filteredPins = search ?
-      pinList.filter(({ owner, imgDescription }) => imgDescription.toLowerCase().includes(search) || owner.toLowerCase().includes(search)) :
-      pinList
+    const filteredPins = search
+      ? pinList.filter(({ owner, imgDescription }) => imgDescription.toLowerCase().includes(search) || owner.toLowerCase().includes(search))
+      : pinList;
     if (username !== null) {
       return (
         <React.Fragment>

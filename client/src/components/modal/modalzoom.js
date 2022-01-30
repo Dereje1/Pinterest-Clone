@@ -51,7 +51,7 @@ export class PinZoom extends Component {
     window.removeEventListener('click', this.outsideClick);
     window.removeEventListener('scroll', this.disableScroll);
     window.removeEventListener('touchmove', this.outsideClick);
-  }
+  };
 
   outsideClick = (e) => {
     // if modal and outside click/touch remove modal
@@ -63,12 +63,12 @@ export class PinZoom extends Component {
       return;
     }
     if (!closestElement && show) this.close();
-  }
+  };
 
   disableScroll = () => {
     const { zoomInfo: zoomDist } = this.props;
     window.scrollTo(0, zoomDist[2]);
-  }
+  };
 
   close = () => {
     // sends a reset callback after closing modalstate which clears
@@ -78,7 +78,7 @@ export class PinZoom extends Component {
     this.setState({
       show: false,
     }, () => reset());
-  }
+  };
 
   getNewImageWidth = ({ naturalWidth: width, naturalHeight: height }) => {
     // dynamically resize image
@@ -106,7 +106,7 @@ export class PinZoom extends Component {
       newWidth = aspectRatio * innerHeight;
     }
     return newWidth;
-  }
+  };
 
   handleImage = (i) => {
     const { naturalWidth, naturalHeight } = i.target;
@@ -118,11 +118,11 @@ export class PinZoom extends Component {
     this.setState({
       parentDivStyle: pcopy,
     });
-  }
+  };
 
   pinners = pinInformation => (pinInformation.savedBy.length > 3
     ? `${pinInformation.savedBy.slice(0, 3).join(', ')} and ${pinInformation.savedBy.length - 3} others`
-    : pinInformation.savedBy.join(', '))
+    : pinInformation.savedBy.join(', '));
 
   render() {
     const { zoomInfo, pinImage, deletePin } = this.props;

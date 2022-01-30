@@ -1,6 +1,6 @@
 const router = require('express').Router();
+const ip = require('ip');
 const isLoggedIn = require('./isloggedin');
-const ip = require('ip')
 
 const getProfile = (req, res) => {
   const { user } = req;
@@ -13,7 +13,7 @@ const getProfile = (req, res) => {
     displayname: req.user[service].displayName,
     service,
   });
-}
+};
 
 const setGuest = (req, res) => {
   res.json({
@@ -22,28 +22,29 @@ const setGuest = (req, res) => {
     username: 'Guest',
     displayname: 'Guest',
   });
-}
+};
 
 const logOut = (req, res) => {
   req.logout();
   res.redirect('/');
-}
+};
 
 const setAuthRoutes = (app, passport) => {
-  app.get('/auth/profile', isLoggedIn, getProfile)
-  app.get('/auth/guest', setGuest)
-  app.get('/auth/logout', logOut)
+  app.get('/auth/profile', isLoggedIn, getProfile);
+  app.get('/auth/guest', setGuest);
+  app.get('/auth/logout', logOut);
   app.get('/auth/twitter', passport.authenticate('twitter'));
   app.get('/auth/google', passport.authenticate('google', { scope: ['profile', 'email'] }));
   app.get('/auth/twitter/callback', passport.authenticate('twitter', {
     successRedirect: '/',
     failureRedirect: '/',
-  }))
+  }));
   app.get('/auth/google/redirect', passport.authenticate('google', {
     successRedirect: '/',
     failureRedirect: '/',
-  }))
+  }));
 };
 
-module.exports = { setAuthRoutes, getProfile, logOut, setGuest };
-
+module.exports = {
+  setAuthRoutes, getProfile, logOut, setGuest,
+};

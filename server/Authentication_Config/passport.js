@@ -1,30 +1,32 @@
 // config/passport.js for twitter
 const TwitterStrategy = require('passport-twitter').Strategy;
 const GoogleStrategy = require('passport-google-oauth').OAuth2Strategy;
-const { getApiKeys } = require('./utils')
+const { getApiKeys } = require('./utils');
 // load up the user model
 const User = require('../models/user');
 
 const processLogin = async (token, tokenSecret, profile, done) => {
-  const { provider, id, username, displayName, emails } = profile;
+  const {
+    provider, id, username, displayName, emails,
+  } = profile;
   try {
     const user = await User.findOne({ [`${provider}.id`]: id }).exec();
     if (user) {
-      return done(null, user)
+      return done(null, user);
     }
     const newUser = await User.create({
       [provider]: {
         id,
         token,
         username: username || emails[0].value,
-        displayName
+        displayName,
       },
-    })
+    });
     return done(null, newUser);
   } catch (error) {
-    return done(error)
+    return done(error);
   }
-}
+};
 
 const passportConfig = (passport) => {
   const twitterApiKeys = getApiKeys('twitter');
@@ -47,6 +49,6 @@ const passportConfig = (passport) => {
 
   if (googleApiKeys) {
     passport.use(new GoogleStrategy(googleApiKeys, processLogin));
-  };
-}
+  }
+};
 module.exports = { passportConfig, processLogin };
