@@ -1,23 +1,21 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-import { bindActionCreators } from 'redux';
 import { setGuest } from '../../actions/authentication';
 import './loginbuttons.scss';
 
 const mapStateToProps = state => state;
-const mapDispatchToProps = dispatch => (
-  bindActionCreators({
-    setGuest,
-  }, dispatch)
-);
+
+const actionCreators = {
+  setGuest,
+};
 
 const handleLogin = (loc) => { // twitter/ google authentication
-  window.location = loc;
+  window.location.assign(loc);
 };
 
 
-class LoginButtons extends React.Component {
+export class LoginButtons extends React.Component {
 
   handleGuest = () => { // set guest user
     const { setGuest: setGuestStatus, guest } = this.props;
@@ -70,7 +68,7 @@ class LoginButtons extends React.Component {
 
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(LoginButtons);
+export default connect(mapStateToProps, actionCreators)(LoginButtons);
 
 LoginButtons.propTypes = {
   // redux action to set guest user status on server

@@ -1,0 +1,63 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`The sign in component will render 1`] = `
+<Fragment>
+  <button
+    id="guestbutton"
+    onClick={[Function]}
+    type="submit"
+  >
+    <span
+      id="guest"
+    >
+      <i
+        aria-hidden="true"
+        className="fa fa-question-circle"
+      />
+    </span>
+    <span
+      className="buttontext"
+    >
+      Continue As Guest
+    </span>
+  </button>
+  <button
+    id="twitterloginbutton"
+    onClick={[Function]}
+    type="submit"
+  >
+    <span
+      id="twitter"
+    >
+      <i
+        aria-hidden="true"
+        className="fa fa-twitter"
+      />
+    </span>
+    <span
+      className="buttontext"
+    >
+      Continue With Twitter
+    </span>
+  </button>
+  <button
+    id="googleloginbutton"
+    onClick={[Function]}
+    type="submit"
+  >
+    <span
+      id="twitter"
+    >
+      <i
+        aria-hidden="true"
+        className="fa fa-google"
+      />
+    </span>
+    <span
+      className="buttontext"
+    >
+      Continue With Google
+    </span>
+  </button>
+</Fragment>
+`;
