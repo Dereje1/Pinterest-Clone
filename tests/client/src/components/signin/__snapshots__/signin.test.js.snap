@@ -1,0 +1,12 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`The sign in component will render 1`] = `
+<div
+  className="signshow"
+  id="sign-in"
+>
+  <Connect(LoginButtons)
+    guest={[Function]}
+  />
+</div>
+`;

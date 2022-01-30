@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import LoginButtons from './loginbuttons';
 import './signin.scss';
 
-class SignIn extends React.Component {
+export class SignIn extends React.Component {
 
   constructor(props) {
     super(props);
