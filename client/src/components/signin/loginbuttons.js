@@ -12,60 +12,61 @@ const mapDispatchToProps = dispatch => (
   }, dispatch)
 );
 
+const handleLogin = (loc) => { // twitter/ google authentication
+  window.location = loc;
+};
+
+
 class LoginButtons extends React.Component {
 
-    handleLogin = (loc) => { // twitter/ google authentication
-      window.location = loc;
-    }
+  handleGuest = () => { // set guest user
+    const { setGuest: setGuestStatus, guest } = this.props;
+    setGuestStatus('/auth/guest');
+    guest(); // callback to hid login div
+  };
 
-    handleGuest = () => { // set guest user
-      const { setGuest: setGuestStatus, guest } = this.props;
-      setGuestStatus('/auth/guest');
-      guest(); // callback to hid login div
-    }
-
-    render() {
-      return (
-        <React.Fragment>
-          <button
-            type="submit"
-            id="guestbutton"
-            onClick={this.handleGuest}
-          >
-            <span id="guest">
-              <i className="fa fa-question-circle" aria-hidden="true" />
-            </span>
-            <span className="buttontext">
-              Continue As Guest
-            </span>
-          </button>
-          <button
-            type="submit"
-            id="twitterloginbutton"
-            onClick={() => this.handleLogin('/auth/twitter')}
-          >
-            <span id="twitter">
-              <i className="fa fa-twitter" aria-hidden="true" />
-            </span>
-            <span className="buttontext">
-              Continue With Twitter
-            </span>
-          </button>
-          <button
-            type="submit"
-            id="googleloginbutton"
-            onClick={() => this.handleLogin('/auth/google')}
-          >
-            <span id="twitter">
-              <i className="fa fa-google" aria-hidden="true" />
-            </span>
-            <span className="buttontext">
-              Continue With Google
-            </span>
-          </button>
-        </React.Fragment>
-      );
-    }
+  render() {
+    return (
+      <React.Fragment>
+        <button
+          type="submit"
+          id="guestbutton"
+          onClick={this.handleGuest}
+        >
+          <span id="guest">
+            <i className="fa fa-question-circle" aria-hidden="true" />
+          </span>
+          <span className="buttontext">
+            Continue As Guest
+          </span>
+        </button>
+        <button
+          type="submit"
+          id="twitterloginbutton"
+          onClick={() => handleLogin('/auth/twitter')}
+        >
+          <span id="twitter">
+            <i className="fa fa-twitter" aria-hidden="true" />
+          </span>
+          <span className="buttontext">
+            Continue With Twitter
+          </span>
+        </button>
+        <button
+          type="submit"
+          id="googleloginbutton"
+          onClick={() => handleLogin('/auth/google')}
+        >
+          <span id="twitter">
+            <i className="fa fa-google" aria-hidden="true" />
+          </span>
+          <span className="buttontext">
+            Continue With Google
+          </span>
+        </button>
+      </React.Fragment>
+    );
+  }
 
 }
 

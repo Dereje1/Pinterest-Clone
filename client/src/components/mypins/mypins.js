@@ -9,7 +9,25 @@ import RESTcall from '../../crud'; // pin CRUD
 import './mypins.scss';
 import imageBroken from './NO-IMAGE.png';
 
-class Mypins extends Component {
+const getUserName = ({ service, displayname }) => {
+  const serviceStyle = service === 'twitter'
+    ? { className: 'fa fa-twitter', color: 'blue' }
+    : { className: 'fa fa-google', color: 'green' };
+  return (
+    <>
+      <i
+        className={serviceStyle.className}
+        aria-hidden="true"
+        style={{ fontSize: 30, marginTop: 80, color: serviceStyle.color }}
+      />
+      <h3 id="username">
+        {displayname}
+      </h3>
+    </>
+  );
+};
+
+export class Mypins extends Component {
 
   constructor(props) {
     super(props);
@@ -47,18 +65,17 @@ class Mypins extends Component {
     this.setState({
       pinList: pinListCopy,
     });
-  }
+  };
 
   layoutComplete = () => {
     const { imagesLoaded } = this.state;
     if (imagesLoaded) return;
     this.setState({ imagesLoaded: true });
-  }
+  };
 
   pinEnlarge = (e, currentImg) => { // display pin zoom modal and passes image info
     const { displayPinZoom, displayPinCreate } = this.state;
-    if (e.target.type === 'submit') return;
-    if (displayPinZoom || displayPinCreate) return;
+    if (e.target.type === 'submit' || displayPinZoom || displayPinCreate) return;
     this.setState({
       displayPinZoom: true,
       imageInfo: [currentImg,
@@ -73,35 +90,7 @@ class Mypins extends Component {
         e.pageY - e.clientY,
       ],
     });
-  }
-
-  imageStatus = element => (
-    <button
-      type="submit"
-      className="actionbutton"
-      onClick={() => this.deletePic(element)}
-    >
-      Delete
-    </button>
-  )
-
-  deletePic(element) {
-    const { pinList, displayPinCreate } = this.state;
-    if (displayPinCreate) return;
-    let pinListCopy = JSON.parse(JSON.stringify(pinList));
-    const indexOfDeletion = pinListCopy.findIndex(p => p._id === element._id);
-    pinListCopy = [...pinListCopy.slice(0, indexOfDeletion),
-    ...pinListCopy.slice(indexOfDeletion + 1)];
-    this.setState({
-      pinList: pinListCopy,
-      displayPinZoom: false,
-    }, async () => {
-      await RESTcall({
-        address: `/api/${element._id}`,
-        method: 'delete',
-      });
-    });
-  }
+  };
 
   async addPic(pinJSON) { // adds a pin to the db
     // copy then add pin to db and then update client state (in that order)
@@ -137,25 +126,25 @@ class Mypins extends Component {
     });
   }
 
-  getUserName = ({ service, displayname }) => {
-    const serviceStyle = service === 'twitter' ?
-      { className: "fa fa-twitter", color: 'blue' } :
-      { className: "fa fa-google", color: 'green' }
-    return (
-      <>
-        <i
-          className={serviceStyle.className}
-          aria-hidden="true"
-          style={{ fontSize: 30, marginTop: 80, color: serviceStyle.color }} />
-        <h3 id="username">
-          {displayname}
-        </h3>
-      </>
-    )
+  deletePic(element) {
+    const { pinList, displayPinCreate } = this.state;
+    if (displayPinCreate) return;
+    let pinListCopy = JSON.parse(JSON.stringify(pinList));
+    const indexOfDeletion = pinListCopy.findIndex(p => p._id === element._id);
+    pinListCopy = [...pinListCopy.slice(0, indexOfDeletion),
+      ...pinListCopy.slice(indexOfDeletion + 1)];
+    this.setState({
+      pinList: pinListCopy, displayPinZoom: false,
+    }, async () => {
+      await RESTcall({
+        address: `/api/${element._id}`,
+        method: 'delete',
+      });
+    });
   }
 
   render() {
-    const { user, user: { authenticated, displayname } } = this.props;
+    const { user, user: { authenticated } } = this.props;
     const {
       displayPinCreate, displayPinZoom, imageInfo, pinList, imagesLoaded,
     } = this.state;
@@ -165,7 +154,7 @@ class Mypins extends Component {
       <React.Fragment>
         <div>
           <div id="mypinframe">
-            {this.getUserName(user)}
+            {getUserName(user)}
             <div
               id="creatpinwrapper"
               onClick={() => this.pinForm()}

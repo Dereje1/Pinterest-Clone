@@ -8,5 +8,5 @@ import searchReducer from './searchReducer';
 // HERE COMBINE THE REDUCERS
 export default combineReducers({
   user: userStatusReducer,
-  search: searchReducer
+  search: searchReducer,
 });

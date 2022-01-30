@@ -4,6 +4,20 @@ import PropTypes from 'prop-types';
 import imageBroken from './NO-IMAGE.png';
 import './pincreate.scss';
 
+const validateURL = (string) => {
+  try {
+    const url = new URL(string);
+    if (url.protocol === 'data:' || url.protocol === 'https:') return string;
+    if (url.protocol === 'http:') {
+      // convert to https to avoid mixed content warning in console
+      return `${string.split(':')[0]}s:${string.split(':')[1]}`;
+    }
+  } catch (_) {
+    return null;
+  }
+  return null;
+};
+
 class PinCreate extends Component {
 
   constructor(props) {
@@ -14,7 +28,7 @@ class PinCreate extends Component {
       picPreview: '', // on erroneous image links
       description: '',
       isError: true,
-      showErrorImage: true
+      showErrorImage: true,
     };
   }
 
@@ -36,50 +50,32 @@ class PinCreate extends Component {
       });
     }
     if (!prevState.isError && isError) {
-      this.setState({ showErrorImage: true })
+      this.setState({ showErrorImage: true });
     }
     if (prevState.isError && !isError) {
-      this.setState({ showErrorImage: false })
+      this.setState({ showErrorImage: false });
     }
-
   }
 
-  disableScroll = () => window.scrollTo(0, 0);
+  // disableScroll = () => window.scrollTo(0, 0);
 
   close = () => {
     const { reset } = this.props;
     this.setState({
       show: false,
       picPreview: '',
+      description: '',
     }, () => reset());
-  }
+  };
 
-  validateURL = (string) => {
-    try {
-      const url = new URL(string);
-      if (url.protocol === "data:" || url.protocol === "https:") return string
-      if (url.protocol === "http:" ){
-        // convert to https to avoid mixed content warning in console
-        return `${string.split(':')[0]}s:${string.split(':')[1]}`
-      } 
-    } catch (_) {
-      return null;
-    }
-    return null;
-  }
-
-  picprocess = (e) => { // processes picture on change of text box
-    let imgLink = this.validateURL(e.target.value);
-    if (!imgLink) return null;
+  processImage = (e) => { // processes picture on change of text box
+    const imgLink = validateURL(e.target.value);
+    if (!imgLink) return;
     this.setState({
       picPreview: imgLink,
-      isError: false
+      isError: false,
     });
-  }
-
-  discprocess = (e) => { // processes description entered for new pin
-    this.setState({ description: e.target.value });
-  }
+  };
 
   savePic() { // ready to save pin
     const { userInfo, savePin } = this.props;
@@ -101,13 +97,16 @@ class PinCreate extends Component {
   }
 
   addpin() { // body of modal
-    const { picPreview, description, isError, showErrorImage } = this.state;
+    const {
+      picPreview, description, isError, showErrorImage,
+    } = this.state;
     return (
       <React.Fragment>
         <div className="newpinholder">
-          <img 
+          <img
             alt="newpin"
-            className="pinTest" src={showErrorImage ? imageBroken : picPreview}
+            className="pinTest"
+            src={showErrorImage ? imageBroken : picPreview}
             onError={() => this.setState({ isError: true })}
           />
         </div>
@@ -116,13 +115,13 @@ class PinCreate extends Component {
             className="textdesc"
             placeholder="Description..."
             maxLength="28"
-            onChange={e => this.discprocess(e)}
+            onChange={e => this.setState({ description: e.target.value })}
             value={description}
           />
           <textarea
             className="textlink"
-            placeholder={`Paste image address here \nhttp://...`}
-            onChange={e => this.picprocess(e)}
+            placeholder={'Paste image address here \nhttp://...'}
+            onChange={e => this.processImage(e)}
             value={isError ? '' : picPreview}
           />
         </div>
@@ -131,7 +130,9 @@ class PinCreate extends Component {
   }
 
   render() {
-    const { show, justMounted, description, showErrorImage } = this.state;
+    const {
+      show, justMounted, description, showErrorImage,
+    } = this.state;
     if (justMounted) return null;
     return (
       <div

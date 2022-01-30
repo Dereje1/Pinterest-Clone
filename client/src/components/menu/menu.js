@@ -1,24 +1,24 @@
 // menu bar
 import React from 'react';
-import PropTypes, { func } from 'prop-types';
+import PropTypes from 'prop-types';
 import _ from 'lodash';
 import { NavLink, withRouter } from 'react-router-dom';
 import { connect } from 'react-redux';
 import { compose } from 'redux';
-import { getUser } from '../../actions/authentication';
-import { updateSearch } from '../../actions/search'
-import Cover from '../cover/cover';
-import SignIn from '../signin/signin';
 import Paper from '@mui/material/Paper';
 import InputBase from '@mui/material/InputBase';
 import SearchIcon from '@mui/icons-material/Search';
+import { getUser } from '../../actions/authentication';
+import updateSearch from '../../actions/search';
+import Cover from '../cover/cover';
+import SignIn from '../signin/signin';
 import './menu.scss';
 
 const mapStateToProps = state => state;
 const actionCreators = {
   getUser,
-  updateSearch
-}
+  updateSearch,
+};
 
 export class Menu extends React.Component {
 
@@ -62,16 +62,18 @@ export class Menu extends React.Component {
     }
   }
 
-  listenForOutClicks = (e) => {
-    // clicks outside an extended menu will collpase it
-    if (!e.target.closest('.menu')) this.toggleCollapse();
-  }
+  onSearch = _.debounce((v, searchUpdate) => searchUpdate(v), 500);
 
   toggleCollapse = () => {
     // burger click handler for responsive mode
     const { collapseToggle } = this.state;
     this.setState({ collapseToggle: !collapseToggle });
-  }
+  };
+
+  listenForOutClicks = (e) => {
+    // clicks outside an extended menu will collpase it
+    if (!e.target.closest('.menu')) this.toggleCollapse();
+  };
 
   collapsedMenu = () => (
     <div className="items collapsed burger">
@@ -81,29 +83,33 @@ export class Menu extends React.Component {
         onClick={this.toggleCollapse}
       />
     </div>
-  )
-
-  onSearch = _.debounce((v, updateSearch) => updateSearch(v), 500)
+  );
 
   renderSearch = () => {
-    const { updateSearch , location: { pathname }} = this.props
-    if (pathname !== '/') return null
+    const { updateSearch: searchUpdate, location: { pathname } } = this.props;
+    if (pathname !== '/') return null;
     return (
       <Paper
-        sx={{ p: '2px 4px', display: 'flex', alignItems: 'center',
-         width: '30%', height: '80%', background: '#f8f8f8'}}
-        variant='string'
+        sx={{
+          p: '2px 4px',
+          display: 'flex',
+          alignItems: 'center',
+          width: '30%',
+          height: '80%',
+          background: '#f8f8f8',
+        }}
+        variant="string"
       >
         <SearchIcon />
         <InputBase
           sx={{ ml: 1, flex: 1 }}
           placeholder="Search..."
           inputProps={{ 'aria-label': 'search' }}
-          onChange={(e) => this.onSearch(e.target.value, updateSearch)}
+          onChange={e => this.onSearch(e.target.value, searchUpdate)}
         />
       </Paper>
-    )
-  }
+    );
+  };
 
   render() {
     // render cover/guest / logged in menu bar
@@ -187,7 +193,7 @@ export class Menu extends React.Component {
 
 export default compose(
   withRouter,
-  connect(mapStateToProps, actionCreators)
+  connect(mapStateToProps, actionCreators),
 )(Menu);
 
 Menu.defaultProps = {
@@ -199,4 +205,6 @@ Menu.propTypes = {
   user: PropTypes.shape(PropTypes.shape),
   // redux action to get user status from server
   getUser: PropTypes.func.isRequired,
+  updateSearch: PropTypes.func.isRequired,
+  location: PropTypes.shape(PropTypes.shape).isRequired,
 };

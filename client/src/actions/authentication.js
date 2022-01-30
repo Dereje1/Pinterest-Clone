@@ -3,7 +3,7 @@ import axios from 'axios';
 
 // action gets user authentication status from /profile that is generated
 // and updates store
-export const getUser = (path) => dispatch => (
+export const getUser = path => dispatch => (
   axios.get(path)
     .then((response) => {
       dispatch({
@@ -20,7 +20,7 @@ export const getUser = (path) => dispatch => (
 );
 
 // fake guest account setter look at backend /authconfig/routes
-export const setGuest = (path) => dispatch => (
+export const setGuest = path => dispatch => (
   axios.get(path)
     .then((response) => {
       dispatch({
