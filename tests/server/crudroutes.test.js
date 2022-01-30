@@ -349,7 +349,7 @@ describe('running the scan to find broken images', () => {
     expect(brokenPins.find).toHaveBeenCalledTimes(1);
     expect(pins.find).toHaveBeenCalledTimes(1);
     expect(pins.updateMany).toHaveBeenCalledTimes(2);
-    const [firstCall, secondCall] = pins.updateMany.mock.calls;
+    const [firstCall, secondCall] = pins.updateMany.mock.calls
     expect(firstCall).toEqual(
       [{ _id: { $in: [] } }, { isBroken: false }],
     );
