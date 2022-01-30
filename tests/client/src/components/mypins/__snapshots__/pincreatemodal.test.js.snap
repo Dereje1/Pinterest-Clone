@@ -1,0 +1,75 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`The pin creation modal will render 1`] = `
+<div
+  className="pincreate chide"
+>
+  <div
+    className="header"
+  >
+    <span
+      id="pincreatetitle"
+    >
+      <div
+        id="pincreatedesc"
+      >
+        Create Pin
+      </div>
+    </span>
+    <i
+      aria-hidden="true"
+      className="fa fa-close"
+      onClick={[Function]}
+    />
+  </div>
+  <div
+    className="newpinholder"
+  >
+    <img
+      alt="newpin"
+      className="pinTest"
+      onError={[Function]}
+      src={
+        Object {
+          "canInstrument": true,
+          "createTransformer": [Function],
+          "getCacheKey": [Function],
+          "getCacheKeyAsync": [Function],
+          "process": [Function],
+          "processAsync": [Function],
+        }
+      }
+    />
+  </div>
+  <div
+    className="formarea"
+  >
+    <textarea
+      className="textdesc"
+      maxLength="28"
+      onChange={[Function]}
+      placeholder="Description..."
+      value=""
+    />
+    <textarea
+      className="textlink"
+      onChange={[Function]}
+      placeholder="Paste image address here 
+http://..."
+      value=""
+    />
+  </div>
+  <div
+    className="footer"
+  >
+    <button
+      className="savebutton"
+      disabled={true}
+      onClick={[Function]}
+      type="submit"
+    >
+      Save
+    </button>
+  </div>
+</div>
+`;

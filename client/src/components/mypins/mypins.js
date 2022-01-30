@@ -9,7 +9,7 @@ import RESTcall from '../../crud'; // pin CRUD
 import './mypins.scss';
 import imageBroken from './NO-IMAGE.png';
 
-class Mypins extends Component {
+export class Mypins extends Component {
 
   constructor(props) {
     super(props);
@@ -51,14 +51,13 @@ class Mypins extends Component {
 
   layoutComplete = () => {
     const { imagesLoaded } = this.state;
-    if (imagesLoaded) return;
+    if (imagesLoaded) return null;
     this.setState({ imagesLoaded: true });
   }
 
   pinEnlarge = (e, currentImg) => { // display pin zoom modal and passes image info
     const { displayPinZoom, displayPinCreate } = this.state;
-    if (e.target.type === 'submit') return;
-    if (displayPinZoom || displayPinCreate) return;
+    if (e.target.type === 'submit' || displayPinZoom || displayPinCreate) return;
     this.setState({
       displayPinZoom: true,
       imageInfo: [currentImg,
@@ -75,16 +74,6 @@ class Mypins extends Component {
     });
   }
 
-  imageStatus = element => (
-    <button
-      type="submit"
-      className="actionbutton"
-      onClick={() => this.deletePic(element)}
-    >
-      Delete
-    </button>
-  )
-
   deletePic(element) {
     const { pinList, displayPinCreate } = this.state;
     if (displayPinCreate) return;
@@ -93,8 +82,7 @@ class Mypins extends Component {
     pinListCopy = [...pinListCopy.slice(0, indexOfDeletion),
     ...pinListCopy.slice(indexOfDeletion + 1)];
     this.setState({
-      pinList: pinListCopy,
-      displayPinZoom: false,
+            pinList: pinListCopy,displayPinZoom: false,
     }, async () => {
       await RESTcall({
         address: `/api/${element._id}`,

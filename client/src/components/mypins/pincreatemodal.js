@@ -51,6 +51,7 @@ class PinCreate extends Component {
     this.setState({
       show: false,
       picPreview: '',
+      description:''
     }, () => reset());
   }
 
@@ -68,17 +69,13 @@ class PinCreate extends Component {
     return null;
   }
 
-  picprocess = (e) => { // processes picture on change of text box
+  processImage = (e) => { // processes picture on change of text box
     let imgLink = this.validateURL(e.target.value);
     if (!imgLink) return null;
     this.setState({
       picPreview: imgLink,
       isError: false
     });
-  }
-
-  discprocess = (e) => { // processes description entered for new pin
-    this.setState({ description: e.target.value });
   }
 
   savePic() { // ready to save pin
@@ -107,7 +104,8 @@ class PinCreate extends Component {
         <div className="newpinholder">
           <img 
             alt="newpin"
-            className="pinTest" src={showErrorImage ? imageBroken : picPreview}
+            className="pinTest" 
+            src={showErrorImage ? imageBroken : picPreview}
             onError={() => this.setState({ isError: true })}
           />
         </div>
@@ -116,13 +114,13 @@ class PinCreate extends Component {
             className="textdesc"
             placeholder="Description..."
             maxLength="28"
-            onChange={e => this.discprocess(e)}
+            onChange={e => this.setState({ description: e.target.value })}
             value={description}
           />
           <textarea
             className="textlink"
             placeholder={`Paste image address here \nhttp://...`}
-            onChange={e => this.picprocess(e)}
+            onChange={e => this.processImage(e)}
             value={isError ? '' : picPreview}
           />
         </div>
