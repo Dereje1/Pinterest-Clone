@@ -1,0 +1,104 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Handling zoomed image action buttons will render the delete button for owners 1`] = `
+<ForwardRef(IconButton)
+  aria-label="settings"
+  onClick={[Function]}
+  style={
+    Object {
+      "margin": "1vh",
+    }
+  }
+>
+  <ForwardRef(Tooltip)
+    placement="left"
+    title="Permanently delete image"
+  >
+    <Memo(ForwardRef(DeleteForeverIcon))
+      style={
+        Object {
+          "color": "#d12929",
+          "fontSize": "2em",
+        }
+      }
+    />
+  </ForwardRef(Tooltip)>
+</ForwardRef(IconButton)>
+`;
+
+exports[`Handling zoomed image action buttons will render the delete button for pinned images 1`] = `
+<ForwardRef(IconButton)
+  aria-label="settings"
+  onClick={[Function]}
+  style={
+    Object {
+      "margin": "1vh",
+    }
+  }
+>
+  <ForwardRef(Tooltip)
+    placement="left"
+    title="Unpin image"
+  >
+    <Memo(ForwardRef(DeleteIcon))
+      style={
+        Object {
+          "color": "#d12929",
+          "fontSize": "2em",
+        }
+      }
+    />
+  </ForwardRef(Tooltip)>
+</ForwardRef(IconButton)>
+`;
+
+exports[`Handling zoomed image action buttons will render the disabled pin button for already pinned/owned images 1`] = `
+<ForwardRef(IconButton)
+  aria-label="settings"
+  disableRipple={true}
+  style={
+    Object {
+      "margin": "1vh",
+    }
+  }
+>
+  <ForwardRef(Tooltip)
+    placement="left"
+    title="You pinned this image"
+  >
+    <Memo(ForwardRef(PushPinIcon))
+      style={
+        Object {
+          "color": "#3a1c1cde",
+          "fontSize": "2em",
+        }
+      }
+    />
+  </ForwardRef(Tooltip)>
+</ForwardRef(IconButton)>
+`;
+
+exports[`Handling zoomed image action buttons will render the pin button for unpinned images 1`] = `
+<ForwardRef(IconButton)
+  aria-label="settings"
+  onClick={[Function]}
+  style={
+    Object {
+      "margin": "1vh",
+    }
+  }
+>
+  <ForwardRef(Tooltip)
+    placement="left"
+    title="Pin image"
+  >
+    <Memo(ForwardRef(PushPinOutlinedIcon))
+      style={
+        Object {
+          "fontSize": "2em",
+        }
+      }
+    />
+  </ForwardRef(Tooltip)>
+</ForwardRef(IconButton)>
+`;

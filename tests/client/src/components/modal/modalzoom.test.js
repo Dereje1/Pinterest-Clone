@@ -35,37 +35,34 @@ describe('The pin zoom modal', () => {
     expect(wrapper.isEmptyRender()).toBe(true);
   });
 
-  test('will keep the witdth of image if less than window\'s innerwidth', () => {
+  test('will keep the width of image if less than window\'s innerwidth', () => {
     global.innerWidth = 1000;
     global.innerHeight = 1000;
     const wrapper = shallow(<PinZoom {...props} />);
     wrapper.instance().handleImage({ target: { naturalWidth: 600, naturalHeight: 800 } });
-    expect(wrapper.state().parentDivStyle).toEqual({ top: 80, width: '600px', small: false });
+    expect(wrapper.state().parentDivStyle).toEqual({
+      top: 80, width: '600px', small: false, pinnersSize: '3em', subTitleSize: '1.2em', titleSize: '2em',
+    });
   });
 
-  test('will adjust the witdth of image if greater than window\'s innerwidth', () => {
+  test('will adjust the width of image if greater than window\'s innerwidth', () => {
     global.innerWidth = 1000;
     global.innerHeight = 1000;
     const wrapper = shallow(<PinZoom {...props} />);
     wrapper.instance().handleImage({ target: { naturalWidth: 1200, naturalHeight: 800 } });
-    expect(wrapper.state().parentDivStyle).toEqual({ top: 80, width: '980px', small: false });
+    expect(wrapper.state().parentDivStyle).toEqual({
+      top: 80, width: '980px', small: false, pinnersSize: '3em', subTitleSize: '1.2em', titleSize: '2em',
+    });
   });
 
-  test('will adjust the witdth of image if height is greater than window\'s innerheight', () => {
+  test('will adjust the width of image if height is greater than window\'s innerheight', () => {
     global.innerWidth = 1000;
     global.innerHeight = 1000;
     const wrapper = shallow(<PinZoom {...props} />);
     wrapper.instance().handleImage({ target: { naturalWidth: 600, naturalHeight: 1200 } });
-    expect(wrapper.state().parentDivStyle).toEqual({ top: 80, width: '415px', small: false });
-  });
-
-  test('will close the zoom window on close button click', () => {
-    const wrapper = shallow(<PinZoom {...props} />);
-    wrapper.setState({ show: true });
-    const closeButton = wrapper.find({ className: 'fa fa-close' });
-    closeButton.props().onClick();
-    expect(wrapper.state().show).toBe(false);
-    expect(props.reset).toHaveBeenCalled();
+    expect(wrapper.state().parentDivStyle).toEqual({
+      top: 80, width: '415px', small: false, pinnersSize: '3em', subTitleSize: '0.9em', titleSize: '1.2em',
+    });
   });
 
   test('will close the zoom window on outclick', () => {
@@ -120,7 +117,7 @@ describe('The pin zoom modal', () => {
     expect(wrapper.state()).toEqual({
       show: true,
       firstShow: true,
-      parentDivStyle: { top: 20, width: 1000 },
+      parentDivStyle: { top: 10, width: 1000 },
     });
   });
 

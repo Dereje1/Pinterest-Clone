@@ -1,10 +1,21 @@
 // displays pin zoom modal
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import HandleImage from '../imagebuild/HandleImage';
+import Card from '@mui/material/Card';
+import Tooltip from '@mui/material/Tooltip';
+import CardHeader from '@mui/material/CardHeader';
+import CardMedia from '@mui/material/CardMedia';
+import Badge from '@mui/material/Badge';
+import PinDropIcon from '@mui/icons-material/PinDrop';
+import { styled } from '@mui/styles';
+import ModalActions from './ModalActions';
 import './modal.scss';
 
-const getNewImageWidth = ({ naturalWidth: width, naturalHeight: height }) => {
+const getNewImageWidth = ({
+  naturalWidth: imageWidth,
+  naturalHeight: imageHeight,
+  parentDivStyle,
+}) => {
   // dynamically resize image
   let { innerWidth, innerHeight } = window;
   // parameter for innerwidth/height adjustment with mobile consideration
@@ -12,30 +23,53 @@ const getNewImageWidth = ({ naturalWidth: width, naturalHeight: height }) => {
   innerHeight = innerHeight < 500 ? innerHeight - 120 : innerHeight - 170;
   // minor x direction adjustment for padding too
   innerWidth -= (innerWidth * 0.02);
-  const aspectRatio = width / height;
+  const aspectRatio = imageWidth / imageHeight;
   let newWidth;
-  if (width < innerWidth && height < innerHeight) {
+  if (imageWidth < innerWidth && imageHeight < innerHeight) {
     // already fits, return value if above 500 or else
     // expand to 500
-    newWidth = width < 500 && innerWidth > 500 ? 500 : width;
-  } else if (width > innerWidth) {
-    newWidth = innerWidth;
+    if (imageWidth < 500) {
+      newWidth = innerWidth > 500 ? 500 : innerWidth;
+    } else {
+      newWidth = imageWidth;
+    }
+  } else if (imageWidth > innerWidth) {
     // test new height with Aspect ratio
-    const newHeight = newWidth / aspectRatio;
+    const newHeight = innerWidth / aspectRatio;
     // test again if new height is less than screen height
-    newWidth = newHeight < innerHeight
-      ? newWidth
-      : aspectRatio * innerHeight;
+    if (newHeight > innerHeight) {
+      newWidth = aspectRatio * innerHeight;
+    } else {
+      newWidth = innerWidth;
+    }
   } else { // means height > innerheight
     newWidth = aspectRatio * innerHeight;
   }
-  return newWidth;
+  console.log({ newWidth });
+  return {
+    ...parentDivStyle,
+    width: `${newWidth}px`,
+    small: newWidth < 350,
+    titleSize: `${newWidth < 500 ? 1.2 : 2}em`,
+    subTitleSize: `${newWidth < 500 ? 0.9 : 1.2}em`,
+    pinnersSize: '3em',
+  };
 };
 
-const getPinners = pinInformation => (pinInformation.savedBy.length > 3
-  ? `${pinInformation.savedBy.slice(0, 3).join(', ')} and ${pinInformation.savedBy.length - 3} others`
-  : pinInformation.savedBy.join(', '));
+const getPinners = savedBy => (savedBy.length > 3
+  ? `${savedBy.slice(0, 3).join(', ')} and ${savedBy.length - 3} others`
+  : `${savedBy.join(', ')}`);
 
+const getFormattedDescription = imgDescription => (imgDescription.length > 15 ? `${imgDescription.slice(0, 15)}...` : imgDescription);
+
+const StyledBadge = styled(Badge)(() => ({
+  '& .MuiBadge-badge': {
+    right: 16,
+    top: 0,
+    border: '2px solid grey',
+    padding: '0 4px',
+  },
+}));
 export class PinZoom extends Component {
 
   constructor(props) {
@@ -51,10 +85,11 @@ export class PinZoom extends Component {
   componentDidUpdate(prevProps) {
     const { displayPinZoom, zoomInfo } = this.props;
     const { parentDivStyle } = this.state;
+    const [,, browserTop] = zoomInfo;
     if ((prevProps.displayPinZoom === false) && (displayPinZoom === true)) {
       const divCopy = JSON.parse(JSON.stringify(parentDivStyle));
       // use scroll dist on zoom call to set top of zoom div
-      divCopy.top = zoomInfo[2] + 10;
+      divCopy.top = browserTop;
       if (prevProps.zoomInfo.length
         && prevProps.zoomInfo[0].imgDescription !== zoomInfo[0].imgDescription) {
         divCopy.width = window.innerWidth;
@@ -115,54 +150,53 @@ export class PinZoom extends Component {
   handleImage = (i) => {
     const { naturalWidth, naturalHeight } = i.target;
     const { parentDivStyle } = this.state;
-    const newWidth = getNewImageWidth({ naturalWidth, naturalHeight });
-    const pcopy = JSON.parse(JSON.stringify(parentDivStyle));
-    pcopy.width = `${newWidth}px`;
-    pcopy.small = newWidth < 350;
+    const newDivStyle = getNewImageWidth({ naturalWidth, naturalHeight, parentDivStyle });
+    // const pcopy = JSON.parse(JSON.stringify(parentDivStyle));
     this.setState({
-      parentDivStyle: pcopy,
+      parentDivStyle: newDivStyle,
     });
   };
 
+
   render() {
-    const { zoomInfo, pinImage, deletePin } = this.props;
+    const {
+      zoomInfo, pinImage, deletePin,
+    } = this.props;
     const { show, parentDivStyle } = this.state;
     if (!zoomInfo.length) return null;
     const [pinInformation] = zoomInfo;
     const totalPins = (pinInformation.savedBy) ? pinInformation.savedBy.length : 0;
-    const pinnedBy = totalPins ? getPinners(pinInformation) : '';
+    const pinnedBy = totalPins ? getPinners(pinInformation.savedBy) : '';
+    const formattedDescription = getFormattedDescription(pinInformation.imgDescription);
+    console.log(formattedDescription.length);
     return (
-      <div
-        className={show ? 'zoom cshow' : 'zoom chide'}
-        style={parentDivStyle}
-      >
-        <div className="header">
-          <span id="zoomtitle">
-            <div id="zoomdesc">{pinInformation.imgDescription}</div>
-            <div id="zoomowner">{`${pinInformation.owner}`}</div>
-          </span>
-          <span id="zoomtack" title={pinnedBy} className={parentDivStyle.small ? 'small' : ''}>
-            <i className="fa fa-thumb-tack" aria-hidden="true" />
-            {`  ${totalPins}`}
-          </span>
-          <i className="fa fa-close" onClick={this.close} aria-hidden="true" />
-        </div>
-
-        <img
-          alt=""
-          className="pinzoom"
-          src={pinInformation.imgLink}
+      <Card sx={parentDivStyle} className={show ? 'zoom cshow' : 'zoom chide'}>
+        <CardHeader
+          action={(
+            <>
+              <ModalActions
+                element={pinInformation}
+                pinImage={pinImage}
+                deletePin={deletePin}
+              />
+              <StyledBadge badgeContent={totalPins} color="secondary" showZero>
+                <Tooltip title={pinnedBy}>
+                  <PinDropIcon style={{ fontSize: parentDivStyle.pinnersSize }} />
+                </Tooltip>
+              </StyledBadge>
+            </>
+          )}
+          title={formattedDescription}
+          subheader={pinInformation.owner}
+          titleTypographyProps={{ fontSize: parentDivStyle.titleSize, fontWeight: 'bold' }}
+          subheaderTypographyProps={{ fontSize: parentDivStyle.subTitleSize, fontWeight: 'bold' }}
+        />
+        <CardMedia
+          component="img"
+          image={pinInformation.imgLink}
           onLoad={this.handleImage}
         />
-
-        <div className="footer">
-          <HandleImage
-            element={pinInformation}
-            pinImage={pinImage || null}
-            deletePin={deletePin || null}
-          />
-        </div>
-      </div>
+      </Card>
     );
   }
 

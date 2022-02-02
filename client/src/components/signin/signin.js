@@ -26,12 +26,15 @@ export class SignIn extends React.Component {
     // clicks outside menu will collpase it
     const { removeSignin, caller } = this.props;
     if (!e.target.closest('#sign-in')
-    && !e.target.closest('.menu') && caller === 'menu') {
+      && !e.target.closest('.menu')
+      && caller === 'menu') {
       removeSignin();
       window.removeEventListener('click', this.listenForOutClicks);
     }
     if (!e.target.closest('#sign-in')
-    && !e.target.closest('.actionbutton') && caller === 'home') {
+      && !e.target.closest('.actionbutton')
+      && !e.target.closest('.MuiButtonBase-root')
+      && caller === 'home') {
       removeSignin();
       window.removeEventListener('click', this.listenForOutClicks);
     }
