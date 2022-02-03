@@ -45,7 +45,6 @@ const getNewImageWidth = ({
   } else { // means height > innerheight
     newWidth = aspectRatio * innerHeight;
   }
-  console.log({ newWidth });
   return {
     ...parentDivStyle,
     width: `${newWidth}px`,
@@ -168,7 +167,6 @@ export class PinZoom extends Component {
     const totalPins = (pinInformation.savedBy) ? pinInformation.savedBy.length : 0;
     const pinnedBy = totalPins ? getPinners(pinInformation.savedBy) : '';
     const formattedDescription = getFormattedDescription(pinInformation.imgDescription);
-    console.log(formattedDescription.length);
     return (
       <Card sx={parentDivStyle} className={show ? 'zoom cshow' : 'zoom chide'}>
         <CardHeader

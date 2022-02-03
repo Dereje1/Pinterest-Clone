@@ -115,7 +115,8 @@ class PinCreate extends Component {
             className="textdesc"
             placeholder="Description..."
             maxLength="28"
-            onChange={e => this.setState({ description: e.target.value })}
+            onChange={({ target: { value } }) => value.length <= 20
+             && this.setState({ description: value })}
             value={description}
           />
           <textarea
