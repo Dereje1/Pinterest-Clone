@@ -6,18 +6,14 @@
   right: 0;
   margin-left: auto;
   margin-right: auto;
-  padding-left: 2%;
-  padding-right: 2%;
   background: white;
   overflow: auto;
   box-shadow: 0 5px 15px rgba(0,0,0,.5);
-  box-sizing: border-box;
   border: 1px solid rgba(0,0,0,.2);
   border-radius: 6px;
   z-index: 1010;
   &.cshow{
     display: inline-block;
-    flex-direction: column;
     animation-name: modalshow;
     animation-duration: 1s;
     animation-timing-function: cubic-bezier(0.075, 0.82, 0.165, 1);
@@ -34,87 +30,6 @@
   .pinzoom{
     margin: auto;
     width: 100%;
-  }
-  .header{
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    font-weight: bold;
-    color: #555;
-    font-family: "Helvetica";
-    height: 50px;
-    padding: 5px;
-    #zoomtitle{
-      font-size: 1rem;
-      #zoomdesc{
-        font-family: 'Berkshire Swash', cursive;
-      }
-      #zoomowner{
-        font-size: 75%;
-        font-family:'Spectral SC', serif;
-        color: #b20e0e;
-      }
-    }
-    #zoomtack{
-      font-weight: 700;
-      font-size: 2rem;
-      &.small{
-        font-size: 1rem;
-        cursor: help;
-        >i{
-          font-size: rem;
-          cursor: help;
-        }
-        i{
-          font-size: 1rem;
-          cursor: pointer;
-        }
-      }
-      cursor: help;
-      >i{
-        cursor: help;
-      }
-    }
-    i{
-      font-size: 2rem;
-      cursor: pointer;
-    }
-    @media screen and (max-width: 500px), screen and (max-height: 500px){
-      height: 25px;
-      padding: 2.5px;
-      #zoomtitle{
-        font-size: .5rem;
-      }
-      #zoomtack{
-        font-size: 1rem;
-      }
-      i{
-        font-size: 1rem;
-        cursor: pointer;
-      }
-    }
-  }
-  .footer{
-    margin-top: 1%;
-    margin-bottom: 1%;
-    .actionbutton{
-      height:50px;
-      width: 100%;
-      color: white;
-      font-size: 1rem;
-      font-weight: 700;
-      border-radius: .25rem;
-      border: none;
-      cursor: pointer;
-      background-color: #b20e0e;
-    }
-    @media screen and (max-width: 500px), screen and (max-height: 500px){
-      .actionbutton{
-        height:25px;
-        font-size: .5rem;
-        border-radius: .125rem;
-      }
-    }
   }
 }
 // overlay is shared with pincreate modal too

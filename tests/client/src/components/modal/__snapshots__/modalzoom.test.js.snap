@@ -1,76 +1,74 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`The pin zoom modal will render 1`] = `
-<div
+<ForwardRef(Card)
   className="zoom chide"
-  style={
+  sx={
     Object {
       "top": 80,
       "width": "90%",
     }
   }
 >
-  <div
-    className="header"
-  >
-    <span
-      id="zoomtitle"
-    >
-      <div
-        id="zoomdesc"
-      >
-        imgDescription id-1
-      </div>
-      <div
-        id="zoomowner"
-      >
-        owner id-1
-      </div>
-    </span>
-    <span
-      className=""
-      id="zoomtack"
-      title="savedBy - id-1, savedBy2 - id-1"
-    >
-      <i
-        aria-hidden="true"
-        className="fa fa-thumb-tack"
-      />
-        2
-    </span>
-    <i
-      aria-hidden="true"
-      className="fa fa-close"
-      onClick={[Function]}
-    />
-  </div>
-  <img
-    alt=""
-    className="pinzoom"
-    onLoad={[Function]}
-    src="imgLink id-1"
-  />
-  <div
-    className="footer"
-  >
-    <HandleImage
-      deletePin={null}
-      element={
-        Object {
-          "_id": 1,
-          "hasSaved": false,
-          "imgDescription": "imgDescription id-1",
-          "imgLink": "imgLink id-1",
-          "owner": "owner id-1",
-          "owns": false,
-          "savedBy": Array [
-            "savedBy - id-1",
-            "savedBy2 - id-1",
-          ],
-        }
+  <ForwardRef(CardHeader)
+    action={
+      <React.Fragment>
+        <GetAction
+          deletePin={null}
+          element={
+            Object {
+              "_id": 1,
+              "hasSaved": false,
+              "imgDescription": "imgDescription id-1",
+              "imgLink": "imgLink id-1",
+              "owner": "owner id-1",
+              "owns": false,
+              "savedBy": Array [
+                "savedBy - id-1",
+                "savedBy2 - id-1",
+              ],
+            }
+          }
+          pinImage={[MockFunction]}
+        />
+        <Styled(ForwardRef(Badge))
+          badgeContent={2}
+          color="secondary"
+          showZero={true}
+        >
+          <ForwardRef(Tooltip)
+            title="savedBy - id-1, savedBy2 - id-1"
+          >
+            <Memo
+              style={
+                Object {
+                  "fontSize": undefined,
+                }
+              }
+            />
+          </ForwardRef(Tooltip)>
+        </Styled(ForwardRef(Badge))>
+      </React.Fragment>
+    }
+    subheader="owner id-1"
+    subheaderTypographyProps={
+      Object {
+        "fontSize": undefined,
+        "fontWeight": "bold",
       }
-      pinImage={[MockFunction]}
-    />
-  </div>
-</div>
+    }
+    title="imgDescription ..."
+    titleTypographyProps={
+      Object {
+        "fontSize": undefined,
+        "fontWeight": "bold",
+      }
+    }
+  />
+  <ForwardRef(CardMedia)
+    component="img"
+    image="imgLink id-1"
+    onLoad={[Function]}
+  />
+</ForwardRef(Card)>
 `;
