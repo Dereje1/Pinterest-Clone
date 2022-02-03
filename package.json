@@ -31,7 +31,7 @@
     "passport-google-oauth": "^2.0.0",
     "passport-twitter": "latest",
     "prop-types": "^15.7.2",
-    "react": "^16.0.0",
+    "react": "^16.8.0",
     "react-dom": "^16.0.0",
     "react-masonry-component": "^6.3.0",
     "react-redux": "^5.0.6",
@@ -94,6 +94,10 @@
       "!**/coverage/**",
       "!**/myscripts/**"
     ]
+  },
+  "engines": {
+    "node": "4.18.0",
+    "npm": "6.14.15"
   },
   "repository": {
     "type": "git",
