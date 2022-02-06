@@ -147,7 +147,7 @@ class PinCreate extends Component {
           position: 'absolute',
           top: 0.6 * modalHeight,
           width: '100%',
-          marginTop: 20,
+          marginTop: '5vh',
         }}
         >
           <TextField
@@ -160,7 +160,7 @@ class PinCreate extends Component {
              && this.setState({ description: value })}
             value={description}
             error={!description || isDescriptionError}
-            style={{ margin: 20 }}
+            style={{ margin: '1.5vh' }}
           />
           <TextField
             id="pin-img-link"
@@ -170,7 +170,7 @@ class PinCreate extends Component {
             value={isError ? '' : picPreview}
             error={isError}
             color="success"
-            style={{ margin: 20 }}
+            style={{ margin: '1.5vh' }}
           />
           <SavePin
             isImageError={showErrorImage}
