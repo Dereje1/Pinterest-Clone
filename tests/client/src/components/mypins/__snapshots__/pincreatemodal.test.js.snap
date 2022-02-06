@@ -52,7 +52,7 @@ exports[`The pin creation modal will render 1`] = `
         "display": "flex",
         "flexDirection": "column",
         "justifyContent": "space-evenly",
-        "marginTop": 20,
+        "marginTop": "5vh",
         "position": "absolute",
         "top": 423.93600000000004,
         "width": "100%",
@@ -68,7 +68,7 @@ exports[`The pin creation modal will render 1`] = `
       onChange={[Function]}
       style={
         Object {
-          "margin": 20,
+          "margin": "1.5vh",
         }
       }
       value=""
@@ -82,7 +82,7 @@ exports[`The pin creation modal will render 1`] = `
       onChange={[Function]}
       style={
         Object {
-          "margin": 20,
+          "margin": "1.5vh",
         }
       }
       value=""
