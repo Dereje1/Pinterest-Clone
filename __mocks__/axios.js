@@ -2,28 +2,13 @@
 module.exports = {
   get: (...args) => {
     const route = args[0];
-    if (route === '/auth/profile') {
+    if (route === '/successful') {
       return Promise.resolve({
-        data: {
-          authenticated: true,
-          userIp: 'Tester userIp',
-          username: 'Tester username',
-          userId: 'Tester userId',
-          displayname: 'Tester displayName',
-          service: 'twitter',
-        },
-      });
-    } if (route === '/auth/guest') {
-      return Promise.resolve({
-        data: {
-          authenticated: false,
-          userIp: 'Tester userIp',
-          username: 'Tester guest',
-        },
+        data: 'data returned succesfully!',
       });
     }
     return Promise.reject(
-      new Error('Auth request rejected'),
+      new Error('Axios request rejected'),
     );
   },
 };

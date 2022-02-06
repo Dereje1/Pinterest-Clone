@@ -21,6 +21,22 @@ const restMock = jest.fn().mockImplementation((...args) => {
       imgDescription: 'new description',
       _id: 10,
     });
+  } if (address.includes('/auth/profile') && method === 'get' && !payload) {
+    return Promise.resolve({
+      authenticated: true,
+      userIp: 'Tester userIp',
+      username: 'Tester username',
+      userId: 'Tester userId',
+      displayname: 'Tester displayName',
+      service: 'twitter',
+
+    });
+  } if (address.includes('/auth/guest') && method === 'get' && !payload) {
+    return Promise.resolve({
+      authenticated: false,
+      userIp: 'Tester userIp',
+      username: 'Tester guest',
+    });
   }
   return Promise.reject(new Error(`Requested method:${method} and path: ${address} not mocked!!`));
 });

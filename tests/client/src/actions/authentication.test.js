@@ -1,6 +1,6 @@
 import { getUser, setGuest } from '../../../../client/src/actions/authentication';
 //
-
+jest.mock('../../../../client/src/crud');
 describe('authentication', () => {
   let dispatch;
   beforeEach(() => {
@@ -39,19 +39,19 @@ describe('authentication', () => {
   });
 
   test('will dispatch the status for a rejected logged in user request', async () => {
-    const profile = getUser();
+    const profile = getUser('profile_get_reject');
     await profile(dispatch);
     expect(dispatch).toHaveBeenCalledWith({
-      payload: Error('Auth request rejected'),
+      payload: Error('Requested method:get and path: profile_get_reject not mocked!!'),
       type: 'GET_USER_STATUS_REJECTED',
     });
   });
 
   test('will dispatch the status for a rejected guest user request', async () => {
-    const profile = setGuest();
+    const profile = setGuest('guest_get_reject');
     await profile(dispatch);
     expect(dispatch).toHaveBeenCalledWith({
-      payload: Error('Auth request rejected'),
+      payload: Error('Requested method:get and path: guest_get_reject not mocked!!'),
       type: 'SET_GUEST_STATUS_REJECTED',
     });
   });
