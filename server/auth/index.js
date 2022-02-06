@@ -1,7 +1,7 @@
 // Index for authentication
 const passport = require('passport');
 const { setAuthRoutes } = require('./routes');
-const { passportConfig } = require('./passport');
+const { passportConfig } = require('./passportConfig');
 
 const configEntry = (app) => {
   passportConfig(passport); // pass passport for configuration

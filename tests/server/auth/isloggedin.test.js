@@ -1,4 +1,4 @@
-import isloggedin from '../../../server/Authentication_Config/isloggedin';
+import isloggedin from '../../../server/auth/isloggedin';
 
 describe('isLoggedIn middleware', () => {
   test('will not continue with the request if the user is not logged in', () => {

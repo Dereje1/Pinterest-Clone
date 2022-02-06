@@ -1,6 +1,6 @@
 const {
   setAuthRoutes, getProfile, logOut, setGuest,
-} = require('../../../server/Authentication_Config/routes');
+} = require('../../../server/auth/routes');
 
 describe('Authentication routes', () => {
   let req; let
