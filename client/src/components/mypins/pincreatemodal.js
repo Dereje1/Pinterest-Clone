@@ -136,7 +136,6 @@ class PinCreate extends Component {
         <CardMedia
           component="img"
           image={showErrorImage ? imageBroken : picPreview}
-          onLoad={this.handleImage}
           onError={() => this.setState({ isError: true })}
           sx={{ objectFit: 'contain', height: 0.52 * modalHeight }}
           id="new-pin-image"
