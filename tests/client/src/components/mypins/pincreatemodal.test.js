@@ -1,7 +1,12 @@
+/**
+ * @jest-environment jsdom
+ */
 import React from 'react';
 import { shallow } from 'enzyme';
 import toJson from 'enzyme-to-json';
 import PinCreate from '../../../../../client/src/components/mypins/pincreatemodal';
+
+jest.mock('../../../../../client/src/components/mypins/NO-IMAGE.png', () => 'load-error.png');
 
 describe('The pin creation modal', () => {
   let props;
@@ -33,7 +38,7 @@ describe('The pin creation modal', () => {
     const wrapper = shallow(<PinCreate {...props} />);
     wrapper.setState({ justMounted: false, isError: false });
     expect(wrapper.state().isError).toBe(false);
-    const img = wrapper.find({ className: 'pinTest' });
+    const img = wrapper.find({ id: 'new-pin-image' });
     img.props().onError();
     expect(wrapper.state().isError).toBe(true);
   });
@@ -41,7 +46,7 @@ describe('The pin creation modal', () => {
   test('will handle changes in description', () => {
     const wrapper = shallow(<PinCreate {...props} />);
     wrapper.setState({ justMounted: false });
-    const description = wrapper.find({ className: 'textdesc' });
+    const description = wrapper.find({ id: 'pin-description' });
     description.props().onChange({ target: { value: 'abc' } });
     expect(wrapper.state().description).toBe('abc');
   });
@@ -49,7 +54,7 @@ describe('The pin creation modal', () => {
   test('will handle changes in image links', () => {
     const wrapper = shallow(<PinCreate {...props} />);
     wrapper.setState({ justMounted: false });
-    const imgLink = wrapper.find({ className: 'textlink' });
+    const imgLink = wrapper.find({ id: 'pin-img-link' });
     imgLink.props().onChange({ target: { value: 'https://abc.com' } });
     expect(wrapper.state().picPreview).toBe('https://abc.com');
   });
@@ -57,7 +62,7 @@ describe('The pin creation modal', () => {
   test('will handle changes in image links with http', () => {
     const wrapper = shallow(<PinCreate {...props} />);
     wrapper.setState({ justMounted: false });
-    const imgLink = wrapper.find({ className: 'textlink' });
+    const imgLink = wrapper.find({ id: 'pin-img-link' });
     imgLink.props().onChange({ target: { value: 'http://abc.com' } });
     expect(wrapper.state().picPreview).toBe('https://abc.com');
   });
@@ -65,7 +70,7 @@ describe('The pin creation modal', () => {
   test('will handle changes in image links with data protocol', () => {
     const wrapper = shallow(<PinCreate {...props} />);
     wrapper.setState({ justMounted: false });
-    const imgLink = wrapper.find({ className: 'textlink' });
+    const imgLink = wrapper.find({ id: 'pin-img-link' });
     imgLink.props().onChange({ target: { value: 'data:abc.com' } });
     expect(wrapper.state().picPreview).toBe('data:abc.com');
   });
@@ -73,7 +78,7 @@ describe('The pin creation modal', () => {
   test('will handle changes in image links with invalid url', () => {
     const wrapper = shallow(<PinCreate {...props} />);
     wrapper.setState({ justMounted: false });
-    const imgLink = wrapper.find({ className: 'textlink' });
+    const imgLink = wrapper.find({ id: 'pin-img-link' });
     imgLink.props().onChange({ target: { value: 'htt://abc.com' } });
     expect(wrapper.state().picPreview).toBe('');
   });
@@ -87,8 +92,8 @@ describe('The pin creation modal', () => {
       showErrorImage: false,
       show: true,
     });
-    const saveButton = wrapper.find({ className: 'savebutton' });
-    saveButton.props().onClick();
+    const SavePin = wrapper.find('SavePin');
+    SavePin.props().savePic();
     expect(props.savePin).toHaveBeenCalledWith({
       owner: {
         name: 'tester displayname',
