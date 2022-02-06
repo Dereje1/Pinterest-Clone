@@ -1,75 +1,98 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`The pin creation modal will render 1`] = `
-<div
+<ForwardRef(Card)
   className="pincreate chide"
+  sx={
+    Object {
+      "height": 706.5600000000001,
+      "width": 341.3333333333333,
+    }
+  }
 >
-  <div
-    className="header"
-  >
-    <span
-      id="pincreatetitle"
-    >
-      <div
-        id="pincreatedesc"
+  <ForwardRef(CardHeader)
+    action={
+      <ForwardRef(IconButton)
+        aria-label="settings"
+        onClick={[Function]}
       >
-        Create Pin
-      </div>
-    </span>
-    <i
-      aria-hidden="true"
-      className="fa fa-close"
-      onClick={[Function]}
-    />
-  </div>
-  <div
-    className="newpinholder"
-  >
-    <img
-      alt="newpin"
-      className="pinTest"
-      onError={[Function]}
-      src={
-        Object {
-          "canInstrument": true,
-          "createTransformer": [Function],
-          "getCacheKey": [Function],
-          "getCacheKeyAsync": [Function],
-          "process": [Function],
-          "processAsync": [Function],
-        }
+        <Memo
+          style={
+            Object {
+              "color": "#3a1c1cde",
+              "fontSize": "1.5em",
+            }
+          }
+        />
+      </ForwardRef(IconButton)>
+    }
+    title="Create Pin"
+    titleTypographyProps={
+      Object {
+        "fontSize": "1.5em",
+        "fontWeight": "bold",
       }
-    />
-  </div>
+    }
+  />
+  <ForwardRef(CardMedia)
+    component="img"
+    id="new-pin-image"
+    image="load-error.png"
+    onError={[Function]}
+    sx={
+      Object {
+        "height": 367.41120000000006,
+        "objectFit": "contain",
+      }
+    }
+  />
   <div
-    className="formarea"
+    style={
+      Object {
+        "display": "flex",
+        "flexDirection": "column",
+        "justifyContent": "space-evenly",
+        "marginTop": 20,
+        "position": "absolute",
+        "top": 423.93600000000004,
+        "width": "100%",
+      }
+    }
   >
-    <textarea
-      className="textdesc"
+    <ForwardRef(TextField)
+      color="success"
+      error={true}
+      id="pin-description"
+      label="Description..."
       maxLength="28"
       onChange={[Function]}
-      placeholder="Description..."
+      style={
+        Object {
+          "margin": 20,
+        }
+      }
       value=""
+      variant="standard"
     />
-    <textarea
-      className="textlink"
+    <ForwardRef(TextField)
+      color="success"
+      error={true}
+      id="pin-img-link"
+      label="Paste image address here http://..."
       onChange={[Function]}
-      placeholder="Paste image address here 
-http://..."
+      style={
+        Object {
+          "margin": 20,
+        }
+      }
       value=""
+      variant="standard"
+    />
+    <SavePin
+      isDescriptionError={true}
+      isImageError={true}
+      savePic={[Function]}
     />
   </div>
-  <div
-    className="footer"
-  >
-    <button
-      className="savebutton"
-      disabled={true}
-      onClick={[Function]}
-      type="submit"
-    >
-      Save
-    </button>
-  </div>
-</div>
+</ForwardRef(Card)>
 `;

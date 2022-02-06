@@ -193,6 +193,7 @@ export class PinZoom extends Component {
           component="img"
           image={pinInformation.imgLink}
           onLoad={this.handleImage}
+          id="pin-zoom"
         />
       </Card>
     );

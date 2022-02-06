@@ -1,0 +1,151 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`The save pin action button will render with both errors 1`] = `
+<ForwardRef(CardActions)
+  disableSpacing={true}
+>
+  <ForwardRef(IconButton)
+    aria-label="Pin Image"
+    disabled={true}
+    onClick={[MockFunction]}
+  >
+    <Memo(ForwardRef(SaveAltIcon))
+      style={
+        Object {
+          "color": "#f79f9fd9",
+          "fontSize": "1.5em",
+        }
+      }
+    />
+  </ForwardRef(IconButton)>
+  <ForwardRef(TextField)
+    InputProps={
+      Object {
+        "disableUnderline": true,
+      }
+    }
+    id="pin-create-validation"
+    sx={
+      Object {
+        "input": Object {
+          "caretColor": "white",
+          "color": "#f79f9fd9",
+          "fontSize": "0.75em",
+          "fontWeight": "bold",
+        },
+        "marginTop": 2,
+        "width": "100%",
+      }
+    }
+    value="Invalid image and description"
+    variant="standard"
+  />
+</ForwardRef(CardActions)>
+`;
+
+exports[`The save pin action button will render with description error only 1`] = `
+<ForwardRef(CardActions)
+  disableSpacing={true}
+>
+  <ForwardRef(IconButton)
+    aria-label="Pin Image"
+    disabled={true}
+    onClick={[MockFunction]}
+  >
+    <Memo(ForwardRef(SaveAltIcon))
+      style={
+        Object {
+          "color": "#f79f9fd9",
+          "fontSize": "1.5em",
+        }
+      }
+    />
+  </ForwardRef(IconButton)>
+  <ForwardRef(TextField)
+    InputProps={
+      Object {
+        "disableUnderline": true,
+      }
+    }
+    id="pin-create-validation"
+    sx={
+      Object {
+        "input": Object {
+          "caretColor": "white",
+          "color": "#f79f9fd9",
+          "fontSize": "0.75em",
+          "fontWeight": "bold",
+        },
+        "marginTop": 2,
+        "width": "100%",
+      }
+    }
+    value="Invalid description"
+    variant="standard"
+  />
+</ForwardRef(CardActions)>
+`;
+
+exports[`The save pin action button will render with image error only 1`] = `
+<ForwardRef(CardActions)
+  disableSpacing={true}
+>
+  <ForwardRef(IconButton)
+    aria-label="Pin Image"
+    disabled={true}
+    onClick={[MockFunction]}
+  >
+    <Memo(ForwardRef(SaveAltIcon))
+      style={
+        Object {
+          "color": "#f79f9fd9",
+          "fontSize": "1.5em",
+        }
+      }
+    />
+  </ForwardRef(IconButton)>
+  <ForwardRef(TextField)
+    InputProps={
+      Object {
+        "disableUnderline": true,
+      }
+    }
+    id="pin-create-validation"
+    sx={
+      Object {
+        "input": Object {
+          "caretColor": "white",
+          "color": "#f79f9fd9",
+          "fontSize": "0.75em",
+          "fontWeight": "bold",
+        },
+        "marginTop": 2,
+        "width": "100%",
+      }
+    }
+    value="Invalid image"
+    variant="standard"
+  />
+</ForwardRef(CardActions)>
+`;
+
+exports[`The save pin action button will render with no errors 1`] = `
+<ForwardRef(CardActions)
+  disableSpacing={true}
+>
+  <ForwardRef(IconButton)
+    aria-label="Pin Image"
+    disabled={false}
+    onClick={[MockFunction]}
+  >
+    <Memo(ForwardRef(SaveAltIcon))
+      style={
+        Object {
+          "color": "#028b02",
+          "fontSize": "1.5em",
+        }
+      }
+    />
+  </ForwardRef(IconButton)>
+</ForwardRef(CardActions)>
+`;
