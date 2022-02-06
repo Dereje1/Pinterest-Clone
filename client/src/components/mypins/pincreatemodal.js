@@ -1,6 +1,13 @@
 // displays modal that creates pin
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
+import CancelIcon from '@mui/icons-material/Cancel';
+import TextField from '@mui/material/TextField';
+import Card from '@mui/material/Card';
+import CardHeader from '@mui/material/CardHeader';
+import CardMedia from '@mui/material/CardMedia';
+import IconButton from '@mui/material/IconButton';
+import SavePin from './SavePin';
 import imageBroken from './NO-IMAGE.png';
 import './pincreate.scss';
 
@@ -16,6 +23,16 @@ const validateURL = (string) => {
     return null;
   }
   return null;
+};
+
+const getModalWidth = () => {
+  const { innerWidth } = window;
+  if (innerWidth < 500) {
+    return innerWidth;
+  } if (innerWidth > 1000) {
+    return innerWidth / 3;
+  }
+  return innerWidth / 2;
 };
 
 class PinCreate extends Component {
@@ -65,6 +82,7 @@ class PinCreate extends Component {
       show: false,
       picPreview: '',
       description: '',
+      isError: true,
     }, () => reset());
   };
 
@@ -77,7 +95,7 @@ class PinCreate extends Component {
     });
   };
 
-  savePic() { // ready to save pin
+  savePic = () => { // ready to save pin
     const { userInfo, savePin } = this.props;
     const { picPreview, description, showErrorImage } = this.state;
     if (showErrorImage || description.length < 5) return;
@@ -94,62 +112,75 @@ class PinCreate extends Component {
     // save into db and close modal
     savePin(pinJSON);
     this.close();
-  }
-
-  addpin() { // body of modal
-    const {
-      picPreview, description, isError, showErrorImage,
-    } = this.state;
-    return (
-      <React.Fragment>
-        <div className="newpinholder">
-          <img
-            alt="newpin"
-            className="pinTest"
-            src={showErrorImage ? imageBroken : picPreview}
-            onError={() => this.setState({ isError: true })}
-          />
-        </div>
-        <div className="formarea">
-          <textarea
-            className="textdesc"
-            placeholder="Description..."
-            maxLength="28"
-            onChange={({ target: { value } }) => value.length <= 20
-             && this.setState({ description: value })}
-            value={description}
-          />
-          <textarea
-            className="textlink"
-            placeholder={'Paste image address here \nhttp://...'}
-            onChange={e => this.processImage(e)}
-            value={isError ? '' : picPreview}
-          />
-        </div>
-      </React.Fragment>
-    );
-  }
+  };
 
   render() {
     const {
-      show, justMounted, description, showErrorImage,
+      show, justMounted, description, showErrorImage, isError, picPreview,
     } = this.state;
     if (justMounted) return null;
+    const modalHeight = window.innerHeight * 0.92;
+    const modalWidth = getModalWidth();
+    const isDescriptionError = description.trim().length < 5;
     return (
-      <div
-        className={show ? 'pincreate cshow' : 'pincreate chide'}
-      >
-        <div className="header">
-          <span id="pincreatetitle">
-            <div id="pincreatedesc">Create Pin</div>
-          </span>
-          <i className="fa fa-close" onClick={this.close} aria-hidden="true" />
+      <Card sx={{ width: modalWidth, height: modalHeight }} className={show ? 'pincreate cshow' : 'pincreate chide'}>
+
+        <CardHeader
+          action={(
+            <IconButton aria-label="settings" onClick={this.close}>
+              <CancelIcon style={{ fontSize: '1.5em', color: '#3a1c1cde' }} />
+            </IconButton>
+          )}
+          title="Create Pin"
+          titleTypographyProps={{ fontSize: '1.5em', fontWeight: 'bold' }}
+        />
+        <CardMedia
+          component="img"
+          image={showErrorImage ? imageBroken : picPreview}
+          onLoad={this.handleImage}
+          onError={() => this.setState({ isError: true })}
+          sx={{ objectFit: 'contain', height: 0.55 * modalHeight }}
+          id="new-pin-image"
+        />
+        <div style={{
+          display: 'flex',
+          flexDirection: 'column',
+          justifyContent: 'space-evenly',
+          position: 'absolute',
+          top: 0.6 * modalHeight,
+          width: '100%',
+          marginTop: 20,
+        }}
+        >
+          <TextField
+            id="pin-description"
+            label="Description..."
+            variant="standard"
+            maxLength="28"
+            color="success"
+            onChange={({ target: { value } }) => value.trim().length <= 20
+             && this.setState({ description: value })}
+            value={description}
+            error={!description || isDescriptionError}
+            style={{ margin: 20 }}
+          />
+          <TextField
+            id="pin-img-link"
+            label="Paste image address here http://..."
+            variant="standard"
+            onChange={e => this.processImage(e)}
+            value={isError ? '' : picPreview}
+            error={isError}
+            color="success"
+            style={{ margin: 20 }}
+          />
+          <SavePin
+            isImageError={showErrorImage}
+            isDescriptionError={isDescriptionError}
+            savePic={this.savePic}
+          />
         </div>
-        {this.addpin()}
-        <div className="footer">
-          <button type="submit" onClick={() => this.savePic()} className="savebutton" disabled={showErrorImage || description.length < 5}>Save</button>
-        </div>
-      </div>
+      </Card>
     );
   }
 
