@@ -43,10 +43,17 @@ const SavePin = ({ isImageError, isDescriptionError, savePic }) => {
         (isImageError || isDescriptionError) && (
           <TextField
             id="pin-create-validation"
-            value={(isImageError || isDescriptionError) ? validation.text : 'tick'}
+            value={validation.text}
             variant="standard"
             sx={{
-              marginTop: 2, width: '100%', input: { fontSize: '0.75em', color: validation.color, fontWeight: 'bold' },
+              marginTop: 2,
+              width: '100%',
+              input: {
+                fontSize: '0.75em',
+                color: validation.color,
+                fontWeight: 'bold',
+                caretColor: 'white',
+              },
             }}
             InputProps={{
               disableUnderline: true,

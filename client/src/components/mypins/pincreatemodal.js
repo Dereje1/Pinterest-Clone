@@ -97,8 +97,7 @@ class PinCreate extends Component {
 
   savePic = () => { // ready to save pin
     const { userInfo, savePin } = this.props;
-    const { picPreview, description, showErrorImage } = this.state;
-    if (showErrorImage || description.length < 5) return;
+    const { picPreview, description } = this.state;
     // prepare JSON for POST api
     const pinJSON = {
       owner: {
@@ -139,7 +138,7 @@ class PinCreate extends Component {
           image={showErrorImage ? imageBroken : picPreview}
           onLoad={this.handleImage}
           onError={() => this.setState({ isError: true })}
-          sx={{ objectFit: 'contain', height: 0.55 * modalHeight }}
+          sx={{ objectFit: 'contain', height: 0.52 * modalHeight }}
           id="new-pin-image"
         />
         <div style={{

@@ -41,7 +41,7 @@ exports[`The pin creation modal will render 1`] = `
     onError={[Function]}
     sx={
       Object {
-        "height": 388.60800000000006,
+        "height": 367.41120000000006,
         "objectFit": "contain",
       }
     }
