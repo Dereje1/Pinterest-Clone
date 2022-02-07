@@ -13,7 +13,7 @@
   border-radius: 6px;
   z-index: 1010;
   &.cshow{
-    display: inline-block;
+    display: block;
     animation-name: modalshow;
     animation-duration: 1s;
     animation-timing-function: cubic-bezier(0.075, 0.82, 0.165, 1);
@@ -25,11 +25,7 @@
     animation-name: modalhide;
     animation-duration: 1s;
     animation-timing-function: cubic-bezier(0.075, 0.82, 0.165, 1);
-    animation-iteration-count: .5;
-  }
-  .pinzoom{
-    margin: auto;
-    width: 100%;
+    animation-iteration-count: 1;
   }
 }
 // overlay is shared with pincreate modal too
@@ -42,6 +38,9 @@
   width: 100%;
   height: 100%;
   z-index: 1000;
+  &.hide{
+    visibility: hidden;
+  }
 }
 @keyframes modalshow {
   0%{

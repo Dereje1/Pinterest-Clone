@@ -98,7 +98,7 @@ exports[`The Mypins Component Mypins landing page will render 1`] = `
       zoomInfo={Array []}
     />
     <div
-      className=""
+      className="modal-overlay hide"
     />
   </div>
 </Fragment>

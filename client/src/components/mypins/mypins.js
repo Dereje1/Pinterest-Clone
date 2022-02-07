@@ -186,7 +186,7 @@ export class Mypins extends Component {
             resetModal={() => this.setState({ displayPinZoom: false })}
             zoomInfo={imageInfo}
           />
-          <div className={displayPinZoom || displayPinCreate ? 'modal-overlay' : ''} />
+          <div className={displayPinZoom || displayPinCreate ? 'modal-overlay' : 'modal-overlay hide'} />
         </div>
       </React.Fragment>
     );

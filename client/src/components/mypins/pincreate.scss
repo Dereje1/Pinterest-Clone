@@ -11,8 +11,7 @@
     border-radius: 6px;
     z-index: 1010;
     &.cshow{
-      display: flex;
-      flex-direction: column;
+      display: block;
       animation-name: modalshow;
       animation-duration: 1s;
       animation-timing-function: cubic-bezier(0.075, 0.82, 0.165, 1);
