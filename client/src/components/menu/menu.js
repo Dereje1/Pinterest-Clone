@@ -14,7 +14,7 @@ import Cover from '../cover/cover';
 import SignIn from '../signin/signin';
 import './menu.scss';
 
-const mapStateToProps = state => state;
+export const mapStateToProps = ({ user }) => ({ user });
 const actionCreators = {
   getUser,
   updateSearch,
