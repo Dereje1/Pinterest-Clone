@@ -4,7 +4,7 @@
 import React from 'react';
 import { shallow } from 'enzyme';
 import toJson from 'enzyme-to-json';
-import { Menu } from '../../../../../client/src/components/menu/menu';
+import { Menu, mapStateToProps } from '../../../../../client/src/components/menu/menu';
 
 jest.useFakeTimers();
 describe('The Menu component', () => {
@@ -108,5 +108,67 @@ describe('The Menu component', () => {
     wrapper.instance().listenForOutClicks(e);
     expect(wrapper.state().collapseToggle).toBe(true);
     expect(e.target.closest).toHaveBeenCalledWith('.menu');
+  });
+
+  test('will render the collapsed menu', () => {
+    const wrapper = shallow(<Menu {...props} />);
+    wrapper.setState({ ready: true, menuIsCollapsed: true });
+    const collapsedBurger = wrapper.find({ className: 'items collapsed burger' });
+    expect(collapsedBurger.length).toBe(1);
+  });
+
+  test('will toggle the sign-in modal for guest users', () => {
+    const updatedProps = {
+      ...props,
+      user: {
+        ...props.user,
+        authenticated: false,
+      },
+    };
+    const wrapper = shallow(<Menu {...updatedProps} />);
+    wrapper.setState({ ready: true });
+    expect(wrapper.state().displaySignIn).toBe(false);
+    const signInButton = wrapper.find({ className: 'fa fa-sign-in' });
+    signInButton.props().onClick();
+    expect(wrapper.state().displaySignIn).toBe(true);
+    const signInModal = wrapper.find('SignIn');
+    signInModal.props().removeSignin();
+    expect(wrapper.state().displaySignIn).toBe(false);
+  });
+
+  test('will logout the user from the extended menu', () => {
+    const windowSpy = jest.spyOn(global, 'window', 'get');
+    const mockedAssign = jest.fn();
+    windowSpy.mockImplementation(() => ({
+      location: {
+        assign: mockedAssign,
+      },
+    }));
+    const wrapper = shallow(<Menu {...props} />);
+    wrapper.setState({ ready: true, menuIsCollapsed: false });
+    const logoutLink = wrapper.find('NavLink').at(2);
+    logoutLink.props().onClick();
+    expect(mockedAssign).toHaveBeenCalledWith('auth/logout');
+  });
+
+  test('will logout the user from the collapsed menu', () => {
+    const windowSpy = jest.spyOn(global, 'window', 'get');
+    const mockedAssign = jest.fn();
+    windowSpy.mockImplementation(() => ({
+      location: {
+        assign: mockedAssign,
+      },
+    }));
+    const wrapper = shallow(<Menu {...props} />);
+    wrapper.setState({ ready: true, menuIsCollapsed: true, initialLoad: false });
+    const logoutLink = wrapper.find('NavLink').at(2);
+    logoutLink.props().onClick();
+    expect(mockedAssign).toHaveBeenCalledWith('auth/logout');
+  });
+
+  test('will map redux state to props', () => {
+    const stateToMap = { user: 'a user', other: 'any other' };
+    const mappedProps = mapStateToProps(stateToMap);
+    expect(mappedProps).toEqual({ user: 'a user' });
   });
 });

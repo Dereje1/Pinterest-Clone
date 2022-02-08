@@ -68,7 +68,7 @@ exports[`The pin zoom modal will render 1`] = `
   <ForwardRef(CardMedia)
     component="img"
     id="pin-zoom"
-    image="imgLink id-1"
+    image="imgLink id-1#1643673600000"
     onLoad={[Function]}
   />
 </ForwardRef(Card)>
