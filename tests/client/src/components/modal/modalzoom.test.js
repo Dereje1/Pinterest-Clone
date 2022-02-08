@@ -25,6 +25,8 @@ describe('The pin zoom modal', () => {
   });
 
   test('will render', () => {
+    jest.useFakeTimers('modern');
+    jest.setSystemTime(new Date(2022, 1, 1)); // to fix in snapshot
     const wrapper = shallow(<PinZoom {...props} />);
     expect(toJson(wrapper)).toMatchSnapshot();
   });

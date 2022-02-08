@@ -191,7 +191,7 @@ export class PinZoom extends Component {
         />
         <CardMedia
           component="img"
-          image={pinInformation.imgLink}
+          image={`${pinInformation.imgLink}#${new Date().getTime()}`}
           onLoad={this.handleImage}
           id="pin-zoom"
         />
