@@ -181,7 +181,6 @@ export class Home extends Component {
             resetModal={() => this.setState({ displayPinZoom: false })}
             zoomInfo={imageInfo}
           />
-          <div className={displayPinZoom ? 'modal-overlay' : 'modal-overlay hide'} />
         </React.Fragment>
       );
     }

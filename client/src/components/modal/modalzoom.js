@@ -69,6 +69,9 @@ const StyledBadge = styled(Badge)(() => ({
     padding: '0 4px',
   },
 }));
+
+const delay = ms => new Promise(resolve => setTimeout(resolve, ms));
+
 export class PinZoom extends Component {
 
   constructor(props) {
@@ -81,32 +84,20 @@ export class PinZoom extends Component {
     };
   }
 
-  componentDidUpdate(prevProps) {
-    const { displayPinZoom, zoomInfo } = this.props;
+  componentDidMount() {
+    const { zoomInfo } = this.props;
     const { parentDivStyle } = this.state;
     const [,, browserTop] = zoomInfo;
-    if ((prevProps.displayPinZoom === false) && (displayPinZoom === true)) {
-      const divCopy = JSON.parse(JSON.stringify(parentDivStyle));
-      // use scroll dist on zoom call to set top of zoom div
-      divCopy.top = browserTop;
-      if (prevProps.zoomInfo.length
-        && prevProps.zoomInfo[0].imgDescription !== zoomInfo[0].imgDescription) {
-        divCopy.width = window.innerWidth;
-      }
-      window.addEventListener('click', this.outsideClick);
-      window.addEventListener('touchmove', this.outsideClick);
-      window.addEventListener('scroll', this.disableScroll);
-      this.setState({
-        show: true,
-        firstShow: true,
-        parentDivStyle: divCopy,
-      });
-    }
-    if ((prevProps.displayPinZoom === true) && (displayPinZoom === false)) {
-      this.setState({
-        show: false,
-      }, () => this.removeListeners());
-    }
+    const divCopy = JSON.parse(JSON.stringify(parentDivStyle));
+    divCopy.top = browserTop;
+    window.addEventListener('click', this.outsideClick);
+    window.addEventListener('touchmove', this.outsideClick);
+    window.addEventListener('scroll', this.disableScroll);
+    this.setState({
+      show: true,
+      firstShow: true,
+      parentDivStyle: divCopy,
+    }, async () => { await delay(1000); });
   }
 
   componentWillUnmount() {
@@ -143,7 +134,11 @@ export class PinZoom extends Component {
     this.removeListeners();
     this.setState({
       show: false,
-    }, () => reset());
+    }, async () => {
+      // delay to display closing keyframe
+      await delay(500);
+      reset();
+    });
   };
 
   handleImage = (i) => {
@@ -168,34 +163,37 @@ export class PinZoom extends Component {
     const pinnedBy = totalPins ? getPinners(pinInformation.savedBy) : '';
     const formattedDescription = getFormattedDescription(pinInformation.imgDescription);
     return (
-      <Card sx={parentDivStyle} className={show ? 'zoom cshow' : 'zoom chide'}>
-        <CardHeader
-          action={(
-            <>
-              <ModalActions
-                element={pinInformation}
-                pinImage={pinImage}
-                deletePin={deletePin}
-              />
-              <StyledBadge badgeContent={totalPins} color="secondary" showZero>
-                <Tooltip title={pinnedBy}>
-                  <PinDropIcon style={{ fontSize: parentDivStyle.pinnersSize }} />
-                </Tooltip>
-              </StyledBadge>
-            </>
-          )}
-          title={formattedDescription}
-          subheader={pinInformation.owner}
-          titleTypographyProps={{ fontSize: parentDivStyle.titleSize, fontWeight: 'bold' }}
-          subheaderTypographyProps={{ fontSize: parentDivStyle.subTitleSize, fontWeight: 'bold' }}
-        />
-        <CardMedia
-          component="img"
-          image={`${pinInformation.imgLink}#${new Date().getTime()}`}
-          onLoad={this.handleImage}
-          id="pin-zoom"
-        />
-      </Card>
+      <>
+        <Card sx={parentDivStyle} className={show ? 'zoom cshow' : 'zoom chide'}>
+          <CardHeader
+            action={(
+              <>
+                <ModalActions
+                  element={pinInformation}
+                  pinImage={pinImage}
+                  deletePin={deletePin}
+                />
+                <StyledBadge badgeContent={totalPins} color="secondary" showZero>
+                  <Tooltip title={pinnedBy}>
+                    <PinDropIcon style={{ fontSize: parentDivStyle.pinnersSize }} />
+                  </Tooltip>
+                </StyledBadge>
+              </>
+            )}
+            title={formattedDescription}
+            subheader={pinInformation.owner}
+            titleTypographyProps={{ fontSize: parentDivStyle.titleSize, fontWeight: 'bold' }}
+            subheaderTypographyProps={{ fontSize: parentDivStyle.subTitleSize, fontWeight: 'bold' }}
+          />
+          <CardMedia
+            component="img"
+            image={`${pinInformation.imgLink}`}
+            onLoad={this.handleImage}
+            id="pin-zoom"
+          />
+        </Card>
+        <div className={show ? 'modal-overlay' : 'modal-overlay hide'} />
+      </>
     );
   }
 
@@ -210,8 +208,6 @@ PinZoom.defaultProps = {
 };
 
 PinZoom.propTypes = {
-  // turns modal on/off based on change
-  displayPinZoom: PropTypes.bool.isRequired,
   // [picobject, overlay button type, last scroll distance]
   zoomInfo: PropTypes.arrayOf(PropTypes.any).isRequired,
   // callback to caller to turn modal off

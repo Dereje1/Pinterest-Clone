@@ -7,6 +7,8 @@ import toJson from 'enzyme-to-json';
 import { PinZoom } from '../../../../../client/src/components/modal/modalzoom';
 import { pinsStub } from '../../../pinsStub';
 
+jest.useFakeTimers();
+
 describe('The pin zoom modal', () => {
   let props;
   beforeEach(() => {
@@ -25,8 +27,6 @@ describe('The pin zoom modal', () => {
   });
 
   test('will render', () => {
-    jest.useFakeTimers('modern');
-    jest.setSystemTime(new Date(Date.UTC(2022, 1, 1))); // to fix in snapshot
     const wrapper = shallow(<PinZoom {...props} />);
     expect(toJson(wrapper)).toMatchSnapshot();
   });
@@ -43,7 +43,7 @@ describe('The pin zoom modal', () => {
     const wrapper = shallow(<PinZoom {...props} />);
     wrapper.instance().handleImage({ target: { naturalWidth: 600, naturalHeight: 800 } });
     expect(wrapper.state().parentDivStyle).toEqual({
-      top: 80, width: '600px', small: false, pinnersSize: '3em', subTitleSize: '1.2em', titleSize: '2em',
+      top: 10, width: '600px', small: false, pinnersSize: '3em', subTitleSize: '1.2em', titleSize: '2em',
     });
   });
 
@@ -53,7 +53,7 @@ describe('The pin zoom modal', () => {
     const wrapper = shallow(<PinZoom {...props} />);
     wrapper.instance().handleImage({ target: { naturalWidth: 1200, naturalHeight: 800 } });
     expect(wrapper.state().parentDivStyle).toEqual({
-      top: 80, width: '980px', small: false, pinnersSize: '3em', subTitleSize: '1.2em', titleSize: '2em',
+      top: 10, width: '980px', small: false, pinnersSize: '3em', subTitleSize: '1.2em', titleSize: '2em',
     });
   });
 
@@ -63,21 +63,25 @@ describe('The pin zoom modal', () => {
     const wrapper = shallow(<PinZoom {...props} />);
     wrapper.instance().handleImage({ target: { naturalWidth: 600, naturalHeight: 1200 } });
     expect(wrapper.state().parentDivStyle).toEqual({
-      top: 80, width: '415px', small: false, pinnersSize: '3em', subTitleSize: '0.9em', titleSize: '1.2em',
+      top: 10, width: '415px', small: false, pinnersSize: '3em', subTitleSize: '0.9em', titleSize: '1.2em',
     });
   });
 
-  test('will close the zoom window on outclick', () => {
+  test('will close the zoom window on outclick', async () => {
     const wrapper = shallow(<PinZoom {...props} />);
-    wrapper.setState({ show: true });
+    wrapper.setState({ firstShow: false });
     const e = {
       target: {
         closest: jest.fn(() => false),
       },
     };
     wrapper.instance().outsideClick(e);
+    jest.advanceTimersByTime(500);
+    await Promise.resolve();
+
     expect(e.target.closest).toHaveBeenCalledWith('.zoom');
     expect(wrapper.state().show).toBe(false);
+    expect(props.reset).toHaveBeenCalledTimes(1);
   });
 
   test('will not close the zoom window on outclick if on first load', () => {
@@ -101,40 +105,26 @@ describe('The pin zoom modal', () => {
     expect(global.scrollTo).toHaveBeenCalledWith(0, 10);
   });
 
-  test('will add eventlisteners and set state when modal first loads', () => {
+  test('will add eventlisteners and set state when modal first mounts', () => {
     global.addEventListener = jest.fn();
-    const prevProps = {
-      displayPinZoom: false,
-      zoomInfo: [pinsStub[1], 0, 10],
-    };
-    const currentProps = {
-      ...props,
-      displayPinZoom: true,
-    };
-    const wrapper = shallow(<PinZoom {...currentProps} />);
-    wrapper.instance().componentDidUpdate(prevProps);
+    const wrapper = shallow(<PinZoom {...props} />);
     const events = global.addEventListener.mock.calls.map(c => c[0]);
     expect(global.addEventListener).toHaveBeenCalledTimes(3);
     expect(events).toEqual(['click', 'touchmove', 'scroll']);
     expect(wrapper.state()).toEqual({
       show: true,
       firstShow: true,
-      parentDivStyle: { top: 10, width: 1000 },
+      parentDivStyle: { top: 10, width: '90%' },
     });
   });
 
   test('will remove eventlisteners when modal unloads', () => {
     global.removeEventListener = jest.fn();
-    const prevProps = {
-      displayPinZoom: true,
-      zoomInfo: [pinsStub[1], 0, 10],
-    };
     const wrapper = shallow(<PinZoom {...props} />);
     wrapper.setState({ show: true });
-    wrapper.instance().componentDidUpdate(prevProps);
+    wrapper.instance().componentWillUnmount();
     const events = global.removeEventListener.mock.calls.map(c => c[0]);
     expect(global.removeEventListener).toHaveBeenCalledTimes(3);
     expect(events).toEqual(['click', 'scroll', 'touchmove']);
-    expect(wrapper.state().show).toEqual(false);
   });
 });

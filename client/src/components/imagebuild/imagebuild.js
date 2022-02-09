@@ -60,13 +60,14 @@ const ImageBuild = ({
           ))
         }
       </Masonry>
-      <PinZoom
-        displayPinZoom={displayPinZoom}
-        reset={resetModal}
-        zoomInfo={zoomInfo}
-        pinImage={pinImage}
-        deletePin={deletePin}
-      />
+      { displayPinZoom && (
+        <PinZoom
+          reset={resetModal}
+          zoomInfo={zoomInfo}
+          pinImage={pinImage}
+          deletePin={deletePin}
+        />
+      )}
     </div>
   </React.Fragment>
 
