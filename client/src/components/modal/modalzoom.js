@@ -97,7 +97,7 @@ export class PinZoom extends Component {
       show: true,
       firstShow: true,
       parentDivStyle: divCopy,
-    });
+    }, async () => { await delay(1000); });
   }
 
   componentWillUnmount() {

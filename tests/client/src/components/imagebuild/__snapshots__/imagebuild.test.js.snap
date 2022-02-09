@@ -184,13 +184,6 @@ exports[`The ImageBuild component will render.... 1`] = `
         </div>
       </div>
     </MasonryComponent>
-    <PinZoom
-      deletePin={[MockFunction]}
-      displayPinZoom={false}
-      pinImage={[MockFunction]}
-      reset={[MockFunction]}
-      zoomInfo={Array []}
-    />
   </div>
 </Fragment>
 `;
