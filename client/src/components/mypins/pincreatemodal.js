@@ -9,33 +9,9 @@ import CardMedia from '@mui/material/CardMedia';
 import IconButton from '@mui/material/IconButton';
 import SavePin from './SavePin';
 import imageBroken from './NO-IMAGE.png';
+import { delay, validateURL, getModalWidth } from '../../utils/utils';
 import './pincreate.scss';
 
-const validateURL = (string) => {
-  try {
-    const url = new URL(string);
-    if (url.protocol === 'data:' || url.protocol === 'https:') return string;
-    if (url.protocol === 'http:') {
-      // convert to https to avoid mixed content warning in console
-      return `${string.split(':')[0]}s:${string.split(':')[1]}`;
-    }
-  } catch (_) {
-    return null;
-  }
-  return null;
-};
-
-const getModalWidth = () => {
-  const { innerWidth } = window;
-  if (innerWidth < 500) {
-    return innerWidth;
-  } if (innerWidth > 1000) {
-    return innerWidth / 3;
-  }
-  return innerWidth / 2;
-};
-
-const delay = ms => new Promise(resolve => setTimeout(resolve, ms));
 
 class PinCreate extends Component {
 

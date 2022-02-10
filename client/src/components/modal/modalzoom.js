@@ -9,57 +9,10 @@ import Badge from '@mui/material/Badge';
 import PinDropIcon from '@mui/icons-material/PinDrop';
 import { styled } from '@mui/styles';
 import ModalActions from './ModalActions';
+import {
+  delay, getNewImageWidth, getPinners, getFormattedDescription,
+} from '../../utils/utils';
 import './modal.scss';
-
-const getNewImageWidth = ({
-  naturalWidth: imageWidth,
-  naturalHeight: imageHeight,
-  parentDivStyle,
-}) => {
-  // dynamically resize image
-  let { innerWidth, innerHeight } = window;
-  // parameter for innerwidth/height adjustment with mobile consideration
-  // top(70) + headingheight(50 / 25) + button height (50 / 25)
-  innerHeight = innerHeight < 500 ? innerHeight - 120 : innerHeight - 170;
-  // minor x direction adjustment for padding too
-  innerWidth -= (innerWidth * 0.02);
-  const aspectRatio = imageWidth / imageHeight;
-  let newWidth;
-  if (imageWidth < innerWidth && imageHeight < innerHeight) {
-    // already fits, return value if above 500 or else
-    // expand to 500
-    if (imageWidth < 500) {
-      newWidth = innerWidth > 500 ? 500 : innerWidth;
-    } else {
-      newWidth = imageWidth;
-    }
-  } else if (imageWidth > innerWidth) {
-    // test new height with Aspect ratio
-    const newHeight = innerWidth / aspectRatio;
-    // test again if new height is less than screen height
-    if (newHeight > innerHeight) {
-      newWidth = aspectRatio * innerHeight;
-    } else {
-      newWidth = innerWidth;
-    }
-  } else { // means height > innerheight
-    newWidth = aspectRatio * innerHeight;
-  }
-  return {
-    ...parentDivStyle,
-    width: `${newWidth}px`,
-    small: newWidth < 350,
-    titleSize: `${newWidth < 500 ? 1.2 : 2}em`,
-    subTitleSize: `${newWidth < 500 ? 0.9 : 1.2}em`,
-    pinnersSize: '3em',
-  };
-};
-
-const getPinners = savedBy => (savedBy.length > 3
-  ? `${savedBy.slice(0, 3).join(', ')} and ${savedBy.length - 3} others`
-  : `${savedBy.join(', ')}`);
-
-const getFormattedDescription = imgDescription => (imgDescription.length > 15 ? `${imgDescription.slice(0, 15)}...` : imgDescription);
 
 const StyledBadge = styled(Badge)(() => ({
   '& .MuiBadge-badge': {
@@ -69,8 +22,6 @@ const StyledBadge = styled(Badge)(() => ({
     padding: '0 4px',
   },
 }));
-
-const delay = ms => new Promise(resolve => setTimeout(resolve, ms));
 
 export class PinZoom extends Component {
 
