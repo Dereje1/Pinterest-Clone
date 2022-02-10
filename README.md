@@ -1,4 +1,5 @@
 # Pinterest-Clone
+[![codecov](https://codecov.io/gh/Dereje1/Pinterest-Clone/branch/master/graph/badge.svg?token=k3bnvXaDh3)](https://codecov.io/gh/Dereje1/Pinterest-Clone)
 ### A clone of the Pinterest application for educational purposes
 https://dereje-pclone.herokuapp.com/
 
