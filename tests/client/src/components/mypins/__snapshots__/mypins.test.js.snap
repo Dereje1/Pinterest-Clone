@@ -43,20 +43,6 @@ exports[`The Mypins Component Mypins landing page will render 1`] = `
           Create Pin
         </h3>
       </div>
-      <PinCreate
-        message={false}
-        reset={[Function]}
-        savePin={[Function]}
-        userInfo={
-          Object {
-            "authenticated": true,
-            "displayname": "tester displayname",
-            "service": "tester service",
-            "userId": "tester user Id",
-            "username": "tester username",
-          }
-        }
-      />
     </div>
     <ImageBuild
       deletePin={[Function]}
@@ -96,9 +82,6 @@ exports[`The Mypins Component Mypins landing page will render 1`] = `
       }
       resetModal={[Function]}
       zoomInfo={Array []}
-    />
-    <div
-      className="modal-overlay hide"
     />
   </div>
 </Fragment>

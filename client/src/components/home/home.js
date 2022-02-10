@@ -5,29 +5,10 @@ import PropTypes from 'prop-types';
 import RESTcall from '../../crud';
 import ImageBuild from '../imagebuild/imagebuild';
 import SignIn from '../signin/signin';
-
-const shuffleImages = (arr) => {
-  const shuffled = [];
-  while (arr.length) {
-    const randIndex = Math.floor(Math.random() * arr.length);
-    const [removed] = arr.splice(randIndex, 1);
-    shuffled.push(removed);
-  }
-  return shuffled;
-};
+import { shuffleImages, getFilteredPins } from '../../utils/utils';
 
 const handleBrokenImages = async () => {
   await RESTcall({ address: '/api/broken' });
-};
-
-const getFilteredPins = (pinList, search) => {
-  if (!search) return pinList;
-  const filteredPins = pinList.filter(({ owner, imgDescription }) => {
-    const isFoundInDescription = imgDescription.toLowerCase().includes(search);
-    const isFoundInOwnerName = owner.toLowerCase().includes(search);
-    return isFoundInDescription || isFoundInOwnerName;
-  });
-  return filteredPins;
 };
 
 export class Home extends Component {
