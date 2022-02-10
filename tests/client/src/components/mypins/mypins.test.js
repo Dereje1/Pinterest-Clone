@@ -190,6 +190,7 @@ describe('The Mypins Component', () => {
   test('PinCreate sub-component will signal to add a new pin to the db and state', async () => {
     const wrapper = shallow(<Mypins {...props} />);
     await Promise.resolve();
+    wrapper.setState({ displayPinCreate: true });
     const createPin = wrapper.find('PinCreate');
     createPin.props().savePin({});
     await Promise.resolve();
