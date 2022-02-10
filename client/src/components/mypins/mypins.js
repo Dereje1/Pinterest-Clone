@@ -167,12 +167,13 @@ export class Mypins extends Component {
               </div>
               <h3 id="createpintext">Create Pin</h3>
             </div>
-            <PinCreate
-              message={displayPinCreate}
-              reset={() => this.setState({ displayPinCreate: false })}
-              userInfo={user}
-              savePin={pinJSON => this.addPic(pinJSON)}
-            />
+            { displayPinCreate && (
+              <PinCreate
+                reset={() => this.setState({ displayPinCreate: false })}
+                userInfo={user}
+                savePin={pinJSON => this.addPic(pinJSON)}
+              />
+            )}
           </div>
           <ImageBuild
             layoutComplete={this.layoutComplete}
@@ -186,7 +187,6 @@ export class Mypins extends Component {
             resetModal={() => this.setState({ displayPinZoom: false })}
             zoomInfo={imageInfo}
           />
-          <div className={displayPinCreate ? 'modal-overlay' : 'modal-overlay hide'} />
         </div>
       </React.Fragment>
     );
