@@ -1,5 +1,9 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import Button from '@mui/material/Button';
+import TwitterIcon from '@mui/icons-material/Twitter';
+import GoogleIcon from '@mui/icons-material/Google';
+import AccountCircleIcon from '@mui/icons-material/AccountCircle';
 import { connect } from 'react-redux';
 import { setGuest } from '../../actions/authentication';
 import './loginbuttons.scss';
@@ -26,42 +30,15 @@ export class LoginButtons extends React.Component {
   render() {
     return (
       <React.Fragment>
-        <button
-          type="submit"
-          id="guestbutton"
-          onClick={this.handleGuest}
-        >
-          <span id="guest">
-            <i className="fa fa-question-circle" aria-hidden="true" />
-          </span>
-          <span className="buttontext">
-            Continue As Guest
-          </span>
-        </button>
-        <button
-          type="submit"
-          id="twitterloginbutton"
-          onClick={() => handleLogin('/auth/twitter')}
-        >
-          <span id="twitter">
-            <i className="fa fa-twitter" aria-hidden="true" />
-          </span>
-          <span className="buttontext">
-            Continue With Twitter
-          </span>
-        </button>
-        <button
-          type="submit"
-          id="googleloginbutton"
-          onClick={() => handleLogin('/auth/google')}
-        >
-          <span id="twitter">
-            <i className="fa fa-google" aria-hidden="true" />
-          </span>
-          <span className="buttontext">
-            Continue With Google
-          </span>
-        </button>
+        <Button id="guestbutton" variant="outlined" startIcon={<AccountCircleIcon style={{ fontSize: 25 }} />} onClick={this.handleGuest}>
+          Continue As Guest&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+        </Button>
+        <Button id="twitterloginbutton" variant="outlined" startIcon={<TwitterIcon style={{ fontSize: 25 }} />} onClick={() => handleLogin('/auth/twitter')}>
+          Continue With Twitter
+        </Button>
+        <Button id="googleloginbutton" variant="outlined" startIcon={<GoogleIcon style={{ fontSize: 25 }} />} onClick={() => handleLogin('/auth/google')}>
+          Continue With Google
+        </Button>
       </React.Fragment>
     );
   }

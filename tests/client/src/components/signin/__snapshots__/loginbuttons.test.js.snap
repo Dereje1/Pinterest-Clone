@@ -2,62 +2,53 @@
 
 exports[`The sign in component will render 1`] = `
 <Fragment>
-  <button
+  <ForwardRef(Button)
     id="guestbutton"
     onClick={[Function]}
-    type="submit"
-  >
-    <span
-      id="guest"
-    >
-      <i
-        aria-hidden="true"
-        className="fa fa-question-circle"
+    startIcon={
+      <Memo
+        style={
+          Object {
+            "fontSize": 25,
+          }
+        }
       />
-    </span>
-    <span
-      className="buttontext"
-    >
-      Continue As Guest
-    </span>
-  </button>
-  <button
+    }
+    variant="outlined"
+  >
+    Continue As Guest        
+  </ForwardRef(Button)>
+  <ForwardRef(Button)
     id="twitterloginbutton"
     onClick={[Function]}
-    type="submit"
-  >
-    <span
-      id="twitter"
-    >
-      <i
-        aria-hidden="true"
-        className="fa fa-twitter"
+    startIcon={
+      <Memo
+        style={
+          Object {
+            "fontSize": 25,
+          }
+        }
       />
-    </span>
-    <span
-      className="buttontext"
-    >
-      Continue With Twitter
-    </span>
-  </button>
-  <button
+    }
+    variant="outlined"
+  >
+    Continue With Twitter
+  </ForwardRef(Button)>
+  <ForwardRef(Button)
     id="googleloginbutton"
     onClick={[Function]}
-    type="submit"
-  >
-    <span
-      id="twitter"
-    >
-      <i
-        aria-hidden="true"
-        className="fa fa-google"
+    startIcon={
+      <Memo
+        style={
+          Object {
+            "fontSize": 25,
+          }
+        }
       />
-    </span>
-    <span
-      className="buttontext"
-    >
-      Continue With Google
-    </span>
-  </button>
+    }
+    variant="outlined"
+  >
+    Continue With Google
+  </ForwardRef(Button)>
 </Fragment>
 `;
