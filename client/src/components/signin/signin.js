@@ -1,6 +1,9 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import LoginButtons from './loginbuttons';
+import {
+  delay,
+} from '../../utils/utils';
 import './signin.scss';
 
 export class SignIn extends React.Component {
@@ -8,48 +11,44 @@ export class SignIn extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      countShow: 0, // to disable show on load
+      show: false,
     };
   }
 
-  componentDidUpdate(prevProps) {
-    const { show } = this.props;
-    const { countShow } = this.state;
-
-    if (!prevProps.show && show) {
-      this.setState({ countShow: countShow + 1 });
-      window.addEventListener('click', this.listenForOutClicks);
-    }
+  componentDidMount() {
+    this.setState({ show: true });
+    window.addEventListener('click', this.listenForOutClicks);
   }
 
   listenForOutClicks = (e) => {
     // clicks outside menu will collpase it
-    const { removeSignin, caller } = this.props;
+    const { caller } = this.props;
     if (!e.target.closest('#sign-in')
       && !e.target.closest('.menu')
       && caller === 'menu') {
-      removeSignin();
-      window.removeEventListener('click', this.listenForOutClicks);
+      this.resetGuest();
     }
     if (!e.target.closest('#sign-in')
       && !e.target.closest('.actionbutton')
       && !e.target.closest('.MuiButtonBase-root')
       && caller === 'home') {
-      removeSignin();
-      window.removeEventListener('click', this.listenForOutClicks);
+      this.resetGuest();
     }
   };
 
   resetGuest = () => {
     const { removeSignin } = this.props;
-    removeSignin();
-    window.removeEventListener('click', this.listenForOutClicks);
+    this.setState({
+      show: false,
+    }, async () => {
+      await delay(1000);
+      window.removeEventListener('click', this.listenForOutClicks);
+      removeSignin();
+    });
   };
 
   render() {
-    const { show } = this.props;
-    const { countShow } = this.state;
-    if (!countShow) return null;
+    const { show } = this.state;
     return (
       <div id="sign-in" className={show ? 'signshow' : 'signhide'}>
         <LoginButtons guest={this.resetGuest} />
@@ -61,8 +60,6 @@ export class SignIn extends React.Component {
 export default SignIn;
 
 SignIn.propTypes = {
-  // shows / hides login div
-  show: PropTypes.bool.isRequired,
   // callback to toggle login div
   removeSignin: PropTypes.func.isRequired,
   // used for eventlistener targeting to close login div

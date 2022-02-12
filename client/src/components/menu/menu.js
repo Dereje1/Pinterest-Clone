@@ -142,11 +142,12 @@ export class Menu extends React.Component {
               onClick={() => this.setState({ displaySignIn: true })}
             />
           </div>
-          <SignIn
-            show={displaySignIn}
-            removeSignin={() => this.setState({ displaySignIn: false })}
-            caller="menu"
-          />
+          {displaySignIn && (
+            <SignIn
+              removeSignin={() => this.setState({ displaySignIn: false })}
+              caller="menu"
+            />
+          )}
         </div>
       );
     }

@@ -133,7 +133,6 @@ exports[`The Menu component will render for users authenticated as guest 1`] = `
   <SignIn
     caller="menu"
     removeSignin={[Function]}
-    show={false}
   />
 </div>
 `;

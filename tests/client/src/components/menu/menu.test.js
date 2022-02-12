@@ -46,7 +46,7 @@ describe('The Menu component', () => {
       },
     };
     const wrapper = shallow(<Menu {...updatedProps} />);
-    wrapper.setState({ ready: true });
+    wrapper.setState({ ready: true, displaySignIn: true });
     const cover = wrapper.find('Cover');
     expect(cover.length).toBe(0);
     expect(toJson(wrapper)).toMatchSnapshot();

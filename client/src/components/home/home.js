@@ -140,15 +140,13 @@ export class Home extends Component {
       return (
         <React.Fragment>
           {
-            !authenticated
-              ? (
+            !authenticated && displaySignIn
+              && (
                 <SignIn
-                  show={displaySignIn}
                   removeSignin={() => this.setState({ displaySignIn: false })}
                   caller="home"
                 />
               )
-              : null
           }
           <ImageBuild
             layoutComplete={this.layoutComplete}

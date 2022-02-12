@@ -29,12 +29,12 @@ describe('The Home Component', () => {
     const signIn = wrapper.find('SignIn');
     expect(signIn.length).toBe(0);
   });
-  test('Shall include the sign in component (hidden) for non-authenticated users', () => {
+  test('Shall include the sign in component for non-authenticated users', () => {
     const wrapper = shallow(<Home {...props} />);
     wrapper.setProps({ user: { authenticated: false } });
+    wrapper.setState({ displaySignIn: true });
     const signIn = wrapper.find('SignIn');
     expect(signIn.length).toBe(1);
-    expect(signIn.props().show).toBe(false);
   });
 
   test('ImageBuild sub-component shall recieve the pins on CDM as props', async () => {
@@ -147,7 +147,6 @@ describe('The Home Component', () => {
 
     const signIn = wrapper.find('SignIn');
     expect(signIn.length).toBe(1);
-    expect(signIn.props().show).toBe(true);
     expect(wrapper.state().displayPinZoom).toBe(false);
   });
 });
