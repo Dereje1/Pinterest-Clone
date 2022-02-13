@@ -9,6 +9,7 @@ const pinSchema = mongoose.Schema({
   },
   imgDescription: { type: String, required: true },
   imgLink: { type: String, required: true },
+  originalImgLink: { type: String, required: true },
   savedBy: {
     type: [{
       name: { type: String, required: true },

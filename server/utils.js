@@ -1,4 +1,7 @@
 const https = require('https');
+const Stream = require('stream').Transform;
+const AWS = require('aws-sdk');
+
 
 /* Isolate auth service used from req.user */
 const getUserProfile = (user) => {
@@ -102,6 +105,57 @@ const isValidEnpoint = imageInfo => new Promise((resolve) => {
   request.end();
 });
 
+const processImage = url => new Promise((resolve, reject) => {
+  const urlType = validateURL(url);
+  if (!urlType) {
+    reject(new Error('Invalid URL type'));
+  }
+
+  if (urlType === 'data protocol') {
+    const base64Image = url.split(';base64,').pop();
+    resolve(Buffer.from(base64Image, 'base64'));
+  }
+
+  const request = https.request(url, (response) => {
+    const data = new Stream();
+    response.on('data', (chunk) => {
+      data.push(chunk);
+    });
+
+    response.on('end', () => {
+      resolve(data.read());
+    });
+  });
+
+  request.on('error', (err) => {
+    reject(err);
+  });
+  request.end();
+});
+
+const uploadImageToS3 = async ({ originalImgLink }) => {
+  try {
+    const s3 = new AWS.S3({
+      accessKeyId: process.env.AWS_ACCESS_KEY_ID,
+      secretAccessKey: process.env.AWS_SECRET_KEY,
+    });
+    const Body = await processImage(originalImgLink);
+    const Key = `${Date.now()}`;
+    const params = {
+      Bucket: 'pinterest.clone',
+      Key,
+      Body,
+      ContentType: 'image/png',
+    };
+    const uploadedImage = await s3.upload(params).promise();
+    console.log(`Successfully uploaded image ${originalImgLink} to S3`);
+    return uploadedImage.Location;
+  } catch (error) {
+    console.log(`Error uploading img. ${originalImgLink} - ${error}`);
+    return null;
+  }
+};
+
 module.exports = {
-  getUserProfile, filterPins, isReadyToRun, isValidEnpoint, getPrevBrokenTimeStamp,
+  getUserProfile, filterPins, isReadyToRun, isValidEnpoint, getPrevBrokenTimeStamp, uploadImageToS3,
 };

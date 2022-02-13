@@ -8,7 +8,16 @@ const {
   user, rawPinsStub, allPinsResponse, badPinTemplate, scanStub,
 } = require('./stub');
 
+/* AWS S3 mocks */
+const mockS3Instance = {
+  upload: jest.fn(() => ({
+    promise: jest.fn(() => ({ Location: 'https://s3-uploaded-location-stub-4' })),
+  })),
+};
 
+jest.mock('aws-sdk', () => ({ S3: jest.fn(() => mockS3Instance) }));
+
+/* Mongoose mocks */
 const setupMocks = (response = rawPinsStub) => {
   pins.find = jest.fn().mockImplementation(
     () => ({
@@ -84,7 +93,103 @@ describe('Adding a pin', () => {
     jest.restoreAllMocks();
   });
 
-  test('will create a new pin', async () => {
+  test('will create a new pin after uploading to S3 for https:// protocol', async () => {
+    const req = {
+      user,
+      body: {
+        owner: {
+          name: 'tester-twitter',
+          service: 'twitter',
+          id: user.twitter.id,
+        },
+        imgDescription: 'description-4',
+        imgLink: 'https://stub-4',
+      },
+    };
+
+    nock('https://stub-4')
+      .get('/')
+      .reply(200, 'Processed Image data');
+
+
+    setupMocks({ ...req.body });
+    await addPin(req, res);
+    expect(pins.create).toHaveBeenCalledTimes(1);
+    expect(pins.create).toHaveBeenCalledWith({
+      ...req.body,
+      originalImgLink: req.body.imgLink,
+      imgLink: 'https://s3-uploaded-location-stub-4',
+      isBroken: false,
+    });
+    expect(res.json).toHaveBeenCalledWith({ ...req.body });
+    expect(mockS3Instance.upload).toHaveBeenCalledWith({
+      Bucket: 'pinterest.clone',
+      Key: expect.any(String),
+      Body: Buffer.from('Processed Image data'),
+      ContentType: 'image/png',
+    });
+  });
+
+  test('will create a new pin after uploading to S3 for data:image/ protocol', async () => {
+    const req = {
+      user,
+      body: {
+        owner: {
+          name: 'tester-twitter',
+          service: 'twitter',
+          id: user.twitter.id,
+        },
+        imgDescription: 'description-4',
+        imgLink: 'data:image/jpeg;base64,/stub-4-data-protocol/',
+      },
+    };
+    mockS3Instance.upload.mockClear();
+    setupMocks({ ...req.body });
+    await addPin(req, res);
+    expect(pins.create).toHaveBeenCalledTimes(1);
+    expect(pins.create).toHaveBeenCalledWith({
+      ...req.body,
+      originalImgLink: req.body.imgLink,
+      imgLink: 'https://s3-uploaded-location-stub-4',
+      isBroken: false,
+    });
+    expect(res.json).toHaveBeenCalledWith({ ...req.body });
+    expect(mockS3Instance.upload).toHaveBeenCalledWith({
+      Bucket: 'pinterest.clone',
+      Key: expect.any(String),
+      Body: Buffer.from('/stub-4-data-protocol/', 'base64'),
+      ContentType: 'image/png',
+    });
+  });
+
+  test('will keep original link on pin but not upload to S3 for an invalid url', async () => {
+    const req = {
+      user,
+      body: {
+        owner: {
+          name: 'tester-twitter',
+          service: 'twitter',
+          id: user.twitter.id,
+        },
+        imgDescription: 'description-4',
+        imgLink: 'ABC',
+      },
+    };
+    mockS3Instance.upload.mockClear();
+    setupMocks({ ...req.body });
+    await addPin(req, res);
+    expect(pins.create).toHaveBeenCalledTimes(1);
+    expect(pins.create).toHaveBeenCalledWith({
+      ...req.body,
+      originalImgLink: req.body.imgLink,
+      imgLink: 'ABC',
+      isBroken: false,
+    });
+    expect(res.json).toHaveBeenCalledWith({ ...req.body });
+    expect(mockS3Instance.upload).not.toHaveBeenCalled();
+  });
+
+  test('will create a new pin from original link if S3 upload fails', async () => {
     const req = {
       user,
       body: {
@@ -101,17 +206,25 @@ describe('Adding a pin', () => {
     setupMocks({ ...req.body });
     await addPin(req, res);
     expect(pins.create).toHaveBeenCalledTimes(1);
-    expect(pins.create).toHaveBeenCalledWith({ ...req.body, isBroken: false });
+    expect(pins.create).toHaveBeenCalledWith({
+      ...req.body, originalImgLink: req.body.imgLink, isBroken: false,
+    });
     expect(res.json).toHaveBeenCalledWith({ ...req.body });
   });
 
   test('will respond with error if POST is rejected', async () => {
     pins.create = jest.fn().mockRejectedValue(new Error('Mocked rejection'));
     const req = {
-      query: {
-        type: 'profile',
-      },
       user,
+      body: {
+        owner: {
+          name: 'tester-twitter',
+          service: 'twitter',
+          id: user.twitter.id,
+        },
+        imgDescription: 'description-4',
+        imgLink: 'https://stub-4',
+      },
     };
     await addPin(req, res);
     expect(res.json).toHaveBeenCalledWith(Error('Mocked rejection'));
