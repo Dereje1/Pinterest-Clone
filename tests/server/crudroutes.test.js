@@ -93,7 +93,7 @@ describe('Adding a pin', () => {
     jest.restoreAllMocks();
   });
 
-  test('will create a new pin after uploading to S3', async () => {
+  test('will create a new pin after uploading to S3 for https:// protocol', async () => {
     const req = {
       user,
       body: {
@@ -128,6 +128,65 @@ describe('Adding a pin', () => {
       Body: Buffer.from('Processed Image data'),
       ContentType: 'image/png',
     });
+  });
+
+  test('will create a new pin after uploading to S3 for data:image/ protocol', async () => {
+    const req = {
+      user,
+      body: {
+        owner: {
+          name: 'tester-twitter',
+          service: 'twitter',
+          id: user.twitter.id,
+        },
+        imgDescription: 'description-4',
+        imgLink: 'data:image/jpeg;base64,/stub-4-data-protocol/',
+      },
+    };
+    mockS3Instance.upload.mockClear();
+    setupMocks({ ...req.body });
+    await addPin(req, res);
+    expect(pins.create).toHaveBeenCalledTimes(1);
+    expect(pins.create).toHaveBeenCalledWith({
+      ...req.body,
+      originalImgLink: req.body.imgLink,
+      imgLink: 'https://s3-uploaded-location-stub-4',
+      isBroken: false,
+    });
+    expect(res.json).toHaveBeenCalledWith({ ...req.body });
+    expect(mockS3Instance.upload).toHaveBeenCalledWith({
+      Bucket: 'pinterest.clone',
+      Key: expect.any(String),
+      Body: Buffer.from('/stub-4-data-protocol/', 'base64'),
+      ContentType: 'image/png',
+    });
+  });
+
+  test('will keep original link on pin but not upload to S3 for an invalid url', async () => {
+    const req = {
+      user,
+      body: {
+        owner: {
+          name: 'tester-twitter',
+          service: 'twitter',
+          id: user.twitter.id,
+        },
+        imgDescription: 'description-4',
+        imgLink: 'ABC',
+      },
+    };
+    mockS3Instance.upload.mockClear();
+    setupMocks({ ...req.body });
+    await addPin(req, res);
+    expect(pins.create).toHaveBeenCalledTimes(1);
+    expect(pins.create).toHaveBeenCalledWith({
+      ...req.body,
+      originalImgLink: req.body.imgLink,
+      imgLink: 'ABC',
+      isBroken: false,
+    });
+    expect(res.json).toHaveBeenCalledWith({ ...req.body });
+    expect(mockS3Instance.upload).not.toHaveBeenCalled();
   });
 
   test('will create a new pin from original link if S3 upload fails', async () => {

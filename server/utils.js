@@ -106,6 +106,16 @@ const isValidEnpoint = imageInfo => new Promise((resolve) => {
 });
 
 const processImage = url => new Promise((resolve, reject) => {
+  const urlType = validateURL(url);
+  if (!urlType) {
+    reject(new Error('Invalid URL type'));
+  }
+
+  if (urlType === 'data protocol') {
+    const base64Image = url.split(';base64,').pop();
+    resolve(Buffer.from(base64Image, 'base64'));
+  }
+
   const request = https.request(url, (response) => {
     const data = new Stream();
     response.on('data', (chunk) => {
