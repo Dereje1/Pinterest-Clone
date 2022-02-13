@@ -35,7 +35,6 @@ $ npm install
 ```
 
 >To run mongoDB locally with docker :
-<br/>
 
 In the root folder run
 `docker-compose up mongodb` and then use `mongodb://root:123456@localhost:27017` for `MONGOLAB_URI`
@@ -55,6 +54,8 @@ TWITTER_CALLBACK=http://localhost:8080/auth/twitter/callback
 GOOGLE_CLIENT_ID=< Get from Google Developer API >
 GOOGLE_CLIENT_SECRET=< Get from Google Developer API >
 GOOGLE_CALLBACK=http://localhost:8080/auth/google/redirect
+AWS_ACCESS_KEY_ID=< Get from AWS >
+AWS_SECRET_KEY=< Get from AWS >
 ```
 Run development environment
 ```
