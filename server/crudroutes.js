@@ -3,13 +3,20 @@ const pins = require('./models/pins'); // schema for pins
 const brokenPins = require('./models/brokenPins');
 const isLoggedIn = require('./auth/isloggedin');
 const {
-  getUserProfile, filterPins, isReadyToRun, isValidEnpoint, getPrevBrokenTimeStamp,
+  getUserProfile, filterPins, isReadyToRun, isValidEnpoint, getPrevBrokenTimeStamp, uploadImageToS3,
 } = require('./utils');
 
 const addPin = async (req, res) => {
   const { displayName } = getUserProfile(req.user);
+  const { imgLink: originalImgLink } = req.body;
   try {
-    const addedpin = await pins.create({ ...req.body, isBroken: false });
+    const newImgLink = await uploadImageToS3({ originalImgLink });
+    const updatedPinInfo = {
+      ...req.body,
+      imgLink: newImgLink || originalImgLink,
+      originalImgLink,
+    };
+    const addedpin = await pins.create({ ...updatedPinInfo, isBroken: false });
     console.log(`${displayName} added pin ${addedpin.imgDescription}`);
     res.json(addedpin);
   } catch (error) {

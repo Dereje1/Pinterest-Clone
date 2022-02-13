@@ -101,17 +101,25 @@ describe('Adding a pin', () => {
     setupMocks({ ...req.body });
     await addPin(req, res);
     expect(pins.create).toHaveBeenCalledTimes(1);
-    expect(pins.create).toHaveBeenCalledWith({ ...req.body, isBroken: false });
+    expect(pins.create).toHaveBeenCalledWith({
+      ...req.body, originalImgLink: req.body.imgLink, isBroken: false,
+    });
     expect(res.json).toHaveBeenCalledWith({ ...req.body });
   });
 
   test('will respond with error if POST is rejected', async () => {
     pins.create = jest.fn().mockRejectedValue(new Error('Mocked rejection'));
     const req = {
-      query: {
-        type: 'profile',
-      },
       user,
+      body: {
+        owner: {
+          name: 'tester-twitter',
+          service: 'twitter',
+          id: user.twitter.id,
+        },
+        imgDescription: 'description-4',
+        imgLink: 'https://stub-4',
+      },
     };
     await addPin(req, res);
     expect(res.json).toHaveBeenCalledWith(Error('Mocked rejection'));
