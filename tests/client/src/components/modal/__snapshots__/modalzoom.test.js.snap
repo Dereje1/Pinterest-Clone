@@ -51,7 +51,24 @@ exports[`The pin zoom modal will render 1`] = `
           </Styled(ForwardRef(Badge))>
         </React.Fragment>
       }
-      subheader="owner id-1"
+      subheader={
+        <React.Fragment>
+          <span>
+            owner id-1
+          </span>
+          <br />
+          <span
+            style={
+              Object {
+                "fontSize": undefined,
+                "marginLeft": 5,
+              }
+            }
+          >
+            Date undefined undefined
+          </span>
+        </React.Fragment>
+      }
       subheaderTypographyProps={
         Object {
           "fontSize": undefined,

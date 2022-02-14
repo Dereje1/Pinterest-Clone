@@ -113,6 +113,7 @@ export class PinZoom extends Component {
     const totalPins = (pinInformation.savedBy) ? pinInformation.savedBy.length : 0;
     const pinnedBy = totalPins ? getPinners(pinInformation.savedBy) : '';
     const formattedDescription = getFormattedDescription(pinInformation.imgDescription);
+    const [, day, mth, year] = new Date(pinInformation.createdAt).toUTCString().split(' ');
     return (
       <>
         <Card sx={parentDivStyle} className={show ? 'zoom cshow' : 'zoom chide'}>
@@ -132,7 +133,17 @@ export class PinZoom extends Component {
               </>
             )}
             title={formattedDescription}
-            subheader={pinInformation.owner}
+            subheader={(
+              <>
+                <span>
+                  {pinInformation.owner}
+                </span>
+                <br />
+                <span style={{ fontSize: parentDivStyle.dateSize, marginLeft: 5 }}>
+                  {`${day} ${mth} ${year}`}
+                </span>
+              </>
+            )}
             titleTypographyProps={{ fontSize: parentDivStyle.titleSize, fontWeight: 'bold' }}
             subheaderTypographyProps={{ fontSize: parentDivStyle.subTitleSize, fontWeight: 'bold' }}
           />
