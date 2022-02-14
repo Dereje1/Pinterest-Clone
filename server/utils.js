@@ -140,7 +140,9 @@ const configureS3 = () => new AWS.S3({
   secretAccessKey: process.env.AWS_SECRET_KEY,
 });
 
-const uploadImageToS3 = async ({ originalImgLink }) => {
+const uploadImageToS3 = async ({
+  originalImgLink, userId, displayName, service,
+}) => {
   try {
     const s3 = configureS3();
     const Body = await processImage(originalImgLink);
@@ -150,9 +152,10 @@ const uploadImageToS3 = async ({ originalImgLink }) => {
       Key,
       Body,
       ContentType: 'image/png',
+      Tagging: `userId=${userId}&name=${displayName}&service=${service}`,
     };
     const uploadedImage = await s3.upload(params).promise();
-    console.log(`Successfully uploaded image ${originalImgLink} to S3`);
+    console.log(`Successfully uploaded image ${originalImgLink} to S3 with id: ${Key}`);
     return uploadedImage.Location;
   } catch (error) {
     console.log(`Error uploading img. ${originalImgLink} - ${error}`);

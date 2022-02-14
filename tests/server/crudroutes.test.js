@@ -127,6 +127,7 @@ describe('Adding a pin', () => {
       Key: expect.any(String),
       Body: Buffer.from('Processed Image data'),
       ContentType: 'image/png',
+      Tagging: 'userId=twitter test id&name=tester-twitter&service=twitter',
     });
   });
 
@@ -159,6 +160,7 @@ describe('Adding a pin', () => {
       Key: expect.any(String),
       Body: Buffer.from('/stub-4-data-protocol/', 'base64'),
       ContentType: 'image/png',
+      Tagging: 'userId=twitter test id&name=tester-twitter&service=twitter',
     });
   });
 
