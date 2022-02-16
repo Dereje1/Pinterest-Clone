@@ -61,7 +61,7 @@ exports[`The pin zoom modal will render 1`] = `
             style={
               Object {
                 "fontSize": undefined,
-                "marginLeft": 5,
+                "marginLeft": 0,
               }
             }
           >

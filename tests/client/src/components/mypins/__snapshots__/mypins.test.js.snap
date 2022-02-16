@@ -6,17 +6,6 @@ exports[`The Mypins Component Mypins landing page will render 1`] = `
     <div
       id="mypinframe"
     >
-      <i
-        aria-hidden="true"
-        className="fa fa-google"
-        style={
-          Object {
-            "color": "green",
-            "fontSize": 30,
-            "marginTop": 80,
-          }
-        }
-      />
       <h3
         id="username"
       >

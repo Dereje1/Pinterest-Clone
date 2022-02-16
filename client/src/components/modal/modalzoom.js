@@ -139,7 +139,7 @@ export class PinZoom extends Component {
                   {pinInformation.owner}
                 </span>
                 <br />
-                <span style={{ fontSize: parentDivStyle.dateSize, marginLeft: 5 }}>
+                <span style={{ fontSize: parentDivStyle.dateSize, marginLeft: 0 }}>
                   {`${day} ${mth} ${year}`}
                 </span>
               </>
