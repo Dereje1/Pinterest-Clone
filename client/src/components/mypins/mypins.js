@@ -11,7 +11,7 @@ import './mypins.scss';
 import imageBroken from './NO-IMAGE.png';
 
 const getUserName = ({ service, displayname }) => {
-  const obj = {
+  const serviceObj = {
     twitter: <TwitterIcon style={{ fontSize: 30, marginTop: 80, color: '#1DA1F2' }} />,
     google: <GoogleIcon style={{ fontSize: 30, marginTop: 80, color: '#4285F4' }} />,
 
@@ -19,7 +19,7 @@ const getUserName = ({ service, displayname }) => {
   return (
     <>
       {
-        obj[service]
+        serviceObj[service]
       }
       <h3 id="username">
         {displayname}

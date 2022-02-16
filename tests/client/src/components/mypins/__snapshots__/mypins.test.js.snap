@@ -45,6 +45,7 @@ exports[`The Mypins Component Mypins landing page will render 1`] = `
         Array [
           Object {
             "_id": 2,
+            "createdAt": "12/25/20",
             "hasSaved": true,
             "imgDescription": "imgDescription id-2",
             "imgLink": "imgLink id-2",
@@ -57,6 +58,7 @@ exports[`The Mypins Component Mypins landing page will render 1`] = `
           },
           Object {
             "_id": 3,
+            "createdAt": "12/25/2020",
             "hasSaved": false,
             "imgDescription": "imgDescription id-3",
             "imgLink": "imgLink id-3",
