@@ -7,10 +7,12 @@ const {
 } = require('./utils');
 
 const addPin = async (req, res) => {
-  const { displayName } = getUserProfile(req.user);
+  const { displayName, userId, service } = getUserProfile(req.user);
   const { imgLink: originalImgLink } = req.body;
   try {
-    const newImgLink = await uploadImageToS3({ originalImgLink });
+    const newImgLink = await uploadImageToS3({
+      originalImgLink, userId, displayName, service,
+    });
     const updatedPinInfo = {
       ...req.body,
       imgLink: newImgLink || originalImgLink,

@@ -23,11 +23,12 @@ returns
     savedBy: modifiedSavedBy, // send only display names of pinners
     owns: // need for displaying action button on pin
     hasSaved: // need for displaying action button on pin
+    createdDate: send full
 };
 */
 const filterPins = (rawPins, user) => rawPins.map((pin) => {
   const {
-    _id, imgDescription, imgLink, owner, savedBy,
+    _id, imgDescription, imgLink, owner, savedBy, createdAt,
   } = pin;
   const { userId } = getUserProfile(user);
   const savedIds = savedBy.map(s => s.id);
@@ -41,6 +42,7 @@ const filterPins = (rawPins, user) => rawPins.map((pin) => {
     savedBy: modifiedSavedBy,
     owns: userId ? userId === owner.id : null,
     hasSaved: userId ? savedIds.includes(userId) : null,
+    createdAt,
   };
 });
 
@@ -133,12 +135,16 @@ const processImage = url => new Promise((resolve, reject) => {
   request.end();
 });
 
-const uploadImageToS3 = async ({ originalImgLink }) => {
+const configureS3 = () => new AWS.S3({
+  accessKeyId: process.env.AWS_ACCESS_KEY_ID,
+  secretAccessKey: process.env.AWS_SECRET_KEY,
+});
+
+const uploadImageToS3 = async ({
+  originalImgLink, userId, displayName, service,
+}) => {
   try {
-    const s3 = new AWS.S3({
-      accessKeyId: process.env.AWS_ACCESS_KEY_ID,
-      secretAccessKey: process.env.AWS_SECRET_KEY,
-    });
+    const s3 = configureS3();
     const Body = await processImage(originalImgLink);
     const Key = `${Date.now()}`;
     const params = {
@@ -146,9 +152,10 @@ const uploadImageToS3 = async ({ originalImgLink }) => {
       Key,
       Body,
       ContentType: 'image/png',
+      Tagging: `userId=${userId}&name=${displayName}&service=${service}`,
     };
     const uploadedImage = await s3.upload(params).promise();
-    console.log(`Successfully uploaded image ${originalImgLink} to S3`);
+    console.log(`Successfully uploaded image ${originalImgLink} to S3 with id: ${Key}`);
     return uploadedImage.Location;
   } catch (error) {
     console.log(`Error uploading img. ${originalImgLink} - ${error}`);
@@ -157,5 +164,11 @@ const uploadImageToS3 = async ({ originalImgLink }) => {
 };
 
 module.exports = {
-  getUserProfile, filterPins, isReadyToRun, isValidEnpoint, getPrevBrokenTimeStamp, uploadImageToS3,
+  getUserProfile,
+  filterPins,
+  isReadyToRun,
+  isValidEnpoint,
+  getPrevBrokenTimeStamp,
+  uploadImageToS3,
+  configureS3,
 };

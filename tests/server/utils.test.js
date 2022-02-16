@@ -13,6 +13,7 @@ describe('filtering pins before returning to client', () => {
     imgLink: 'https://stub',
     owner: { name: 'tester', id: 'any id' },
     savedBy: [{ id: 'any id', name: 'tester' }],
+    createdAt: 'creation date',
   };
   test('Will filter the pins for the owner', () => {
     const rawPins = [{
@@ -29,6 +30,7 @@ describe('filtering pins before returning to client', () => {
           owner: 'tester',
           owns: true,
           savedBy: ['tester'],
+          createdAt: 'creation date',
         },
       ],
     );
@@ -49,6 +51,7 @@ describe('filtering pins before returning to client', () => {
           owner: 'tester',
           owns: false,
           savedBy: ['tester'],
+          createdAt: 'creation date',
         },
       ],
     );
@@ -65,6 +68,7 @@ describe('filtering pins before returning to client', () => {
           owner: 'tester',
           owns: false,
           savedBy: ['tester'],
+          createdAt: 'creation date',
         },
       ],
     );

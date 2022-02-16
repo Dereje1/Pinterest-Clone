@@ -43,7 +43,13 @@ describe('The pin zoom modal', () => {
     const wrapper = shallow(<PinZoom {...props} />);
     wrapper.instance().handleImage({ target: { naturalWidth: 600, naturalHeight: 800 } });
     expect(wrapper.state().parentDivStyle).toEqual({
-      top: 10, width: '600px', small: false, pinnersSize: '3em', subTitleSize: '1.2em', titleSize: '2em',
+      top: 10,
+      width: '600px',
+      small: false,
+      pinnersSize: '3em',
+      subTitleSize: '1.2em',
+      titleSize: '2em',
+      dateSize: '0.6em',
     });
   });
 
@@ -53,7 +59,13 @@ describe('The pin zoom modal', () => {
     const wrapper = shallow(<PinZoom {...props} />);
     wrapper.instance().handleImage({ target: { naturalWidth: 1200, naturalHeight: 800 } });
     expect(wrapper.state().parentDivStyle).toEqual({
-      top: 10, width: '980px', small: false, pinnersSize: '3em', subTitleSize: '1.2em', titleSize: '2em',
+      top: 10,
+      width: '980px',
+      small: false,
+      pinnersSize: '3em',
+      subTitleSize: '1.2em',
+      titleSize: '2em',
+      dateSize: '0.6em',
     });
   });
 
@@ -63,7 +75,13 @@ describe('The pin zoom modal', () => {
     const wrapper = shallow(<PinZoom {...props} />);
     wrapper.instance().handleImage({ target: { naturalWidth: 600, naturalHeight: 1200 } });
     expect(wrapper.state().parentDivStyle).toEqual({
-      top: 10, width: '415px', small: false, pinnersSize: '3em', subTitleSize: '0.9em', titleSize: '1.2em',
+      top: 10,
+      width: '415px',
+      small: false,
+      pinnersSize: '3em',
+      subTitleSize: '0.9em',
+      titleSize: '1.2em',
+      dateSize: '0.45em',
     });
   });
 

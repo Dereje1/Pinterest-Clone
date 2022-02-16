@@ -8,7 +8,7 @@
     "build": "webpack --mode production",
     "dev": "concurrently --kill-others-on-fail \"nodemon start\" \"nodemon --exec npm run client \"",
     "lint": "./node_modules/.bin/eslint server client tests",
-    "test": "jest",
+    "test": "jest --watch",
     "coverage": "jest --coverage"
   },
   "dependencies": {

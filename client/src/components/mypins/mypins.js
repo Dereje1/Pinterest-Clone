@@ -2,7 +2,8 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
-
+import TwitterIcon from '@mui/icons-material/Twitter';
+import GoogleIcon from '@mui/icons-material/Google';
 import PinCreate from './pincreatemodal';
 import ImageBuild from '../imagebuild/imagebuild';
 import RESTcall from '../../crud'; // pin CRUD
@@ -10,16 +11,16 @@ import './mypins.scss';
 import imageBroken from './NO-IMAGE.png';
 
 const getUserName = ({ service, displayname }) => {
-  const serviceStyle = service === 'twitter'
-    ? { className: 'fa fa-twitter', color: 'blue' }
-    : { className: 'fa fa-google', color: 'green' };
+  const serviceObj = {
+    twitter: <TwitterIcon style={{ fontSize: 30, marginTop: 80, color: '#1DA1F2' }} />,
+    google: <GoogleIcon style={{ fontSize: 30, marginTop: 80, color: '#4285F4' }} />,
+
+  };
   return (
     <>
-      <i
-        className={serviceStyle.className}
-        aria-hidden="true"
-        style={{ fontSize: 30, marginTop: 80, color: serviceStyle.color }}
-      />
+      {
+        serviceObj[service]
+      }
       <h3 id="username">
         {displayname}
       </h3>

@@ -58,6 +58,7 @@ export const getNewImageWidth = ({
     small: newWidth < 350,
     titleSize: `${newWidth < 500 ? 1.2 : 2}em`,
     subTitleSize: `${newWidth < 500 ? 0.9 : 1.2}em`,
+    dateSize: `${newWidth < 500 ? 0.45 : 0.6}em`,
     pinnersSize: '3em',
   };
 };
