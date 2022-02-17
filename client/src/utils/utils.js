@@ -36,7 +36,7 @@ export const getNewImageWidth = ({
     // already fits, return value if above 500 or else
     // expand to 500
     if (imageWidth < 500) {
-      newWidth = innerWidth > 500 ? 500 : innerWidth;
+      newWidth = aspectRatio * innerHeight;
     } else {
       newWidth = imageWidth;
     }

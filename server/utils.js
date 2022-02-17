@@ -47,7 +47,7 @@ const filterPins = (rawPins, user) => rawPins.map((pin) => {
 });
 
 const isReadyToRun = (lastBackedUp) => {
-  const CYCLE_TIME = 6 * 60 * 60 * 1000;
+  const CYCLE_TIME = 5 * 24 * 60 * 60 * 1000;
   const timeElapsed = new Date() - new Date(lastBackedUp);
   return timeElapsed > CYCLE_TIME;
 };
