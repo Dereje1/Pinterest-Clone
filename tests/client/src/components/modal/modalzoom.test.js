@@ -44,7 +44,7 @@ describe('The pin zoom modal', () => {
     wrapper.instance().handleImage({ target: { naturalWidth: 600, naturalHeight: 800 } });
     expect(wrapper.state().parentDivStyle).toEqual({
       top: 10,
-      width: '600px',
+      width: '622.5px',
       small: false,
       pinnersSize: '3em',
       subTitleSize: '1.2em',

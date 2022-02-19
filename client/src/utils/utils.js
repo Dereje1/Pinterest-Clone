@@ -30,27 +30,11 @@ export const getNewImageWidth = ({
   innerHeight = innerHeight < 500 ? innerHeight - 120 : innerHeight - 170;
   // minor x direction adjustment for padding too
   innerWidth -= (innerWidth * 0.02);
-  const aspectRatio = imageWidth / imageHeight;
-  let newWidth;
-  if (imageWidth < innerWidth && imageHeight < innerHeight) {
-    // already fits, return value if above 500 or else
-    // expand to 500
-    if (imageWidth < 500) {
-      newWidth = aspectRatio * innerHeight;
-    } else {
-      newWidth = imageWidth;
-    }
-  } else if (imageWidth > innerWidth) {
-    // test new height with Aspect ratio
-    const newHeight = innerWidth / aspectRatio;
-    // test again if new height is less than screen height
-    if (newHeight > innerHeight) {
-      newWidth = aspectRatio * innerHeight;
-    } else {
-      newWidth = innerWidth;
-    }
-  } else { // means height > innerheight
-    newWidth = aspectRatio * innerHeight;
+  let newWidth = innerWidth;
+  const imageResolultion = imageWidth / imageHeight;
+  const screenResolution = innerWidth / innerHeight;
+  if (screenResolution > imageResolultion) {
+    newWidth = imageWidth * (innerHeight / imageHeight);
   }
   return {
     ...parentDivStyle,
