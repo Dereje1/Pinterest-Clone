@@ -42,6 +42,10 @@ describe('Retrieving pins', () => {
   };
   beforeEach(() => {
     res = { json: jest.fn() };
+    process.env = {
+      ...process.env,
+      ADMIN_USER_ID: 'xxx',
+    };
   });
   afterEach(() => {
     jest.restoreAllMocks();
@@ -55,7 +59,7 @@ describe('Retrieving pins', () => {
     expect(res.json).toHaveBeenCalledWith(allPinsResponse);
   });
 
-  test('will retrieve all pins for the profile page', async () => {
+  test('will retrieve pins for the profile page', async () => {
     const profilePinsRaw = rawPinsStub.filter(p => p.owner.id === user.twitter.id
             || p.savedBy.map(s => s.id).includes(user.twitter.id));
 
@@ -65,6 +69,19 @@ describe('Retrieving pins', () => {
     expect(pins.find).toHaveBeenCalledTimes(1);
     expect(pins.find).toHaveBeenCalledWith({ $or: [{ 'owner.id': user.twitter.id }, { 'savedBy.id': user.twitter.id }] });
     expect(res.json).toHaveBeenCalledWith(allPinsResponse.filter(p => p.owns || p.hasSaved));
+  });
+
+  test('will retrieve all pins for the profile page of an admin', async () => {
+    process.env = {
+      ...process.env,
+      ADMIN_USER_ID: 'twitter test id',
+    };
+    setupMocks();
+    req.query.type = 'profile';
+    await getPins(req, res);
+    expect(pins.find).toHaveBeenCalledTimes(1);
+    expect(pins.find).toHaveBeenCalledWith({});
+    expect(res.json).toHaveBeenCalledWith(allPinsResponse.map(pin => ({ ...pin, owns: true })));
   });
 
   test('will respond with error if GET is rejected', async () => {
@@ -304,11 +321,6 @@ describe('Deleting/unpinning an image', () => {
   let res;
   const req = {
     user,
-    body: {
-      name: 'tester-twitter',
-      service: 'twitter',
-      id: user.twitter.id,
-    },
     params: { _id: 1 },
   };
   beforeEach(() => {
@@ -358,6 +370,27 @@ describe('Deleting/unpinning an image', () => {
       { new: true },
     );
     expect(res.json).toHaveBeenCalledWith({ ...rawPinsStub[1], savedBy: [] });
+  });
+
+  test('will delete any image if the user is an admin', async () => {
+    const updatedReq = { ...req, params: { _id: 2 } };
+    process.env = {
+      ...process.env,
+      ADMIN_USER_ID: 'twitter test id',
+    };
+    pins.findOneAndRemove = jest.fn().mockImplementation(
+      () => ({
+        exec: jest.fn().mockResolvedValue(rawPinsStub[1]),
+      }),
+    );
+
+    setupMocks(rawPinsStub[1]);
+    await removePin(updatedReq, res);
+    expect(pins.findById).toHaveBeenCalledTimes(1);
+    expect(pins.findById).toHaveBeenCalledWith(2);
+    expect(pins.findOneAndRemove).toHaveBeenCalledTimes(1);
+    expect(pins.findOneAndRemove).toHaveBeenCalledWith({ _id: 2 });
+    expect(res.json).toHaveBeenCalledWith(rawPinsStub[1]);
   });
 
   test('will respond with error if DELETE is rejected', async () => {

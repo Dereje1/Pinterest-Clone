@@ -1,6 +1,10 @@
 const { filterPins } = require('../../server/utils');
 
 describe('filtering pins before returning to client', () => {
+  process.env = {
+    ...process.env,
+    ADMIN_USER_ID: 'xxx',
+  };
   const user = {
     twitter: {
       id: 'twitter test id',
@@ -67,6 +71,27 @@ describe('filtering pins before returning to client', () => {
           imgLink: 'https://stub',
           owner: 'tester',
           owns: false,
+          savedBy: ['tester'],
+          createdAt: 'creation date',
+        },
+      ],
+    );
+  });
+
+  test('Will filter the pins for an admin', () => {
+    process.env = {
+      ...process.env,
+      ADMIN_USER_ID: 'twitter test id',
+    };
+    expect(filterPins([rawPinsStub], user)).toStrictEqual(
+      [
+        {
+          _id: 'mongoose _id',
+          hasSaved: false,
+          imgDescription: 'description',
+          imgLink: 'https://stub',
+          owner: 'tester',
+          owns: true,
           savedBy: ['tester'],
           createdAt: 'creation date',
         },

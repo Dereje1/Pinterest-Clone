@@ -27,9 +27,14 @@ const addPin = async (req, res) => {
 };
 
 const getPins = async (req, res) => {
-  const { userId } = getUserProfile(req.user);
+  const { userId, isAdmin } = getUserProfile(req.user);
   try {
     if (req.query.type === 'profile') {
+      if (isAdmin) {
+        const profilePins = await pins.find({}).exec();
+        res.json(filterPins(profilePins, req.user));
+        return;
+      }
       const profilePins = await pins.find({ $or: [{ 'owner.id': userId }, { 'savedBy.id': userId }] }).exec();
       res.json(filterPins(profilePins, req.user));
     } else {
@@ -65,12 +70,12 @@ const pinImage = async (req, res) => {
 };
 
 const removePin = async (req, res) => {
-  const { userId, displayName } = getUserProfile(req.user);
+  const { userId, displayName, isAdmin } = getUserProfile(req.user);
   const query = { _id: req.params._id };
   const pinID = req.params._id;
   try {
     const pin = await pins.findById(pinID).exec();
-    if (userId === pin.owner.id) {
+    if (userId === pin.owner.id || isAdmin) {
       const removedPin = await pins.findOneAndRemove(query).exec();
       console.log(`${displayName} deleted pin ${removedPin.imgDescription}`);
       res.json(removedPin);

@@ -6,10 +6,14 @@ const AWS = require('aws-sdk');
 /* Isolate auth service used from req.user */
 const getUserProfile = (user) => {
   const [service] = ['google', 'twitter'].filter(s => user && Boolean(user[s].id));
+  const userId = service && user[service].id;
+  const displayName = service && user[service].displayName;
+  const isAdmin = Boolean(process.env.ADMIN_USER_ID && userId === process.env.ADMIN_USER_ID);
   return {
-    userId: service && user[service].id,
-    displayName: service && user[service].displayName,
+    userId,
+    displayName,
     service,
+    isAdmin,
   };
 };
 /* filterPins return only required pin info to the client */
@@ -30,7 +34,7 @@ const filterPins = (rawPins, user) => rawPins.map((pin) => {
   const {
     _id, imgDescription, imgLink, owner, savedBy, createdAt,
   } = pin;
-  const { userId } = getUserProfile(user);
+  const { userId, isAdmin } = getUserProfile(user);
   const savedIds = savedBy.map(s => s.id);
   const { name } = owner;
   const modifiedSavedBy = savedBy.map(pinner => pinner.name);
@@ -40,7 +44,7 @@ const filterPins = (rawPins, user) => rawPins.map((pin) => {
     imgLink,
     owner: name,
     savedBy: modifiedSavedBy,
-    owns: userId ? userId === owner.id : null,
+    owns: userId ? userId === owner.id || isAdmin : null,
     hasSaved: userId ? savedIds.includes(userId) : null,
     createdAt,
   };
