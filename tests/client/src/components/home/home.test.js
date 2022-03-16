@@ -55,8 +55,8 @@ describe('The Home Component', () => {
     expect(wrapper.state().imagesLoaded).toBe(false);
     imageBuild.props().layoutComplete();
     expect(wrapper.state().imagesLoaded).toBe(true);
-    expect(RESTcall).toHaveBeenCalledTimes(2);
-    expect(RESTcall.mock.calls).toEqual([[{ address: '/api/?type=All', method: 'get' }], [{ address: '/api/broken' }]]);
+    expect(RESTcall).toHaveBeenCalledTimes(1);
+    expect(RESTcall.mock.calls).toEqual([[{ address: '/api/?type=All', method: 'get' }]]);
   });
 
   test('ImageBuild sub-component will signal to enalrge the pin', async () => {

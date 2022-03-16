@@ -7,10 +7,6 @@ import ImageBuild from '../imagebuild/imagebuild';
 import SignIn from '../signin/signin';
 import { shuffleImages, getFilteredPins } from '../../utils/utils';
 
-const handleBrokenImages = async () => {
-  await RESTcall({ address: '/api/broken' });
-};
-
 export class Home extends Component {
 
   constructor(props) {
@@ -59,7 +55,7 @@ export class Home extends Component {
     const { imagesLoaded } = this.state;
     // only set state on first true loads
     if (imagesLoaded) return;
-    this.setState({ imagesLoaded: true }, () => handleBrokenImages());
+    this.setState({ imagesLoaded: true });
   };
 
   imageStatus = (element) => {

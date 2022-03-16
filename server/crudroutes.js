@@ -1,9 +1,8 @@
 const router = require('express').Router();
 const pins = require('./models/pins'); // schema for pins
-const brokenPins = require('./models/brokenPins');
 const isLoggedIn = require('./auth/isloggedin');
 const {
-  getUserProfile, filterPins, isReadyToRun, isValidEnpoint, getPrevBrokenTimeStamp, uploadImageToS3,
+  getUserProfile, filterPins, uploadImageToS3,
 } = require('./utils');
 
 const addPin = async (req, res) => {
@@ -94,64 +93,6 @@ const removePin = async (req, res) => {
   }
 };
 
-const runScan = async (req, res) => {
-  const startedScan = new Date().toISOString();
-  try {
-    const [backup] = await brokenPins.find({}).exec();
-    if (backup && backup.createdAt && !isReadyToRun(backup.createdAt)) {
-      res.json({ startedScan, message: 'canceled' });
-      return;
-    }
-    // offload scan from req and resume
-    res.json({ startedScan, message: 'scanning...' });
-    console.log(`Started scan : ${startedScan}...`);
-    const allPins = await pins.find({}).exec();
-    let allInvalid = [];
-    const allValid = [];
-    const responses = [];
-
-    allPins.forEach((pin) => {
-      const { _id, imgLink, imgDescription } = pin;
-      const result = isValidEnpoint({ _id, imgLink, imgDescription });
-      responses.push(result);
-    });
-
-    const allResults = await Promise.all(responses);
-
-    allResults.forEach((result) => {
-      const {
-        _id, imgLink, imgDescription, statusCode, statusMessage, valid,
-      } = result;
-      if (valid) {
-        allValid.push({
-          statusCode, statusMessage, _id, imgLink, imgDescription,
-        });
-      } else {
-        allInvalid.push({
-          statusCode, statusMessage, _id, imgLink, imgDescription,
-        });
-      }
-    });
-
-    await pins.updateMany({ _id: { $in: allValid } }, { isBroken: false }).exec();
-    await pins.updateMany({ _id: { $in: allInvalid } }, { isBroken: true }).exec();
-    if (allInvalid.length) {
-      allInvalid = allInvalid.map((pin) => {
-        const prevBrokenTimeStamp = backup ? getPrevBrokenTimeStamp(backup, pin._id) : null;
-        return {
-          ...pin,
-          brokenSince: prevBrokenTimeStamp || startedScan,
-        };
-      });
-    }
-    await brokenPins.deleteMany({}).exec();
-    await brokenPins.create({ broken: allInvalid });
-    const finishedScan = new Date().toISOString();
-    console.log(`Finished scan : ${finishedScan}`);
-  } catch (error) {
-    res.json(error);
-  }
-};
 // adds a new pin to the db
 router.post('/api/newpin', isLoggedIn, addPin);
 
@@ -164,9 +105,6 @@ router.put('/api/:_id', isLoggedIn, pinImage);
 // deletes a pin if owned by user or removes user from savedby List
 router.delete('/api/:_id', isLoggedIn, removePin);
 
-// broken image handling and garbage collection
-router.get('/api/broken', runScan);
-
 module.exports = {
-  router, addPin, getPins, pinImage, removePin, runScan,
+  router, addPin, getPins, pinImage, removePin,
 };

@@ -50,20 +50,6 @@ const filterPins = (rawPins, user) => rawPins.map((pin) => {
   };
 });
 
-const isReadyToRun = (lastBackedUp) => {
-  const CYCLE_TIME = 5 * 24 * 60 * 60 * 1000;
-  const timeElapsed = new Date() - new Date(lastBackedUp);
-  return timeElapsed > CYCLE_TIME;
-};
-
-const getPrevBrokenTimeStamp = (prevBrokenPins, pinId) => {
-  const [pinFound] = prevBrokenPins.broken.filter(({ _id }) => _id.toString() === pinId.toString());
-  if (pinFound) {
-    return pinFound.brokenSince;
-  }
-  return null;
-};
-
 const validateURL = (string) => {
   try {
     const url = new URL(string);
@@ -74,42 +60,6 @@ const validateURL = (string) => {
   }
   return null;
 };
-
-const isValidEnpoint = imageInfo => new Promise((resolve) => {
-  const url = validateURL(imageInfo.imgLink);
-  if (url === 'data protocol') {
-    resolve({
-      ...imageInfo, statusCode: null, statusMessage: 'data protocol', valid: true,
-    });
-  }
-  if (!url) {
-    resolve({
-      ...imageInfo, statusCode: null, statusMessage: 'Invalid URL', valid: false,
-    });
-  }
-
-  const inValidStatusMessages = ['Moved Permanently', 'Moved Temporarily'];
-  const request = https.request(url, (response) => {
-    const { statusCode, statusMessage } = response;
-    if (statusCode < 400 && !inValidStatusMessages.includes(statusMessage)) {
-      resolve({
-        ...imageInfo, statusCode, statusMessage, valid: true,
-      });
-    } else {
-      resolve({
-        ...imageInfo, statusCode, statusMessage, valid: false,
-      });
-    }
-  });
-
-  request.on('error', (error) => {
-    resolve({
-      ...imageInfo, statusCode: null, statusMessage: error, valid: false,
-    });
-  });
-
-  request.end();
-});
 
 const processImage = url => new Promise((resolve, reject) => {
   const urlType = validateURL(url);
@@ -170,9 +120,6 @@ const uploadImageToS3 = async ({
 module.exports = {
   getUserProfile,
   filterPins,
-  isReadyToRun,
-  isValidEnpoint,
-  getPrevBrokenTimeStamp,
   uploadImageToS3,
   configureS3,
 };
