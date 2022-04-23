@@ -74,6 +74,32 @@ exports[`The Mypins Component Mypins landing page will render 1`] = `
       resetModal={[Function]}
       zoomInfo={Array []}
     />
+    <ForwardRef(Dialog)
+      aria-describedby="alert-dialog-description"
+      aria-labelledby="alert-dialog-title"
+      open={false}
+    >
+      <ForwardRef(DialogTitle)
+        id="alert-dialog-title"
+      >
+        Permanently delete false?
+      </ForwardRef(DialogTitle)>
+      <ForwardRef(DialogActions)>
+        <ForwardRef(Button)
+          id="cancel-delete-alert"
+          onClick={[Function]}
+        >
+          Cancel
+        </ForwardRef(Button)>
+        <ForwardRef(Button)
+          autoFocus={true}
+          id="resume-delete-alert"
+          onClick={[Function]}
+        >
+          Delete
+        </ForwardRef(Button)>
+      </ForwardRef(DialogActions)>
+    </ForwardRef(Dialog)>
   </div>
 </Fragment>
 `;

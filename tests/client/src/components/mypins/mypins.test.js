@@ -141,6 +141,15 @@ describe('The Mypins Component', () => {
     ]);
   });
 
+  test('ImageBuild sub-component will show alert to permanently delete a pin if owner', async () => {
+    const wrapper = shallow(<Mypins {...props} />);
+    await Promise.resolve();
+    const imageBuild = wrapper.find('ImageBuild');
+    imageBuild.props().deletePin({ _id: 3, owns: true, imgDescription: 'deletable' });
+    expect(wrapper.state().showDeleteImageModal).toBe(true);
+    expect(wrapper.state().deletableImgInfo).toStrictEqual({ _id: 3, imgDescription: 'deletable' });
+  });
+
   test('ImageBuild sub-component will reset the pin zoom modal', async () => {
     const wrapper = shallow(<Mypins {...props} />);
     wrapper.setState({ displayPinZoom: true });
@@ -214,5 +223,48 @@ describe('The Mypins Component', () => {
     const createPin = wrapper.find('PinCreate');
     createPin.props().reset();
     expect(wrapper.state().displayPinCreate).toBe(false);
+  });
+
+  test('Will cancel pin delete on alert', async () => {
+    const wrapper = shallow(<Mypins {...props} />);
+    wrapper.setState({
+      showDeleteImageModal: true,
+      deletableImgInfo: {
+        _id: 3, owns: true, imgDescription: 'deletable',
+      },
+      displayPinZoom: false,
+    });
+    await Promise.resolve();
+    const cancelAlert = wrapper.find({ id: 'cancel-delete-alert' });
+    cancelAlert.props().onClick();
+    expect(wrapper.state().showDeleteImageModal).toBe(false);
+    expect(wrapper.state().deletableImgInfo).toBe(null);
+  });
+
+  test('Will delete pin on alert', async () => {
+    const wrapper = shallow(<Mypins {...props} />);
+    wrapper.setState({
+      showDeleteImageModal: true,
+      deletableImgInfo: {
+        _id: 3, owns: true, imgDescription: 'deletable',
+      },
+      displayPinZoom: false,
+    });
+    await Promise.resolve();
+    const deleteAlert = wrapper.find({ id: 'resume-delete-alert' });
+    deleteAlert.props().onClick();
+    expect(wrapper.state().showDeleteImageModal).toBe(false);
+    expect(wrapper.state().deletableImgInfo).toBe(null);
+    expect(wrapper.state().pinList).toStrictEqual([pinsStub[1]]);
+    expect(RESTcall).toHaveBeenCalledTimes(2);
+    expect(RESTcall.mock.calls).toEqual([
+      [{ address: '/api/?type=profile', method: 'get' }],
+      [
+        {
+          address: '/api/3',
+          method: 'delete',
+        },
+      ],
+    ]);
   });
 });

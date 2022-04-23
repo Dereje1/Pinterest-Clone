@@ -4,6 +4,10 @@ import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import TwitterIcon from '@mui/icons-material/Twitter';
 import GoogleIcon from '@mui/icons-material/Google';
+import Button from '@mui/material/Button';
+import Dialog from '@mui/material/Dialog';
+import DialogActions from '@mui/material/DialogActions';
+import DialogTitle from '@mui/material/DialogTitle';
 import PinCreate from './pincreatemodal';
 import ImageBuild from '../imagebuild/imagebuild';
 import RESTcall from '../../crud'; // pin CRUD
@@ -38,6 +42,8 @@ export class Mypins extends Component {
       displayPinZoom: false, // controls pin zoom modal
       imageInfo: [], // used to send to pin zoom
       imagesLoaded: false,
+      showDeleteImageModal: false,
+      deletableImgInfo: null,
     };
   }
 
@@ -135,7 +141,10 @@ export class Mypins extends Component {
     pinListCopy = [...pinListCopy.slice(0, indexOfDeletion),
       ...pinListCopy.slice(indexOfDeletion + 1)];
     this.setState({
-      pinList: pinListCopy, displayPinZoom: false,
+      pinList: pinListCopy,
+      displayPinZoom: false,
+      showDeleteImageModal: false,
+      deletableImgInfo: null,
     }, async () => {
       await RESTcall({
         address: `/api/${element._id}`,
@@ -147,7 +156,8 @@ export class Mypins extends Component {
   render() {
     const { user, user: { authenticated } } = this.props;
     const {
-      displayPinCreate, displayPinZoom, imageInfo, pinList, imagesLoaded,
+      displayPinCreate, displayPinZoom, imageInfo,
+      pinList, imagesLoaded, showDeleteImageModal, deletableImgInfo,
     } = this.state;
     if (!authenticated) window.location.assign('/');
 
@@ -181,13 +191,46 @@ export class Mypins extends Component {
             pinEnlarge={this.pinEnlarge}
             onBrokenImage={this.onBrokenImage}
             pinImage={null}
-            deletePin={e => this.deletePic(e)}
+            deletePin={(e) => {
+              if (e.owns) {
+                this.setState({
+                  showDeleteImageModal: true,
+                  deletableImgInfo: { _id: e._id, imgDescription: e.imgDescription },
+                  displayPinZoom: false,
+                });
+              } else {
+                this.deletePic(e);
+              }
+            }}
             pinList={pinList}
             imagesLoaded={imagesLoaded}
             displayPinZoom={displayPinZoom}
             resetModal={() => this.setState({ displayPinZoom: false })}
             zoomInfo={imageInfo}
           />
+          <Dialog
+            open={showDeleteImageModal}
+            aria-labelledby="alert-dialog-title"
+            aria-describedby="alert-dialog-description"
+          >
+            <DialogTitle id="alert-dialog-title">
+              {`Permanently delete ${showDeleteImageModal && deletableImgInfo.imgDescription}?`}
+            </DialogTitle>
+            <DialogActions>
+              <Button
+                id="cancel-delete-alert"
+                onClick={() => this.setState({
+                  showDeleteImageModal: false,
+                  deletableImgInfo: null,
+                })}
+              >
+                Cancel
+              </Button>
+              <Button id="resume-delete-alert" onClick={() => this.deletePic(deletableImgInfo)} autoFocus>
+                Delete
+              </Button>
+            </DialogActions>
+          </Dialog>
         </div>
       </React.Fragment>
     );
