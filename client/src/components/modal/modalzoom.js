@@ -38,7 +38,7 @@ export class PinZoom extends Component {
   componentDidMount() {
     const { zoomInfo } = this.props;
     const { parentDivStyle } = this.state;
-    const [,, browserTop] = zoomInfo;
+    const [, browserTop] = zoomInfo;
     const divCopy = JSON.parse(JSON.stringify(parentDivStyle));
     divCopy.top = browserTop;
     window.addEventListener('click', this.outsideClick);
@@ -75,7 +75,7 @@ export class PinZoom extends Component {
 
   disableScroll = () => {
     const { zoomInfo: zoomDist } = this.props;
-    window.scrollTo(0, zoomDist[2]);
+    window.scrollTo(0, zoomDist[1]);
   };
 
   close = () => {

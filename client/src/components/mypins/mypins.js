@@ -85,17 +85,7 @@ export class Mypins extends Component {
     if (e.target.type === 'submit' || displayPinZoom || displayPinCreate) return;
     this.setState({
       displayPinZoom: true,
-      imageInfo: [currentImg,
-        <button
-          key={currentImg}
-          type="submit"
-          className="actionbutton"
-          onClick={() => this.deletePic(currentImg)}
-        >
-          Delete
-        </button>,
-        e.pageY - e.clientY,
-      ],
+      imageInfo: [currentImg, e.pageY - e.clientY],
     });
   };
 

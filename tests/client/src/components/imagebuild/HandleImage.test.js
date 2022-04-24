@@ -1,6 +1,6 @@
 import React from 'react';
 import { shallow } from 'enzyme';
-import HandleImage from '../../../../../client/src/components/imagebuild/HandleImage';
+import HandleThumbnailImage from '../../../../../client/src/components/imagebuild/HandleThumbnailImage';
 
 describe('Handling image action buttons', () => {
   let props;
@@ -15,7 +15,7 @@ describe('Handling image action buttons', () => {
   });
 
   test('will render the save button', () => {
-    const wrapper = shallow(<HandleImage {...props} />);
+    const wrapper = shallow(<HandleThumbnailImage {...props} />);
     wrapper.props().onClick();
     expect(wrapper.text()).toBe(' Save');
     expect(props.pinImage).toHaveBeenCalledWith({
@@ -28,7 +28,7 @@ describe('Handling image action buttons', () => {
       ...props,
       pinImage: null,
     };
-    const wrapper = shallow(<HandleImage {...updatedProps} />);
+    const wrapper = shallow(<HandleThumbnailImage {...updatedProps} />);
     wrapper.props().onClick();
     expect(wrapper.text()).toBe('Delete');
     expect(props.deletePin).toHaveBeenCalledWith({
@@ -43,7 +43,7 @@ describe('Handling image action buttons', () => {
         hasSaved: true,
       },
     };
-    const wrapper = shallow(<HandleImage {...updatedProps} />);
+    const wrapper = shallow(<HandleThumbnailImage {...updatedProps} />);
     expect(wrapper.isEmptyRender()).toBe(true);
   });
 });

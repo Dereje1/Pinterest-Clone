@@ -2,8 +2,8 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import './imagebuild.scss';
 
-const HandleImage = ({ element, pinImage, deletePin }) => {
-  if (!pinImage) {
+const HandleThumbnailImage = ({ element, pinImage, deletePin }) => {
+  if (!pinImage) { // means profile page
     return (
       <button
         type="submit"
@@ -31,14 +31,14 @@ const HandleImage = ({ element, pinImage, deletePin }) => {
   );
 };
 
-export default HandleImage;
+export default HandleThumbnailImage;
 
-HandleImage.defaultProps = {
+HandleThumbnailImage.defaultProps = {
   pinImage: null,
   deletePin: null,
 };
 
-HandleImage.propTypes = {
+HandleThumbnailImage.propTypes = {
   element: PropTypes.objectOf(PropTypes.any).isRequired,
   // what type of button to place on pic/thumbnail executed by caller
   pinImage: PropTypes.func,

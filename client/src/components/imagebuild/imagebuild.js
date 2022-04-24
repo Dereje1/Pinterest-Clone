@@ -1,7 +1,7 @@
 import React from 'react';
 import Masonry from 'react-masonry-component';
 import PropTypes from 'prop-types';
-import HandleImage from './HandleImage';
+import HandleThumbnailImage from './HandleThumbnailImage';
 import PinZoom from '../modal/modalzoom';
 import './imagebuild.scss';
 
@@ -50,7 +50,7 @@ const ImageBuild = ({
               <div className="description">
                 {element.imgDescription}
               </div>
-              <HandleImage
+              <HandleThumbnailImage
                 element={element}
                 pinImage={pinImage}
                 deletePin={deletePin}

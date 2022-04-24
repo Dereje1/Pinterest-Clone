@@ -15,7 +15,7 @@ describe('The pin zoom modal', () => {
     props = {
       displayPinZoom: false,
       // [picobject, overlay button type, last scroll distance]
-      zoomInfo: [pinsStub[0], 0, 10],
+      zoomInfo: [pinsStub[0], 10],
       reset: jest.fn(),
       pinImage: jest.fn(),
       deletePin: null,

@@ -98,8 +98,7 @@ describe('The Mypins Component', () => {
     imageBuild.props().pinEnlarge(...pinEnlargeArgs);
     expect(wrapper.state().displayPinZoom).toBe(true);
     expect(wrapper.state().imageInfo[0]).toStrictEqual(pinsStub[1]);
-    expect(wrapper.state().imageInfo[1].type).toBe('button');
-    expect(wrapper.state().imageInfo[2]).toBe(5);
+    expect(wrapper.state().imageInfo[1]).toBe(5);
   });
 
   test('will cancel signal to enalrge the pin', async () => {

@@ -63,7 +63,7 @@ exports[`The ImageBuild component will render.... 1`] = `
         >
           imgDescription id-1
         </div>
-        <HandleImage
+        <HandleThumbnailImage
           deletePin={[MockFunction]}
           element={
             Object {
@@ -112,7 +112,7 @@ exports[`The ImageBuild component will render.... 1`] = `
         >
           imgDescription id-2
         </div>
-        <HandleImage
+        <HandleThumbnailImage
           deletePin={[MockFunction]}
           element={
             Object {
@@ -161,7 +161,7 @@ exports[`The ImageBuild component will render.... 1`] = `
         >
           imgDescription id-3
         </div>
-        <HandleImage
+        <HandleThumbnailImage
           deletePin={[MockFunction]}
           element={
             Object {

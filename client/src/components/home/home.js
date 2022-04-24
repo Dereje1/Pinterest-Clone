@@ -58,31 +58,13 @@ export class Home extends Component {
     this.setState({ imagesLoaded: true });
   };
 
-  imageStatus = (element) => {
-    // finds the status of image to determine what kind of button to place on pic
-    if (element.hasSaved || element.owns) { // If the user has already saved this pin
-      return null; // no button
-    }
-    // user has not saved this pin show save button
-    return (
-      <button
-        type="submit"
-        className="actionbutton save"
-        onClick={() => this.savePic(element)}
-      >
-        <i className="fa fa-thumb-tack" aria-hidden="true" />
-        {' Save'}
-      </button>
-    );
-  };
-
   pinEnlarge = (e, currentImg) => { // calls zoom in modal for the clicked picture
     const { displayPinZoom } = this.state;
     if (e.target.type === 'submit') return;
     if (displayPinZoom) return;
     this.setState({
       displayPinZoom: true,
-      imageInfo: [currentImg, this.imageStatus(currentImg), e.pageY - e.clientY],
+      imageInfo: [currentImg, e.pageY - e.clientY],
     });
   };
 
