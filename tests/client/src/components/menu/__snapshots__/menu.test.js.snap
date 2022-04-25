@@ -31,7 +31,12 @@ exports[`The Menu component will render for an authenticated user 1`] = `
       }
       variant="string"
     >
-      <Memo(ForwardRef(SearchIcon)) />
+      <ForwardRef(Tooltip)
+        placement="bottom"
+        title="Search by description or owner"
+      >
+        <Memo(ForwardRef(SearchIcon)) />
+      </ForwardRef(Tooltip)>
       <ForwardRef(InputBase)
         inputProps={
           Object {
@@ -104,7 +109,12 @@ exports[`The Menu component will render for users authenticated as guest 1`] = `
     }
     variant="string"
   >
-    <Memo(ForwardRef(SearchIcon)) />
+    <ForwardRef(Tooltip)
+      placement="bottom"
+      title="Search by description or owner"
+    >
+      <Memo(ForwardRef(SearchIcon)) />
+    </ForwardRef(Tooltip)>
     <ForwardRef(InputBase)
       inputProps={
         Object {

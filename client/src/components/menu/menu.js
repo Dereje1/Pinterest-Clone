@@ -8,6 +8,7 @@ import { compose } from 'redux';
 import Paper from '@mui/material/Paper';
 import InputBase from '@mui/material/InputBase';
 import SearchIcon from '@mui/icons-material/Search';
+import Tooltip from '@mui/material/Tooltip';
 import { getUser } from '../../actions/authentication';
 import updateSearch from '../../actions/search';
 import Cover from '../cover/cover';
@@ -75,16 +76,6 @@ export class Menu extends React.Component {
     if (!e.target.closest('.menu')) this.toggleCollapse();
   };
 
-  collapsedMenu = () => (
-    <div className="items collapsed burger">
-      <i
-        className="fa fa-bars"
-        aria-hidden="true"
-        onClick={this.toggleCollapse}
-      />
-    </div>
-  );
-
   renderSearch = () => {
     const { updateSearch: searchUpdate, location: { pathname } } = this.props;
     if (pathname !== '/') return null;
@@ -100,7 +91,9 @@ export class Menu extends React.Component {
         }}
         variant="string"
       >
-        <SearchIcon />
+        <Tooltip title="Search by description or owner" placement="bottom">
+          <SearchIcon />
+        </Tooltip>
         <InputBase
           sx={{ ml: 1, flex: 1 }}
           placeholder="Search..."
@@ -108,6 +101,28 @@ export class Menu extends React.Component {
           onChange={e => this.onSearch(e.target.value, searchUpdate)}
         />
       </Paper>
+    );
+  };
+
+  renderMenu = () => {
+    const { menuIsCollapsed } = this.state;
+    if (menuIsCollapsed) {
+      return (
+        <div className="items collapsed burger">
+          <i
+            className="fa fa-bars"
+            aria-hidden="true"
+            onClick={this.toggleCollapse}
+          />
+        </div>
+      );
+    }
+    return (
+      <div className="items extended">
+        <NavLink exact to="/">Home</NavLink>
+        <NavLink exact to="/pins">My Pins</NavLink>
+        <NavLink to="/another" onClick={() => window.location.assign('auth/logout')}>Logout</NavLink>
+      </div>
     );
   };
 
@@ -162,28 +177,17 @@ export class Menu extends React.Component {
             </a>
           </div>
           {this.renderSearch()}
-          {
-            !menuIsCollapsed
-              ? (
-                <div className="items extended">
-                  <NavLink exact to="/">Home</NavLink>
-                  <NavLink exact to="/pins">My Pins</NavLink>
-                  <NavLink to="/another" onClick={() => window.location.assign('auth/logout')}>Logout</NavLink>
-                </div>
-              )
-              : this.collapsedMenu()
-          }
+          {this.renderMenu()}
         </div>
         {
           !initialLoad && menuIsCollapsed
-            ? (
+            && (
               <div className={collapseToggle ? 'responsivemenu drop' : 'responsivemenu lift'}>
                 <NavLink exact to="/" onClick={this.toggleCollapse}>Home</NavLink>
                 <NavLink exact to="/pins" onClick={this.toggleCollapse}>My Pins</NavLink>
                 <NavLink to="/another" onClick={() => window.location.assign('auth/logout')}>Logout</NavLink>
               </div>
             )
-            : null
         }
       </React.Fragment>
     );
