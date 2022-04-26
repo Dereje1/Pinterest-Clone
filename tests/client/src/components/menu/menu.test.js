@@ -32,7 +32,6 @@ describe('The Menu component', () => {
   });
   test('will render for an authenticated user', () => {
     const wrapper = shallow(<Menu {...props} />);
-    wrapper.setState({ ready: true });
     const cover = wrapper.find('Cover');
     expect(cover.length).toBe(0);
     expect(toJson(wrapper)).toMatchSnapshot();
@@ -46,7 +45,7 @@ describe('The Menu component', () => {
       },
     };
     const wrapper = shallow(<Menu {...updatedProps} />);
-    wrapper.setState({ ready: true, displaySignIn: true });
+    wrapper.setState({ displaySignIn: true });
     const cover = wrapper.find('Cover');
     expect(cover.length).toBe(0);
     expect(toJson(wrapper)).toMatchSnapshot();
@@ -61,7 +60,6 @@ describe('The Menu component', () => {
       },
     };
     const wrapper = shallow(<Menu {...updatedProps} />);
-    wrapper.setState({ ready: true });
     const cover = wrapper.find('Cover');
     expect(cover.length).toBe(1);
   });
@@ -78,7 +76,6 @@ describe('The Menu component', () => {
   });
   test('will update the search in the redux store on change', () => {
     const wrapper = shallow(<Menu {...props} />);
-    wrapper.setState({ ready: true });
     const searchInput = wrapper.find('ForwardRef(InputBase)');
     searchInput.props().onChange({ target: { value: 'abc' } });
     jest.advanceTimersByTime(1000);
@@ -86,7 +83,6 @@ describe('The Menu component', () => {
   });
   test('will update the ready state and others on CDU', () => {
     const wrapper = shallow(<Menu {...props} />);
-    expect(wrapper.state().ready).toBe(false);
     expect(wrapper.state().initialLoad).toBe(true);
     jest.spyOn(window, 'addEventListener').mockImplementationOnce(() => { });
     wrapper.setState({ collapseToggle: true });
@@ -97,7 +93,6 @@ describe('The Menu component', () => {
       collapseToggle: false,
     };
     wrapper.instance().componentDidUpdate(prevProps, prevState);
-    expect(wrapper.state().ready).toBe(true);
     expect(wrapper.state().initialLoad).toBe(false);
     expect(window.addEventListener).toHaveBeenCalledWith('click', expect.any(Function));
   });
@@ -112,7 +107,7 @@ describe('The Menu component', () => {
 
   test('will render the collapsed menu', () => {
     const wrapper = shallow(<Menu {...props} />);
-    wrapper.setState({ ready: true, menuIsCollapsed: true });
+    wrapper.setState({ menuIsCollapsed: true });
     const collapsedBurger = wrapper.find({ className: 'items collapsed burger' });
     expect(collapsedBurger.length).toBe(1);
   });
@@ -126,7 +121,6 @@ describe('The Menu component', () => {
       },
     };
     const wrapper = shallow(<Menu {...updatedProps} />);
-    wrapper.setState({ ready: true });
     expect(wrapper.state().displaySignIn).toBe(false);
     const signInButton = wrapper.find({ className: 'fa fa-sign-in' });
     signInButton.props().onClick();
@@ -145,7 +139,7 @@ describe('The Menu component', () => {
       },
     }));
     const wrapper = shallow(<Menu {...props} />);
-    wrapper.setState({ ready: true, menuIsCollapsed: false });
+    wrapper.setState({ menuIsCollapsed: false });
     const logoutLink = wrapper.find('NavLink').at(2);
     logoutLink.props().onClick();
     expect(mockedAssign).toHaveBeenCalledWith('auth/logout');
@@ -160,7 +154,7 @@ describe('The Menu component', () => {
       },
     }));
     const wrapper = shallow(<Menu {...props} />);
-    wrapper.setState({ ready: true, menuIsCollapsed: true, initialLoad: false });
+    wrapper.setState({ menuIsCollapsed: true, initialLoad: false });
     const logoutLink = wrapper.find('NavLink').at(2);
     logoutLink.props().onClick();
     expect(mockedAssign).toHaveBeenCalledWith('auth/logout');

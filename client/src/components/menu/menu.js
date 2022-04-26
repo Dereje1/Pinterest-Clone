@@ -26,7 +26,6 @@ export class Menu extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      ready: false, // component ready for render
       initialLoad: true, // used to avoid keyframe anim on initial load
       menuIsCollapsed: window.innerWidth < 600, // test for screen size
       collapseToggle: false, // turns responsive hamburger on/off
@@ -48,11 +47,7 @@ export class Menu extends React.Component {
   }
 
   componentDidUpdate(prevProps, prevState) {
-    const { user } = this.props;
     const { collapseToggle, initialLoad } = this.state;
-    if (prevProps.user !== user) {
-      this.setState({ ready: true }); // once user info comes from cdm proceed to rendering
-    }
     if (prevState.collapseToggle === false && collapseToggle) {
       // don't display responsive menu on initial load
       if (initialLoad) this.setState({ initialLoad: false });
@@ -129,10 +124,9 @@ export class Menu extends React.Component {
   render() {
     // render cover/guest / logged in menu bar
     const {
-      menuIsCollapsed, collapseToggle, ready, initialLoad, displaySignIn,
+      menuIsCollapsed, collapseToggle, initialLoad, displaySignIn,
     } = this.state;
     const { user: { authenticated, username } } = this.props;
-    if (!ready) return null;
     if (!username) {
       // render cover
       document.body.classList.add('cover');
