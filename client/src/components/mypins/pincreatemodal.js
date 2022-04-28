@@ -99,6 +99,7 @@ class PinCreate extends Component {
     const isDescriptionError = description.trim().length < 5;
     return (
       <>
+        {show && <div className="pin-create-modal-overlay" />}
         <Card sx={{ width: modalWidth, height: modalHeight }} className={show ? 'pincreate cshow' : 'pincreate chide'}>
 
           <CardHeader
@@ -156,8 +157,6 @@ class PinCreate extends Component {
             />
           </div>
         </Card>
-
-        <div className={show ? 'modal-overlay' : 'modal-overlay hide'} />
       </>
     );
   }

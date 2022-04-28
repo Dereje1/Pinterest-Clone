@@ -116,6 +116,7 @@ export class PinZoom extends Component {
     const [, day, mth, year] = new Date(pinInformation.createdAt).toUTCString().split(' ');
     return (
       <>
+        {show && <div className="modal-overlay" />}
         <Card sx={parentDivStyle} className={show ? 'zoom cshow' : 'zoom chide'}>
           <CardHeader
             action={(
@@ -154,7 +155,6 @@ export class PinZoom extends Component {
             id="pin-zoom"
           />
         </Card>
-        <div className={show ? 'modal-overlay' : 'modal-overlay hide'} />
       </>
     );
   }

@@ -21,7 +21,8 @@ const GetAction = ({ element, pinImage, deletePin }) => {
               <Tooltip title="Unpin image" placement="left">
                 <DeleteIcon style={{ fontSize: '2em', color: '#d12929' }} />
               </Tooltip>
-            )}
+            )
+        }
       </IconButton>
     );
   }
