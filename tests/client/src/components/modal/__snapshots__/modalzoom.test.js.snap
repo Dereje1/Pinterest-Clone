@@ -2,6 +2,9 @@
 
 exports[`The pin zoom modal will render 1`] = `
 <Fragment>
+  <div
+    className="modal-overlay"
+  />
   <ForwardRef(Card)
     className="zoom cshow"
     sx={
@@ -91,8 +94,5 @@ exports[`The pin zoom modal will render 1`] = `
       onLoad={[Function]}
     />
   </ForwardRef(Card)>
-  <div
-    className="modal-overlay"
-  />
 </Fragment>
 `;

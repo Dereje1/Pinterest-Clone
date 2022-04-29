@@ -2,6 +2,9 @@
 
 exports[`The pin creation modal will render 1`] = `
 <Fragment>
+  <div
+    className="pin-create-modal-overlay"
+  />
   <ForwardRef(Card)
     className="pincreate cshow"
     sx={
@@ -96,8 +99,5 @@ exports[`The pin creation modal will render 1`] = `
       />
     </div>
   </ForwardRef(Card)>
-  <div
-    className="modal-overlay"
-  />
 </Fragment>
 `;
