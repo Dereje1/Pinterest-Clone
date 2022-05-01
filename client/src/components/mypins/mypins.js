@@ -100,7 +100,7 @@ export class Mypins extends Component {
     });
 
     const {
-      savedBy, owner, imgLink, imgDescription, _id,
+      savedBy, owner, imgLink, imgDescription, _id, createdAt,
     } = newPin;
     const pinAdd = {
       _id,
@@ -110,6 +110,7 @@ export class Mypins extends Component {
       owner: owner.name,
       owns: true,
       hasSaved: false,
+      createdAt,
     };
     pinListCopy = [...pinListCopy, pinAdd];
     this.setState({

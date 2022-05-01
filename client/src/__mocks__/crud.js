@@ -20,6 +20,7 @@ const restMock = jest.fn().mockImplementation((...args) => {
       imgLink: 'new link',
       imgDescription: 'new description',
       _id: 10,
+      createdAt: '2022-04-09T17:00:33.212Z',
     });
   } if (address.includes('/auth/profile') && method === 'get' && !payload) {
     return Promise.resolve({

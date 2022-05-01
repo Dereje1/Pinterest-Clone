@@ -211,6 +211,7 @@ describe('The Mypins Component', () => {
       _id: 10,
       owns: true,
       hasSaved: false,
+      createdAt: '2022-04-09T17:00:33.212Z',
     });
   });
 
