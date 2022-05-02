@@ -102,7 +102,7 @@ const uploadImageToS3 = async ({
     const Body = await processImage(originalImgLink);
     const Key = `${Date.now()}`;
     const params = {
-      Bucket: 'pinterest.clone',
+      Bucket: process.env.S3_BUCKET_NAME,
       Key,
       Body,
       ContentType: 'image/png',

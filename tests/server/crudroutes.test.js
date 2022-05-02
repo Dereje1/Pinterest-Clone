@@ -103,6 +103,10 @@ describe('Retrieving pins', () => {
 describe('Adding a pin', () => {
   let res;
   beforeEach(() => {
+    process.env = {
+      ...process.env,
+      S3_BUCKET_NAME: 'pinterest.clone',
+    };
     res = { json: jest.fn() };
   });
   afterEach(() => {

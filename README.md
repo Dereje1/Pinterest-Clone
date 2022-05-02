@@ -56,6 +56,7 @@ GOOGLE_CLIENT_SECRET=< Get from Google Developer API >
 GOOGLE_CALLBACK=http://localhost:8080/auth/google/redirect
 AWS_ACCESS_KEY_ID=< Get from AWS >
 AWS_SECRET_KEY=< Get from AWS >
+S3_BUCKET_NAME=< s3 bucket name for uploaded pins>
 ```
 Run development environment
 ```
