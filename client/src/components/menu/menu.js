@@ -9,6 +9,7 @@ import Paper from '@mui/material/Paper';
 import InputBase from '@mui/material/InputBase';
 import SearchIcon from '@mui/icons-material/Search';
 import Tooltip from '@mui/material/Tooltip';
+import HighlightOffIcon from '@mui/icons-material/HighlightOff';
 import { getUser } from '../../actions/authentication';
 import updateSearch from '../../actions/search';
 import Cover from '../cover/cover';
@@ -30,6 +31,7 @@ export class Menu extends React.Component {
       menuIsCollapsed: window.innerWidth < 600, // test for screen size
       collapseToggle: false, // turns responsive hamburger on/off
       displaySignIn: false,
+      searchVal: '',
     };
   }
 
@@ -58,7 +60,7 @@ export class Menu extends React.Component {
     }
   }
 
-  onSearch = _.debounce((v, searchUpdate) => searchUpdate(v), 500);
+  onSearch = _.debounce((val, searchUpdate) => searchUpdate(val), 500);
 
   toggleCollapse = () => {
     // burger click handler for responsive mode
@@ -73,6 +75,7 @@ export class Menu extends React.Component {
 
   renderSearch = () => {
     const { updateSearch: searchUpdate, location: { pathname } } = this.props;
+    const { searchVal } = this.state;
     if (pathname !== '/') return null;
     return (
       <Paper
@@ -93,8 +96,19 @@ export class Menu extends React.Component {
           sx={{ ml: 1, flex: 1 }}
           placeholder="Search..."
           inputProps={{ 'aria-label': 'search' }}
-          onChange={e => this.onSearch(e.target.value, searchUpdate)}
+          onChange={e => this.setState({ searchVal: e.target.value },
+            () => this.onSearch(e.target.value, searchUpdate))}
+          value={searchVal}
         />
+        {searchVal
+    && (
+      <HighlightOffIcon
+        id="clear-search"
+        style={{ fontSize: '1.5em', cursor: 'pointer' }}
+        onClick={() => this.setState({ searchVal: '' }, () => searchUpdate(''))}
+      />
+    )
+        }
       </Paper>
     );
   };

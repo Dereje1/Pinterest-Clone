@@ -51,6 +51,7 @@ exports[`The Menu component will render for an authenticated user 1`] = `
             "ml": 1,
           }
         }
+        value=""
       />
     </ForwardRef(Paper)>
     <div
@@ -129,6 +130,7 @@ exports[`The Menu component will render for users authenticated as guest 1`] = `
           "ml": 1,
         }
       }
+      value=""
     />
   </ForwardRef(Paper)>
   <div

@@ -18,7 +18,6 @@ describe('The Menu component', () => {
         service: 'tester service',
         userId: 'tester user Id',
       },
-      search: null,
       location: {
         pathname: '/',
       },
@@ -74,12 +73,21 @@ describe('The Menu component', () => {
     const result = wrapper.instance().renderSearch();
     expect(result).toBe(null);
   });
-  test('will update the search in the redux store on change', () => {
+  test('will update the search in state and the redux store on change', () => {
     const wrapper = shallow(<Menu {...props} />);
     const searchInput = wrapper.find('ForwardRef(InputBase)');
     searchInput.props().onChange({ target: { value: 'abc' } });
     jest.advanceTimersByTime(1000);
     expect(props.updateSearch).toHaveBeenCalledWith('abc');
+    expect(wrapper.state().searchVal).toBe('abc');
+  });
+  test('will clear the search in state and the redux store on click', () => {
+    const wrapper = shallow(<Menu {...props} />);
+    wrapper.setState({ searchVal: 'abc' });
+    const clearButton = wrapper.find({ id: 'clear-search' });
+    clearButton.props().onClick();
+    expect(props.updateSearch).toHaveBeenCalledWith('');
+    expect(wrapper.state().searchVal).toBe('');
   });
   test('will update the ready state and others on CDU', () => {
     const wrapper = shallow(<Menu {...props} />);
