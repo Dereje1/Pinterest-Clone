@@ -28,16 +28,16 @@ const addPin = async (req, res) => {
 const getPins = async (req, res) => {
   const { userId, isAdmin } = getUserProfile(req.user);
   try {
+    const allPins = await pins.find({ isBroken: false }).exec();
+    const allPinLinks = allPins.map(pin => pin.imgLink);
     if (req.query.type === 'profile') {
       if (isAdmin) {
-        const profilePins = await pins.find({}).exec();
-        res.json(filterPins(profilePins, req.user));
+        res.json({ profilePins: filterPins(allPins, req.user), allPinLinks });
         return;
       }
       const profilePins = await pins.find({ $or: [{ 'owner.id': userId }, { 'savedBy.id': userId }] }).exec();
-      res.json(filterPins(profilePins, req.user));
+      res.json({ profilePins: filterPins(profilePins, req.user), allPinLinks });
     } else {
-      const allPins = await pins.find({ isBroken: false }).exec();
       res.json(filterPins(allPins, req.user));
     }
   } catch (error) {

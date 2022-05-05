@@ -93,10 +93,12 @@ class PinCreate extends Component {
     const {
       show, description, showErrorImage, isError, picPreview,
     } = this.state;
+    const { allPinLinks } = this.props;
     if (!show) return null;
     const modalHeight = window.innerHeight * 0.92;
     const modalWidth = getModalWidth();
     const isDescriptionError = description.trim().length < 5;
+    const isDuplicateError = allPinLinks.includes(picPreview);
     return (
       <>
         {show && <div className="pin-create-modal-overlay" />}
@@ -153,6 +155,7 @@ class PinCreate extends Component {
             <SavePin
               isImageError={showErrorImage}
               isDescriptionError={isDescriptionError}
+              isDuplicateError={isDuplicateError}
               savePic={this.savePic}
             />
           </div>
@@ -169,6 +172,7 @@ export default PinCreate;
 PinCreate.propTypes = {
   // data used for pin creation
   userInfo: PropTypes.shape(PropTypes.shape).isRequired,
+  allPinLinks: PropTypes.arrayOf(PropTypes.string).isRequired,
   // callback in mypins to turn modal off
   reset: PropTypes.func.isRequired,
   // POST request via axios

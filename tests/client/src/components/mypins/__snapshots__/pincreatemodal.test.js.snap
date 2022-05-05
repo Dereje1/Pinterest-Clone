@@ -94,6 +94,7 @@ exports[`The pin creation modal will render 1`] = `
       />
       <SavePin
         isDescriptionError={true}
+        isDuplicateError={false}
         isImageError={true}
         savePic={[Function]}
       />

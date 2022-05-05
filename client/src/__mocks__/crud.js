@@ -10,7 +10,7 @@ const restMock = jest.fn().mockImplementation((...args) => {
   } if (address.includes('/api/') && method === 'put' && Boolean(payload)) {
     return Promise.resolve([]);
   } if (address.includes('/api/?type=profile') && method === 'get' && !payload) {
-    return Promise.resolve([pinsStub[1], pinsStub[2]]);
+    return Promise.resolve({ profilePins: [pinsStub[1], pinsStub[2]], allPinLinks: [] });
   } if (address.includes('/api/') && method === 'delete') {
     return Promise.resolve([]);
   } if (address.includes('/api/newpin') && method === 'post') {

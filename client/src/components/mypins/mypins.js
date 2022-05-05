@@ -39,6 +39,7 @@ export class Mypins extends Component {
     this.state = {
       displayPinCreate: false, // controls pin creation modal
       pinList: [], // collects the pins user owns and saved
+      allPinLinks: [], // URL of all pins in DB
       displayPinZoom: false, // controls pin zoom modal
       imageInfo: [], // used to send to pin zoom
       imagesLoaded: false,
@@ -49,12 +50,13 @@ export class Mypins extends Component {
 
   async componentDidMount() {
     // get all pins and filter by owned and saved and then concatenate and set state
-    const pinsFromDB = await RESTcall({
+    const { profilePins, allPinLinks } = await RESTcall({
       address: '/api/?type=profile',
       method: 'get',
     });
     this.setState({
-      pinList: pinsFromDB,
+      pinList: profilePins,
+      allPinLinks,
     });
   }
 
@@ -148,7 +150,8 @@ export class Mypins extends Component {
     const { user, user: { authenticated } } = this.props;
     const {
       displayPinCreate, displayPinZoom, imageInfo,
-      pinList, imagesLoaded, showDeleteImageModal, deletableImgInfo,
+      pinList, imagesLoaded, showDeleteImageModal,
+      deletableImgInfo, allPinLinks,
     } = this.state;
     if (!authenticated) window.location.assign('/');
 
@@ -174,6 +177,7 @@ export class Mypins extends Component {
                 reset={() => this.setState({ displayPinCreate: false })}
                 userInfo={user}
                 savePin={pinJSON => this.addPic(pinJSON)}
+                allPinLinks={allPinLinks}
               />
             )}
           </div>

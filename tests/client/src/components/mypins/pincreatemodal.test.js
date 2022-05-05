@@ -4,9 +4,6 @@
 import React from 'react';
 import { shallow } from 'enzyme';
 import toJson from 'enzyme-to-json';
-/**
- * @jest-environment jsdom
- */
 import PinCreate from '../../../../../client/src/components/mypins/pincreatemodal';
 
 jest.mock('../../../../../client/src/components/mypins/NO-IMAGE.png', () => 'load-error.png');
@@ -24,6 +21,7 @@ describe('The pin creation modal', () => {
         userId: 'tester user Id',
       },
       message: true,
+      allPinLinks: [],
       reset: jest.fn(),
       savePin: jest.fn(),
     };

@@ -65,9 +65,12 @@ describe('Retrieving pins', () => {
     setupMocks(profilePinsRaw);
     req.query.type = 'profile';
     await getPins(req, res);
-    expect(pins.find).toHaveBeenCalledTimes(1);
+    expect(pins.find).toHaveBeenCalledTimes(2);
     expect(pins.find).toHaveBeenCalledWith({ $or: [{ 'owner.id': user.twitter.id }, { 'savedBy.id': user.twitter.id }] });
-    expect(res.json).toHaveBeenCalledWith(allPinsResponse.filter(p => p.owns || p.hasSaved));
+    expect(res.json).toHaveBeenCalledWith({
+      profilePins: allPinsResponse.filter(p => p.owns || p.hasSaved),
+      allPinLinks: profilePinsRaw.map(p => p.imgLink),
+    });
   });
 
   test('will retrieve all pins for the profile page of an admin', async () => {
@@ -79,8 +82,11 @@ describe('Retrieving pins', () => {
     req.query.type = 'profile';
     await getPins(req, res);
     expect(pins.find).toHaveBeenCalledTimes(1);
-    expect(pins.find).toHaveBeenCalledWith({});
-    expect(res.json).toHaveBeenCalledWith(allPinsResponse.map(pin => ({ ...pin, owns: true })));
+    expect(pins.find).toHaveBeenCalledWith({ isBroken: false });
+    expect(res.json).toHaveBeenCalledWith({
+      profilePins: allPinsResponse.map(pin => ({ ...pin, owns: true })),
+      allPinLinks: rawPinsStub.map(p => p.imgLink),
+    });
   });
 
   test('will respond with error if GET is rejected', async () => {

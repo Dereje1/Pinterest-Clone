@@ -12,6 +12,7 @@ describe('The save pin action button', () => {
     props = {
       isImageError: true,
       isDescriptionError: true,
+      isDuplicateError: false,
       savePic: jest.fn(),
     };
   });
@@ -48,6 +49,19 @@ describe('The save pin action button', () => {
     expect(toJson(wrapper)).toMatchSnapshot();
   });
 
+  test('will render with duplicate error only', () => {
+    const updatedProps = {
+      ...props,
+      isDescriptionError: false,
+      isImageError: false,
+      isDuplicateError: true,
+    };
+    const wrapper = shallow(<SavePin {...updatedProps} />);
+    const validation = wrapper.find({ id: 'pin-create-validation' });
+    expect(validation.props().value).toBe('Image URL already exists, please choose another');
+    expect(toJson(wrapper)).toMatchSnapshot();
+  });
+
   test('will render with no errors', () => {
     const updatedProps = {
       ...props,
@@ -56,7 +70,7 @@ describe('The save pin action button', () => {
     };
     const wrapper = shallow(<SavePin {...updatedProps} />);
     const validation = wrapper.find({ id: 'pin-create-validation' });
-    expect(validation.isEmptyRender()).toBe(true);
+    expect(validation.props().value).toBe('Save pin');
     expect(toJson(wrapper)).toMatchSnapshot();
   });
 });
