@@ -83,15 +83,26 @@ export class Menu extends React.Component {
           p: '2px 4px',
           display: 'flex',
           alignItems: 'center',
-          width: '30%',
+          justifyContent: 'start',
+          width: '40%',
           height: '80%',
           background: '#f8f8f8',
         }}
         variant="string"
       >
-        <Tooltip title="Search by description or owner" placement="bottom">
-          <SearchIcon />
-        </Tooltip>
+        {searchVal
+          ? (
+            <HighlightOffIcon
+              id="clear-search"
+              style={{ fontSize: '1.5em', cursor: 'pointer' }}
+              onClick={() => this.setState({ searchVal: '' }, () => searchUpdate(''))}
+            />
+          ) : (
+            <Tooltip title="Search by description or owner" placement="bottom">
+              <SearchIcon />
+            </Tooltip>
+          )
+        }
         <InputBase
           sx={{ ml: 1, flex: 1 }}
           placeholder="Search..."
@@ -100,15 +111,6 @@ export class Menu extends React.Component {
             () => this.onSearch(e.target.value, searchUpdate))}
           value={searchVal}
         />
-        {searchVal
-    && (
-      <HighlightOffIcon
-        id="clear-search"
-        style={{ fontSize: '1.5em', cursor: 'pointer' }}
-        onClick={() => this.setState({ searchVal: '' }, () => searchUpdate(''))}
-      />
-    )
-        }
       </Paper>
     );
   };
