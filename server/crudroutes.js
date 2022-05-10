@@ -29,7 +29,10 @@ const getPins = async (req, res) => {
   const { userId, isAdmin } = getUserProfile(req.user);
   try {
     const allPins = await pins.find({ isBroken: false }).exec();
-    const allPinLinks = allPins.map(pin => pin.imgLink);
+    let allPinLinks = [];
+    allPins.forEach((pin) => {
+      allPinLinks = [...allPinLinks, pin.imgLink, pin.originalImgLink];
+    });
     if (req.query.type === 'profile') {
       if (isAdmin) {
         res.json({ profilePins: filterPins(allPins, req.user), allPinLinks });

@@ -206,7 +206,8 @@ describe('The Mypins Component', () => {
     expect(wrapper.state().pinList[2]).toStrictEqual({
       savedBy: [],
       owner: 'A new pin by tester',
-      imgLink: 'new link',
+      imgLink: 's3 new link',
+      originalImgLink: 'original new link',
       imgDescription: 'new description',
       _id: 10,
       owns: true,

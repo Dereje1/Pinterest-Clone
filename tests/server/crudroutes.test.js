@@ -69,7 +69,7 @@ describe('Retrieving pins', () => {
     expect(pins.find).toHaveBeenCalledWith({ $or: [{ 'owner.id': user.twitter.id }, { 'savedBy.id': user.twitter.id }] });
     expect(res.json).toHaveBeenCalledWith({
       profilePins: allPinsResponse.filter(p => p.owns || p.hasSaved),
-      allPinLinks: profilePinsRaw.map(p => p.imgLink),
+      allPinLinks: profilePinsRaw.reduce((acc, p) => [...acc, p.imgLink, p.originalImgLink], []),
     });
   });
 
@@ -85,7 +85,7 @@ describe('Retrieving pins', () => {
     expect(pins.find).toHaveBeenCalledWith({ isBroken: false });
     expect(res.json).toHaveBeenCalledWith({
       profilePins: allPinsResponse.map(pin => ({ ...pin, owns: true })),
-      allPinLinks: rawPinsStub.map(p => p.imgLink),
+      allPinLinks: rawPinsStub.reduce((acc, p) => [...acc, p.imgLink, p.originalImgLink], []),
     });
   });
 

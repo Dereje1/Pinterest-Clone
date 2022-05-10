@@ -17,7 +17,8 @@ const restMock = jest.fn().mockImplementation((...args) => {
     return Promise.resolve({
       savedBy: [],
       owner: { name: 'A new pin by tester' },
-      imgLink: 'new link',
+      imgLink: 's3 new link',
+      originalImgLink: 'original new link',
       imgDescription: 'new description',
       _id: 10,
       createdAt: '2022-04-09T17:00:33.212Z',

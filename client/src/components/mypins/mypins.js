@@ -93,7 +93,7 @@ export class Mypins extends Component {
 
   async addPic(pinJSON) { // adds a pin to the db
     // copy then add pin to db and then update client state (in that order)
-    const { pinList } = this.state;
+    const { pinList, allPinLinks } = this.state;
     let pinListCopy = JSON.parse(JSON.stringify(pinList));
     const newPin = await RESTcall({
       address: '/api/newpin',
@@ -102,12 +102,13 @@ export class Mypins extends Component {
     });
 
     const {
-      savedBy, owner, imgLink, imgDescription, _id, createdAt,
+      savedBy, owner, imgLink, imgDescription, _id, createdAt, originalImgLink,
     } = newPin;
     const pinAdd = {
       _id,
       imgDescription,
       imgLink,
+      originalImgLink,
       savedBy,
       owner: owner.name,
       owns: true,
@@ -117,6 +118,7 @@ export class Mypins extends Component {
     pinListCopy = [...pinListCopy, pinAdd];
     this.setState({
       pinList: pinListCopy,
+      allPinLinks: [...allPinLinks, imgLink, originalImgLink],
     });
   }
 
@@ -127,17 +129,22 @@ export class Mypins extends Component {
   }
 
   deletePic(element) {
-    const { pinList, displayPinCreate } = this.state;
+    const { pinList, displayPinCreate, allPinLinks } = this.state;
     if (displayPinCreate) return;
     let pinListCopy = JSON.parse(JSON.stringify(pinList));
     const indexOfDeletion = pinListCopy.findIndex(p => p._id === element._id);
+    const { imgLink, originalImgLink } = pinListCopy[indexOfDeletion];
     pinListCopy = [...pinListCopy.slice(0, indexOfDeletion),
       ...pinListCopy.slice(indexOfDeletion + 1)];
+    const updatedPinLinks = allPinLinks.filter(
+      link => link !== imgLink && link !== originalImgLink,
+    );
     this.setState({
       pinList: pinListCopy,
       displayPinZoom: false,
       showDeleteImageModal: false,
       deletableImgInfo: null,
+      allPinLinks: updatedPinLinks,
     }, async () => {
       await RESTcall({
         address: `/api/${element._id}`,
