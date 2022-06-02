@@ -10,7 +10,7 @@ const pinsStub = [
     ],
     owns: false,
     hasSaved: false,
-    createdAt: '12/25/2020',
+    createdAt: '2020-12-25T00:00:00.000+00:00',
   },
   {
     _id: 2,
@@ -23,7 +23,7 @@ const pinsStub = [
     ],
     owns: false,
     hasSaved: true,
-    createdAt: '12/25/20',
+    createdAt: '2020-12-25T00:00:00.000+00:00',
   },
   {
     _id: 3,
@@ -36,7 +36,7 @@ const pinsStub = [
     ],
     owns: true,
     hasSaved: false,
-    createdAt: '12/25/2020',
+    createdAt: '2020-12-25T00:00:00.000+00:00',
   },
 ];
 
