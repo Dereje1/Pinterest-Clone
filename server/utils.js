@@ -97,6 +97,8 @@ const configureS3 = () => new AWS.S3({
 const uploadImageToS3 = async ({
   originalImgLink, userId, displayName, service,
 }) => {
+  // unwanted characters (non ASCII) rejected by AWS tagging
+  const ASCIIdisplayName = displayName.replace(/[^\x20-\x7E]+/g, '');
   try {
     const s3 = configureS3();
     const Body = await processImage(originalImgLink);
@@ -106,7 +108,7 @@ const uploadImageToS3 = async ({
       Key,
       Body,
       ContentType: 'image/png',
-      Tagging: `userId=${userId}&name=${displayName}&service=${service}`,
+      Tagging: `userId=${userId}&name=${ASCIIdisplayName}&service=${service}`,
     };
     const uploadedImage = await s3.upload(params).promise();
     console.log(`Successfully uploaded image ${originalImgLink} to S3 with id: ${Key}`);
