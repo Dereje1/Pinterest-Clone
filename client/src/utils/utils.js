@@ -78,3 +78,11 @@ export const getModalWidth = () => {
   }
   return innerWidth / 2;
 };
+
+export const isDuplicateError = (allPinLinks, picPreview) => {
+  for (let i = 0; i < allPinLinks.length; i += 1) {
+    const { imgLink, originalImgLink } = allPinLinks[i];
+    if (imgLink === picPreview || originalImgLink === picPreview) return true;
+  }
+  return false;
+};

@@ -146,7 +146,7 @@ describe('The Mypins Component', () => {
     const imageBuild = wrapper.find('ImageBuild');
     imageBuild.props().deletePin({ _id: 3, owns: true, imgDescription: 'deletable' });
     expect(wrapper.state().showDeleteImageModal).toBe(true);
-    expect(wrapper.state().deletableImgInfo).toStrictEqual({ _id: 3, imgDescription: 'deletable' });
+    expect(wrapper.state().deletableImgInfo).toStrictEqual({ _id: 3, imgDescription: 'deletable', owns: true });
   });
 
   test('ImageBuild sub-component will reset the pin zoom modal', async () => {

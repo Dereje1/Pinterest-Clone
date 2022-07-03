@@ -30,8 +30,8 @@ const getPins = async (req, res) => {
   try {
     const allPins = await pins.find({ isBroken: false }).exec();
     let allPinLinks = [];
-    allPins.forEach((pin) => {
-      allPinLinks = [...allPinLinks, pin.imgLink, pin.originalImgLink];
+    allPins.forEach(({ imgLink, originalImgLink }) => {
+      allPinLinks = [...allPinLinks, { imgLink, originalImgLink }];
     });
     if (req.query.type === 'profile') {
       if (isAdmin) {

@@ -9,7 +9,9 @@ import CardMedia from '@mui/material/CardMedia';
 import IconButton from '@mui/material/IconButton';
 import SavePin from './SavePin';
 import imageBroken from './NO-IMAGE.png';
-import { delay, validateURL, getModalWidth } from '../../utils/utils';
+import {
+  delay, validateURL, getModalWidth, isDuplicateError,
+} from '../../utils/utils';
 import './pincreate.scss';
 
 
@@ -98,7 +100,7 @@ class PinCreate extends Component {
     const modalHeight = window.innerHeight * 0.92;
     const modalWidth = getModalWidth();
     const isDescriptionError = description.trim().length < 5;
-    const isDuplicateError = allPinLinks.includes(picPreview);
+    const duplicateError = isDuplicateError(allPinLinks, picPreview);
     return (
       <>
         {show && <div className="pin-create-modal-overlay" />}
@@ -155,7 +157,7 @@ class PinCreate extends Component {
             <SavePin
               isImageError={showErrorImage}
               isDescriptionError={isDescriptionError}
-              isDuplicateError={isDuplicateError}
+              isDuplicateError={duplicateError}
               savePic={this.savePic}
             />
           </div>
@@ -172,7 +174,7 @@ export default PinCreate;
 PinCreate.propTypes = {
   // data used for pin creation
   userInfo: PropTypes.shape(PropTypes.shape).isRequired,
-  allPinLinks: PropTypes.arrayOf(PropTypes.string).isRequired,
+  allPinLinks: PropTypes.arrayOf(PropTypes.object).isRequired,
   // callback in mypins to turn modal off
   reset: PropTypes.func.isRequired,
   // POST request via axios

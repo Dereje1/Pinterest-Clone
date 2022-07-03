@@ -21,7 +21,7 @@ describe('The pin creation modal', () => {
         userId: 'tester user Id',
       },
       message: true,
-      allPinLinks: [],
+      allPinLinks: [{ imgLink: 'https://duplicate.com' }],
       reset: jest.fn(),
       savePin: jest.fn(),
     };
@@ -87,6 +87,18 @@ describe('The pin creation modal', () => {
     expect(wrapper.state().picPreview).toBe('load-error.png');
   });
 
+  test('will detect duplicate pins', async () => {
+    const wrapper = shallow(<PinCreate {...props} />);
+    wrapper.setState({
+      picPreview: 'https://duplicate.com',
+      description: 'abcde',
+      showErrorImage: false,
+      show: true,
+    });
+    const SavePin = wrapper.find('SavePin');
+    expect(SavePin.props().isDuplicateError).toBe(true);
+  });
+
   test('will save valid pins', async () => {
     const wrapper = shallow(<PinCreate {...props} />);
     wrapper.setState({
@@ -96,6 +108,7 @@ describe('The pin creation modal', () => {
       show: true,
     });
     const SavePin = wrapper.find('SavePin');
+    expect(SavePin.props().isDuplicateError).toBe(false);
     SavePin.props().savePic();
     jest.advanceTimersByTime(500);
     await Promise.resolve();

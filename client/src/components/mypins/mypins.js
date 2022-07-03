@@ -94,31 +94,21 @@ export class Mypins extends Component {
   async addPic(pinJSON) { // adds a pin to the db
     // copy then add pin to db and then update client state (in that order)
     const { pinList, allPinLinks } = this.state;
-    let pinListCopy = JSON.parse(JSON.stringify(pinList));
     const newPin = await RESTcall({
       address: '/api/newpin',
       method: 'post',
       payload: pinJSON,
     });
-
-    const {
-      savedBy, owner, imgLink, imgDescription, _id, createdAt, originalImgLink,
-    } = newPin;
-    const pinAdd = {
-      _id,
-      imgDescription,
-      imgLink,
-      originalImgLink,
-      savedBy,
+    const { owner, imgLink, originalImgLink } = newPin;
+    const addedPin = {
+      ...newPin,
       owner: owner.name,
       owns: true,
       hasSaved: false,
-      createdAt,
     };
-    pinListCopy = [...pinListCopy, pinAdd];
     this.setState({
-      pinList: pinListCopy,
-      allPinLinks: [...allPinLinks, imgLink, originalImgLink],
+      pinList: [...pinList, addedPin],
+      allPinLinks: [...allPinLinks, { imgLink, originalImgLink }],
     });
   }
 
@@ -128,26 +118,18 @@ export class Mypins extends Component {
     });
   }
 
-  deletePic(element) {
+  deletePic({ _id, imgLink, owns }) {
     const { pinList, displayPinCreate, allPinLinks } = this.state;
     if (displayPinCreate) return;
-    let pinListCopy = JSON.parse(JSON.stringify(pinList));
-    const indexOfDeletion = pinListCopy.findIndex(p => p._id === element._id);
-    const { imgLink, originalImgLink } = pinListCopy[indexOfDeletion];
-    pinListCopy = [...pinListCopy.slice(0, indexOfDeletion),
-      ...pinListCopy.slice(indexOfDeletion + 1)];
-    const updatedPinLinks = allPinLinks.filter(
-      link => link !== imgLink && link !== originalImgLink,
-    );
     this.setState({
-      pinList: pinListCopy,
+      pinList: pinList.filter(p => p._id !== _id),
       displayPinZoom: false,
       showDeleteImageModal: false,
       deletableImgInfo: null,
-      allPinLinks: updatedPinLinks,
+      allPinLinks: owns ? allPinLinks.filter(links => links.imgLink !== imgLink) : allPinLinks,
     }, async () => {
       await RESTcall({
-        address: `/api/${element._id}`,
+        address: `/api/${_id}`,
         method: 'delete',
       });
     });
@@ -179,7 +161,7 @@ export class Mypins extends Component {
               </div>
               <h3 id="createpintext">Create Pin</h3>
             </div>
-            { displayPinCreate && (
+            {displayPinCreate && (
               <PinCreate
                 reset={() => this.setState({ displayPinCreate: false })}
                 userInfo={user}
@@ -197,7 +179,7 @@ export class Mypins extends Component {
               if (e.owns) {
                 this.setState({
                   showDeleteImageModal: true,
-                  deletableImgInfo: { _id: e._id, imgDescription: e.imgDescription },
+                  deletableImgInfo: e,
                   displayPinZoom: false,
                 });
               } else {
