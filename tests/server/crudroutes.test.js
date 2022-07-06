@@ -281,7 +281,7 @@ describe('Pinning an image', () => {
     jest.restoreAllMocks();
   });
 
-  test('will pin an image if user has not pinned', async () => {
+  test('will pin an image', async () => {
     const newSavedBy = [...rawPinsStub[2].savedBy, { id: req.body.id, name: req.body.name }];
     pins.findByIdAndUpdate = jest.fn().mockImplementation(
       () => ({
@@ -308,6 +308,7 @@ describe('Pinning an image', () => {
       { new: true },
     );
     expect(res.json).toHaveBeenCalledWith({ ...rawPinsStub[2], savedBy: newSavedBy });
+    expect(res.end).toHaveBeenCalledTimes(0);
   });
 
   test('will not pin an image if user has already pinned', async () => {

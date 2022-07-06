@@ -97,11 +97,6 @@ describe('The Home Component', () => {
         {
           address: '/api/1',
           method: 'put',
-          payload: {
-            name: 'tester displayname',
-            service: 'tester service',
-            id: 'tester user Id',
-          },
         },
       ],
     ]);

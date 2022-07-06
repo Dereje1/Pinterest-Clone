@@ -49,15 +49,19 @@ const getPins = async (req, res) => {
 };
 
 const pinImage = async (req, res) => {
-  const newPinner = req.body;
   const pinID = req.params._id;
-  const { userId, displayName } = getUserProfile(req.user);
+  const { userId, displayName, service } = getUserProfile(req.user);
+
   try {
     const pin = await pins.findById(pinID).exec();
-    const indexOfNewPinner = pin.savedBy.findIndex(p => userId === p.id);
-    if (indexOfNewPinner < 0) {
-      const pinToUpdate = [...pin.savedBy, newPinner];
-      const update = { $set: { savedBy: pinToUpdate } };
+    const alreadyPinned = pin.savedBy.some(p => p.id === userId);
+    if (!alreadyPinned) {
+      const newPinnerInfo = {
+        name: displayName,
+        service,
+        id: userId,
+      };
+      const update = { $set: { savedBy: [...pin.savedBy, newPinnerInfo] } };
       const modified = { new: true };
       const updatedPin = await pins.findByIdAndUpdate(pinID, update, modified).exec();
       console.log(`${displayName} pinned ${updatedPin.imgDescription}`);
@@ -82,9 +86,7 @@ const removePin = async (req, res) => {
       console.log(`${displayName} deleted pin ${removedPin.imgDescription}`);
       res.json(removedPin);
     } else {
-      const indexOfDeletion = pin.savedBy.findIndex(s => s.id === userId);
-      const pinToUpdate = [...pin.savedBy.slice(0, indexOfDeletion),
-        ...pin.savedBy.slice(indexOfDeletion + 1)];
+      const pinToUpdate = pin.savedBy.filter(s => s.id !== userId);
       const update = { $set: { savedBy: pinToUpdate } };
       const modified = { new: true };
       const updatedPin = await pins.findByIdAndUpdate(pinID, update, modified).exec();

@@ -16,7 +16,7 @@ describe('Mongo db', () => {
   test('will connect', () => {
     expect(mongoose.connect).toHaveBeenCalledWith(
       'TEST_MONGO_URI',
-      { useUnifiedTopology: true, useNewUrlParser: true },
+      { useUnifiedTopology: true, useNewUrlParser: true, useFindAndModify: false },
     );
   });
   test('will invoke connection processes', () => {

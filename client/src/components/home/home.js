@@ -68,11 +68,11 @@ export class Home extends Component {
     });
   };
 
-  savePic(element) { // saves a pic owned by somebody else into current users profile
+  pinImage(element) { // saves a pic owned by somebody else into current users profile
     // can not do this unless logged in
     const {
       user: {
-        displayname, username, service, userId,
+        displayname, username,
       },
     } = this.props;
     const { pinList } = this.state;
@@ -83,27 +83,25 @@ export class Home extends Component {
       });
       return;
     }
-    // copy pinlist --> avoid mutation at all cost
-    const pinListCopy = JSON.parse(JSON.stringify(pinList));
-    const indexOfUpdate = pinListCopy.findIndex(p => p._id === element._id);
     // add current pinner info to saved by array of pin
-    const newPinnerInfo = {
-      name: displayname,
-      service,
-      id: userId,
-    };
-    const updated = [...element.savedBy, displayname];
+    const updatedPins = pinList.map((pin) => {
+      if (pin._id === element._id) {
+        return {
+          ...pin,
+          savedBy: [...pin.savedBy, displayname],
+          hasSaved: true,
+        };
+      }
+      return pin;
+    });
     // update client then update db
-    pinListCopy[indexOfUpdate].savedBy = updated;
-    pinListCopy[indexOfUpdate].hasSaved = true;
     this.setState({
-      pinList: pinListCopy,
+      pinList: updatedPins,
       displayPinZoom: false,
     }, async () => {
       await RESTcall({
         address: `/api/${element._id}`,
         method: 'put',
-        payload: newPinnerInfo,
       });
     });
   }
@@ -130,7 +128,7 @@ export class Home extends Component {
             layoutComplete={this.layoutComplete}
             pinEnlarge={this.pinEnlarge}
             onBrokenImage={this.onBrokenImage}
-            pinImage={e => this.savePic(e)}
+            pinImage={e => this.pinImage(e)}
             deletePin={null}
             pinList={filteredPins}
             imagesLoaded={imagesLoaded}
