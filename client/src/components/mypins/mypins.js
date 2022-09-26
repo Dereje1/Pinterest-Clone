@@ -4,6 +4,7 @@ import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import TwitterIcon from '@mui/icons-material/Twitter';
 import GoogleIcon from '@mui/icons-material/Google';
+import Typography from '@mui/material/Typography';
 import Button from '@mui/material/Button';
 import Dialog from '@mui/material/Dialog';
 import DialogActions from '@mui/material/DialogActions';
@@ -14,21 +15,39 @@ import RESTcall from '../../crud'; // pin CRUD
 import './mypins.scss';
 import imageBroken from './NO-IMAGE.png';
 
-const getUserName = ({ service, displayname }) => {
+const getUserName = ({ service, displayname, username }) => {
   const serviceObj = {
-    twitter: <TwitterIcon style={{ fontSize: 30, marginTop: 80, color: '#1DA1F2' }} />,
-    google: <GoogleIcon style={{ fontSize: 30, marginTop: 80, color: '#4285F4' }} />,
-
+    twitter:
+  <>
+    <TwitterIcon style={{ fontSize: 30, color: '#1DA1F2' }} />
+    <Typography style={{ marginLeft: 15 }}>
+      {`@${username}`}
+    </Typography>
+  </>,
+    google:
+  <>
+    <GoogleIcon style={{ fontSize: 30, color: '#4285F4' }} />
+    <Typography style={{ marginLeft: 15 }}>
+      {username}
+    </Typography>
+  </>,
   };
   return (
-    <>
-      {
-        serviceObj[service]
-      }
-      <h3 id="username">
+    <div style={{
+      marginTop: 80,
+      display: 'flex',
+      flexDirection: 'column',
+      justifyContent: 'center',
+      alignItems: 'center',
+    }}
+    >
+      <Typography variant="h4">
         {displayname}
-      </h3>
-    </>
+      </Typography>
+      <div style={{ display: 'flex', alignItems: 'center' }}>
+        {serviceObj[service]}
+      </div>
+    </div>
   );
 };
 

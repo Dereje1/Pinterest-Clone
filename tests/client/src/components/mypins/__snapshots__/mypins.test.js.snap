@@ -6,11 +6,31 @@ exports[`The Mypins Component Mypins landing page will render 1`] = `
     <div
       id="mypinframe"
     >
-      <h3
-        id="username"
+      <div
+        style={
+          Object {
+            "alignItems": "center",
+            "display": "flex",
+            "flexDirection": "column",
+            "justifyContent": "center",
+            "marginTop": 80,
+          }
+        }
       >
-        tester displayname
-      </h3>
+        <ForwardRef(Typography)
+          variant="h4"
+        >
+          tester displayname
+        </ForwardRef(Typography)>
+        <div
+          style={
+            Object {
+              "alignItems": "center",
+              "display": "flex",
+            }
+          }
+        />
+      </div>
       <div
         id="creatpinwrapper"
         onClick={[Function]}
