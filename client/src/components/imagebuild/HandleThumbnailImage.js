@@ -10,7 +10,7 @@ const HandleThumbnailImage = ({ element, pinImage, deletePin }) => {
         className="actionbutton"
         onClick={() => deletePin(element)}
       >
-        Delete
+        {element.owns ? 'Delete' : 'Unpin'}
       </button>
     );
   }

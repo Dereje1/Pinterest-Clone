@@ -27,12 +27,36 @@ describe('Handling image action buttons', () => {
     const updatedProps = {
       ...props,
       pinImage: null,
+      element: {
+        ...props.element,
+        owns: true,
+      },
     };
     const wrapper = shallow(<HandleThumbnailImage {...updatedProps} />);
     wrapper.props().onClick();
     expect(wrapper.text()).toBe('Delete');
     expect(props.deletePin).toHaveBeenCalledWith({
       hasSaved: false,
+      owns: true,
+    });
+  });
+
+  test('will render the unpin button', () => {
+    const updatedProps = {
+      ...props,
+      pinImage: null,
+      element: {
+        ...props.element,
+        owns: false,
+        hasSaved: true,
+      },
+    };
+    const wrapper = shallow(<HandleThumbnailImage {...updatedProps} />);
+    wrapper.props().onClick();
+    expect(wrapper.text()).toBe('Unpin');
+    expect(props.deletePin).toHaveBeenCalledWith({
+      hasSaved: true,
+      owns: false,
     });
   });
 
