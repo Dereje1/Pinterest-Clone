@@ -35,13 +35,13 @@ const getPins = async (req, res) => {
     });
     if (req.query.type === 'profile') {
       if (isAdmin) {
-        res.json({ profilePins: filterPins(allPins, req.user), allPinLinks });
+        res.json({ profilePins: filterPins({ rawPins: allPins, userId, isAdmin }), allPinLinks });
         return;
       }
       const profilePins = await pins.find({ $or: [{ 'owner.id': userId }, { 'savedBy.id': userId }] }).exec();
-      res.json({ profilePins: filterPins(profilePins, req.user), allPinLinks });
+      res.json({ profilePins: filterPins({ rawPins: profilePins, userId, isAdmin }), allPinLinks });
     } else {
-      res.json(filterPins(allPins, req.user));
+      res.json(filterPins({ rawPins: allPins, userId, isAdmin }));
     }
   } catch (error) {
     res.json(error);

@@ -30,11 +30,10 @@ returns
     createdDate: send full
 };
 */
-const filterPins = (rawPins, user) => rawPins.map((pin) => {
+const filterPins = ({ rawPins, userId, isAdmin }) => rawPins.map((pin) => {
   const {
     _id, imgDescription, imgLink, owner, savedBy, createdAt,
   } = pin;
-  const { userId, isAdmin } = getUserProfile(user);
   const savedIds = savedBy.map(s => s.id);
   const { name } = owner;
   const modifiedSavedBy = savedBy.map(pinner => pinner.name);
