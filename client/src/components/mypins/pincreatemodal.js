@@ -74,15 +74,10 @@ class PinCreate extends Component {
   };
 
   savePic = () => { // ready to save pin
-    const { userInfo, savePin } = this.props;
+    const { savePin } = this.props;
     const { picPreview, description } = this.state;
     // prepare JSON for POST api
     const pinJSON = {
-      owner: {
-        name: userInfo.displayname,
-        service: userInfo.service,
-        id: userInfo.userId,
-      },
       imgDescription: description,
       imgLink: picPreview,
     };
@@ -173,7 +168,6 @@ export default PinCreate;
 
 PinCreate.propTypes = {
   // data used for pin creation
-  userInfo: PropTypes.shape(PropTypes.shape).isRequired,
   allPinLinks: PropTypes.arrayOf(PropTypes.object).isRequired,
   // callback in mypins to turn modal off
   reset: PropTypes.func.isRequired,

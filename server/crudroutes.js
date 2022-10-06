@@ -14,6 +14,11 @@ const addPin = async (req, res) => {
     });
     const updatedPinInfo = {
       ...req.body,
+      owner: {
+        name: displayName,
+        service,
+        id: userId,
+      },
       imgLink: newImgLink || originalImgLink,
       originalImgLink,
     };

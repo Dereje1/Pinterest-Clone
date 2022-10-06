@@ -113,11 +113,6 @@ describe('The pin creation modal', () => {
     jest.advanceTimersByTime(500);
     await Promise.resolve();
     expect(props.savePin).toHaveBeenCalledWith({
-      owner: {
-        name: 'tester displayname',
-        service: 'tester service',
-        id: 'tester user Id',
-      },
       imgDescription: 'abcde',
       imgLink: 'https://abc.com',
     });

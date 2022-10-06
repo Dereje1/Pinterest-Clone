@@ -183,7 +183,6 @@ export class Mypins extends Component {
             {displayPinCreate && (
               <PinCreate
                 reset={() => this.setState({ displayPinCreate: false })}
-                userInfo={user}
                 savePin={pinJSON => this.addPic(pinJSON)}
                 allPinLinks={allPinLinks}
               />
