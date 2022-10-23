@@ -35,16 +35,15 @@ const filterPins = ({ rawPins, userId, isAdmin }) => rawPins.map((pin) => {
     _id, imgDescription, imgLink, owner, savedBy, createdAt,
   } = pin;
   const savedIds = savedBy.map(s => s.id);
-  const { name } = owner;
-  const modifiedSavedBy = savedBy.map(pinner => pinner.name);
+  const savedNames = savedBy.map(pinner => pinner.name);
   return {
     _id,
     imgDescription,
     imgLink,
-    owner: name,
-    savedBy: modifiedSavedBy,
-    owns: userId ? userId === owner.id || isAdmin : null,
-    hasSaved: userId ? savedIds.includes(userId) : null,
+    owner: owner.name,
+    savedBy: savedNames,
+    owns: Boolean(userId && (userId === owner.id || isAdmin)),
+    hasSaved: Boolean(userId && savedIds.includes(userId)),
     createdAt,
   };
 });
@@ -54,10 +53,11 @@ const validateURL = (string) => {
     const url = new URL(string);
     if (url.protocol === 'data:') return 'data protocol';
     if (url.protocol === 'http:' || url.protocol === 'https:') return string;
-  } catch (_) {
+    throw new Error(`${string} can not be parsed into a valid URL`);
+  } catch (e) {
+    console.log(e);
     return null;
   }
-  return null;
 };
 
 const processImage = url => new Promise((resolve, reject) => {

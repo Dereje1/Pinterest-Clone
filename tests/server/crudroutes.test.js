@@ -204,7 +204,7 @@ describe('Adding a pin', () => {
           id: user.twitter.id,
         },
         imgDescription: 'description-4',
-        imgLink: 'ABC',
+        imgLink: 'htt://stub-4',
       },
     };
     mockS3Instance.upload.mockClear();
@@ -214,7 +214,7 @@ describe('Adding a pin', () => {
     expect(pins.create).toHaveBeenCalledWith({
       ...req.body,
       originalImgLink: req.body.imgLink,
-      imgLink: 'ABC',
+      imgLink: 'htt://stub-4',
       isBroken: false,
     });
     expect(res.json).toHaveBeenCalledWith({ ...req.body });
