@@ -60,68 +60,6 @@ describe('The Mypins Component', () => {
     expect(RESTcall).toHaveBeenCalledWith({ address: '/api/?type=profile', method: 'get' });
   });
 
-  xtest('ImageBuild sub-component will signal that the layout is complete', async () => {
-    const wrapper = shallow(<Mypins {...props} />);
-    await Promise.resolve();
-    const imageBuild = wrapper.find('ImageBuild');
-    expect(wrapper.state().imagesLoaded).toBe(false);
-    imageBuild.props().layoutComplete();
-    expect(wrapper.state().imagesLoaded).toBe(true);
-    expect(RESTcall).toHaveBeenCalledTimes(1);
-    expect(RESTcall).toHaveBeenCalledWith({ address: '/api/?type=profile', method: 'get' });
-  });
-
-  xtest('will not change state if images have already loaded', async () => {
-    const wrapper = shallow(<Mypins {...props} />);
-    wrapper.setState({ imagesLoaded: true });
-    await Promise.resolve();
-    const ans = wrapper.instance().layoutComplete();
-    expect(ans).toBe(undefined);
-  });
-
-  xtest('ImageBuild sub-component will signal to enalrge the pin', async () => {
-    const wrapper = shallow(<Mypins {...props} />);
-    await Promise.resolve();
-    const imageBuild = wrapper.find('ImageBuild');
-    const pinEnlargeArgs = [
-      {
-        target: {
-          type: 'not submit',
-        },
-        pageY: 10,
-        clientY: 5,
-      },
-      {
-        ...pinsStub[1],
-      },
-    ];
-    imageBuild.props().pinEnlarge(...pinEnlargeArgs);
-    expect(wrapper.state().displayPinZoom).toBe(true);
-    expect(wrapper.state().imageInfo[0]).toStrictEqual(pinsStub[1]);
-    expect(wrapper.state().imageInfo[1]).toBe(5);
-  });
-
-  xtest('will cancel signal to enalrge the pin', async () => {
-    const wrapper = shallow(<Mypins {...props} />);
-    await Promise.resolve();
-    const imageBuild = wrapper.find('ImageBuild');
-    const pinEnlargeArgs = [
-      {
-        target: {
-          type: 'submit',
-        },
-        pageY: 10,
-        clientY: 5,
-      },
-      {
-        ...pinsStub[1],
-      },
-    ];
-    imageBuild.props().pinEnlarge(...pinEnlargeArgs);
-    expect(wrapper.state().displayPinZoom).toBe(false);
-    expect(wrapper.state().imageInfo).toStrictEqual([]);
-  });
-
   test('ImageBuild sub-component will signal to delete/unpin a pin from the db', async () => {
     const wrapper = shallow(<Mypins {...props} />);
     await Promise.resolve();
@@ -149,16 +87,6 @@ describe('The Mypins Component', () => {
     expect(wrapper.state().deletableImgInfo).toStrictEqual({ _id: 3, imgDescription: 'deletable', owns: true });
   });
 
-  xtest('ImageBuild sub-component will reset the pin zoom modal', async () => {
-    const wrapper = shallow(<Mypins {...props} />);
-    wrapper.setState({ displayPinZoom: true });
-    await Promise.resolve();
-    const imageBuild = wrapper.find('ImageBuild');
-    expect(wrapper.state().displayPinZoom).toBe(true);
-    imageBuild.props().resetModal();
-    expect(wrapper.state().displayPinZoom).toBe(false);
-  });
-
   test('will cancel signal to delete/unpin if pincreate modal is showing', async () => {
     const wrapper = shallow(<Mypins {...props} />);
     wrapper.setState({ displayPinCreate: true });
@@ -170,20 +98,6 @@ describe('The Mypins Component', () => {
     expect(RESTcall.mock.calls).toEqual([
       [{ address: '/api/?type=profile', method: 'get' }],
     ]);
-  });
-
-  xtest('ImageBuild sub-component will signal to remove broken images from state', async () => {
-    const wrapper = shallow(<Mypins {...props} />);
-    await Promise.resolve();
-    const imageBuild = wrapper.find('ImageBuild');
-    const brokenPin = wrapper.state().pinList.some(p => p._id === 2);
-    expect(brokenPin).toBe(true);
-    imageBuild.props().onBrokenImage(2);
-    expect(wrapper.state().pinList[0]).toStrictEqual({
-      ...pinsStub[1],
-      imgLink: expect.any(Object),
-      imgDescription: 'imgDescription id-2 Is Broken',
-    });
   });
 
   test('Will display the form to create a new pin', async () => {

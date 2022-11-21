@@ -48,39 +48,6 @@ describe('The Home Component', () => {
     expect(RESTcall).toHaveBeenCalledWith({ address: '/api/?type=All', method: 'get' });
   });
 
-  xtest('ImageBuild sub-component will signal that the layout is complete and make an extra REST call', async () => {
-    const wrapper = shallow(<Home {...props} />);
-    await Promise.resolve();
-    const imageBuild = wrapper.find('ImageBuild');
-    expect(wrapper.state().imagesLoaded).toBe(false);
-    imageBuild.props().layoutComplete();
-    expect(wrapper.state().imagesLoaded).toBe(true);
-    expect(RESTcall).toHaveBeenCalledTimes(1);
-    expect(RESTcall.mock.calls).toEqual([[{ address: '/api/?type=All', method: 'get' }]]);
-  });
-
-  xtest('ImageBuild sub-component will signal to enalrge the pin', async () => {
-    const wrapper = shallow(<Home {...props} />);
-    await Promise.resolve();
-    const imageBuild = wrapper.find('ImageBuild');
-    const pinEnlargeArgs = [
-      {
-        target: {
-          type: 'not submit',
-        },
-        pageY: 10,
-        clientY: 5,
-      },
-      {
-        ...pinsStub[0],
-      },
-    ];
-    imageBuild.props().pinEnlarge(...pinEnlargeArgs);
-    expect(wrapper.state().displayPinZoom).toBe(true);
-    expect(wrapper.state().imageInfo[0]).toStrictEqual(pinsStub[0]);
-    expect(wrapper.state().imageInfo[1]).toBe(5);
-  });
-
   test('ImageBuild sub-component will signal to pin/save an image', async () => {
     const wrapper = shallow(<Home {...props} />);
     await Promise.resolve();
@@ -100,17 +67,6 @@ describe('The Home Component', () => {
         },
       ],
     ]);
-  });
-
-  xtest('ImageBuild sub-component will signal to remove broken images from state', async () => {
-    const wrapper = shallow(<Home {...props} />);
-    await Promise.resolve();
-    const imageBuild = wrapper.find('ImageBuild');
-    let brokenPin = wrapper.state().pinList.some(p => p._id === 1);
-    expect(brokenPin).toBe(true);
-    imageBuild.props().onBrokenImage(1);
-    brokenPin = wrapper.state().pinList.some(p => p._id === 1);
-    expect(brokenPin).toBe(false);
   });
 
   test('Will filter pins if matching search found', async () => {
