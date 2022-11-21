@@ -66,6 +66,7 @@
     "html-loader": "^0.5.5",
     "html-webpack-plugin": "^5.5.0",
     "jest": "^27.4.7",
+    "jest-react-hooks-shallow": "^1.5.1",
     "nock": "^13.2.2",
     "nodemon": "^2.0.15",
     "postcss-loader": "^3.0.0",

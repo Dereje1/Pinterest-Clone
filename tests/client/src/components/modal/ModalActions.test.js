@@ -13,6 +13,7 @@ describe('Handling zoomed image action buttons', () => {
       },
       pinImage: jest.fn(),
       deletePin: jest.fn(),
+      reset: jest.fn(),
     };
   });
 
@@ -36,6 +37,7 @@ describe('Handling zoomed image action buttons', () => {
       hasSaved: false,
       owns: true,
     });
+    expect(props.reset).toHaveBeenCalled();
     expect(toJson(wrapper)).toMatchSnapshot();
   });
 
@@ -55,6 +57,7 @@ describe('Handling zoomed image action buttons', () => {
       hasSaved: false,
       owns: false,
     });
+    expect(props.reset).toHaveBeenCalled();
     expect(toJson(wrapper)).toMatchSnapshot();
   });
 
@@ -79,6 +82,7 @@ describe('Handling zoomed image action buttons', () => {
       hasSaved: false,
       owns: false,
     });
+    expect(props.reset).toHaveBeenCalled();
     expect(toJson(wrapper)).toMatchSnapshot();
   });
 });

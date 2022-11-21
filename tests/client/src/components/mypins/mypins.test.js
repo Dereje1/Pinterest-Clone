@@ -60,7 +60,7 @@ describe('The Mypins Component', () => {
     expect(RESTcall).toHaveBeenCalledWith({ address: '/api/?type=profile', method: 'get' });
   });
 
-  test('ImageBuild sub-component will signal that the layout is complete', async () => {
+  xtest('ImageBuild sub-component will signal that the layout is complete', async () => {
     const wrapper = shallow(<Mypins {...props} />);
     await Promise.resolve();
     const imageBuild = wrapper.find('ImageBuild');
@@ -71,7 +71,7 @@ describe('The Mypins Component', () => {
     expect(RESTcall).toHaveBeenCalledWith({ address: '/api/?type=profile', method: 'get' });
   });
 
-  test('will not change state if images have already loaded', async () => {
+  xtest('will not change state if images have already loaded', async () => {
     const wrapper = shallow(<Mypins {...props} />);
     wrapper.setState({ imagesLoaded: true });
     await Promise.resolve();
@@ -79,7 +79,7 @@ describe('The Mypins Component', () => {
     expect(ans).toBe(undefined);
   });
 
-  test('ImageBuild sub-component will signal to enalrge the pin', async () => {
+  xtest('ImageBuild sub-component will signal to enalrge the pin', async () => {
     const wrapper = shallow(<Mypins {...props} />);
     await Promise.resolve();
     const imageBuild = wrapper.find('ImageBuild');
@@ -101,7 +101,7 @@ describe('The Mypins Component', () => {
     expect(wrapper.state().imageInfo[1]).toBe(5);
   });
 
-  test('will cancel signal to enalrge the pin', async () => {
+  xtest('will cancel signal to enalrge the pin', async () => {
     const wrapper = shallow(<Mypins {...props} />);
     await Promise.resolve();
     const imageBuild = wrapper.find('ImageBuild');
@@ -149,7 +149,7 @@ describe('The Mypins Component', () => {
     expect(wrapper.state().deletableImgInfo).toStrictEqual({ _id: 3, imgDescription: 'deletable', owns: true });
   });
 
-  test('ImageBuild sub-component will reset the pin zoom modal', async () => {
+  xtest('ImageBuild sub-component will reset the pin zoom modal', async () => {
     const wrapper = shallow(<Mypins {...props} />);
     wrapper.setState({ displayPinZoom: true });
     await Promise.resolve();
@@ -172,7 +172,7 @@ describe('The Mypins Component', () => {
     ]);
   });
 
-  test('ImageBuild sub-component will signal to remove broken images from state', async () => {
+  xtest('ImageBuild sub-component will signal to remove broken images from state', async () => {
     const wrapper = shallow(<Mypins {...props} />);
     await Promise.resolve();
     const imageBuild = wrapper.find('ImageBuild');

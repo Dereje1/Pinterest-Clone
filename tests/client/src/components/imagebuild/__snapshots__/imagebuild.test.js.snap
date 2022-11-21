@@ -6,7 +6,7 @@ exports[`The ImageBuild component will render.... 1`] = `
     id="bubblecontainer"
     style={
       Object {
-        "display": "none",
+        "display": "flex",
       }
     }
   >
@@ -54,7 +54,7 @@ exports[`The ImageBuild component will render.... 1`] = `
           src="imgLink id-1"
           style={
             Object {
-              "visibility": "visible",
+              "visibility": "hidden",
             }
           }
         />
@@ -103,7 +103,7 @@ exports[`The ImageBuild component will render.... 1`] = `
           src="imgLink id-2"
           style={
             Object {
-              "visibility": "visible",
+              "visibility": "hidden",
             }
           }
         />
@@ -152,7 +152,7 @@ exports[`The ImageBuild component will render.... 1`] = `
           src="imgLink id-3"
           style={
             Object {
-              "visibility": "visible",
+              "visibility": "hidden",
             }
           }
         />

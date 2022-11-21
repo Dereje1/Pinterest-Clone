@@ -55,11 +55,7 @@ exports[`The Mypins Component Mypins landing page will render 1`] = `
     </div>
     <ImageBuild
       deletePin={[Function]}
-      displayPinZoom={false}
-      imagesLoaded={false}
-      layoutComplete={[Function]}
-      onBrokenImage={[Function]}
-      pinEnlarge={[Function]}
+      displayBrokenImage={true}
       pinImage={null}
       pinList={
         Array [
@@ -91,8 +87,6 @@ exports[`The Mypins Component Mypins landing page will render 1`] = `
           },
         ]
       }
-      resetModal={[Function]}
-      zoomInfo={Array []}
     />
     <ForwardRef(Dialog)
       aria-describedby="alert-dialog-description"

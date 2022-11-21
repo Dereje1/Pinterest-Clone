@@ -35,6 +35,7 @@ exports[`The pin zoom modal will render 1`] = `
               }
             }
             pinImage={[MockFunction]}
+            reset={[MockFunction]}
           />
           <Styled(ForwardRef(Badge))
             badgeContent={2}
