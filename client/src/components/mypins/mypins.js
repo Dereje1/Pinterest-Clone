@@ -13,7 +13,6 @@ import PinCreate from './pincreatemodal';
 import ImageBuild from '../imagebuild/imagebuild';
 import RESTcall from '../../crud'; // pin CRUD
 import './mypins.scss';
-import imageBroken from './NO-IMAGE.png';
 
 const getUserName = ({ service, displayname, username }) => {
   const serviceObj = {
@@ -59,9 +58,6 @@ export class Mypins extends Component {
       displayPinCreate: false, // controls pin creation modal
       pinList: [], // collects the pins user owns and saved
       allPinLinks: [], // URL of all pins in DB
-      displayPinZoom: false, // controls pin zoom modal
-      imageInfo: [], // used to send to pin zoom
-      imagesLoaded: false,
       showDeleteImageModal: false,
       deletableImgInfo: null,
     };
@@ -78,37 +74,6 @@ export class Mypins extends Component {
       allPinLinks,
     });
   }
-
-  onBrokenImage = (id) => { // handles broken image links on user page
-    // if the image is broken it will modify link to placeholder only on client side
-    // keeps original link in db, in case image becomes activated in the future
-    console.log('Broken Image Found', id);
-    const { pinList } = this.state;
-    const pinListCopy = JSON.parse(JSON.stringify(pinList));
-    const indexOfModification = pinListCopy.findIndex(p => p._id === id);
-    // update copy of image link and description
-    pinListCopy[indexOfModification].imgLink = imageBroken;
-    pinListCopy[indexOfModification].imgDescription = `${pinListCopy[indexOfModification].imgDescription} Is Broken`;
-
-    this.setState({
-      pinList: pinListCopy,
-    });
-  };
-
-  layoutComplete = () => {
-    const { imagesLoaded } = this.state;
-    if (imagesLoaded) return;
-    this.setState({ imagesLoaded: true });
-  };
-
-  pinEnlarge = (e, currentImg) => { // display pin zoom modal and passes image info
-    const { displayPinZoom, displayPinCreate } = this.state;
-    if (e.target.type === 'submit' || displayPinZoom || displayPinCreate) return;
-    this.setState({
-      displayPinZoom: true,
-      imageInfo: [currentImg, e.pageY - e.clientY],
-    });
-  };
 
   async addPic(pinJSON) { // adds a pin to the db
     // copy then add pin to db and then update client state (in that order)
@@ -142,7 +107,6 @@ export class Mypins extends Component {
     if (displayPinCreate) return;
     this.setState({
       pinList: pinList.filter(p => p._id !== _id),
-      displayPinZoom: false,
       showDeleteImageModal: false,
       deletableImgInfo: null,
       allPinLinks: owns ? allPinLinks.filter(links => links.imgLink !== imgLink) : allPinLinks,
@@ -157,9 +121,8 @@ export class Mypins extends Component {
   render() {
     const { user, user: { authenticated } } = this.props;
     const {
-      displayPinCreate, displayPinZoom, imageInfo,
-      pinList, imagesLoaded, showDeleteImageModal,
-      deletableImgInfo, allPinLinks,
+      displayPinCreate, showDeleteImageModal,
+      deletableImgInfo, allPinLinks, pinList,
     } = this.state;
     if (!authenticated) window.location.assign('/');
 
@@ -189,8 +152,6 @@ export class Mypins extends Component {
             )}
           </div>
           <ImageBuild
-            layoutComplete={this.layoutComplete}
-            pinEnlarge={this.pinEnlarge}
             onBrokenImage={this.onBrokenImage}
             pinImage={null}
             deletePin={(e) => {
@@ -198,17 +159,13 @@ export class Mypins extends Component {
                 this.setState({
                   showDeleteImageModal: true,
                   deletableImgInfo: e,
-                  displayPinZoom: false,
                 });
               } else {
                 this.deletePic(e);
               }
             }}
             pinList={pinList}
-            imagesLoaded={imagesLoaded}
-            displayPinZoom={displayPinZoom}
-            resetModal={() => this.setState({ displayPinZoom: false })}
-            zoomInfo={imageInfo}
+            displayBrokenImage
           />
           <Dialog
             open={showDeleteImageModal}

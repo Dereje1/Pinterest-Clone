@@ -105,7 +105,7 @@ export class PinZoom extends Component {
 
   render() {
     const {
-      zoomInfo, pinImage, deletePin,
+      zoomInfo, pinImage, deletePin, reset,
     } = this.props;
     const { show, parentDivStyle } = this.state;
     if (!zoomInfo.length) return null;
@@ -125,6 +125,7 @@ export class PinZoom extends Component {
                   element={pinInformation}
                   pinImage={pinImage}
                   deletePin={deletePin}
+                  reset={reset}
                 />
                 <StyledBadge badgeContent={totalPins} color="secondary" showZero>
                   <Tooltip title={pinnedBy}>

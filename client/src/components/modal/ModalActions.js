@@ -7,10 +7,19 @@ import DeleteForeverIcon from '@mui/icons-material/DeleteForever';
 import DeleteIcon from '@mui/icons-material/Delete';
 import Tooltip from '@mui/material/Tooltip';
 
-const GetAction = ({ element, pinImage, deletePin }) => {
+const GetAction = ({
+  element, pinImage, deletePin, reset,
+}) => {
   if (!pinImage) { // means called from profile page
     return (
-      <IconButton aria-label="settings" style={{ margin: '1vh' }} onClick={() => deletePin(element)}>
+      <IconButton
+        aria-label="settings"
+        style={{ margin: '1vh' }}
+        onClick={() => {
+          deletePin(element);
+          reset();
+        }}
+      >
         {
           element.owns
             ? (
@@ -38,7 +47,14 @@ const GetAction = ({ element, pinImage, deletePin }) => {
   }
   // user has not saved this pin show save button
   return (
-    <IconButton aria-label="settings" style={{ margin: '1vh' }} onClick={() => pinImage(element)}>
+    <IconButton
+      aria-label="settings"
+      style={{ margin: '1vh' }}
+      onClick={() => {
+        pinImage(element);
+        reset();
+      }}
+    >
       <Tooltip title="Pin image" placement="left">
         <PushPinOutlinedIcon style={{ fontSize: '2em' }} />
       </Tooltip>
@@ -58,4 +74,5 @@ GetAction.propTypes = {
   // what type of button to place on pic/thumbnail executed by caller
   pinImage: PropTypes.func,
   deletePin: PropTypes.func,
+  reset: PropTypes.func.isRequired,
 };
