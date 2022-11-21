@@ -10,7 +10,7 @@ import PinDropIcon from '@mui/icons-material/PinDrop';
 import { styled } from '@mui/styles';
 import ModalActions from './ModalActions';
 import {
-  delay, getNewImageWidth, getPinners, getFormattedDescription,
+  delay, getNewImageWidth, getPinners, getFormattedDescription, getCloudFrontLink,
 } from '../../utils/utils';
 import './modal.scss';
 
@@ -151,7 +151,7 @@ export class PinZoom extends Component {
           />
           <CardMedia
             component="img"
-            image={`${pinInformation.imgLink}`}
+            image={getCloudFrontLink(pinInformation.imgLink)}
             onLoad={this.handleImage}
             id="pin-zoom"
           />

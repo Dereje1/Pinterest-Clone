@@ -86,3 +86,13 @@ export const isDuplicateError = (allPinLinks, picPreview) => {
   }
   return false;
 };
+
+export const getCloudFrontLink = (link) => {
+  try {
+    const imgName = link.split('/')[4];
+    const bucketName = link.split('/')[3];
+    return bucketName === 'pinterest.clone' ? `https://d1ttxrulihk8wq.cloudfront.net/${imgName}` : link;
+  } catch (error) {
+    return link;
+  }
+};

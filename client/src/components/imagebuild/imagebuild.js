@@ -3,6 +3,7 @@ import Masonry from 'react-masonry-component';
 import PropTypes from 'prop-types';
 import HandleThumbnailImage from './HandleThumbnailImage';
 import PinZoom from '../modal/modalzoom';
+import { getCloudFrontLink } from '../../utils/utils';
 import './imagebuild.scss';
 import imageBroken from '../mypins/NO-IMAGE.png';
 
@@ -88,7 +89,7 @@ const ImageBuild = ({
                   alt={element.imgDescription}
                   onError={() => onBrokenImage(element._id)}
                   className="image-format"
-                  src={element.imgLink}
+                  src={getCloudFrontLink(element.imgLink)}
                   style={{ visibility: imagesLoaded ? 'visible' : 'hidden' }}
                 />
                 <div className="description">
