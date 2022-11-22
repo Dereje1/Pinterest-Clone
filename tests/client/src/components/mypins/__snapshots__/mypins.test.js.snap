@@ -87,6 +87,7 @@ exports[`The Mypins Component Mypins landing page will render 1`] = `
           },
         ]
       }
+      ready={true}
     />
     <ForwardRef(Dialog)
       aria-describedby="alert-dialog-description"

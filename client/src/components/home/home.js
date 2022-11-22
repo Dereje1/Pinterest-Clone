@@ -14,6 +14,7 @@ export class Home extends Component {
     this.state = {
       pinList: [], // stores all pins in db in state
       displaySignIn: false,
+      ready: false,
     };
   }
 
@@ -24,6 +25,7 @@ export class Home extends Component {
     });
     this.setState({
       pinList: shuffleImages([...pinsFromDB]),
+      ready: true,
     });
   }
 
@@ -65,7 +67,7 @@ export class Home extends Component {
 
   render() {
     const { user: { authenticated, username }, search } = this.props;
-    const { pinList, displaySignIn } = this.state;
+    const { pinList, displaySignIn, ready } = this.state;
     const filteredPins = getFilteredPins(pinList, search);
     if (username !== null) {
       return (
@@ -83,6 +85,7 @@ export class Home extends Component {
             pinImage={e => this.pinImage(e)}
             deletePin={null}
             pinList={filteredPins}
+            ready={ready}
           />
         </React.Fragment>
       );

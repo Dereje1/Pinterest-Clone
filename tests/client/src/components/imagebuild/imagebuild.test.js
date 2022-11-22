@@ -12,6 +12,7 @@ describe('The ImageBuild component', () => {
       deletePin: jest.fn(),
       pinList: pinsStub,
       displayBrokenImage: false,
+      ready: true,
     };
   });
 

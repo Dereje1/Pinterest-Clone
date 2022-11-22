@@ -60,6 +60,7 @@ export class Mypins extends Component {
       allPinLinks: [], // URL of all pins in DB
       showDeleteImageModal: false,
       deletableImgInfo: null,
+      ready: false,
     };
   }
 
@@ -72,6 +73,7 @@ export class Mypins extends Component {
     this.setState({
       pinList: profilePins,
       allPinLinks,
+      ready: true,
     });
   }
 
@@ -123,6 +125,7 @@ export class Mypins extends Component {
     const {
       displayPinCreate, showDeleteImageModal,
       deletableImgInfo, allPinLinks, pinList,
+      ready,
     } = this.state;
     if (!authenticated) window.location.assign('/');
 
@@ -152,7 +155,6 @@ export class Mypins extends Component {
             )}
           </div>
           <ImageBuild
-            onBrokenImage={this.onBrokenImage}
             pinImage={null}
             deletePin={(e) => {
               if (e.owns) {
@@ -165,6 +167,7 @@ export class Mypins extends Component {
               }
             }}
             pinList={pinList}
+            ready={ready}
             displayBrokenImage
           />
           <Dialog

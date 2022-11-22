@@ -13,6 +13,7 @@ const ImageBuild = ({
   deletePin,
   pinList,
   displayBrokenImage,
+  ready,
 }) => {
   const [displayPinZoom, setDisplayPinZoom] = useState(false);
   const [imageInfo, setImageInfo] = useState([]);
@@ -64,7 +65,7 @@ const ImageBuild = ({
 
   return (
     <React.Fragment>
-      <div id="bubblecontainer" style={{ display: imagesLoaded ? 'none' : 'flex' }}>
+      <div id="bubblecontainer" style={{ display: imagesLoaded && ready ? 'none' : 'flex' }}>
         <div className="bubbles A" />
         <div className="bubbles B" />
         <div className="bubbles C" />
@@ -90,7 +91,7 @@ const ImageBuild = ({
                   onError={() => onBrokenImage(element._id)}
                   className="image-format"
                   src={getCloudFrontLink(element.imgLink)}
-                  style={{ visibility: imagesLoaded ? 'visible' : 'hidden' }}
+                  style={{ visibility: imagesLoaded && ready ? 'visible' : 'hidden' }}
                 />
                 <div className="description">
                   {element.imgDescription}
@@ -133,4 +134,5 @@ ImageBuild.propTypes = {
   // caller will send list of pins after AJAX request complete
   pinList: PropTypes.arrayOf(PropTypes.any),
   displayBrokenImage: PropTypes.bool,
+  ready: PropTypes.bool.isRequired,
 };
