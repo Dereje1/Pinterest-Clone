@@ -16,6 +16,16 @@ const getUserProfile = (user) => {
     isAdmin,
   };
 };
+
+const getCloudFrontLink = (link) => {
+  try {
+    const [,,, bucketName, imgName] = link.split('/');
+    return bucketName === 'pinterest.clone' ? `https://d1ttxrulihk8wq.cloudfront.net/${imgName}` : link;
+  } catch (error) {
+    return link;
+  }
+};
+
 /* filterPins return only required pin info to the client */
 /*
 returns
@@ -39,7 +49,7 @@ const filterPins = ({ rawPins, userId, isAdmin }) => rawPins.map((pin) => {
   return {
     _id,
     imgDescription,
-    imgLink,
+    imgLink: getCloudFrontLink(imgLink),
     owner: owner.name,
     savedBy: savedNames,
     owns: Boolean(userId && (userId === owner.id || isAdmin)),
@@ -123,4 +133,5 @@ module.exports = {
   filterPins,
   uploadImageToS3,
   configureS3,
+  getCloudFrontLink,
 };

@@ -70,7 +70,11 @@ describe('Retrieving pins', () => {
     expect(res.json).toHaveBeenCalledWith({
       profilePins: allPinsResponse.filter(p => p.owns || p.hasSaved),
       allPinLinks: profilePinsRaw.reduce(
-        (acc, { imgLink, originalImgLink }) => [...acc, { imgLink, originalImgLink }], [],
+        (acc, { imgLink, originalImgLink }) => [
+          ...acc,
+          { imgLink, originalImgLink, cloudFrontLink: imgLink },
+        ],
+        [],
       ),
     });
   });
@@ -88,7 +92,15 @@ describe('Retrieving pins', () => {
     expect(res.json).toHaveBeenCalledWith({
       profilePins: allPinsResponse.map(pin => ({ ...pin, owns: true })),
       allPinLinks: rawPinsStub.reduce(
-        (acc, { imgLink, originalImgLink }) => [...acc, { imgLink, originalImgLink }], [],
+        (acc, { imgLink, originalImgLink }) => [
+          ...acc,
+          {
+            imgLink,
+            originalImgLink,
+            cloudFrontLink: imgLink,
+          },
+        ],
+        [],
       ),
     });
   });

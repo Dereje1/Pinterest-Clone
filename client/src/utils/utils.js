@@ -81,17 +81,12 @@ export const getModalWidth = () => {
 
 export const isDuplicateError = (allPinLinks, picPreview) => {
   for (let i = 0; i < allPinLinks.length; i += 1) {
-    const { imgLink, originalImgLink } = allPinLinks[i];
-    if (imgLink === picPreview || originalImgLink === picPreview) return true;
+    const { imgLink, originalImgLink, cloudFrontLink } = allPinLinks[i];
+    if (
+      imgLink === picPreview
+      || originalImgLink === picPreview
+      || cloudFrontLink === picPreview
+    ) return true;
   }
   return false;
-};
-
-export const getCloudFrontLink = (link) => {
-  try {
-    const [,,, bucketName, imgName] = link.split('/');
-    return bucketName === 'pinterest.clone' ? `https://d1ttxrulihk8wq.cloudfront.net/${imgName}` : link;
-  } catch (error) {
-    return link;
-  }
 };

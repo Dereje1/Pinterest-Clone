@@ -2,7 +2,7 @@ const router = require('express').Router();
 const pins = require('./models/pins'); // schema for pins
 const isLoggedIn = require('./auth/isloggedin');
 const {
-  getUserProfile, filterPins, uploadImageToS3,
+  getUserProfile, filterPins, uploadImageToS3, getCloudFrontLink,
 } = require('./utils');
 
 const addPin = async (req, res) => {
@@ -36,7 +36,14 @@ const getPins = async (req, res) => {
     const allPins = await pins.find({ isBroken: false }).exec();
     let allPinLinks = [];
     allPins.forEach(({ imgLink, originalImgLink }) => {
-      allPinLinks = [...allPinLinks, { imgLink, originalImgLink }];
+      allPinLinks = [
+        ...allPinLinks,
+        {
+          imgLink,
+          originalImgLink,
+          cloudFrontLink: getCloudFrontLink(imgLink),
+        },
+      ];
     });
     if (req.query.type === 'profile') {
       if (isAdmin) {
