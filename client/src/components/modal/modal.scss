@@ -1,3 +1,29 @@
+@mixin keyframes($animation-name) {
+  @-webkit-keyframes #{$animation-name} {
+    @content;
+  }
+  @-moz-keyframes #{$animation-name} {
+    @content;
+  }  
+  @-ms-keyframes #{$animation-name} {
+    @content;
+  }
+  @-o-keyframes #{$animation-name} {
+    @content;
+  }  
+  @keyframes #{$animation-name} {
+    @content;
+  }
+}
+
+@mixin animation($str) {
+  -webkit-animation: #{$str};
+  -moz-animation: #{$str};
+  -ms-animation: #{$str};
+  -o-animation: #{$str};
+  animation: #{$str};      
+}
+
 .zoom{
   height: auto;
   position: absolute;
@@ -14,7 +40,7 @@
   z-index: 1010;
   &.cshow{
     display: block;
-    animation-name: modalshow;
+    @include animation('zoom-pin');
     animation-duration: 1s;
     animation-timing-function: cubic-bezier(0.075, 0.82, 0.165, 1);
     animation-iteration-count: 1;
@@ -22,7 +48,7 @@
   &.chide{
     display: block;
     visibility: hidden;
-    animation-name: modalhide;
+    @include animation('restore-pin');
     animation-duration: 0.5s;
     animation-timing-function: cubic-bezier(0.075, 0.82, 0.165, 1);
     animation-iteration-count: 1;
@@ -38,24 +64,34 @@
   width: 100%;
   height: 100%;
   z-index: 1000;
+  @include animation('set-overlay');
+  animation-duration: 1s;
 }
-@keyframes modalshow {
+
+@include keyframes(zoom-pin) {
   0%{
-    opacity: 0;
-    transform: scale(0)
+    transform: scale(0);
   }
   100%{
-    opacity: 1;
-    transform: scale(1)
+    transform: scale(1);
   }
 }
 
-@keyframes modalhide {
+@include keyframes(restore-pin) {
   0%{
-    transform: scale(1) rotate(0deg);
-    visibility: visible;
+    transform: scale(1);
+    visibility:visible
   }
   100%{
-    transform: scale(0) rotate(360deg);
+    transform: scale(0);
+  }
+}
+
+@include keyframes(set-overlay) {
+  0%{
+    opacity: 1;
+  }
+  100%{
+    opacity: 0.7;
   }
 }

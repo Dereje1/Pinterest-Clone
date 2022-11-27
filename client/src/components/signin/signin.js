@@ -50,9 +50,12 @@ export class SignIn extends React.Component {
   render() {
     const { show } = this.state;
     return (
-      <div id="sign-in" className={show ? 'signshow' : 'signhide'}>
-        <LoginButtons guest={this.resetGuest} />
-      </div>
+      <>
+        {show && <div className="modal-overlay" />}
+        <div id="sign-in" className={show ? 'signshow' : 'signhide'}>
+          <LoginButtons guest={this.resetGuest} />
+        </div>
+      </>
     );
   }
 
