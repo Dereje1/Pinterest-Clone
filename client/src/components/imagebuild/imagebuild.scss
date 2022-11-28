@@ -1,3 +1,5 @@
+@import "../../common.scss";
+
 #mainframe{
     /*border: 3px solid black;*/
     margin-top: 5px;
@@ -98,7 +100,7 @@
     background: #676b71;
     border-radius: 100%;
     margin: auto;
-    animation-name: bubbleanimate;
+    @include animation('bubbleanimate');
     animation-duration: 1s;
     animation-iteration-count: infinite;
     animation-timing-function: ease-in-out;
@@ -120,15 +122,16 @@
 }
 }
 
-@keyframes bubbleanimate{
+.my-gallery-class{
+  margin: 0 auto;
+}
+
+
+@include keyframes(bubbleanimate){
   0%{
     transform: scale(0.2)
   }
   100%{
     transform: scale(1)
   }
-}
-
-.my-gallery-class{
-  margin: 0 auto;
 }

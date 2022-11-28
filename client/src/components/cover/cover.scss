@@ -1,3 +1,5 @@
+@import "../../common.scss";
+
 #cover:before {
     content: "";
     position: absolute;
@@ -7,7 +9,7 @@
     left: -50%;
     z-index: -1;
     background: url('./backscreen.png');
-    animation-name: bkimage;
+    @include animation('bkimage');
     animation-duration: 33s;
     animation-timing-function: linear;
     animation-iteration-count: 1;
@@ -83,7 +85,7 @@
   }
 
   
-  @keyframes bkimage {
+  @include keyframes(bkimage) {
     0%{
        transform: translateY(350px);
     }

@@ -1,3 +1,5 @@
+@import "../../common.scss";
+
 #sign-in{
     position: fixed;
     left: 0;
@@ -16,7 +18,7 @@
     border-radius: 10px;
     visibility: hidden;
     &.signshow{
-        animation-name: dropdown;
+        @include animation('dropdown');
         animation-duration: 1s;
         animation-timing-function: cubic-bezier();
         animation-iteration-count: 1;
@@ -24,14 +26,14 @@
         visibility: visible;
     }
     &.signhide{
-        animation-name: pullup;
+        @include animation('pullup');
         animation-duration: 1s;
         animation-timing-function: linear;
         animation-iteration-count: 1;
     }
 }
 
-@keyframes dropdown{
+@include keyframes(dropdown){
     0%{
         transform: translateY(-300px);
     }
@@ -40,7 +42,7 @@
     }
 }
 
-@keyframes pullup{
+@include keyframes(pullup){
     0%{
         transform: translateY(200px);
         visibility: visible;

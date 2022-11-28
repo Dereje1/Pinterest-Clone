@@ -1,3 +1,4 @@
+@import "../../common.scss";  
   .menu{
     position: fixed;
     display: flex;
@@ -76,14 +77,14 @@
     background: #f8f8f8;
     &.drop{
       top: 50px;
-      animation-name: dropmenu;
+      @include animation('dropmenu');
       animation-duration: 1s;
       animation-timing-function: cubic-bezier(0.075, 0.82, 0.165, 1);
       animation-iteration-count: 1;
     }
     &.lift{
       top: -350px;
-      animation-name: liftmenu;
+      @include animation('liftmenu');
       animation-duration: .75s;
       animation-timing-function: ease-out;
       animation-iteration-count: 1;
@@ -105,7 +106,7 @@
     }
   }
 
-  @keyframes dropmenu {
+  @include keyframes(dropmenu) {
     0%{
       opacity: 0;
       top: -350;
@@ -116,7 +117,7 @@
     }
   }
 
-  @keyframes liftmenu {
+  @include keyframes(liftmenu) {
     0%{
       opacity: 1;
       top: 50;
