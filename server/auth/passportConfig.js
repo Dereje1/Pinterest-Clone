@@ -29,8 +29,7 @@ const processLogin = async (token, tokenSecret, profile, done) => {
 };
 
 const passportConfig = (passport) => {
-  const twitterApiKeys = getApiKeys('twitter');
-  const googleApiKeys = getApiKeys('google');
+  const { twitterApiKeys, googleApiKeys } = getApiKeys();
   // used to serialize the user for the session
   passport.serializeUser((user, done) => {
     done(null, user.id);
