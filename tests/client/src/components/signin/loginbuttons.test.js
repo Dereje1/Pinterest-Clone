@@ -56,4 +56,12 @@ describe('The sign in component', () => {
     expect(mockedAssign).toHaveBeenCalledTimes(1);
     expect(mockedAssign).toHaveBeenCalledWith('/auth/google');
   });
+
+  test('will handle github users', () => {
+    const wrapper = shallow(<LoginButtons {...props} />);
+    const googleButton = wrapper.find({ id: 'githubloginbutton' });
+    googleButton.props().onClick();
+    expect(mockedAssign).toHaveBeenCalledTimes(1);
+    expect(mockedAssign).toHaveBeenCalledWith('/auth/github');
+  });
 });
