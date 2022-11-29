@@ -71,6 +71,31 @@ describe('Processing a login', () => {
     expect(done).toHaveBeenCalledTimes(1);
   });
 
+  test('will create a github user if not found in the db', async () => {
+    const githubUserModel = {
+      github: {
+        displayName: 'tester-github',
+        id: 'github test id',
+        token: 'anytoken',
+        username: 'test username',
+      },
+    };
+    const githubProfile = {
+      provider: 'github',
+      id: 'github test id',
+      displayName: 'tester-github',
+      username: 'test username',
+      emails: undefined,
+    };
+
+    await processLogin('anytoken', '', githubProfile, done);
+    expect(user.findOne).toHaveBeenCalledTimes(1);
+    expect(user.findOne).toHaveBeenCalledWith({ 'github.id': 'github test id' });
+    expect(user.create).toHaveBeenCalledTimes(1);
+    expect(user.create).toHaveBeenCalledWith(githubUserModel);
+    expect(done).toHaveBeenCalledTimes(1);
+  });
+
   test('will not create a user if found in the db', async () => {
     user.findOne.mockClear();
     user.findOne = jest.fn().mockImplementation(
@@ -137,11 +162,27 @@ describe('Configuring passport', () => {
     expect(passport.use).toHaveBeenCalledTimes(1);
     expect(passport.use.mock.calls[0][0].name).toBe('google');
   });
+  test('will succeed for github', () => {
+    process.env = {
+      ...process.env,
+      TWITTER_CONSUMER_KEY: undefined,
+      GOOGLE_CLIENT_ID: undefined,
+      GITHUB_CLIENT_ID: '123',
+      GITHUB_CLIENT_SECRET: '123',
+      GITHUB_CALLBACK: '123',
+    };
+    passportConfig(passport);
+    expect(passport.serializeUser).toHaveBeenCalledTimes(1);
+    expect(passport.deserializeUser).toHaveBeenCalledTimes(1);
+    expect(passport.use).toHaveBeenCalledTimes(1);
+    expect(passport.use.mock.calls[0][0].name).toBe('github');
+  });
   test('will not succeed if API keys are missing', () => {
     process.env = {
       ...process.env,
       TWITTER_CONSUMER_KEY: undefined,
       GOOGLE_CLIENT_ID: undefined,
+      GITHUB_CLIENT_ID: undefined,
     };
     passportConfig(passport);
     expect(passport.serializeUser).toHaveBeenCalledTimes(1);
