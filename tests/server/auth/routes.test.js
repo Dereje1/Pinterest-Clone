@@ -14,6 +14,7 @@ describe('Authentication routes', () => {
           displayName: 'test display name',
         },
         twitter: {},
+        github: {},
       },
       logout: jest.fn(),
     };
@@ -79,17 +80,24 @@ describe('The app will', () => {
       '/auth/logout',
       '/auth/twitter',
       '/auth/google',
+      '/auth/github',
       '/auth/twitter/callback',
       '/auth/google/redirect',
+      '/auth/github/redirect',
     ]);
-    expect(passport.authenticate).toHaveBeenCalledTimes(4);
+    expect(passport.authenticate).toHaveBeenCalledTimes(6);
     expect(passport.authenticate.mock.calls[0]).toEqual(['twitter']);
     expect(passport.authenticate.mock.calls[1]).toEqual(['google', { scope: ['profile', 'email'] }]);
-    expect(passport.authenticate.mock.calls[2]).toEqual(['twitter', {
+    expect(passport.authenticate.mock.calls[2]).toEqual(['github']);
+    expect(passport.authenticate.mock.calls[3]).toEqual(['twitter', {
       successRedirect: '/',
       failureRedirect: '/',
     }]);
-    expect(passport.authenticate.mock.calls[3]).toEqual(['google', {
+    expect(passport.authenticate.mock.calls[4]).toEqual(['google', {
+      successRedirect: '/',
+      failureRedirect: '/',
+    }]);
+    expect(passport.authenticate.mock.calls[5]).toEqual(['github', {
       successRedirect: '/',
       failureRedirect: '/',
     }]);

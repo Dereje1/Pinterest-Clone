@@ -4,6 +4,7 @@ const user = {
     displayName: 'tester-twitter',
   },
   google: {},
+  github: {},
 };
 const rawPinsStub = [{
   _id: '1',
