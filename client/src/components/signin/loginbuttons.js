@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import Button from '@mui/material/Button';
 import TwitterIcon from '@mui/icons-material/Twitter';
 import GoogleIcon from '@mui/icons-material/Google';
+import GitHubIcon from '@mui/icons-material/GitHub';
 import AccountCircleIcon from '@mui/icons-material/AccountCircle';
 import { connect } from 'react-redux';
 import { setGuest } from '../../actions/authentication';
@@ -38,6 +39,9 @@ export class LoginButtons extends React.Component {
         </Button>
         <Button id="googleloginbutton" variant="outlined" startIcon={<GoogleIcon style={{ fontSize: 25 }} />} onClick={() => handleLogin('/auth/google')}>
           Continue With Google
+        </Button>
+        <Button id="githubloginbutton" variant="outlined" startIcon={<GitHubIcon style={{ fontSize: 25 }} />} onClick={() => handleLogin('/auth/github')}>
+          Continue With Github
         </Button>
       </React.Fragment>
     );

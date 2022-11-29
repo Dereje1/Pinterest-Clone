@@ -1,4 +1,4 @@
-#twitterloginbutton, #googleloginbutton,#guestbutton{
+#twitterloginbutton, #googleloginbutton,#guestbutton, #githubloginbutton{
     border: 0px;
     height: 40px;
     display: flex;
@@ -36,4 +36,7 @@
   }
   #guestbutton{
     background-color: #ffb45e;
+  }
+  #githubloginbutton{
+    background-color: #1d7b20;
   }
