@@ -10,11 +10,15 @@ const getApiKeys = () => {
     GOOGLE_CLIENT_ID,
     GOOGLE_CLIENT_SECRET,
     GOOGLE_CALLBACK,
+    GITHUB_CLIENT_ID,
+    GITHUB_CLIENT_SECRET,
+    GITHUB_CALLBACK,
   } = process.env;
 
   const keys = {
     twitterApiKeys: null,
     googleApiKeys: null,
+    githubApiKeys: null,
   };
 
   if (TWITTER_CONSUMER_KEY && TWITTER_CONSUMER_SECRET && TWITTER_CALLBACK) {
@@ -32,10 +36,19 @@ const getApiKeys = () => {
     };
   }
 
+  if (GITHUB_CLIENT_ID && GITHUB_CLIENT_SECRET && GITHUB_CALLBACK) {
+    keys.githubApiKeys = {
+      clientID: GITHUB_CLIENT_ID,
+      clientSecret: GITHUB_CLIENT_SECRET,
+      callbackURL: GITHUB_CALLBACK,
+    };
+  }
+
   console.log({
     apiKeysFound: {
       twitter: Boolean(keys.twitterApiKeys),
       google: Boolean(keys.googleApiKeys),
+      github: Boolean(keys.githubApiKeys),
     },
   });
 
@@ -44,7 +57,7 @@ const getApiKeys = () => {
 
 /* Isolate auth service used from req.user and generate proffile */
 const getUserProfile = (user) => {
-  const [service] = ['google', 'twitter'].filter(s => user && Boolean(user[s].id));
+  const [service] = ['google', 'twitter', 'github'].filter(s => user && Boolean(user[s].id));
   const userId = service && user[service].id;
   const displayName = service && user[service].displayName;
   const username = service && user[service].username;

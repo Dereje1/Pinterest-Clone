@@ -16,6 +16,12 @@ const userSchema = mongoose.Schema({
     displayName: String,
     username: String,
   },
+  github: {
+    id: String,
+    token: String,
+    displayName: String,
+    username: String,
+  },
 });
 
 // create the model for users and expose it to our app

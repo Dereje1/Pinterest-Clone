@@ -1,6 +1,7 @@
 // config/passport.js for twitter
 const TwitterStrategy = require('passport-twitter').Strategy;
 const GoogleStrategy = require('passport-google-oauth').OAuth2Strategy;
+const GitHubStrategy = require('passport-github').Strategy;
 const { getApiKeys } = require('../utils');
 // load up the user model
 const User = require('../models/user');
@@ -29,7 +30,7 @@ const processLogin = async (token, tokenSecret, profile, done) => {
 };
 
 const passportConfig = (passport) => {
-  const { twitterApiKeys, googleApiKeys } = getApiKeys();
+  const { twitterApiKeys, googleApiKeys, githubApiKeys } = getApiKeys();
   // used to serialize the user for the session
   passport.serializeUser((user, done) => {
     done(null, user.id);
@@ -48,6 +49,10 @@ const passportConfig = (passport) => {
 
   if (googleApiKeys) {
     passport.use(new GoogleStrategy(googleApiKeys, processLogin));
+  }
+
+  if (githubApiKeys) {
+    passport.use(new GitHubStrategy(githubApiKeys, processLogin));
   }
 };
 module.exports = { passportConfig, processLogin };
