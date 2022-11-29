@@ -13,7 +13,7 @@ describe('The Menu component', () => {
     props = {
       user: {
         authenticated: true,
-        displayname: 'tester displayname',
+        displayName: 'tester displayName',
         username: 'tester username',
         service: 'tester service',
         userId: 'tester user Id',

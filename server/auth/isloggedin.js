@@ -9,7 +9,7 @@ module.exports = (req, res, next) => {
     authenticated: false,
     userIp: ip.address(),
     username: null,
-    displayname: null,
+    displayName: null,
   });
   return false;
 };

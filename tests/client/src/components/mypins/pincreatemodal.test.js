@@ -15,7 +15,7 @@ describe('The pin creation modal', () => {
     props = {
       userInfo: {
         authenticated: true,
-        displayname: 'tester displayname',
+        displayName: 'tester displayName',
         username: 'tester username',
         service: 'tester service',
         userId: 'tester user Id',

@@ -15,8 +15,7 @@ These instructions will get you a copy of the project up and running on your loc
 | ------------------------------------------- | ------- |
 | [Node.js](http://nodejs.org) /  npm (comes with Node)  | `~ ^14.18.0` / `~^6.14.15` |
 | [Git](https://git-scm.com/downloads) | `~ ^2` |
-| [MongoDB Community Server](https://docs.mongodb.com/manual/administration/install-community/) | `~ ^3.4.9`  |
-
+| [Docker Desktop](https://www.docker.com/products/docker-desktop/) (optional) | `~ ^4.4.2` |
 
 ### Installing
 
@@ -54,6 +53,9 @@ TWITTER_CALLBACK=http://localhost:8080/auth/twitter/callback
 GOOGLE_CLIENT_ID=< Get from Google Developer API >
 GOOGLE_CLIENT_SECRET=< Get from Google Developer API >
 GOOGLE_CALLBACK=http://localhost:8080/auth/google/redirect
+GITHUB_CLIENT_ID=< Get from Github Developer API >
+GITHUB_CLIENT_SECRET=< Get from Github Developer API >
+GITHUB_CALLBACK=http://localhost:8080/auth/github/redirect
 AWS_ACCESS_KEY_ID=< Get from AWS >
 AWS_SECRET_KEY=< Get from AWS >
 S3_BUCKET_NAME=< s3 bucket name for uploaded pins>

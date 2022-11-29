@@ -29,7 +29,7 @@ const restMock = jest.fn().mockImplementation((...args) => {
       userIp: 'Tester userIp',
       username: 'Tester username',
       userId: 'Tester userId',
-      displayname: 'Tester displayName',
+      displayName: 'Tester displayName',
       service: 'twitter',
 
     });

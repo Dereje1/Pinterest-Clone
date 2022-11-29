@@ -18,7 +18,7 @@ describe('authentication', () => {
         userIp: 'Tester userIp',
         username: 'Tester username',
         userId: 'Tester userId',
-        displayname: 'Tester displayName',
+        displayName: 'Tester displayName',
         service: 'twitter',
       },
       type: 'GET_USER_STATUS',

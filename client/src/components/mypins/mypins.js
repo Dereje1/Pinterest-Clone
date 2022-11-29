@@ -4,6 +4,7 @@ import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import TwitterIcon from '@mui/icons-material/Twitter';
 import GoogleIcon from '@mui/icons-material/Google';
+import GitHubIcon from '@mui/icons-material/GitHub';
 import Typography from '@mui/material/Typography';
 import Button from '@mui/material/Button';
 import Dialog from '@mui/material/Dialog';
@@ -14,7 +15,7 @@ import ImageBuild from '../imagebuild/imagebuild';
 import RESTcall from '../../crud'; // pin CRUD
 import './mypins.scss';
 
-const getUserName = ({ service, displayname, username }) => {
+const getUserName = ({ service, displayName, username }) => {
   const serviceObj = {
     twitter:
   <>
@@ -30,6 +31,13 @@ const getUserName = ({ service, displayname, username }) => {
       {username}
     </Typography>
   </>,
+    github:
+  <>
+    <GitHubIcon style={{ fontSize: 30, color: '#1d7b20' }} />
+    <Typography style={{ marginLeft: 15 }}>
+      {`@${username}`}
+    </Typography>
+  </>,
   };
   return (
     <div style={{
@@ -41,7 +49,7 @@ const getUserName = ({ service, displayname, username }) => {
     }}
     >
       <Typography variant="h4">
-        {displayname}
+        {displayName}
       </Typography>
       <div style={{ display: 'flex', alignItems: 'center' }}>
         {serviceObj[service]}

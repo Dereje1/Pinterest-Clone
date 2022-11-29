@@ -1,16 +1,13 @@
 const ip = require('ip');
 const isLoggedIn = require('./isloggedin');
+const { getUserProfile } = require('../utils');
 
 const getProfile = (req, res) => {
-  const { user } = req;
-  const [service] = ['google', 'twitter'].filter(s => user[s] && Boolean(user[s].id));
+  const profile = getUserProfile(req.user);
   res.json({
+    ...profile,
     authenticated: true,
     userIp: ip.address(),
-    username: user[service].username,
-    userId: user[service].id,
-    displayname: user[service].displayName,
-    service,
   });
 };
 
@@ -19,7 +16,7 @@ const setGuest = (req, res) => {
     authenticated: false,
     userIp: ip.address(),
     username: 'Guest',
-    displayname: 'Guest',
+    displayName: 'Guest',
   });
 };
 
@@ -34,11 +31,16 @@ const setAuthRoutes = (app, passport) => {
   app.get('/auth/logout', logOut);
   app.get('/auth/twitter', passport.authenticate('twitter'));
   app.get('/auth/google', passport.authenticate('google', { scope: ['profile', 'email'] }));
+  app.get('/auth/github', passport.authenticate('github'));
   app.get('/auth/twitter/callback', passport.authenticate('twitter', {
     successRedirect: '/',
     failureRedirect: '/',
   }));
   app.get('/auth/google/redirect', passport.authenticate('google', {
+    successRedirect: '/',
+    failureRedirect: '/',
+  }));
+  app.get('/auth/github/redirect', passport.authenticate('github', {
     successRedirect: '/',
     failureRedirect: '/',
   }));
