@@ -1,7 +1,7 @@
 // config/passport.js for twitter
 const TwitterStrategy = require('passport-twitter').Strategy;
 const GoogleStrategy = require('passport-google-oauth').OAuth2Strategy;
-const { getApiKeys } = require('./utils');
+const { getApiKeys } = require('../utils');
 // load up the user model
 const User = require('../models/user');
 

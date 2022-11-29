@@ -13,6 +13,7 @@ describe('Authentication routes', () => {
           username: 'test username',
           displayName: 'test display name',
         },
+        twitter: {},
       },
       logout: jest.fn(),
     };
@@ -31,8 +32,9 @@ describe('Authentication routes', () => {
       userIp: expect.any(String),
       username: 'test username',
       userId: 'abc',
-      displayname: 'test display name',
+      displayName: 'test display name',
       service: 'google',
+      isAdmin: false,
     });
   });
 
@@ -42,7 +44,7 @@ describe('Authentication routes', () => {
       authenticated: false,
       userIp: expect.any(String),
       username: 'Guest',
-      displayname: 'Guest',
+      displayName: 'Guest',
     });
   });
 

@@ -14,7 +14,7 @@ import ImageBuild from '../imagebuild/imagebuild';
 import RESTcall from '../../crud'; // pin CRUD
 import './mypins.scss';
 
-const getUserName = ({ service, displayname, username }) => {
+const getUserName = ({ service, displayName, username }) => {
   const serviceObj = {
     twitter:
   <>
@@ -41,7 +41,7 @@ const getUserName = ({ service, displayname, username }) => {
     }}
     >
       <Typography variant="h4">
-        {displayname}
+        {displayName}
       </Typography>
       <div style={{ display: 'flex', alignItems: 'center' }}>
         {serviceObj[service]}

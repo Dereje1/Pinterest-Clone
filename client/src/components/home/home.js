@@ -33,7 +33,7 @@ export class Home extends Component {
     // can not do this unless logged in
     const {
       user: {
-        displayname, username,
+        displayName, username,
       },
     } = this.props;
     const { pinList } = this.state;
@@ -48,7 +48,7 @@ export class Home extends Component {
       if (pin._id === element._id) {
         return {
           ...pin,
-          savedBy: [...pin.savedBy, displayname],
+          savedBy: [...pin.savedBy, displayName],
           hasSaved: true,
         };
       }

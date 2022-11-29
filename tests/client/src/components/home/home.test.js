@@ -13,7 +13,7 @@ describe('The Home Component', () => {
     props = {
       user: {
         authenticated: true,
-        displayname: 'tester displayname',
+        displayName: 'tester displayName',
         username: 'tester username',
         service: 'tester service',
         userId: 'tester user Id',
@@ -53,10 +53,10 @@ describe('The Home Component', () => {
     await Promise.resolve();
     const imageBuild = wrapper.find('ImageBuild');
     let imageToPin = wrapper.state().pinList.filter(p => p._id === pinsStub[0]._id)[0];
-    expect(imageToPin.savedBy.includes('tester displayname')).toBe(false);
+    expect(imageToPin.savedBy.includes('tester displayName')).toBe(false);
     imageBuild.props().pinImage(pinsStub[0]);
     [imageToPin] = wrapper.state().pinList.filter(p => p._id === pinsStub[0]._id);
-    expect(imageToPin.savedBy.includes('tester displayname')).toBe(true);
+    expect(imageToPin.savedBy.includes('tester displayName')).toBe(true);
     expect(RESTcall).toHaveBeenCalledTimes(2);
     expect(RESTcall.mock.calls).toEqual([
       [{ address: '/api/?type=All', method: 'get' }],

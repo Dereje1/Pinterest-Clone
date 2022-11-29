@@ -11,7 +11,7 @@ describe('isLoggedIn middleware', () => {
     const next = jest.fn();
     const result = isloggedin(req, res, next);
     expect(res.json).toHaveBeenCalledWith({
-      authenticated: false, displayname: null, userIp: expect.any(String), username: null,
+      authenticated: false, displayName: null, userIp: expect.any(String), username: null,
     });
     expect(result).toBe(false);
     expect(next).not.toHaveBeenCalled();

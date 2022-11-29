@@ -20,7 +20,7 @@ exports[`The Mypins Component Mypins landing page will render 1`] = `
         <ForwardRef(Typography)
           variant="h4"
         >
-          tester displayname
+          tester displayName
         </ForwardRef(Typography)>
         <div
           style={

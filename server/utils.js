@@ -2,17 +2,61 @@ const https = require('https');
 const Stream = require('stream').Transform;
 const AWS = require('aws-sdk');
 
+const getApiKeys = () => {
+  const {
+    TWITTER_CONSUMER_KEY,
+    TWITTER_CONSUMER_SECRET,
+    TWITTER_CALLBACK,
+    GOOGLE_CLIENT_ID,
+    GOOGLE_CLIENT_SECRET,
+    GOOGLE_CALLBACK,
+  } = process.env;
 
-/* Isolate auth service used from req.user */
+  const keys = {
+    twitterApiKeys: null,
+    googleApiKeys: null,
+  };
+
+  if (TWITTER_CONSUMER_KEY && TWITTER_CONSUMER_SECRET && TWITTER_CALLBACK) {
+    keys.twitterApiKeys = {
+      consumerKey: TWITTER_CONSUMER_KEY,
+      consumerSecret: TWITTER_CONSUMER_SECRET,
+      callbackURL: TWITTER_CALLBACK,
+    };
+  }
+  if (GOOGLE_CLIENT_ID && GOOGLE_CLIENT_SECRET && GOOGLE_CALLBACK) {
+    keys.googleApiKeys = {
+      clientID: GOOGLE_CLIENT_ID,
+      clientSecret: GOOGLE_CLIENT_SECRET,
+      callbackURL: GOOGLE_CALLBACK,
+    };
+  }
+
+  console.log({
+    apiKeysFound: {
+      twitter: Boolean(keys.twitterApiKeys),
+      google: Boolean(keys.googleApiKeys),
+    },
+  });
+
+  return keys;
+};
+
+/* Isolate auth service used from req.user and generate proffile */
 const getUserProfile = (user) => {
   const [service] = ['google', 'twitter'].filter(s => user && Boolean(user[s].id));
   const userId = service && user[service].id;
   const displayName = service && user[service].displayName;
-  const isAdmin = Boolean(process.env.ADMIN_USER_ID && userId === process.env.ADMIN_USER_ID);
+  const username = service && user[service].username;
+  const isAdmin = Boolean(
+    process.env.ADMIN_USER_ID
+    && userId === process.env.ADMIN_USER_ID,
+  );
   return {
+    service,
     userId,
     displayName,
-    service,
+    username,
     isAdmin,
   };
 };
@@ -134,4 +178,5 @@ module.exports = {
   uploadImageToS3,
   configureS3,
   getCloudFrontLink,
+  getApiKeys,
 };
