@@ -19,6 +19,20 @@ const handleLogin = (loc) => { // twitter/ google authentication
   window.location.assign(loc);
 };
 
+const providerMap = {
+  twitter:
+  <Button key="twiiter" id="twitterloginbutton" variant="outlined" startIcon={<TwitterIcon style={{ fontSize: 25 }} />} onClick={() => handleLogin('/auth/twitter')}>
+    Continue With Twitter
+  </Button>,
+  google:
+  <Button key="google" id="googleloginbutton" variant="outlined" startIcon={<GoogleIcon style={{ fontSize: 25 }} />} onClick={() => handleLogin('/auth/google')}>
+    Continue With Google
+  </Button>,
+  github:
+  <Button key="github" id="githubloginbutton" variant="outlined" startIcon={<GitHubIcon style={{ fontSize: 25 }} />} onClick={() => handleLogin('/auth/github')}>
+    Continue With Github
+  </Button>,
+};
 
 export class LoginButtons extends React.Component {
 
@@ -29,20 +43,20 @@ export class LoginButtons extends React.Component {
   };
 
   render() {
+    const { user: { providers } } = this.props;
+    if (!providers) return null;
+    const providerKeys = Object.keys(providers);
     return (
       <React.Fragment>
         <Button id="guestbutton" variant="outlined" startIcon={<AccountCircleIcon style={{ fontSize: 25 }} />} onClick={this.handleGuest}>
           Continue As Guest&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
         </Button>
-        <Button id="twitterloginbutton" variant="outlined" startIcon={<TwitterIcon style={{ fontSize: 25 }} />} onClick={() => handleLogin('/auth/twitter')}>
-          Continue With Twitter
-        </Button>
-        <Button id="googleloginbutton" variant="outlined" startIcon={<GoogleIcon style={{ fontSize: 25 }} />} onClick={() => handleLogin('/auth/google')}>
-          Continue With Google
-        </Button>
-        <Button id="githubloginbutton" variant="outlined" startIcon={<GitHubIcon style={{ fontSize: 25 }} />} onClick={() => handleLogin('/auth/github')}>
-          Continue With Github
-        </Button>
+        {
+          providerKeys.map((service) => {
+            if (providers[service]) return providerMap[service];
+            return null;
+          })
+        }
       </React.Fragment>
     );
   }
@@ -51,9 +65,14 @@ export class LoginButtons extends React.Component {
 
 export default connect(mapStateToProps, actionCreators)(LoginButtons);
 
+LoginButtons.defaultProps = {
+  user: {},
+};
+
 LoginButtons.propTypes = {
   // redux action to set guest user status on server
   setGuest: PropTypes.func.isRequired,
   // used for reseting back to guest mode in signin
   guest: PropTypes.func.isRequired,
+  user: PropTypes.shape(PropTypes.shape),
 };
