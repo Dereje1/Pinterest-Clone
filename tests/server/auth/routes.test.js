@@ -46,6 +46,11 @@ describe('Authentication routes', () => {
       userIp: expect.any(String),
       username: 'Guest',
       displayName: 'Guest',
+      providers: {
+        twitter: false,
+        google: false,
+        github: false,
+      },
     });
   });
 

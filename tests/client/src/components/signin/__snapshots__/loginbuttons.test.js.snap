@@ -20,6 +20,7 @@ exports[`The sign in component will render 1`] = `
   </ForwardRef(Button)>
   <ForwardRef(Button)
     id="twitterloginbutton"
+    key="twiiter"
     onClick={[Function]}
     startIcon={
       <Memo
@@ -36,6 +37,7 @@ exports[`The sign in component will render 1`] = `
   </ForwardRef(Button)>
   <ForwardRef(Button)
     id="googleloginbutton"
+    key="google"
     onClick={[Function]}
     startIcon={
       <Memo
@@ -52,6 +54,7 @@ exports[`The sign in component will render 1`] = `
   </ForwardRef(Button)>
   <ForwardRef(Button)
     id="githubloginbutton"
+    key="github"
     onClick={[Function]}
     startIcon={
       <Memo

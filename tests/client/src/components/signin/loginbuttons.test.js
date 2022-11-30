@@ -13,6 +13,13 @@ describe('The sign in component', () => {
     props = {
       setGuest: jest.fn(),
       guest: jest.fn(),
+      user: {
+        providers: {
+          twitter: true,
+          google: true,
+          github: true,
+        },
+      },
     };
     const windowSpy = jest.spyOn(global, 'window', 'get');
     mockedAssign = jest.fn();
