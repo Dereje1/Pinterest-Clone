@@ -2,6 +2,13 @@ const ip = require('ip');
 const isLoggedIn = require('./isloggedin');
 const { getUserProfile, getApiKeys } = require('../utils');
 
+
+const PROVIDERS = [
+  { name: 'twitter', options: {} },
+  { name: 'google', options: { scope: ['profile', 'email'] } },
+  { name: 'github', options: {} },
+];
+
 const getProfile = (req, res) => {
   const profile = getUserProfile(req.user);
   res.json({
@@ -31,21 +38,17 @@ const setAuthRoutes = (app, passport) => {
   app.get('/auth/profile', isLoggedIn, getProfile);
   app.get('/auth/guest', setGuest);
   app.get('/auth/logout', logOut);
-  app.get('/auth/twitter', passport.authenticate('twitter'));
-  app.get('/auth/google', passport.authenticate('google', { scope: ['profile', 'email'] }));
-  app.get('/auth/github', passport.authenticate('github'));
-  app.get('/auth/twitter/callback', passport.authenticate('twitter', {
-    successRedirect: '/',
-    failureRedirect: '/',
-  }));
-  app.get('/auth/google/redirect', passport.authenticate('google', {
-    successRedirect: '/',
-    failureRedirect: '/',
-  }));
-  app.get('/auth/github/redirect', passport.authenticate('github', {
-    successRedirect: '/',
-    failureRedirect: '/',
-  }));
+  // set authentication routes
+  PROVIDERS.forEach(({ name, options }) => {
+    app.get(`/auth/${name}`, passport.authenticate(name, options));
+  });
+  // set redirect routes
+  PROVIDERS.forEach(({ name }) => {
+    app.get(`/auth/${name}/redirect`, passport.authenticate(name, {
+      successRedirect: '/',
+      failureRedirect: '/',
+    }));
+  });
 };
 
 module.exports = {

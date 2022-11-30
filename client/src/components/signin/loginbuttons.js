@@ -30,7 +30,7 @@ const providerMap = {
   </Button>,
   github:
   <Button key="github" id="githubloginbutton" variant="outlined" startIcon={<GitHubIcon style={{ fontSize: 25 }} />} onClick={() => handleLogin('/auth/github')}>
-    Continue With Github
+    Continue With Github&nbsp;&nbsp;
   </Button>,
 };
 
