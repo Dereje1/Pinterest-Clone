@@ -40,6 +40,30 @@ describe('The sign in component', () => {
     expect(toJson(wrapper)).toMatchSnapshot();
   });
 
+  test('will render only available providers', () => {
+    const updatedProps = {
+      ...props,
+      user: {
+        providers: {
+          twitter: false,
+          google: false,
+          github: true,
+        },
+      },
+    };
+    const wrapper = shallow(<LoginButtons {...updatedProps} />);
+    expect(toJson(wrapper)).toMatchSnapshot();
+  });
+
+  test('will not render if no provider info', () => {
+    const updatedProps = {
+      ...props,
+      user: {},
+    };
+    const wrapper = shallow(<LoginButtons {...updatedProps} />);
+    expect(wrapper.isEmptyRender()).toBe(true);
+  });
+
   test('will handle guest users', () => {
     const wrapper = shallow(<LoginButtons {...props} />);
     const guestButton = wrapper.find({ id: 'guestbutton' });

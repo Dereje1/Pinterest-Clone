@@ -71,3 +71,41 @@ exports[`The sign in component will render 1`] = `
   </ForwardRef(Button)>
 </Fragment>
 `;
+
+exports[`The sign in component will render only available providers 1`] = `
+<Fragment>
+  <ForwardRef(Button)
+    id="guestbutton"
+    onClick={[Function]}
+    startIcon={
+      <Memo
+        style={
+          Object {
+            "fontSize": 25,
+          }
+        }
+      />
+    }
+    variant="outlined"
+  >
+    Continue As Guest        
+  </ForwardRef(Button)>
+  <ForwardRef(Button)
+    id="githubloginbutton"
+    key="github"
+    onClick={[Function]}
+    startIcon={
+      <Memo
+        style={
+          Object {
+            "fontSize": 25,
+          }
+        }
+      />
+    }
+    variant="outlined"
+  >
+    Continue With Github
+  </ForwardRef(Button)>
+</Fragment>
+`;
