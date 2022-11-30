@@ -1,6 +1,6 @@
 const ip = require('ip');
 const isLoggedIn = require('./isloggedin');
-const { getUserProfile } = require('../utils');
+const { getUserProfile, getApiKeys } = require('../utils');
 
 const getProfile = (req, res) => {
   const profile = getUserProfile(req.user);
@@ -12,11 +12,13 @@ const getProfile = (req, res) => {
 };
 
 const setGuest = (req, res) => {
+  const { apiKeysFound: providers } = getApiKeys();
   res.json({
     authenticated: false,
     userIp: ip.address(),
     username: 'Guest',
     displayName: 'Guest',
+    providers,
   });
 };
 

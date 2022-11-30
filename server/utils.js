@@ -43,16 +43,14 @@ const getApiKeys = () => {
       callbackURL: GITHUB_CALLBACK,
     };
   }
+  const apiKeysFound = {
+    twitter: Boolean(keys.twitterApiKeys),
+    google: Boolean(keys.googleApiKeys),
+    github: Boolean(keys.githubApiKeys),
+  };
+  console.log({ apiKeysFound });
 
-  console.log({
-    apiKeysFound: {
-      twitter: Boolean(keys.twitterApiKeys),
-      google: Boolean(keys.googleApiKeys),
-      github: Boolean(keys.githubApiKeys),
-    },
-  });
-
-  return keys;
+  return { keys, apiKeysFound };
 };
 
 /* Isolate auth service used from req.user and generate proffile */
@@ -76,7 +74,7 @@ const getUserProfile = (user) => {
 
 const getCloudFrontLink = (link) => {
   try {
-    const [,,, bucketName, imgName] = link.split('/');
+    const [, , , bucketName, imgName] = link.split('/');
     return bucketName === 'pinterest.clone' ? `https://d1ttxrulihk8wq.cloudfront.net/${imgName}` : link;
   } catch (error) {
     return link;
