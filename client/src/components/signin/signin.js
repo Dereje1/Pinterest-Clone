@@ -24,7 +24,7 @@ export class SignIn extends React.Component {
     // clicks outside menu will collpase it
     const { caller } = this.props;
     if (!e.target.closest('#sign-in')
-      && !e.target.closest('.menu')
+      && !e.target.closest('.items')
       && caller === 'menu') {
       this.resetGuest();
     }

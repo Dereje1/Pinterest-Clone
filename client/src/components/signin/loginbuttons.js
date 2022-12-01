@@ -9,7 +9,7 @@ import { connect } from 'react-redux';
 import { setGuest } from '../../actions/authentication';
 import './loginbuttons.scss';
 
-const mapStateToProps = state => state;
+const mapStateToProps = ({ user }) => ({ user });
 
 const actionCreators = {
   setGuest,
@@ -43,14 +43,20 @@ export class LoginButtons extends React.Component {
   };
 
   render() {
-    const { user: { providers } } = this.props;
+    const { user: { providers, username } } = this.props;
     if (!providers) return null;
     const providerKeys = Object.keys(providers);
     return (
       <React.Fragment>
-        <Button id="guestbutton" variant="outlined" startIcon={<AccountCircleIcon style={{ fontSize: 25 }} />} onClick={this.handleGuest}>
-          Continue As Guest&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-        </Button>
+        {
+
+          username !== 'Guest' && (
+            <Button id="guestbutton" variant="outlined" startIcon={<AccountCircleIcon style={{ fontSize: 25 }} />} onClick={this.handleGuest}>
+              Continue As Guest&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+            </Button>
+          )
+        }
+
         {
           providerKeys.map((service) => {
             if (providers[service]) return providerMap[service];

@@ -35,8 +35,20 @@ describe('The sign in component', () => {
     jest.clearAllMocks();
   });
 
-  test('will render', () => {
+  test('will render for cover page', () => {
     const wrapper = shallow(<LoginButtons {...props} />);
+    expect(toJson(wrapper)).toMatchSnapshot();
+  });
+
+  test('will render for Guest users on homepage', () => {
+    const updatedProps = {
+      ...props,
+      user: {
+        ...props.user,
+        username: 'Guest',
+      },
+    };
+    const wrapper = shallow(<LoginButtons {...updatedProps} />);
     expect(toJson(wrapper)).toMatchSnapshot();
   });
 
@@ -64,7 +76,7 @@ describe('The sign in component', () => {
     expect(wrapper.isEmptyRender()).toBe(true);
   });
 
-  test('will handle guest users', () => {
+  test('will handle guest users if on cover page', () => {
     const wrapper = shallow(<LoginButtons {...props} />);
     const guestButton = wrapper.find({ id: 'guestbutton' });
     guestButton.props().onClick();
