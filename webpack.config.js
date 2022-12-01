@@ -39,6 +39,7 @@ const configMain = {
     new HtmlWebPackPlugin({
       title: 'React Template',
       template: './client/template.html',
+      favicon: './client/favicon.ico',
     }),
   ],
   devServer: {
