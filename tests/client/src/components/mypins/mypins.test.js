@@ -29,24 +29,31 @@ describe('The Mypins Component', () => {
     RESTcall.mockClear();
   });
 
-  test('Mypins landing page will render', async () => {
+  test('Mypins landing page will render nothing if not authenticated', async () => {
+    props.user.authenticated = false;
+    const wrapper = shallow(<Mypins {...props} />);
+    await Promise.resolve();
+    expect(wrapper.isEmptyRender()).toBe(true);
+  });
+
+  test('Mypins landing page will render bubbles until ready', async () => {
+    const wrapper = shallow(<Mypins {...props} />);
+    await Promise.resolve();
+    wrapper.setState({ ready: false });
+    expect(toJson(wrapper)).toMatchSnapshot();
+  });
+
+  test('Mypins landing page will render pins if found', async () => {
     const wrapper = shallow(<Mypins {...props} />);
     await Promise.resolve();
     expect(toJson(wrapper)).toMatchSnapshot();
   });
 
-  test('Mypins landing page will redirect to root if not authenticated', async () => {
-    const windowSpy = jest.spyOn(global, 'window', 'get');
-    const mockedAssign = jest.fn();
-    windowSpy.mockImplementation(() => ({
-      location: {
-        assign: mockedAssign,
-      },
-    }));
-    props.user.authenticated = false;
-    shallow(<Mypins {...props} />);
+  test('Mypins landing page will render welcome message if no pins found', async () => {
+    const wrapper = shallow(<Mypins {...props} />);
     await Promise.resolve();
-    expect(mockedAssign).toHaveBeenCalledWith('/');
+    wrapper.setState({ pinList: [] });
+    expect(toJson(wrapper)).toMatchSnapshot();
   });
 
   test('ImageBuild sub-component shall recieve the pins on CDM as props', async () => {

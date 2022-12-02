@@ -95,15 +95,15 @@ describe('The app will', () => {
     expect(passport.authenticate.mock.calls[1]).toEqual(['google', { scope: ['profile', 'email'] }]);
     expect(passport.authenticate.mock.calls[2]).toEqual(['github', {}]);
     expect(passport.authenticate.mock.calls[3]).toEqual(['twitter', {
-      successRedirect: '/',
+      successRedirect: '/pins',
       failureRedirect: '/',
     }]);
     expect(passport.authenticate.mock.calls[4]).toEqual(['google', {
-      successRedirect: '/',
+      successRedirect: '/pins',
       failureRedirect: '/',
     }]);
     expect(passport.authenticate.mock.calls[5]).toEqual(['github', {
-      successRedirect: '/',
+      successRedirect: '/pins',
       failureRedirect: '/',
     }]);
   });

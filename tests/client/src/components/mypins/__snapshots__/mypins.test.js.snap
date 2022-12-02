@@ -1,6 +1,27 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`The Mypins Component Mypins landing page will render 1`] = `
+exports[`The Mypins Component Mypins landing page will render bubbles until ready 1`] = `
+<div
+  id="bubblecontainer"
+  style={
+    Object {
+      "display": "flex",
+    }
+  }
+>
+  <div
+    className="bubbles A"
+  />
+  <div
+    className="bubbles B"
+  />
+  <div
+    className="bubbles C"
+  />
+</div>
+`;
+
+exports[`The Mypins Component Mypins landing page will render pins if found 1`] = `
 <Fragment>
   <div>
     <div
@@ -89,32 +110,101 @@ exports[`The Mypins Component Mypins landing page will render 1`] = `
       }
       ready={true}
     />
-    <ForwardRef(Dialog)
-      aria-describedby="alert-dialog-description"
-      aria-labelledby="alert-dialog-title"
-      open={false}
+  </div>
+</Fragment>
+`;
+
+exports[`The Mypins Component Mypins landing page will render welcome message if no pins found 1`] = `
+<Fragment>
+  <div>
+    <div
+      id="mypinframe"
     >
-      <ForwardRef(DialogTitle)
-        id="alert-dialog-title"
+      <div
+        style={
+          Object {
+            "alignItems": "center",
+            "display": "flex",
+            "flexDirection": "column",
+            "justifyContent": "center",
+            "marginTop": 80,
+          }
+        }
       >
-        Permanently delete false?
-      </ForwardRef(DialogTitle)>
-      <ForwardRef(DialogActions)>
-        <ForwardRef(Button)
-          id="cancel-delete-alert"
-          onClick={[Function]}
+        <ForwardRef(Typography)
+          variant="h4"
         >
-          Cancel
-        </ForwardRef(Button)>
-        <ForwardRef(Button)
-          autoFocus={true}
-          id="resume-delete-alert"
-          onClick={[Function]}
+          tester displayName
+        </ForwardRef(Typography)>
+        <div
+          style={
+            Object {
+              "alignItems": "center",
+              "display": "flex",
+            }
+          }
+        />
+      </div>
+      <div
+        id="creatpinwrapper"
+        onClick={[Function]}
+        onKeyDown={[Function]}
+        role="button"
+        tabIndex={0}
+      >
+        <div
+          id="createpin"
         >
-          Delete
-        </ForwardRef(Button)>
-      </ForwardRef(DialogActions)>
-    </ForwardRef(Dialog)>
+          <i
+            aria-hidden="true"
+            className="fa fa-plus-circle"
+          />
+        </div>
+        <h3
+          id="createpintext"
+        >
+          Create Pin
+        </h3>
+      </div>
+    </div>
+    <ForwardRef(Box)
+      sx={
+        Object {
+          "backgroundColor": "#eeeeee",
+          "height": 100,
+          "marginLeft": "auto",
+          "marginRight": "auto",
+          "marginTop": 10,
+          "padding": 2,
+          "width": 500,
+        }
+      }
+    >
+      <ForwardRef(Typography)
+        style={
+          Object {
+            "textAlign": "center",
+          }
+        }
+        variant="h4"
+      >
+        Welcome!
+      </ForwardRef(Typography)>
+      <ForwardRef(Typography)
+        variant="h6"
+      >
+        To get started, you can create your own pin, or save an existing pin from the
+         
+        <Link
+          exact={true}
+          to="/"
+        >
+          home
+        </Link>
+         
+        page
+      </ForwardRef(Typography)>
+    </ForwardRef(Box)>
   </div>
 </Fragment>
 `;

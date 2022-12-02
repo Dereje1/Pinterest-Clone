@@ -45,7 +45,7 @@ const setAuthRoutes = (app, passport) => {
   // set redirect routes
   PROVIDERS.forEach(({ name }) => {
     app.get(`/auth/${name}/redirect`, passport.authenticate(name, {
-      successRedirect: '/',
+      successRedirect: '/pins',
       failureRedirect: '/',
     }));
   });
