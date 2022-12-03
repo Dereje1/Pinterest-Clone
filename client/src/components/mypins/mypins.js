@@ -14,6 +14,7 @@ import DialogTitle from '@mui/material/DialogTitle';
 import Box from '@mui/material/Box';
 import PinCreate from './pincreatemodal';
 import ImageBuild from '../imagebuild/imagebuild';
+import Loading from '../imagebuild/Loading';
 import RESTcall from '../../crud'; // pin CRUD
 import './mypins.scss';
 
@@ -138,15 +139,7 @@ export class Mypins extends Component {
       ready,
     } = this.state;
     if (!authenticated) return null;
-    if (!ready) {
-      return (
-        <div id="bubblecontainer" style={{ display: 'flex' }}>
-          <div className="bubbles A" />
-          <div className="bubbles B" />
-          <div className="bubbles C" />
-        </div>
-      );
-    }
+    if (!ready) return <Loading />;
 
     return (
       <React.Fragment>

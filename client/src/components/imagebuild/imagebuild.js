@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from 'react';
-import Masonry from 'react-masonry-component';
 import PropTypes from 'prop-types';
-import HandleThumbnailImage from './HandleThumbnailImage';
+import MasonryPins from './MasonryPins';
 import PinZoom from '../modal/modalzoom';
+import Loading from './Loading';
 import './imagebuild.scss';
 import imageBroken from '../mypins/NO-IMAGE.png';
 
@@ -64,47 +64,18 @@ const ImageBuild = ({
 
   return (
     <React.Fragment>
-      <div id="bubblecontainer" style={{ display: imagesLoaded && ready ? 'none' : 'flex' }}>
-        <div className="bubbles A" />
-        <div className="bubbles B" />
-        <div className="bubbles C" />
-      </div>
+      <Loading imagesLoaded={imagesLoaded} ready={ready} />
       <div id="mainframe">
-        <Masonry
-          onImagesLoaded={() => layoutComplete()}
-          className="my-gallery-class"
-          options={{ fitWidth: true }}
-        >
-          {
-            loadedPins.map(element => (
-              <div
-                key={element._id}
-                role="button"
-                className="image-box"
-                onClick={e => pinEnlarge(e, element)}
-                onKeyDown={() => {}}
-                tabIndex={0}
-              >
-                <img
-                  alt={element.imgDescription}
-                  onError={() => onBrokenImage(element._id)}
-                  className="image-format"
-                  src={element.imgLink}
-                  style={{ visibility: imagesLoaded && ready ? 'visible' : 'hidden' }}
-                />
-                <div className="description">
-                  {element.imgDescription}
-                </div>
-                <HandleThumbnailImage
-                  element={element}
-                  pinImage={pinImage}
-                  deletePin={deletePin}
-                />
-                <div className="owner">{`${element.owner}`}</div>
-              </div>
-            ))
-          }
-        </Masonry>
+        <MasonryPins
+          layoutComplete={layoutComplete}
+          pinEnlarge={pinEnlarge}
+          onBrokenImage={onBrokenImage}
+          pinImage={pinImage}
+          deletePin={deletePin}
+          pins={loadedPins}
+          imagesLoaded={imagesLoaded}
+          ready={ready}
+        />
         { displayPinZoom && (
           <PinZoom
             reset={() => setDisplayPinZoom(false)}

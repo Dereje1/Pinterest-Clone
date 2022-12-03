@@ -1,25 +1,6 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`The Mypins Component Mypins landing page will render bubbles until ready 1`] = `
-<div
-  id="bubblecontainer"
-  style={
-    Object {
-      "display": "flex",
-    }
-  }
->
-  <div
-    className="bubbles A"
-  />
-  <div
-    className="bubbles B"
-  />
-  <div
-    className="bubbles C"
-  />
-</div>
-`;
+exports[`The Mypins Component Mypins landing page will render bubbles until ready 1`] = `<Loading />`;
 
 exports[`The Mypins Component Mypins landing page will render pins if found 1`] = `
 <Fragment>
