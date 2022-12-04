@@ -1,10 +1,13 @@
 import React, { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
+import InfiniteScroll from 'react-infinite-scroll-component';
 import MasonryPins from './MasonryPins';
 import PinZoom from '../modal/modalzoom';
 import Loading from './Loading';
 import './imagebuild.scss';
 import imageBroken from '../mypins/NO-IMAGE.png';
+
+const PINS_DISPLAY_PER_SCROLL = 10;
 
 // builds images, component shared by both home and mypins
 const ImageBuild = ({
@@ -18,6 +21,9 @@ const ImageBuild = ({
   const [imageInfo, setImageInfo] = useState([]);
   const [imagesLoaded, setImagesLoaded] = useState(false);
   const [loadedPins, setLoadedPins] = useState([]);
+  const [displayedPins, setDisplayedPins] = useState(PINS_DISPLAY_PER_SCROLL);
+  const [scrollPosition, setScrollPosition] = useState(0);
+
 
   useEffect(() => {
     setLoadedPins(pinList);
@@ -28,6 +34,7 @@ const ImageBuild = ({
     // only set state on first true loads
     if (imagesLoaded) return;
     setImagesLoaded(true);
+    setScrollPosition(document.body.scrollTop);
   };
 
   // img onError callback executes this function
@@ -62,20 +69,33 @@ const ImageBuild = ({
     setImageInfo([currentImg, e.pageY - e.clientY]);
   };
 
+  const nextScroll = () => {
+    setImagesLoaded(false);
+    setDisplayedPins(displayedPins + PINS_DISPLAY_PER_SCROLL);
+  };
+
+  const activePins = loadedPins.slice(0, displayedPins);
+
   return (
     <React.Fragment>
-      <Loading imagesLoaded={imagesLoaded} ready={ready} />
       <div id="mainframe">
-        <MasonryPins
-          layoutComplete={layoutComplete}
-          pinEnlarge={pinEnlarge}
-          onBrokenImage={onBrokenImage}
-          pinImage={pinImage}
-          deletePin={deletePin}
-          pins={loadedPins}
-          imagesLoaded={imagesLoaded}
-          ready={ready}
-        />
+        <InfiniteScroll
+          dataLength={activePins.length}
+          next={nextScroll}
+          hasMore={activePins.length < loadedPins.length}
+          initialScrollY={scrollPosition}
+        >
+          <MasonryPins
+            layoutComplete={layoutComplete}
+            pinEnlarge={pinEnlarge}
+            onBrokenImage={onBrokenImage}
+            pinImage={pinImage}
+            deletePin={deletePin}
+            pins={activePins}
+            imagesLoaded={imagesLoaded}
+            ready={ready}
+          />
+        </InfiniteScroll>
         { displayPinZoom && (
           <PinZoom
             reset={() => setDisplayPinZoom(false)}
@@ -85,6 +105,7 @@ const ImageBuild = ({
           />
         )}
       </div>
+      <Loading imagesLoaded={imagesLoaded} ready={ready} />
     </React.Fragment>
   );
 };
