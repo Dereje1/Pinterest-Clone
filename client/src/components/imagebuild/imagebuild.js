@@ -1,10 +1,13 @@
 import React, { useState, useEffect } from 'react';
-import Masonry from 'react-masonry-component';
 import PropTypes from 'prop-types';
-import HandleThumbnailImage from './HandleThumbnailImage';
+import InfiniteScroll from 'react-infinite-scroll-component';
+import MasonryPins from './MasonryPins';
 import PinZoom from '../modal/modalzoom';
+import Loading from './Loading';
 import './imagebuild.scss';
 import imageBroken from '../mypins/NO-IMAGE.png';
+
+const PINS_DISPLAY_PER_SCROLL = 10;
 
 // builds images, component shared by both home and mypins
 const ImageBuild = ({
@@ -18,6 +21,9 @@ const ImageBuild = ({
   const [imageInfo, setImageInfo] = useState([]);
   const [imagesLoaded, setImagesLoaded] = useState(false);
   const [loadedPins, setLoadedPins] = useState([]);
+  const [displayedPins, setDisplayedPins] = useState(PINS_DISPLAY_PER_SCROLL);
+  const [scrollPosition, setScrollPosition] = useState(0);
+
 
   useEffect(() => {
     setLoadedPins(pinList);
@@ -28,6 +34,7 @@ const ImageBuild = ({
     // only set state on first true loads
     if (imagesLoaded) return;
     setImagesLoaded(true);
+    setScrollPosition(document.body.scrollTop);
   };
 
   // img onError callback executes this function
@@ -62,49 +69,33 @@ const ImageBuild = ({
     setImageInfo([currentImg, e.pageY - e.clientY]);
   };
 
+  const nextScroll = () => {
+    setImagesLoaded(false);
+    setDisplayedPins(displayedPins + PINS_DISPLAY_PER_SCROLL);
+  };
+
+  const activePins = loadedPins.slice(0, displayedPins);
+
   return (
     <React.Fragment>
-      <div id="bubblecontainer" style={{ display: imagesLoaded && ready ? 'none' : 'flex' }}>
-        <div className="bubbles A" />
-        <div className="bubbles B" />
-        <div className="bubbles C" />
-      </div>
       <div id="mainframe">
-        <Masonry
-          onImagesLoaded={() => layoutComplete()}
-          className="my-gallery-class"
-          options={{ fitWidth: true }}
+        <InfiniteScroll
+          dataLength={activePins.length}
+          next={nextScroll}
+          hasMore={activePins.length < loadedPins.length}
+          initialScrollY={scrollPosition}
         >
-          {
-            loadedPins.map(element => (
-              <div
-                key={element._id}
-                role="button"
-                className="image-box"
-                onClick={e => pinEnlarge(e, element)}
-                onKeyDown={() => {}}
-                tabIndex={0}
-              >
-                <img
-                  alt={element.imgDescription}
-                  onError={() => onBrokenImage(element._id)}
-                  className="image-format"
-                  src={element.imgLink}
-                  style={{ visibility: imagesLoaded && ready ? 'visible' : 'hidden' }}
-                />
-                <div className="description">
-                  {element.imgDescription}
-                </div>
-                <HandleThumbnailImage
-                  element={element}
-                  pinImage={pinImage}
-                  deletePin={deletePin}
-                />
-                <div className="owner">{`${element.owner}`}</div>
-              </div>
-            ))
-          }
-        </Masonry>
+          <MasonryPins
+            layoutComplete={layoutComplete}
+            pinEnlarge={pinEnlarge}
+            onBrokenImage={onBrokenImage}
+            pinImage={pinImage}
+            deletePin={deletePin}
+            pins={activePins}
+            imagesLoaded={imagesLoaded}
+            ready={ready}
+          />
+        </InfiniteScroll>
         { displayPinZoom && (
           <PinZoom
             reset={() => setDisplayPinZoom(false)}
@@ -114,6 +105,7 @@ const ImageBuild = ({
           />
         )}
       </div>
+      <Loading imagesLoaded={imagesLoaded} ready={ready} />
     </React.Fragment>
   );
 };

@@ -1,3 +1,6 @@
+/**
+ * @jest-environment jsdom
+ */
 import React from 'react';
 import { shallow } from 'enzyme';
 import toJson from 'enzyme-to-json';
@@ -23,25 +26,25 @@ describe('The ImageBuild component', () => {
 
   test('will call layoutComplete when masonry is done loading', () => {
     const wrapper = shallow(<ImageBuild {...props} />);
-    let bubblecontainer = wrapper.find({ id: 'bubblecontainer' });
-    expect(bubblecontainer.props().style).toEqual({ display: 'flex' });
-    let masonry = wrapper.find('MasonryComponent');
-    masonry.props().onImagesLoaded();
-    bubblecontainer = wrapper.find({ id: 'bubblecontainer' });
-    expect(bubblecontainer.props().style).toEqual({ display: 'none' });
+    let Loading = wrapper.find('Loading');
+    expect(Loading.props().imagesLoaded).toBe(false);
+    let masonry = wrapper.find('MasonryPins');
+    masonry.props().layoutComplete();
+    Loading = wrapper.find('Loading');
+    expect(Loading.props().imagesLoaded).toBe(true);
     // re-fire to make sure that imagesloaded does not change state again
-    masonry = wrapper.find('MasonryComponent');
-    masonry.props().onImagesLoaded();
-    bubblecontainer = wrapper.find({ id: 'bubblecontainer' });
-    expect(bubblecontainer.props().style).toEqual({ display: 'none' });
+    masonry = wrapper.find('MasonryPins');
+    masonry.props().layoutComplete();
+    Loading = wrapper.find('Loading');
+    expect(Loading.props().imagesLoaded).toBe(true);
   });
 
   test('will call pinEnlarge for a single pin', () => {
     const wrapper = shallow(<ImageBuild {...props} />);
-    const pin = wrapper.find({ className: 'image-box' }).at(1);
+    const masonry = wrapper.find('MasonryPins');
     let pinZoom = wrapper.find('PinZoom');
     expect(pinZoom.isEmptyRender()).toBe(true);
-    pin.props().onClick({ target: { type: 'any' }, pageY: 20, clientY: 10 });
+    masonry.props().pinEnlarge({ target: { type: 'any' }, pageY: 20, clientY: 10 }, pinsStub[1]);
     pinZoom = wrapper.find('PinZoom');
     expect(pinZoom.isEmptyRender()).toBe(false);
     expect(pinZoom.props().zoomInfo).toEqual([pinsStub[1], 10]);
@@ -49,26 +52,26 @@ describe('The ImageBuild component', () => {
 
   test('will dismiss pinEnlarge for clicks near submit', () => {
     const wrapper = shallow(<ImageBuild {...props} />);
-    const pin = wrapper.find({ className: 'image-box' }).at(1);
+    const masonry = wrapper.find('MasonryPins');
     let pinZoom = wrapper.find('PinZoom');
     expect(pinZoom.isEmptyRender()).toBe(true);
-    pin.props().onClick({ target: { type: 'submit' }, pageY: 20, clientY: 10 });
+    masonry.props().pinEnlarge({ target: { type: 'submit' }, pageY: 20, clientY: 10 }, pinsStub[1]);
     pinZoom = wrapper.find('PinZoom');
     expect(pinZoom.isEmptyRender()).toBe(true);
   });
 
   test('will dismiss pinEnlarge if pin already zoomed', () => {
     const wrapper = shallow(<ImageBuild {...props} />);
-    let pin = wrapper.find({ className: 'image-box' }).at(1);
+    let masonry = wrapper.find('MasonryPins');
     let pinZoom = wrapper.find('PinZoom');
     expect(pinZoom.isEmptyRender()).toBe(true);
-    pin.props().onClick({ target: { type: 'any' }, pageY: 20, clientY: 10 });
+    masonry.props().pinEnlarge({ target: { type: 'any' }, pageY: 20, clientY: 10 }, pinsStub[1]);
     pinZoom = wrapper.find('PinZoom');
     expect(pinZoom.isEmptyRender()).toBe(false);
     expect(pinZoom.props().zoomInfo).toEqual([pinsStub[1], 10]);
     // re-fire again after pin is already zooomed
-    pin = wrapper.find({ className: 'image-box' }).at(1);
-    pin.props().onClick({ target: { type: 'any' }, pageY: 20, clientY: 5 });
+    masonry = wrapper.find('MasonryPins');
+    masonry.props().pinEnlarge({ target: { type: 'any' }, pageY: 20, clientY: 5 }, pinsStub[1]);
     pinZoom = wrapper.find('PinZoom');
     // If not working second arg should have been 15
     expect(pinZoom.props().zoomInfo).toEqual([pinsStub[1], 10]);
@@ -76,10 +79,10 @@ describe('The ImageBuild component', () => {
 
   test('will reset pinEnlarge', () => {
     const wrapper = shallow(<ImageBuild {...props} />);
-    const pin = wrapper.find({ className: 'image-box' }).at(1);
+    const masonry = wrapper.find('MasonryPins');
     let pinZoom = wrapper.find('PinZoom');
     expect(pinZoom.isEmptyRender()).toBe(true);
-    pin.props().onClick({ target: { type: 'any' }, pageY: 20, clientY: 10 });
+    masonry.props().pinEnlarge({ target: { type: 'any' }, pageY: 20, clientY: 10 }, pinsStub[1]);
     pinZoom = wrapper.find('PinZoom');
     expect(pinZoom.isEmptyRender()).toBe(false);
     expect(pinZoom.props().zoomInfo).toEqual([pinsStub[1], 10]);
@@ -90,12 +93,11 @@ describe('The ImageBuild component', () => {
 
   test('will handle onBrokenImage for an image load error on home page', () => {
     const wrapper = shallow(<ImageBuild {...props} />);
-    let pin = wrapper.find({ className: 'image-box' }).at(1);
-    let img = pin.find({ alt: 'imgDescription id-2' });
-    img.props().onError();
-    pin = wrapper.find({ className: 'image-box' }).at(1);
-    img = pin.find({ alt: 'imgDescription id-2' });
-    expect(img.isEmptyRender()).toBe(true);
+    let masonry = wrapper.find('MasonryPins');
+    expect(masonry.props().pins).toEqual(pinsStub);
+    masonry.props().onBrokenImage(2);
+    masonry = wrapper.find('MasonryPins');
+    expect(masonry.props().pins).toEqual([pinsStub[0], pinsStub[2]]);
   });
 
   test('will handle onBrokenImage for an image load error on profile page', () => {
@@ -104,20 +106,22 @@ describe('The ImageBuild component', () => {
       displayBrokenImage: true,
     };
     const wrapper = shallow(<ImageBuild {...updatedProps} />);
-    let pin = wrapper.find({ className: 'image-box' }).at(1);
-    let img = pin.find({ alt: 'imgDescription id-2' });
-    img.props().onError();
-    pin = wrapper.find({ className: 'image-box' }).at(1);
-    img = pin.find({ alt: 'Broken Img - imgDescription id-2' });
-    expect(img.isEmptyRender()).toBe(false);
+    let masonry = wrapper.find('MasonryPins');
+    expect(masonry.props().pins).toEqual(pinsStub);
+    masonry.props().onBrokenImage(2);
+    masonry = wrapper.find('MasonryPins');
+    expect(masonry.props().pins[1].imgDescription).toBe('Broken Img - imgDescription id-2');
   });
 
-  test('will display the bubbles and hide images if not done loading', () => {
+  test('will go to next section on infinite scroll', () => {
     const wrapper = shallow(<ImageBuild {...props} />);
-    const bubbles = wrapper.find({ id: 'bubblecontainer' });
-    const pin = wrapper.find({ className: 'image-box' }).at(1);
-    const img = pin.find({ alt: 'imgDescription id-2' });
-    expect(bubbles.props().style.display).toBe('flex');
-    expect(img.props().style.visibility).toBe('hidden');
+    const masonry = wrapper.find('MasonryPins');
+    masonry.props().layoutComplete();
+    let Loading = wrapper.find('Loading');
+    expect(Loading.props().imagesLoaded).toBe(true);
+    const infiniteScroll = wrapper.find('InfiniteScroll');
+    infiniteScroll.props().next();
+    Loading = wrapper.find('Loading');
+    expect(Loading.props().imagesLoaded).toBe(false);
   });
 });
