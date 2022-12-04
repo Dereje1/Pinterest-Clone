@@ -32,6 +32,7 @@ describe('The MasonryPins component', () => {
   test('will send parameters to enlarge a pin', () => {
     const wrapper = shallow(<MasonryPins {...props} />);
     const imageBox = wrapper.find({ className: 'image-box' }).at(0);
+    imageBox.props().onKeyDown();
     imageBox.props().onClick('event');
     expect(props.pinEnlarge).toHaveBeenCalledWith('event', pinsStub[0]);
   });
