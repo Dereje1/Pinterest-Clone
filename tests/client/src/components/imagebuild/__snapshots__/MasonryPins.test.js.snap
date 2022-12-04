@@ -1,0 +1,171 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`The MasonryPins component will render.... 1`] = `
+<MasonryComponent
+  className="my-gallery-class"
+  disableImagesLoaded={false}
+  elementType="div"
+  enableResizableChildren={false}
+  imagesLoadedOptions={Object {}}
+  onImagesLoaded={[MockFunction]}
+  onLayoutComplete={[Function]}
+  onRemoveComplete={[Function]}
+  options={
+    Object {
+      "fitWidth": true,
+    }
+  }
+  updateOnEachImageLoad={false}
+>
+  <div
+    className="image-box"
+    key="1"
+    onClick={[Function]}
+    onKeyDown={[Function]}
+    role="button"
+    tabIndex={0}
+  >
+    <img
+      alt="imgDescription id-1"
+      className="image-format"
+      onError={[Function]}
+      onLoad={[Function]}
+      src="imgLink id-1"
+      style={
+        Object {
+          "visibility": "hidden",
+        }
+      }
+    />
+    <div
+      className="description"
+    >
+      imgDescription id-1
+    </div>
+    <HandleThumbnailImage
+      deletePin={[MockFunction]}
+      element={
+        Object {
+          "_id": 1,
+          "createdAt": "2020-12-25T00:00:00.000+00:00",
+          "hasSaved": false,
+          "imgDescription": "imgDescription id-1",
+          "imgLink": "imgLink id-1",
+          "owner": "owner id-1",
+          "owns": false,
+          "savedBy": Array [
+            "savedBy - id-1",
+            "savedBy2 - id-1",
+          ],
+        }
+      }
+      pinImage={[MockFunction]}
+    />
+    <div
+      className="owner"
+    >
+      owner id-1
+    </div>
+  </div>
+  <div
+    className="image-box"
+    key="2"
+    onClick={[Function]}
+    onKeyDown={[Function]}
+    role="button"
+    tabIndex={0}
+  >
+    <img
+      alt="imgDescription id-2"
+      className="image-format"
+      onError={[Function]}
+      onLoad={[Function]}
+      src="imgLink id-2"
+      style={
+        Object {
+          "visibility": "hidden",
+        }
+      }
+    />
+    <div
+      className="description"
+    >
+      imgDescription id-2
+    </div>
+    <HandleThumbnailImage
+      deletePin={[MockFunction]}
+      element={
+        Object {
+          "_id": 2,
+          "createdAt": "2020-12-25T00:00:00.000+00:00",
+          "hasSaved": true,
+          "imgDescription": "imgDescription id-2",
+          "imgLink": "imgLink id-2",
+          "owner": "owner id-2",
+          "owns": false,
+          "savedBy": Array [
+            "savedBy - id-2",
+            "savedBy2 - id-2",
+          ],
+        }
+      }
+      pinImage={[MockFunction]}
+    />
+    <div
+      className="owner"
+    >
+      owner id-2
+    </div>
+  </div>
+  <div
+    className="image-box"
+    key="3"
+    onClick={[Function]}
+    onKeyDown={[Function]}
+    role="button"
+    tabIndex={0}
+  >
+    <img
+      alt="imgDescription id-3"
+      className="image-format"
+      onError={[Function]}
+      onLoad={[Function]}
+      src="imgLink id-3"
+      style={
+        Object {
+          "visibility": "hidden",
+        }
+      }
+    />
+    <div
+      className="description"
+    >
+      imgDescription id-3
+    </div>
+    <HandleThumbnailImage
+      deletePin={[MockFunction]}
+      element={
+        Object {
+          "_id": 3,
+          "createdAt": "2020-12-25T00:00:00.000+00:00",
+          "hasSaved": false,
+          "imgDescription": "imgDescription id-3",
+          "imgLink": "imgLink id-3",
+          "owner": "owner id-3",
+          "owns": true,
+          "savedBy": Array [
+            "savedBy - id-3",
+            "savedBy2 - id-3",
+          ],
+        }
+      }
+      pinImage={[MockFunction]}
+    />
+    <div
+      className="owner"
+    >
+      owner id-3
+    </div>
+  </div>
+</MasonryComponent>
+`;

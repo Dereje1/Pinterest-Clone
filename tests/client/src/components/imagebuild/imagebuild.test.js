@@ -112,4 +112,16 @@ describe('The ImageBuild component', () => {
     masonry = wrapper.find('MasonryPins');
     expect(masonry.props().pins[1].imgDescription).toBe('Broken Img - imgDescription id-2');
   });
+
+  test('will go to next section on infinite scroll', () => {
+    const wrapper = shallow(<ImageBuild {...props} />);
+    const masonry = wrapper.find('MasonryPins');
+    masonry.props().layoutComplete();
+    let Loading = wrapper.find('Loading');
+    expect(Loading.props().imagesLoaded).toBe(true);
+    const infiniteScroll = wrapper.find('InfiniteScroll');
+    infiniteScroll.props().next();
+    Loading = wrapper.find('Loading');
+    expect(Loading.props().imagesLoaded).toBe(false);
+  });
 });
