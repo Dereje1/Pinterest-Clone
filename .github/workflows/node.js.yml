@@ -28,6 +28,5 @@ jobs:
         cache: 'npm'
     - run: npm ci
     - run: npm run lint
-    - run: npm run coverage
     - name: Upload coverage to Codecov
       uses: codecov/codecov-action@v1
