@@ -3,7 +3,7 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import RESTcall from '../../crud';
-import ImageBuild from '../imagebuild/imagebuild';
+import ImageBuild from '../imagebuild/Imagebuild';
 import SignIn from '../signin/signin';
 import { shuffleImages, getFilteredPins } from '../../utils/utils';
 

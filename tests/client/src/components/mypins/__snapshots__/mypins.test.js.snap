@@ -152,12 +152,10 @@ exports[`The Mypins Component Mypins landing page will render welcome message if
       sx={
         Object {
           "backgroundColor": "#eeeeee",
-          "height": 100,
           "marginLeft": "auto",
           "marginRight": "auto",
           "marginTop": 10,
           "padding": 2,
-          "width": 500,
         }
       }
     >
@@ -172,6 +170,7 @@ exports[`The Mypins Component Mypins landing page will render welcome message if
         Welcome!
       </ForwardRef(Typography)>
       <ForwardRef(Typography)
+        textAlign="center"
         variant="h6"
       >
         To get started, you can create your own pin, or save an existing pin from the

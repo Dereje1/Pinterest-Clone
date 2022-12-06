@@ -1,0 +1,25 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Will not render the loading bubbles 1`] = `
+<div
+  id="loadingcontainer"
+>
+  <Memo(ForwardRef(DownloadDoneIcon)) />
+</div>
+`;
+
+exports[`Will render the loading bubbles 1`] = `
+<div
+  id="loadingcontainer"
+>
+  <div
+    className="bubbles A"
+  />
+  <div
+    className="bubbles B"
+  />
+  <div
+    className="bubbles C"
+  />
+</div>
+`;

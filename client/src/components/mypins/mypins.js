@@ -13,7 +13,7 @@ import DialogActions from '@mui/material/DialogActions';
 import DialogTitle from '@mui/material/DialogTitle';
 import Box from '@mui/material/Box';
 import PinCreate from './pincreatemodal';
-import ImageBuild from '../imagebuild/imagebuild';
+import ImageBuild from '../imagebuild/Imagebuild';
 import Loading from '../imagebuild/Loading';
 import RESTcall from '../../crud'; // pin CRUD
 import './mypins.scss';
@@ -182,8 +182,6 @@ export class Mypins extends Component {
               : (
                 <Box
                   sx={{
-                    width: 500,
-                    height: 100,
                     marginLeft: 'auto',
                     marginRight: 'auto',
                     marginTop: 10,
@@ -194,7 +192,7 @@ export class Mypins extends Component {
                   <Typography variant="h4" style={{ textAlign: 'center' }}>
                     Welcome!
                   </Typography>
-                  <Typography variant="h6">
+                  <Typography variant="h6" textAlign="center">
                     To get started, you can create your own pin,
                     or save an existing pin from the
                     {' '}

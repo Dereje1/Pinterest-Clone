@@ -75,7 +75,7 @@ const getUserProfile = (user) => {
 const getCloudFrontLink = (link) => {
   try {
     const [, , , bucketName, imgName] = link.split('/');
-    return bucketName === 'pinterest.clone' ? `https://d1ttxrulihk8wq.cloudfront.net/${imgName}` : link;
+    return process.env.ENABLE_CLOUDFRONT === 'true' && bucketName === 'pinterest.clone' ? `https://d1ttxrulihk8wq.cloudfront.net/${imgName}` : link;
   } catch (error) {
     return link;
   }
