@@ -98,6 +98,10 @@ describe('filtering pins before returning to client', () => {
 
 describe('Getting the cloudfront links', () => {
   test('Will get the cloud front link for prod bucket', () => {
+    process.env = {
+      ...process.env,
+      ENABLE_CLOUDFRONT: 'true',
+    };
     const ans = getCloudFrontLink('https://s3.amazonaws.com/pinterest.clone/a-pin');
     expect(ans).toBe('https://d1ttxrulihk8wq.cloudfront.net/a-pin');
   });

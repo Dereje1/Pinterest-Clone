@@ -1,13 +1,22 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import DownloadDoneIcon from '@mui/icons-material/DownloadDone';
 
 const Loading = ({ imagesLoaded, ready }) => (
-  <div id="bubblecontainer" style={{ display: imagesLoaded && ready ? 'none' : 'flex' }}>
-    <div className="bubbles A" />
-    <div className="bubbles B" />
-    <div className="bubbles C" />
+  <div id="loadingcontainer">
+    {
+      imagesLoaded && ready ? <DownloadDoneIcon />
+        : (
+          <>
+            <div className="bubbles A" />
+            <div className="bubbles B" />
+            <div className="bubbles C" />
+          </>
+        )
+    }
   </div>
 );
+
 
 export default Loading;
 
