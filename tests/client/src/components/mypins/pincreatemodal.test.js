@@ -34,13 +34,12 @@ describe('The pin creation modal', () => {
 
   test('will render', () => {
     const wrapper = shallow(<PinCreate {...props} />);
-    wrapper.setState({ show: true });
     expect(toJson(wrapper)).toMatchSnapshot();
   });
 
   test('will handle errors in images', () => {
     const wrapper = shallow(<PinCreate {...props} />);
-    wrapper.setState({ show: true, isError: false });
+    wrapper.setState({ isError: false });
     expect(wrapper.state().isError).toBe(false);
     const img = wrapper.find({ id: 'new-pin-image' });
     img.props().onError();
@@ -49,7 +48,6 @@ describe('The pin creation modal', () => {
 
   test('will handle changes in description', () => {
     const wrapper = shallow(<PinCreate {...props} />);
-    wrapper.setState({ show: true });
     const description = wrapper.find({ id: 'pin-description' });
     description.props().onChange({ target: { value: 'abc' } });
     expect(wrapper.state().description).toBe('abc');
@@ -57,7 +55,6 @@ describe('The pin creation modal', () => {
 
   test('will handle changes in image links', () => {
     const wrapper = shallow(<PinCreate {...props} />);
-    wrapper.setState({ show: true });
     const imgLink = wrapper.find({ id: 'pin-img-link' });
     imgLink.props().onChange({ target: { value: 'https://abc.com' } });
     expect(wrapper.state().picPreview).toBe('https://abc.com');
@@ -65,7 +62,6 @@ describe('The pin creation modal', () => {
 
   test('will handle changes in image links with http', () => {
     const wrapper = shallow(<PinCreate {...props} />);
-    wrapper.setState({ show: true });
     const imgLink = wrapper.find({ id: 'pin-img-link' });
     imgLink.props().onChange({ target: { value: 'http://abc.com' } });
     expect(wrapper.state().picPreview).toBe('https://abc.com');
@@ -73,7 +69,6 @@ describe('The pin creation modal', () => {
 
   test('will handle changes in image links with data protocol', () => {
     const wrapper = shallow(<PinCreate {...props} />);
-    wrapper.setState({ show: true });
     const imgLink = wrapper.find({ id: 'pin-img-link' });
     imgLink.props().onChange({ target: { value: 'data:abc.com' } });
     expect(wrapper.state().picPreview).toBe('data:abc.com');
@@ -81,7 +76,6 @@ describe('The pin creation modal', () => {
 
   test('will handle changes in image links with invalid url', () => {
     const wrapper = shallow(<PinCreate {...props} />);
-    wrapper.setState({ show: true });
     const imgLink = wrapper.find({ id: 'pin-img-link' });
     imgLink.props().onChange({ target: { value: 'htt://abc.com' } });
     expect(wrapper.state().picPreview).toBe('load-error.png');
@@ -93,7 +87,6 @@ describe('The pin creation modal', () => {
       picPreview: 'https://duplicate.com',
       description: 'abcde',
       showErrorImage: false,
-      show: true,
     });
     const SavePin = wrapper.find('SavePin');
     expect(SavePin.props().isDuplicateError).toBe(true);
@@ -105,7 +98,6 @@ describe('The pin creation modal', () => {
       picPreview: 'https://abc.com',
       description: 'abcde',
       showErrorImage: false,
-      show: true,
     });
     const SavePin = wrapper.find('SavePin');
     expect(SavePin.props().isDuplicateError).toBe(false);
@@ -117,7 +109,6 @@ describe('The pin creation modal', () => {
       imgLink: 'https://abc.com',
     });
     expect(wrapper.state()).toMatchObject({
-      show: false,
       picPreview: '',
       description: '',
     });

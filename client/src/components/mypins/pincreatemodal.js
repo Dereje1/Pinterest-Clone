@@ -21,7 +21,6 @@ class PinCreate extends Component {
     super(props);
     // initialize modal show state to false
     this.state = {
-      show: false,
       picPreview: '', // on erroneous image links
       description: '',
       isError: true,
@@ -32,7 +31,6 @@ class PinCreate extends Component {
   componentDidMount() {
     window.scrollTo(0, 0);
     this.setState({
-      show: true,
       description: '',
       picPreview: imageBroken,
     }, async () => { await delay(1000); });
@@ -53,15 +51,10 @@ class PinCreate extends Component {
   close = () => {
     const { reset } = this.props;
     this.setState({
-      show: false,
       picPreview: '',
       description: '',
       isError: true,
-    }, async () => {
-      // delay to display closing keyframe
-      await delay(500);
-      reset();
-    });
+    }, reset);
   };
 
   processImage = (e) => { // processes picture on change of text box
@@ -88,18 +81,17 @@ class PinCreate extends Component {
 
   render() {
     const {
-      show, description, showErrorImage, isError, picPreview,
+      description, showErrorImage, isError, picPreview,
     } = this.state;
     const { allPinLinks } = this.props;
-    if (!show) return null;
     const modalHeight = window.innerHeight * 0.92;
     const modalWidth = getModalWidth();
     const isDescriptionError = description.trim().length < 5;
     const duplicateError = isDuplicateError(allPinLinks, picPreview);
     return (
       <>
-        {show && <div className="pin-create-modal-overlay" />}
-        <Card sx={{ width: modalWidth, height: modalHeight }} className={show ? 'pincreate cshow' : 'pincreate chide'}>
+        <div className="pin-create-modal-overlay" />
+        <Card sx={{ width: modalWidth, height: modalHeight }} className="pincreate cshow">
 
           <CardHeader
             action={(
