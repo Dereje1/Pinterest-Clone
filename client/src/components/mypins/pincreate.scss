@@ -19,13 +19,6 @@
       animation-timing-function: cubic-bezier(0.075, 0.82, 0.165, 1);
       animation-iteration-count: 1;
     }
-    &.chide{
-      display: block;
-      @include animation('modalhide');
-      animation-duration: 1s;
-      animation-timing-function: cubic-bezier(0.075, 0.82, 0.165, 1);
-      animation-iteration-count: 1;
-    }
   }
 
   .pin-create-modal-overlay{
@@ -47,15 +40,5 @@
     100%{
       opacity: 1;
       transform: scale(1)
-    }
-  }
-  
-  @include keyframes(modalhide) {
-    0%{
-      transform: scale(1);
-      visibility: visible;
-    }
-    100%{
-      transform: scale(0);
     }
   }

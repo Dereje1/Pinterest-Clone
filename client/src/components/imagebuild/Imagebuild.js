@@ -5,7 +5,7 @@ import MasonryPins from './MasonryPins';
 import PinZoom from '../modal/modalzoom';
 import Loading from './Loading';
 import './imagebuild.scss';
-import imageBroken from '../mypins/NO-IMAGE.png';
+import error from '../mypins/error.png';
 
 const PINS_DISPLAY_PER_SCROLL = 10;
 
@@ -56,7 +56,7 @@ const ImageBuild = ({
     console.log(msg);
     // update copy -->no mutation but do not delete from db
     if (displayBrokenImage) {
-      pinListCopy[indexOfBroken].imgLink = imageBroken;
+      pinListCopy[indexOfBroken].imgLink = error;
       pinListCopy[indexOfBroken].imgDescription = msg;
     } else {
       pinListCopy = [...pinListCopy.slice(0, indexOfBroken),

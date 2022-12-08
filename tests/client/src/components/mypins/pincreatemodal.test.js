@@ -6,7 +6,7 @@ import { shallow } from 'enzyme';
 import toJson from 'enzyme-to-json';
 import PinCreate from '../../../../../client/src/components/mypins/pincreatemodal';
 
-jest.mock('../../../../../client/src/components/mypins/NO-IMAGE.png', () => 'load-error.png');
+jest.mock('../../../../../client/src/components/mypins/error.png', () => 'load-error.png');
 jest.useFakeTimers();
 
 describe('The pin creation modal', () => {
@@ -46,6 +46,26 @@ describe('The pin creation modal', () => {
     expect(wrapper.state().isError).toBe(true);
   });
 
+  test('will handle a loaded image with an error', () => {
+    const wrapper = shallow(<PinCreate {...props} />);
+    wrapper.setState({ isLoaded: false });
+    expect(wrapper.state().isLoaded).toBe(false);
+    const img = wrapper.find({ id: 'new-pin-image' });
+    img.props().onLoad({ target: { currentSrc: 'load-error.png' } });
+    expect(wrapper.state().isLoaded).toBe(true);
+    expect(wrapper.state().isError).toBe(true);
+  });
+
+  test('will handle a loaded image without an error', () => {
+    const wrapper = shallow(<PinCreate {...props} />);
+    wrapper.setState({ isLoaded: false });
+    expect(wrapper.state().isLoaded).toBe(false);
+    const img = wrapper.find({ id: 'new-pin-image' });
+    img.props().onLoad({ target: { currentSrc: 'valid' } });
+    expect(wrapper.state().isLoaded).toBe(true);
+    expect(wrapper.state().isError).toBe(false);
+  });
+
   test('will handle changes in description', () => {
     const wrapper = shallow(<PinCreate {...props} />);
     const description = wrapper.find({ id: 'pin-description' });
@@ -78,7 +98,7 @@ describe('The pin creation modal', () => {
     const wrapper = shallow(<PinCreate {...props} />);
     const imgLink = wrapper.find({ id: 'pin-img-link' });
     imgLink.props().onChange({ target: { value: 'htt://abc.com' } });
-    expect(wrapper.state().picPreview).toBe('load-error.png');
+    expect(wrapper.state().picPreview).toBe('');
   });
 
   test('will detect duplicate pins', async () => {

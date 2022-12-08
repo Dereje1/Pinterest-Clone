@@ -43,6 +43,7 @@ exports[`The pin creation modal will render 1`] = `
       id="new-pin-image"
       image="load-error.png"
       onError={[Function]}
+      onLoad={[Function]}
       sx={
         Object {
           "height": 367.41120000000006,

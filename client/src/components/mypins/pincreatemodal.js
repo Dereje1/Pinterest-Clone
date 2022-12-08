@@ -8,7 +8,8 @@ import CardHeader from '@mui/material/CardHeader';
 import CardMedia from '@mui/material/CardMedia';
 import IconButton from '@mui/material/IconButton';
 import SavePin from './SavePin';
-import imageBroken from './NO-IMAGE.png';
+import error from './error.png';
+
 import {
   delay, validateURL, getModalWidth, isDuplicateError,
 } from '../../utils/utils';
@@ -24,7 +25,7 @@ class PinCreate extends Component {
       picPreview: '', // on erroneous image links
       description: '',
       isError: true,
-      showErrorImage: true,
+      isLoaded: false,
     };
   }
 
@@ -32,18 +33,8 @@ class PinCreate extends Component {
     window.scrollTo(0, 0);
     this.setState({
       description: '',
-      picPreview: imageBroken,
+      picPreview: '',
     }, async () => { await delay(1000); });
-  }
-
-  componentDidUpdate(prevProps, prevState) { // compare previous props to current efore showing
-    const { isError } = this.state;
-    if (!prevState.isError && isError) {
-      this.setState({ showErrorImage: true });
-    }
-    if (prevState.isError && !isError) {
-      this.setState({ showErrorImage: false });
-    }
   }
 
   // disableScroll = () => window.scrollTo(0, 0);
@@ -63,6 +54,7 @@ class PinCreate extends Component {
     this.setState({
       picPreview: imgLink,
       isError: false,
+      isLoaded: false,
     });
   };
 
@@ -79,9 +71,24 @@ class PinCreate extends Component {
     this.close();
   };
 
+  onError = () => {
+    this.setState({
+      picPreview: '',
+      isLoaded: false,
+      isError: true,
+    });
+  };
+
+  onLoad = ({ target }) => {
+    this.setState({
+      isLoaded: true,
+      isError: target.currentSrc === error,
+    });
+  };
+
   render() {
     const {
-      description, showErrorImage, isError, picPreview,
+      description, isError, picPreview, isLoaded,
     } = this.state;
     const { allPinLinks } = this.props;
     const modalHeight = window.innerHeight * 0.92;
@@ -104,8 +111,9 @@ class PinCreate extends Component {
           />
           <CardMedia
             component="img"
-            image={showErrorImage ? imageBroken : picPreview}
-            onError={() => this.setState({ isError: true })}
+            image={picPreview === '' ? error : picPreview}
+            onError={this.onError}
+            onLoad={this.onLoad}
             sx={{ objectFit: 'contain', height: 0.52 * modalHeight }}
             id="new-pin-image"
           />
@@ -136,13 +144,13 @@ class PinCreate extends Component {
               label="Paste image address here http://..."
               variant="standard"
               onChange={e => this.processImage(e)}
-              value={isError ? '' : picPreview}
+              value={picPreview}
               error={isError}
               color="success"
               style={{ margin: '1.5vh' }}
             />
             <SavePin
-              isImageError={showErrorImage}
+              isImageError={isError || !isLoaded}
               isDescriptionError={isDescriptionError}
               isDuplicateError={duplicateError}
               savePic={this.savePic}
