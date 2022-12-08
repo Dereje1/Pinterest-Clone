@@ -67,11 +67,28 @@ describe('The Mypins Component', () => {
     expect(RESTcall).toHaveBeenCalledWith({ address: '/api/?type=profile', method: 'get' });
   });
 
-  test('ImageBuild sub-component will signal to delete/unpin a pin from the db', async () => {
+  test('ImageBuild sub-component will signal to unpin a pin from the db', async () => {
     const wrapper = shallow(<Mypins {...props} />);
     await Promise.resolve();
     const imageBuild = wrapper.find('ImageBuild');
-    imageBuild.props().deletePin({ _id: 3 });
+    imageBuild.props().deletePin({ _id: 2 });
+    expect(wrapper.state().pinList).toStrictEqual([pinsStub[2]]);
+    expect(RESTcall).toHaveBeenCalledTimes(2);
+    expect(RESTcall.mock.calls).toEqual([
+      [{ address: '/api/?type=profile', method: 'get' }],
+      [
+        {
+          address: '/api/unpin/2',
+          method: 'put',
+        },
+      ],
+    ]);
+  });
+
+  test('ImageBuild sub-component will signal (with modal) to delete a pin from the db', async () => {
+    const wrapper = shallow(<Mypins {...props} />);
+    await Promise.resolve();
+    wrapper.instance().deletePic({ _id: 3, owns: true });
     expect(wrapper.state().pinList).toStrictEqual([pinsStub[1]]);
     expect(RESTcall).toHaveBeenCalledTimes(2);
     expect(RESTcall.mock.calls).toEqual([

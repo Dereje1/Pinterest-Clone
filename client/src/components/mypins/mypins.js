@@ -125,8 +125,8 @@ export class Mypins extends Component {
       allPinLinks: owns ? allPinLinks.filter(links => links.imgLink !== imgLink) : allPinLinks,
     }, async () => {
       await RESTcall({
-        address: `/api/${_id}`,
-        method: 'delete',
+        address: owns ? `/api/${_id}` : `/api/unpin/${_id}`,
+        method: owns ? 'delete' : 'put',
       });
     });
   }

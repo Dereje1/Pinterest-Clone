@@ -87,7 +87,23 @@ const pinImage = async (req, res) => {
   }
 };
 
-const removePin = async (req, res) => {
+const unpin = async (req, res) => {
+  const { userId, displayName } = getUserProfile(req.user);
+  const pinID = req.params._id;
+  try {
+    const pin = await pins.findById(pinID).exec();
+    const pinToUpdate = pin.savedBy.filter(s => s.id !== userId);
+    const update = { $set: { savedBy: pinToUpdate } };
+    const modified = { new: true };
+    const updatedPin = await pins.findByIdAndUpdate(pinID, update, modified).exec();
+    console.log(`${displayName} unpinned ${updatedPin.imgDescription}`);
+    res.json(updatedPin);
+  } catch (error) {
+    res.json(error);
+  }
+};
+
+const deletePin = async (req, res) => {
   const { userId, displayName, isAdmin } = getUserProfile(req.user);
   const query = { _id: req.params._id };
   const pinID = req.params._id;
@@ -98,12 +114,7 @@ const removePin = async (req, res) => {
       console.log(`${displayName} deleted pin ${removedPin.imgDescription}`);
       res.json(removedPin);
     } else {
-      const pinToUpdate = pin.savedBy.filter(s => s.id !== userId);
-      const update = { $set: { savedBy: pinToUpdate } };
-      const modified = { new: true };
-      const updatedPin = await pins.findByIdAndUpdate(pinID, update, modified).exec();
-      console.log(`${displayName} unpinned ${updatedPin.imgDescription}`);
-      res.json(updatedPin);
+      throw new Error(`Pin ID: ${pinID} is not owned by user ID: ${userId} - delete operation cancelled!`);
     }
   } catch (error) {
     res.json(error);
@@ -117,11 +128,14 @@ router.post('/api/newpin', isLoggedIn, addPin);
 router.get('/api/', getPins);
 
 // Adds a user to a pin's savedby list
-router.put('/api/:_id', isLoggedIn, pinImage);
+router.put('/api/pin/:_id', isLoggedIn, pinImage);
 
-// deletes a pin if owned by user or removes user from savedby List
-router.delete('/api/:_id', isLoggedIn, removePin);
+// Removes user from a pin's savedby list
+router.put('/api/unpin/:_id', isLoggedIn, unpin);
+
+// deletes a pin if owned by user
+router.delete('/api/:_id', isLoggedIn, deletePin);
 
 module.exports = {
-  router, addPin, getPins, pinImage, removePin,
+  router, addPin, getPins, pinImage, unpin, deletePin,
 };

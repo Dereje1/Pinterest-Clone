@@ -62,7 +62,7 @@ describe('The Home Component', () => {
       [{ address: '/api/?type=All', method: 'get' }],
       [
         {
-          address: '/api/1',
+          address: '/api/pin/1',
           method: 'put',
         },
       ],

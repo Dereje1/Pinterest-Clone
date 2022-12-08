@@ -59,7 +59,7 @@ export class Home extends Component {
       pinList: updatedPins,
     }, async () => {
       await RESTcall({
-        address: `/api/${element._id}`,
+        address: `/api/pin/${element._id}`,
         method: 'put',
       });
     });
