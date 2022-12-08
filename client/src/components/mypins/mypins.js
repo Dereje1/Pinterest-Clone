@@ -139,7 +139,7 @@ export class Mypins extends Component {
       ready,
     } = this.state;
     if (!authenticated) return null;
-    if (!ready) return <Loading />;
+    if (!ready) return <div style={{ marginTop: 100 }}><Loading /></div>;
 
     return (
       <React.Fragment>
