@@ -7,12 +7,21 @@ import Card from '@mui/material/Card';
 import CardHeader from '@mui/material/CardHeader';
 import CardMedia from '@mui/material/CardMedia';
 import CardActions from '@mui/material/CardActions';
+import FormControlLabel from '@mui/material/FormControlLabel';
+import UploadFileIcon from '@mui/icons-material/UploadFile';
+import Switch from '@mui/material/Switch';
 import IconButton from '@mui/material/IconButton';
+import Button from '@mui/material/Button';
+import DriveFolderUploadIcon from '@mui/icons-material/DriveFolderUpload';
 import SavePin from './SavePin';
 import error from './error.png';
 
 import {
-  delay, validateURL, getModalWidth, isDuplicateError,
+  delay,
+  validateURL,
+  getModalWidth,
+  isDuplicateError,
+  encodeImageFileAsURL,
 } from '../../utils/utils';
 import './pincreate.scss';
 
@@ -27,6 +36,7 @@ class PinCreate extends Component {
       description: '',
       isError: true,
       isLoaded: false,
+      upload: false,
     };
   }
 
@@ -87,9 +97,23 @@ class PinCreate extends Component {
     });
   };
 
+  handleUploadedImage = async ({ target: { files } }) => {
+    const [imgFile] = files;
+    try {
+      const ans = await encodeImageFileAsURL(imgFile);
+      this.processImage({
+        target: {
+          value: ans,
+        },
+      });
+    } catch (_) {
+      this.onError();
+    }
+  };
+
   render() {
     const {
-      description, isError, picPreview, isLoaded,
+      description, isError, picPreview, isLoaded, upload,
     } = this.state;
     const { allPinLinks } = this.props;
     const modalWidth = getModalWidth();
@@ -102,9 +126,21 @@ class PinCreate extends Component {
 
           <CardHeader
             action={(
-              <IconButton aria-label="settings" onClick={this.close}>
-                <CancelIcon style={{ fontSize: '1.5em', color: '#3a1c1cde' }} />
-              </IconButton>
+              <>
+                <FormControlLabel
+                  control={(
+                    <Switch
+                      checked={upload}
+                      onChange={() => this.setState({ upload: !upload, picPreview: '' })}
+                    />
+                  )}
+                  label={<DriveFolderUploadIcon />}
+                  sx={{ marginRight: 8, color: '900' }}
+                />
+                <IconButton aria-label="settings" onClick={this.close}>
+                  <CancelIcon style={{ fontSize: '1.5em', color: '#3a1c1cde' }} />
+                </IconButton>
+              </>
             )}
             title="Create Pin"
             titleTypographyProps={{ fontSize: '1.5em', fontWeight: 'bold' }}
@@ -137,16 +173,33 @@ class PinCreate extends Component {
                 error={!description || isDescriptionError}
                 style={{ margin: '1.5vh' }}
               />
-              <TextField
-                id="pin-img-link"
-                label="Paste image address here http://..."
-                variant="standard"
-                onChange={e => this.processImage(e)}
-                value={picPreview}
-                error={isError}
-                color="success"
-                style={{ margin: '1.5vh' }}
-              />
+              {
+                upload
+                  ? (
+                    <Button
+                      variant="contained"
+                      startIcon={<UploadFileIcon />}
+                      sx={{ margin: '1.5vh' }}
+                      component="label"
+                      color={isError ? 'error' : 'success'}
+                    >
+                      {isError ? 'choose image' : 'replace image'}
+                      <input hidden accept="image/*" type="file" onChange={this.handleUploadedImage} />
+                    </Button>
+                  )
+                  : (
+                    <TextField
+                      id="pin-img-link"
+                      label="Paste image address here http://..."
+                      variant="standard"
+                      onChange={e => this.processImage(e)}
+                      value={picPreview}
+                      error={isError}
+                      color="success"
+                      style={{ margin: '1.5vh' }}
+                    />
+                  )
+              }
               <SavePin
                 isImageError={isError || !isLoaded}
                 isDescriptionError={isDescriptionError}

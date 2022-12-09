@@ -5,6 +5,7 @@ import React from 'react';
 import { shallow } from 'enzyme';
 import toJson from 'enzyme-to-json';
 import PinCreate from '../../../../../client/src/components/mypins/pincreatemodal';
+import * as utils from '../../../../../client/src/utils/utils';
 
 jest.mock('../../../../../client/src/components/mypins/error.png', () => 'load-error.png');
 jest.useFakeTimers();
@@ -32,8 +33,16 @@ describe('The pin creation modal', () => {
     global.scrollTo = null;
   });
 
-  test('will render', () => {
+  test('will render for links to images', () => {
     const wrapper = shallow(<PinCreate {...props} />);
+    expect(toJson(wrapper)).toMatchSnapshot();
+  });
+
+  test('will render for uploading images', () => {
+    const wrapper = shallow(<PinCreate {...props} />);
+    const cardHeader = wrapper.find({ title: 'Create Pin' });
+    const uploadSwitch = cardHeader.props().action.props.children[0].props.control.props;
+    uploadSwitch.onChange();
     expect(toJson(wrapper)).toMatchSnapshot();
   });
 
@@ -110,6 +119,31 @@ describe('The pin creation modal', () => {
     });
     const SavePin = wrapper.find('SavePin');
     expect(SavePin.props().isDuplicateError).toBe(true);
+  });
+
+  test('will handle successfully uploading images', async () => {
+    utils.encodeImageFileAsURL = jest.fn(() => Promise.resolve('data:image successfully encoded'));
+    const wrapper = shallow(<PinCreate {...props} />);
+    // turn upload switch on
+    const cardHeader = wrapper.find({ title: 'Create Pin' });
+    const uploadSwitch = cardHeader.props().action.props.children[0].props.control.props;
+
+    wrapper.setState({ isLoaded: true, isError: true });
+    uploadSwitch.onChange();
+    await wrapper.instance().handleUploadedImage({ target: { files: ['an image'] } });
+    expect(wrapper.state().picPreview).toBe('data:image successfully encoded');
+    expect(wrapper.state().isError).toBe(false);
+    expect(wrapper.state().isLoaded).toBe(false);
+  });
+
+  test('will handle uploading image failures', async () => {
+    utils.encodeImageFileAsURL = jest.fn(() => Promise.reject(new Error()));
+    const wrapper = shallow(<PinCreate {...props} />);
+    wrapper.setState({ isLoaded: true, isError: false, picPreview: 'stub_url' });
+    await wrapper.instance().handleUploadedImage({ target: { files: ['an image'] } });
+    expect(wrapper.state().picPreview).toBe('');
+    expect(wrapper.state().isError).toBe(true);
+    expect(wrapper.state().isLoaded).toBe(false);
   });
 
   test('will save valid pins', async () => {

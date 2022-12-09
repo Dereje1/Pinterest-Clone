@@ -175,10 +175,10 @@ const uploadImageToS3 = async ({
       Tagging: `userId=${userId}&name=${ASCIIdisplayName}&service=${service}`,
     };
     const uploadedImage = await s3.upload(params).promise();
-    console.log(`Successfully uploaded image ${originalImgLink} to S3 with id: ${Key}`);
+    console.log(`Successfully uploaded image ${originalImgLink.slice(0, 50)}... to S3 with id: ${Key}`);
     return uploadedImage.Location;
   } catch (error) {
-    console.log(`Error uploading img. ${originalImgLink} - ${error}`);
+    console.log(`Error uploading img. ${originalImgLink.slice(0, 50)}... - ${error}`);
     return null;
   }
 };
