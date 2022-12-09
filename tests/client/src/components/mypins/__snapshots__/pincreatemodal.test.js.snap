@@ -45,11 +45,30 @@ exports[`The pin creation modal will render 1`] = `
       onLoad={[Function]}
       sx={
         Object {
-          "maxHeight": 400,
+          "maxHeight": 350,
           "objectFit": "contain",
         }
       }
     />
+    <div
+      style={
+        Object {
+          "display": "flex",
+          "justifyContent": "center",
+          "marginTop": 5,
+        }
+      }
+    >
+      <ForwardRef(FormControlLabel)
+        control={
+          <ForwardRef(Checkbox)
+            checked={false}
+            onChange={[Function]}
+          />
+        }
+        label="From link"
+      />
+    </div>
     <ForwardRef(CardActions)>
       <div
         style={

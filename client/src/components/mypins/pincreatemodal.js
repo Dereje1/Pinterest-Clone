@@ -7,7 +7,11 @@ import Card from '@mui/material/Card';
 import CardHeader from '@mui/material/CardHeader';
 import CardMedia from '@mui/material/CardMedia';
 import CardActions from '@mui/material/CardActions';
+import FormControlLabel from '@mui/material/FormControlLabel';
+import Checkbox from '@mui/material/Checkbox';
 import IconButton from '@mui/material/IconButton';
+import CloudUploadIcon from '@mui/icons-material/CloudUpload';
+import Button from '@mui/material/Button';
 import SavePin from './SavePin';
 import error from './error.png';
 
@@ -27,6 +31,7 @@ class PinCreate extends Component {
       description: '',
       isError: true,
       isLoaded: false,
+      upload: false,
     };
   }
 
@@ -89,7 +94,7 @@ class PinCreate extends Component {
 
   render() {
     const {
-      description, isError, picPreview, isLoaded,
+      description, isError, picPreview, isLoaded, upload,
     } = this.state;
     const { allPinLinks } = this.props;
     const modalWidth = getModalWidth();
@@ -114,9 +119,25 @@ class PinCreate extends Component {
             image={picPreview === '' ? error : picPreview}
             onError={this.onError}
             onLoad={this.onLoad}
-            sx={{ objectFit: 'contain', maxHeight: 400 }}
+            sx={{ objectFit: 'contain', maxHeight: 350 }}
             id="new-pin-image"
           />
+          <div style={{
+            display: 'flex',
+            justifyContent: 'center',
+            marginTop: 5,
+          }}
+          >
+            <FormControlLabel
+              control={(
+                <Checkbox
+                  checked={upload}
+                  onChange={() => this.setState({ upload: !upload })}
+                />
+              )}
+              label={upload ? 'Upload Image' : 'From link'}
+            />
+          </div>
           <CardActions>
             <div style={{
               display: 'flex',
@@ -137,16 +158,26 @@ class PinCreate extends Component {
                 error={!description || isDescriptionError}
                 style={{ margin: '1.5vh' }}
               />
-              <TextField
-                id="pin-img-link"
-                label="Paste image address here http://..."
-                variant="standard"
-                onChange={e => this.processImage(e)}
-                value={picPreview}
-                error={isError}
-                color="success"
-                style={{ margin: '1.5vh' }}
-              />
+              {
+                upload
+                  ? (
+                    <Button variant="outlined" startIcon={<CloudUploadIcon />} sx={{ width: 100, margin: 2 }}>
+                      Upload
+                    </Button>
+                  )
+                  : (
+                    <TextField
+                      id="pin-img-link"
+                      label="Paste image address here http://..."
+                      variant="standard"
+                      onChange={e => this.processImage(e)}
+                      value={picPreview}
+                      error={isError}
+                      color="success"
+                      style={{ margin: '1.5vh' }}
+                    />
+                  )
+              }
               <SavePin
                 isImageError={isError || !isLoaded}
                 isDescriptionError={isDescriptionError}
