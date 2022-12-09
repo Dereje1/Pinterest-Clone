@@ -183,7 +183,7 @@ class PinCreate extends Component {
                       component="label"
                       color={isError ? 'error' : 'success'}
                     >
-                      {isError ? 'choose image' : 'choose another image'}
+                      {isError ? 'choose image' : 'replace image'}
                       <input hidden accept="image/*" type="file" onChange={this.handleUploadedImage} />
                     </Button>
                   )

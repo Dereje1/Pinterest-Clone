@@ -1,6 +1,6 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`The pin creation modal will render 1`] = `
+exports[`The pin creation modal will render for links to images 1`] = `
 <Fragment>
   <div
     className="pin-create-modal-overlay"
@@ -107,6 +107,130 @@ exports[`The pin creation modal will render 1`] = `
           value=""
           variant="standard"
         />
+        <SavePin
+          isDescriptionError={true}
+          isDuplicateError={false}
+          isImageError={true}
+          savePic={[Function]}
+        />
+      </div>
+    </ForwardRef(CardActions)>
+  </ForwardRef(Card)>
+</Fragment>
+`;
+
+exports[`The pin creation modal will render for uploading images 1`] = `
+<Fragment>
+  <div
+    className="pin-create-modal-overlay"
+  />
+  <ForwardRef(Card)
+    className="pincreate cshow"
+    sx={
+      Object {
+        "width": 341.3333333333333,
+      }
+    }
+  >
+    <ForwardRef(CardHeader)
+      action={
+        <React.Fragment>
+          <ForwardRef(FormControlLabel)
+            control={
+              <ForwardRef(Switch)
+                checked={true}
+                onChange={[Function]}
+              />
+            }
+            label={<Memo />}
+            sx={
+              Object {
+                "color": "900",
+                "marginRight": 8,
+              }
+            }
+          />
+          <ForwardRef(IconButton)
+            aria-label="settings"
+            onClick={[Function]}
+          >
+            <Memo
+              style={
+                Object {
+                  "color": "#3a1c1cde",
+                  "fontSize": "1.5em",
+                }
+              }
+            />
+          </ForwardRef(IconButton)>
+        </React.Fragment>
+      }
+      title="Create Pin"
+      titleTypographyProps={
+        Object {
+          "fontSize": "1.5em",
+          "fontWeight": "bold",
+        }
+      }
+    />
+    <ForwardRef(CardMedia)
+      component="img"
+      id="new-pin-image"
+      image="load-error.png"
+      onError={[Function]}
+      onLoad={[Function]}
+      sx={
+        Object {
+          "maxHeight": 400,
+          "objectFit": "contain",
+        }
+      }
+    />
+    <ForwardRef(CardActions)>
+      <div
+        style={
+          Object {
+            "display": "flex",
+            "flexDirection": "column",
+            "justifyContent": "space-evenly",
+            "width": "100%",
+          }
+        }
+      >
+        <ForwardRef(TextField)
+          color="success"
+          error={true}
+          id="pin-description"
+          label="Description..."
+          maxLength="28"
+          onChange={[Function]}
+          style={
+            Object {
+              "margin": "1.5vh",
+            }
+          }
+          value=""
+          variant="standard"
+        />
+        <ForwardRef(Button)
+          color="error"
+          component="label"
+          startIcon={<Memo />}
+          sx={
+            Object {
+              "margin": "1.5vh",
+            }
+          }
+          variant="contained"
+        >
+          choose image
+          <input
+            accept="image/*"
+            hidden={true}
+            onChange={[Function]}
+            type="file"
+          />
+        </ForwardRef(Button)>
         <SavePin
           isDescriptionError={true}
           isDuplicateError={false}
