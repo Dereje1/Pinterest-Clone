@@ -58,7 +58,7 @@ export const delay = ms => new Promise(resolve => setTimeout(resolve, ms));
 export const validateURL = (string) => {
   try {
     const url = new URL(string);
-    if (url.protocol === 'data:' || url.protocol === 'https:') return string;
+    if (url.protocol === 'data:' || url.protocol === 'https:' || url.protocol === 'blob:') return string;
     if (url.protocol === 'http:') {
       // convert to https to avoid mixed content warning in console
       return `${string.split(':')[0]}s:${string.split(':')[1]}`;

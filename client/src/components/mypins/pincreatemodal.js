@@ -92,6 +92,16 @@ class PinCreate extends Component {
     });
   };
 
+  handleUploadedImage = ({ target: { files } }) => {
+    const [img] = files;
+    const imgURL = URL.createObjectURL(img);
+    this.processImage({
+      target: {
+        value: imgURL,
+      },
+    });
+  };
+
   render() {
     const {
       description, isError, picPreview, isLoaded, upload,
@@ -161,8 +171,14 @@ class PinCreate extends Component {
               {
                 upload
                   ? (
-                    <Button variant="outlined" startIcon={<CloudUploadIcon />} sx={{ width: 100, margin: 2 }}>
+                    <Button
+                      variant="outlined"
+                      startIcon={<CloudUploadIcon />}
+                      sx={{ width: 100, margin: 2 }}
+                      component="label"
+                    >
                       Upload
+                      <input hidden accept="image/*" type="file" onChange={this.handleUploadedImage} />
                     </Button>
                   )
                   : (
