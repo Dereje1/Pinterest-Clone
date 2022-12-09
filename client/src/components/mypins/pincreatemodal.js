@@ -8,10 +8,11 @@ import CardHeader from '@mui/material/CardHeader';
 import CardMedia from '@mui/material/CardMedia';
 import CardActions from '@mui/material/CardActions';
 import FormControlLabel from '@mui/material/FormControlLabel';
-import Checkbox from '@mui/material/Checkbox';
+import UploadFileIcon from '@mui/icons-material/UploadFile';
+import Switch from '@mui/material/Switch';
 import IconButton from '@mui/material/IconButton';
-import CloudUploadIcon from '@mui/icons-material/CloudUpload';
 import Button from '@mui/material/Button';
+import DriveFolderUploadIcon from '@mui/icons-material/DriveFolderUpload';
 import SavePin from './SavePin';
 import error from './error.png';
 
@@ -125,9 +126,21 @@ class PinCreate extends Component {
 
           <CardHeader
             action={(
-              <IconButton aria-label="settings" onClick={this.close}>
-                <CancelIcon style={{ fontSize: '1.5em', color: '#3a1c1cde' }} />
-              </IconButton>
+              <>
+                <FormControlLabel
+                  control={(
+                    <Switch
+                      checked={upload}
+                      onChange={() => this.setState({ upload: !upload, picPreview: '' })}
+                    />
+                  )}
+                  label={<DriveFolderUploadIcon />}
+                  sx={{ marginRight: 8, color: '900' }}
+                />
+                <IconButton aria-label="settings" onClick={this.close}>
+                  <CancelIcon style={{ fontSize: '1.5em', color: '#3a1c1cde' }} />
+                </IconButton>
+              </>
             )}
             title="Create Pin"
             titleTypographyProps={{ fontSize: '1.5em', fontWeight: 'bold' }}
@@ -137,25 +150,9 @@ class PinCreate extends Component {
             image={picPreview === '' ? error : picPreview}
             onError={this.onError}
             onLoad={this.onLoad}
-            sx={{ objectFit: 'contain', maxHeight: 350 }}
+            sx={{ objectFit: 'contain', maxHeight: 400 }}
             id="new-pin-image"
           />
-          <div style={{
-            display: 'flex',
-            justifyContent: 'center',
-            marginTop: 5,
-          }}
-          >
-            <FormControlLabel
-              control={(
-                <Checkbox
-                  checked={upload}
-                  onChange={() => this.setState({ upload: !upload })}
-                />
-              )}
-              label={upload ? 'Upload Image' : 'From link'}
-            />
-          </div>
           <CardActions>
             <div style={{
               display: 'flex',
@@ -180,12 +177,13 @@ class PinCreate extends Component {
                 upload
                   ? (
                     <Button
-                      variant="outlined"
-                      startIcon={<CloudUploadIcon />}
-                      sx={{ width: 100, margin: 2 }}
+                      variant="contained"
+                      startIcon={<UploadFileIcon />}
+                      sx={{ margin: '1.5vh' }}
                       component="label"
+                      color={isError ? 'error' : 'success'}
                     >
-                      Upload
+                      {isError ? 'choose image' : 'choose another image'}
                       <input hidden accept="image/*" type="file" onChange={this.handleUploadedImage} />
                     </Button>
                   )

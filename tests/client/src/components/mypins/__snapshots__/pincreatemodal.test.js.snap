@@ -15,19 +15,36 @@ exports[`The pin creation modal will render 1`] = `
   >
     <ForwardRef(CardHeader)
       action={
-        <ForwardRef(IconButton)
-          aria-label="settings"
-          onClick={[Function]}
-        >
-          <Memo
-            style={
+        <React.Fragment>
+          <ForwardRef(FormControlLabel)
+            control={
+              <ForwardRef(Switch)
+                checked={false}
+                onChange={[Function]}
+              />
+            }
+            label={<Memo />}
+            sx={
               Object {
-                "color": "#3a1c1cde",
-                "fontSize": "1.5em",
+                "color": "900",
+                "marginRight": 8,
               }
             }
           />
-        </ForwardRef(IconButton)>
+          <ForwardRef(IconButton)
+            aria-label="settings"
+            onClick={[Function]}
+          >
+            <Memo
+              style={
+                Object {
+                  "color": "#3a1c1cde",
+                  "fontSize": "1.5em",
+                }
+              }
+            />
+          </ForwardRef(IconButton)>
+        </React.Fragment>
       }
       title="Create Pin"
       titleTypographyProps={
@@ -45,30 +62,11 @@ exports[`The pin creation modal will render 1`] = `
       onLoad={[Function]}
       sx={
         Object {
-          "maxHeight": 350,
+          "maxHeight": 400,
           "objectFit": "contain",
         }
       }
     />
-    <div
-      style={
-        Object {
-          "display": "flex",
-          "justifyContent": "center",
-          "marginTop": 5,
-        }
-      }
-    >
-      <ForwardRef(FormControlLabel)
-        control={
-          <ForwardRef(Checkbox)
-            checked={false}
-            onChange={[Function]}
-          />
-        }
-        label="From link"
-      />
-    </div>
     <ForwardRef(CardActions)>
       <div
         style={
