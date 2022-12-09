@@ -6,6 +6,7 @@ import TextField from '@mui/material/TextField';
 import Card from '@mui/material/Card';
 import CardHeader from '@mui/material/CardHeader';
 import CardMedia from '@mui/material/CardMedia';
+import CardActions from '@mui/material/CardActions';
 import IconButton from '@mui/material/IconButton';
 import SavePin from './SavePin';
 import error from './error.png';
@@ -91,14 +92,13 @@ class PinCreate extends Component {
       description, isError, picPreview, isLoaded,
     } = this.state;
     const { allPinLinks } = this.props;
-    const modalHeight = window.innerHeight * 0.92;
     const modalWidth = getModalWidth();
     const isDescriptionError = description.trim().length < 5;
     const duplicateError = isDuplicateError(allPinLinks, picPreview);
     return (
       <>
         <div className="pin-create-modal-overlay" />
-        <Card sx={{ width: modalWidth, height: modalHeight }} className="pincreate cshow">
+        <Card sx={{ width: modalWidth }} className="pincreate cshow">
 
           <CardHeader
             action={(
@@ -114,48 +114,48 @@ class PinCreate extends Component {
             image={picPreview === '' ? error : picPreview}
             onError={this.onError}
             onLoad={this.onLoad}
-            sx={{ objectFit: 'contain', height: 0.52 * modalHeight }}
+            sx={{ objectFit: 'contain', maxHeight: 400 }}
             id="new-pin-image"
           />
-          <div style={{
-            display: 'flex',
-            flexDirection: 'column',
-            justifyContent: 'space-evenly',
-            position: 'absolute',
-            top: 0.6 * modalHeight,
-            width: '100%',
-            marginTop: '5vh',
-          }}
-          >
-            <TextField
-              id="pin-description"
-              label="Description..."
-              variant="standard"
-              maxLength="28"
-              color="success"
-              onChange={({ target: { value } }) => value.trim().length <= 20
+          <CardActions>
+            <div style={{
+              display: 'flex',
+              flexDirection: 'column',
+              justifyContent: 'space-evenly',
+              width: '100%',
+            }}
+            >
+              <TextField
+                id="pin-description"
+                label="Description..."
+                variant="standard"
+                maxLength="28"
+                color="success"
+                onChange={({ target: { value } }) => value.trim().length <= 20
              && this.setState({ description: value })}
-              value={description}
-              error={!description || isDescriptionError}
-              style={{ margin: '1.5vh' }}
-            />
-            <TextField
-              id="pin-img-link"
-              label="Paste image address here http://..."
-              variant="standard"
-              onChange={e => this.processImage(e)}
-              value={picPreview}
-              error={isError}
-              color="success"
-              style={{ margin: '1.5vh' }}
-            />
-            <SavePin
-              isImageError={isError || !isLoaded}
-              isDescriptionError={isDescriptionError}
-              isDuplicateError={duplicateError}
-              savePic={this.savePic}
-            />
-          </div>
+                value={description}
+                error={!description || isDescriptionError}
+                style={{ margin: '1.5vh' }}
+              />
+              <TextField
+                id="pin-img-link"
+                label="Paste image address here http://..."
+                variant="standard"
+                onChange={e => this.processImage(e)}
+                value={picPreview}
+                error={isError}
+                color="success"
+                style={{ margin: '1.5vh' }}
+              />
+              <SavePin
+                isImageError={isError || !isLoaded}
+                isDescriptionError={isDescriptionError}
+                isDuplicateError={duplicateError}
+                savePic={this.savePic}
+              />
+            </div>
+          </CardActions>
+
         </Card>
       </>
     );

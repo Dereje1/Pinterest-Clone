@@ -9,7 +9,6 @@ exports[`The pin creation modal will render 1`] = `
     className="pincreate cshow"
     sx={
       Object {
-        "height": 706.5600000000001,
         "width": 341.3333333333333,
       }
     }
@@ -46,60 +45,59 @@ exports[`The pin creation modal will render 1`] = `
       onLoad={[Function]}
       sx={
         Object {
-          "height": 367.41120000000006,
+          "maxHeight": 400,
           "objectFit": "contain",
         }
       }
     />
-    <div
-      style={
-        Object {
-          "display": "flex",
-          "flexDirection": "column",
-          "justifyContent": "space-evenly",
-          "marginTop": "5vh",
-          "position": "absolute",
-          "top": 423.93600000000004,
-          "width": "100%",
-        }
-      }
-    >
-      <ForwardRef(TextField)
-        color="success"
-        error={true}
-        id="pin-description"
-        label="Description..."
-        maxLength="28"
-        onChange={[Function]}
+    <ForwardRef(CardActions)>
+      <div
         style={
           Object {
-            "margin": "1.5vh",
+            "display": "flex",
+            "flexDirection": "column",
+            "justifyContent": "space-evenly",
+            "width": "100%",
           }
         }
-        value=""
-        variant="standard"
-      />
-      <ForwardRef(TextField)
-        color="success"
-        error={true}
-        id="pin-img-link"
-        label="Paste image address here http://..."
-        onChange={[Function]}
-        style={
-          Object {
-            "margin": "1.5vh",
+      >
+        <ForwardRef(TextField)
+          color="success"
+          error={true}
+          id="pin-description"
+          label="Description..."
+          maxLength="28"
+          onChange={[Function]}
+          style={
+            Object {
+              "margin": "1.5vh",
+            }
           }
-        }
-        value=""
-        variant="standard"
-      />
-      <SavePin
-        isDescriptionError={true}
-        isDuplicateError={false}
-        isImageError={true}
-        savePic={[Function]}
-      />
-    </div>
+          value=""
+          variant="standard"
+        />
+        <ForwardRef(TextField)
+          color="success"
+          error={true}
+          id="pin-img-link"
+          label="Paste image address here http://..."
+          onChange={[Function]}
+          style={
+            Object {
+              "margin": "1.5vh",
+            }
+          }
+          value=""
+          variant="standard"
+        />
+        <SavePin
+          isDescriptionError={true}
+          isDuplicateError={false}
+          isImageError={true}
+          savePic={[Function]}
+        />
+      </div>
+    </ForwardRef(CardActions)>
   </ForwardRef(Card)>
 </Fragment>
 `;
