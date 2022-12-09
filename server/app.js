@@ -8,8 +8,8 @@ const { router } = require('./crudroutes');
 const app = express();
 
 app.use(logger('dev')); // log every request to the console
-app.use(bodyParser.json());
-app.use(bodyParser.urlencoded({ extended: false }));
+app.use(bodyParser.json({ limit: '50mb' }));
+app.use(bodyParser.urlencoded({ limit: '50mb', extended: true }));
 app.use(cookieSession({
   maxAge: 21 * 24 * 60 * 60 * 1000,
   keys: [process.env.SESSION_SECRET],

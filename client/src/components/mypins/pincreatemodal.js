@@ -16,7 +16,11 @@ import SavePin from './SavePin';
 import error from './error.png';
 
 import {
-  delay, validateURL, getModalWidth, isDuplicateError,
+  delay,
+  validateURL,
+  getModalWidth,
+  isDuplicateError,
+  encodeImageFileAsURL,
 } from '../../utils/utils';
 import './pincreate.scss';
 
@@ -92,14 +96,18 @@ class PinCreate extends Component {
     });
   };
 
-  handleUploadedImage = ({ target: { files } }) => {
-    const [img] = files;
-    const imgURL = URL.createObjectURL(img);
-    this.processImage({
-      target: {
-        value: imgURL,
-      },
-    });
+  handleUploadedImage = async ({ target: { files } }) => {
+    const [imgFile] = files;
+    try {
+      const ans = await encodeImageFileAsURL(imgFile);
+      this.processImage({
+        target: {
+          value: ans,
+        },
+      });
+    } catch (_) {
+      this.onError();
+    }
   };
 
   render() {
