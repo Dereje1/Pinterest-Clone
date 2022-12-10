@@ -6,10 +6,15 @@ import Fab from '@mui/material/Fab';
 import FileDownloadOffIcon from '@mui/icons-material/FileDownloadOff';
 
 const SavePin = ({
-  isImageError, isDescriptionError, isDuplicateError, savePic,
+  isImageError, isDescriptionError, isDuplicateError, savePic, isImageLoaded,
 }) => {
   let validation;
-  if (isImageError && isDescriptionError) {
+  if (!isImageLoaded) {
+    validation = {
+      text: 'Image loading...',
+      color: '#aa9c9cd9',
+    };
+  } else if (isImageError && isDescriptionError) {
     validation = {
       text: 'Invalid image and description',
       color: '#f79f9fd9',
@@ -35,7 +40,7 @@ const SavePin = ({
       color: 'success',
     };
   }
-  const isDisabled = isImageError || isDescriptionError || isDuplicateError;
+  const isDisabled = isImageError || isDescriptionError || isDuplicateError || !isImageLoaded;
   return (
     <CardActions
       disableSpacing
@@ -68,5 +73,6 @@ SavePin.propTypes = {
   isImageError: PropTypes.bool.isRequired,
   isDescriptionError: PropTypes.bool.isRequired,
   isDuplicateError: PropTypes.bool.isRequired,
+  isImageLoaded: PropTypes.bool.isRequired,
   savePic: PropTypes.func.isRequired,
 };
