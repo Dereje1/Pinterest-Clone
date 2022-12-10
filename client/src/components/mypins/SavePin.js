@@ -2,8 +2,8 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import CardActions from '@mui/material/CardActions';
 import SaveAltIcon from '@mui/icons-material/SaveAlt';
-import IconButton from '@mui/material/IconButton';
-import TextField from '@mui/material/TextField';
+import Fab from '@mui/material/Fab';
+import FileDownloadOffIcon from '@mui/icons-material/FileDownloadOff';
 
 const SavePin = ({
   isImageError, isDescriptionError, isDuplicateError, savePic,
@@ -26,44 +26,37 @@ const SavePin = ({
     };
   } else if (isDuplicateError) {
     validation = {
-      text: 'Image URL already exists, please choose another',
+      text: 'Image URL already exists',
       color: '#f79f9fd9',
     };
   } else {
     validation = {
       text: 'Save pin',
-      color: '#028b02',
+      color: 'success',
     };
   }
+  const isDisabled = isImageError || isDescriptionError || isDuplicateError;
   return (
     <CardActions
       disableSpacing
     >
-      <IconButton
+      <Fab
+        variant="extended"
         aria-label="Pin Image"
         onClick={savePic}
-        disabled={isImageError || isDescriptionError || isDuplicateError}
-      >
-        <SaveAltIcon style={{ fontSize: '1.5em', color: validation.color }} />
-      </IconButton>
-      <TextField
-        id="pin-create-validation"
-        value={validation.text}
-        variant="standard"
+        disabled={isDisabled}
+        color={validation.color}
         sx={{
-          marginTop: 2,
-          width: '100%',
-          input: {
-            fontSize: '0.75em',
-            color: validation.color,
-            fontWeight: 'bold',
-            caretColor: 'white',
+          '&:disabled': {
+            backgroundColor: validation.color,
+            color: 'white',
           },
         }}
-        InputProps={{
-          disableUnderline: true,
-        }}
-      />
+      >
+        {!isDisabled && <SaveAltIcon sx={{ mr: 1, fontSize: '1.5em' }} />}
+        {isDisabled && <FileDownloadOffIcon sx={{ mr: 1, fontSize: '1.5em' }} />}
+        {validation.text}
+      </Fab>
 
     </CardActions>
   );

@@ -142,15 +142,15 @@ class PinCreate extends Component {
                 </IconButton>
               </>
             )}
-            title="Create Pin"
-            titleTypographyProps={{ fontSize: '1.5em', fontWeight: 'bold' }}
+            title={`Create pin from ${upload ? 'file' : 'link'}`}
+            titleTypographyProps={{ fontSize: '1.2em', fontWeight: 'bold' }}
           />
           <CardMedia
             component="img"
             image={picPreview === '' ? error : picPreview}
             onError={this.onError}
             onLoad={this.onLoad}
-            sx={{ objectFit: 'contain', maxHeight: 400 }}
+            sx={{ objectFit: 'contain', height: 250 }}
             id="new-pin-image"
           />
           <CardActions>
@@ -158,6 +158,7 @@ class PinCreate extends Component {
               display: 'flex',
               flexDirection: 'column',
               justifyContent: 'space-evenly',
+              alignItems: 'center',
               width: '100%',
             }}
             >
@@ -171,7 +172,7 @@ class PinCreate extends Component {
              && this.setState({ description: value })}
                 value={description}
                 error={!description || isDescriptionError}
-                style={{ margin: '1.5vh' }}
+                style={{ margin: '1.5vh', width: '100%' }}
               />
               {
                 upload
@@ -179,9 +180,9 @@ class PinCreate extends Component {
                     <Button
                       variant="contained"
                       startIcon={<UploadFileIcon />}
-                      sx={{ margin: '1.5vh' }}
+                      sx={{ margin: '2.3vh' }}
                       component="label"
-                      color={isError ? 'error' : 'success'}
+                      color={isError ? 'error' : 'secondary'}
                     >
                       {isError ? 'choose image' : 'replace image'}
                       <input hidden accept="image/*" type="file" onChange={this.handleUploadedImage} />
@@ -196,7 +197,7 @@ class PinCreate extends Component {
                       value={picPreview}
                       error={isError}
                       color="success"
-                      style={{ margin: '1.5vh' }}
+                      style={{ margin: '1.5vh', width: '100%' }}
                     />
                   )
               }

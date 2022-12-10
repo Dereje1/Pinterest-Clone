@@ -40,9 +40,12 @@ describe('The pin creation modal', () => {
 
   test('will render for uploading images', () => {
     const wrapper = shallow(<PinCreate {...props} />);
-    const cardHeader = wrapper.find({ title: 'Create Pin' });
+    let cardHeader = wrapper.find('ForwardRef(CardHeader)');
+    expect(cardHeader.props().title).toBe('Create pin from link');
     const uploadSwitch = cardHeader.props().action.props.children[0].props.control.props;
     uploadSwitch.onChange();
+    cardHeader = wrapper.find('ForwardRef(CardHeader)');
+    expect(cardHeader.props().title).toBe('Create pin from file');
     expect(toJson(wrapper)).toMatchSnapshot();
   });
 
@@ -125,7 +128,7 @@ describe('The pin creation modal', () => {
     utils.encodeImageFileAsURL = jest.fn(() => Promise.resolve('data:image successfully encoded'));
     const wrapper = shallow(<PinCreate {...props} />);
     // turn upload switch on
-    const cardHeader = wrapper.find({ title: 'Create Pin' });
+    const cardHeader = wrapper.find('ForwardRef(CardHeader)');
     const uploadSwitch = cardHeader.props().action.props.children[0].props.control.props;
 
     wrapper.setState({ isLoaded: true, isError: true });

@@ -46,10 +46,10 @@ exports[`The pin creation modal will render for links to images 1`] = `
           </ForwardRef(IconButton)>
         </React.Fragment>
       }
-      title="Create Pin"
+      title="Create pin from link"
       titleTypographyProps={
         Object {
-          "fontSize": "1.5em",
+          "fontSize": "1.2em",
           "fontWeight": "bold",
         }
       }
@@ -62,7 +62,7 @@ exports[`The pin creation modal will render for links to images 1`] = `
       onLoad={[Function]}
       sx={
         Object {
-          "maxHeight": 400,
+          "height": 250,
           "objectFit": "contain",
         }
       }
@@ -71,6 +71,7 @@ exports[`The pin creation modal will render for links to images 1`] = `
       <div
         style={
           Object {
+            "alignItems": "center",
             "display": "flex",
             "flexDirection": "column",
             "justifyContent": "space-evenly",
@@ -88,6 +89,7 @@ exports[`The pin creation modal will render for links to images 1`] = `
           style={
             Object {
               "margin": "1.5vh",
+              "width": "100%",
             }
           }
           value=""
@@ -102,6 +104,7 @@ exports[`The pin creation modal will render for links to images 1`] = `
           style={
             Object {
               "margin": "1.5vh",
+              "width": "100%",
             }
           }
           value=""
@@ -165,10 +168,10 @@ exports[`The pin creation modal will render for uploading images 1`] = `
           </ForwardRef(IconButton)>
         </React.Fragment>
       }
-      title="Create Pin"
+      title="Create pin from file"
       titleTypographyProps={
         Object {
-          "fontSize": "1.5em",
+          "fontSize": "1.2em",
           "fontWeight": "bold",
         }
       }
@@ -181,7 +184,7 @@ exports[`The pin creation modal will render for uploading images 1`] = `
       onLoad={[Function]}
       sx={
         Object {
-          "maxHeight": 400,
+          "height": 250,
           "objectFit": "contain",
         }
       }
@@ -190,6 +193,7 @@ exports[`The pin creation modal will render for uploading images 1`] = `
       <div
         style={
           Object {
+            "alignItems": "center",
             "display": "flex",
             "flexDirection": "column",
             "justifyContent": "space-evenly",
@@ -207,6 +211,7 @@ exports[`The pin creation modal will render for uploading images 1`] = `
           style={
             Object {
               "margin": "1.5vh",
+              "width": "100%",
             }
           }
           value=""
@@ -218,7 +223,7 @@ exports[`The pin creation modal will render for uploading images 1`] = `
           startIcon={<Memo />}
           sx={
             Object {
-              "margin": "1.5vh",
+              "margin": "2.3vh",
             }
           }
           variant="contained"

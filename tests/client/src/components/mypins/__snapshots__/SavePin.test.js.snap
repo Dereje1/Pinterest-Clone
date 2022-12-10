@@ -4,42 +4,31 @@ exports[`The save pin action button will render with both errors 1`] = `
 <ForwardRef(CardActions)
   disableSpacing={true}
 >
-  <ForwardRef(IconButton)
+  <ForwardRef(Fab)
     aria-label="Pin Image"
+    color="#f79f9fd9"
     disabled={true}
     onClick={[MockFunction]}
+    sx={
+      Object {
+        "&:disabled": Object {
+          "backgroundColor": "#f79f9fd9",
+          "color": "white",
+        },
+      }
+    }
+    variant="extended"
   >
-    <Memo(ForwardRef(SaveAltIcon))
-      style={
+    <Memo(ForwardRef(FileDownloadOffIcon))
+      sx={
         Object {
-          "color": "#f79f9fd9",
           "fontSize": "1.5em",
+          "mr": 1,
         }
       }
     />
-  </ForwardRef(IconButton)>
-  <ForwardRef(TextField)
-    InputProps={
-      Object {
-        "disableUnderline": true,
-      }
-    }
-    id="pin-create-validation"
-    sx={
-      Object {
-        "input": Object {
-          "caretColor": "white",
-          "color": "#f79f9fd9",
-          "fontSize": "0.75em",
-          "fontWeight": "bold",
-        },
-        "marginTop": 2,
-        "width": "100%",
-      }
-    }
-    value="Invalid image and description"
-    variant="standard"
-  />
+    Invalid image and description
+  </ForwardRef(Fab)>
 </ForwardRef(CardActions)>
 `;
 
@@ -47,42 +36,31 @@ exports[`The save pin action button will render with description error only 1`] 
 <ForwardRef(CardActions)
   disableSpacing={true}
 >
-  <ForwardRef(IconButton)
+  <ForwardRef(Fab)
     aria-label="Pin Image"
+    color="#f79f9fd9"
     disabled={true}
     onClick={[MockFunction]}
+    sx={
+      Object {
+        "&:disabled": Object {
+          "backgroundColor": "#f79f9fd9",
+          "color": "white",
+        },
+      }
+    }
+    variant="extended"
   >
-    <Memo(ForwardRef(SaveAltIcon))
-      style={
+    <Memo(ForwardRef(FileDownloadOffIcon))
+      sx={
         Object {
-          "color": "#f79f9fd9",
           "fontSize": "1.5em",
+          "mr": 1,
         }
       }
     />
-  </ForwardRef(IconButton)>
-  <ForwardRef(TextField)
-    InputProps={
-      Object {
-        "disableUnderline": true,
-      }
-    }
-    id="pin-create-validation"
-    sx={
-      Object {
-        "input": Object {
-          "caretColor": "white",
-          "color": "#f79f9fd9",
-          "fontSize": "0.75em",
-          "fontWeight": "bold",
-        },
-        "marginTop": 2,
-        "width": "100%",
-      }
-    }
-    value="Invalid description"
-    variant="standard"
-  />
+    Invalid description
+  </ForwardRef(Fab)>
 </ForwardRef(CardActions)>
 `;
 
@@ -90,42 +68,31 @@ exports[`The save pin action button will render with duplicate error only 1`] = 
 <ForwardRef(CardActions)
   disableSpacing={true}
 >
-  <ForwardRef(IconButton)
+  <ForwardRef(Fab)
     aria-label="Pin Image"
+    color="#f79f9fd9"
     disabled={true}
     onClick={[MockFunction]}
+    sx={
+      Object {
+        "&:disabled": Object {
+          "backgroundColor": "#f79f9fd9",
+          "color": "white",
+        },
+      }
+    }
+    variant="extended"
   >
-    <Memo(ForwardRef(SaveAltIcon))
-      style={
+    <Memo(ForwardRef(FileDownloadOffIcon))
+      sx={
         Object {
-          "color": "#f79f9fd9",
           "fontSize": "1.5em",
+          "mr": 1,
         }
       }
     />
-  </ForwardRef(IconButton)>
-  <ForwardRef(TextField)
-    InputProps={
-      Object {
-        "disableUnderline": true,
-      }
-    }
-    id="pin-create-validation"
-    sx={
-      Object {
-        "input": Object {
-          "caretColor": "white",
-          "color": "#f79f9fd9",
-          "fontSize": "0.75em",
-          "fontWeight": "bold",
-        },
-        "marginTop": 2,
-        "width": "100%",
-      }
-    }
-    value="Image URL already exists, please choose another"
-    variant="standard"
-  />
+    Image URL already exists
+  </ForwardRef(Fab)>
 </ForwardRef(CardActions)>
 `;
 
@@ -133,42 +100,31 @@ exports[`The save pin action button will render with image error only 1`] = `
 <ForwardRef(CardActions)
   disableSpacing={true}
 >
-  <ForwardRef(IconButton)
+  <ForwardRef(Fab)
     aria-label="Pin Image"
+    color="#f79f9fd9"
     disabled={true}
     onClick={[MockFunction]}
+    sx={
+      Object {
+        "&:disabled": Object {
+          "backgroundColor": "#f79f9fd9",
+          "color": "white",
+        },
+      }
+    }
+    variant="extended"
   >
-    <Memo(ForwardRef(SaveAltIcon))
-      style={
+    <Memo(ForwardRef(FileDownloadOffIcon))
+      sx={
         Object {
-          "color": "#f79f9fd9",
           "fontSize": "1.5em",
+          "mr": 1,
         }
       }
     />
-  </ForwardRef(IconButton)>
-  <ForwardRef(TextField)
-    InputProps={
-      Object {
-        "disableUnderline": true,
-      }
-    }
-    id="pin-create-validation"
-    sx={
-      Object {
-        "input": Object {
-          "caretColor": "white",
-          "color": "#f79f9fd9",
-          "fontSize": "0.75em",
-          "fontWeight": "bold",
-        },
-        "marginTop": 2,
-        "width": "100%",
-      }
-    }
-    value="Invalid image"
-    variant="standard"
-  />
+    Invalid image
+  </ForwardRef(Fab)>
 </ForwardRef(CardActions)>
 `;
 
@@ -176,41 +132,30 @@ exports[`The save pin action button will render with no errors 1`] = `
 <ForwardRef(CardActions)
   disableSpacing={true}
 >
-  <ForwardRef(IconButton)
+  <ForwardRef(Fab)
     aria-label="Pin Image"
+    color="success"
     disabled={false}
     onClick={[MockFunction]}
+    sx={
+      Object {
+        "&:disabled": Object {
+          "backgroundColor": "success",
+          "color": "white",
+        },
+      }
+    }
+    variant="extended"
   >
     <Memo(ForwardRef(SaveAltIcon))
-      style={
+      sx={
         Object {
-          "color": "#028b02",
           "fontSize": "1.5em",
+          "mr": 1,
         }
       }
     />
-  </ForwardRef(IconButton)>
-  <ForwardRef(TextField)
-    InputProps={
-      Object {
-        "disableUnderline": true,
-      }
-    }
-    id="pin-create-validation"
-    sx={
-      Object {
-        "input": Object {
-          "caretColor": "white",
-          "color": "#028b02",
-          "fontSize": "0.75em",
-          "fontWeight": "bold",
-        },
-        "marginTop": 2,
-        "width": "100%",
-      }
-    }
-    value="Save pin"
-    variant="standard"
-  />
+    Save pin
+  </ForwardRef(Fab)>
 </ForwardRef(CardActions)>
 `;

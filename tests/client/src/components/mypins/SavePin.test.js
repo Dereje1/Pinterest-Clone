@@ -22,8 +22,8 @@ describe('The save pin action button', () => {
 
   test('will render with both errors', () => {
     const wrapper = shallow(<SavePin {...props} />);
-    const validation = wrapper.find({ id: 'pin-create-validation' });
-    expect(validation.props().value).toBe('Invalid image and description');
+    const validation = wrapper.find({ 'aria-label': 'Pin Image' });
+    expect(validation.text()).toBe('Invalid image and description');
     expect(toJson(wrapper)).toMatchSnapshot();
   });
 
@@ -33,8 +33,8 @@ describe('The save pin action button', () => {
       isDescriptionError: false,
     };
     const wrapper = shallow(<SavePin {...updatedProps} />);
-    const validation = wrapper.find({ id: 'pin-create-validation' });
-    expect(validation.props().value).toBe('Invalid image');
+    const validation = wrapper.find({ 'aria-label': 'Pin Image' });
+    expect(validation.text()).toBe('Invalid image');
     expect(toJson(wrapper)).toMatchSnapshot();
   });
 
@@ -44,8 +44,8 @@ describe('The save pin action button', () => {
       isImageError: false,
     };
     const wrapper = shallow(<SavePin {...updatedProps} />);
-    const validation = wrapper.find({ id: 'pin-create-validation' });
-    expect(validation.props().value).toBe('Invalid description');
+    const validation = wrapper.find({ 'aria-label': 'Pin Image' });
+    expect(validation.text()).toBe('Invalid description');
     expect(toJson(wrapper)).toMatchSnapshot();
   });
 
@@ -57,8 +57,8 @@ describe('The save pin action button', () => {
       isDuplicateError: true,
     };
     const wrapper = shallow(<SavePin {...updatedProps} />);
-    const validation = wrapper.find({ id: 'pin-create-validation' });
-    expect(validation.props().value).toBe('Image URL already exists, please choose another');
+    const validation = wrapper.find({ 'aria-label': 'Pin Image' });
+    expect(validation.text()).toBe('Image URL already exists');
     expect(toJson(wrapper)).toMatchSnapshot();
   });
 
@@ -69,8 +69,8 @@ describe('The save pin action button', () => {
       isDescriptionError: false,
     };
     const wrapper = shallow(<SavePin {...updatedProps} />);
-    const validation = wrapper.find({ id: 'pin-create-validation' });
-    expect(validation.props().value).toBe('Save pin');
+    const validation = wrapper.find({ 'aria-label': 'Pin Image' });
+    expect(validation.text()).toBe('Save pin');
     expect(toJson(wrapper)).toMatchSnapshot();
   });
 });
