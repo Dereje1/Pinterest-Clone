@@ -114,6 +114,7 @@ exports[`The pin creation modal will render for links to images 1`] = `
           isDescriptionError={true}
           isDuplicateError={false}
           isImageError={true}
+          isImageLoaded={false}
           savePic={[Function]}
         />
       </div>
@@ -240,6 +241,7 @@ exports[`The pin creation modal will render for uploading images 1`] = `
           isDescriptionError={true}
           isDuplicateError={false}
           isImageError={true}
+          isImageLoaded={false}
           savePic={[Function]}
         />
       </div>

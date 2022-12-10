@@ -97,18 +97,22 @@ class PinCreate extends Component {
     });
   };
 
-  handleUploadedImage = async ({ target: { files } }) => {
-    const [imgFile] = files;
+  encodeImage = async (imgFile) => {
     try {
-      const ans = await encodeImageFileAsURL(imgFile);
+      const value = await encodeImageFileAsURL(imgFile);
       this.processImage({
         target: {
-          value: ans,
+          value,
         },
       });
     } catch (_) {
       this.onError();
     }
+  };
+
+  handleUploadedImage = ({ target: { files } }) => {
+    const [imgFile] = files;
+    this.setState({ isLoaded: false }, () => this.encodeImage(imgFile));
   };
 
   render() {
@@ -202,7 +206,8 @@ class PinCreate extends Component {
                   )
               }
               <SavePin
-                isImageError={isError || !isLoaded}
+                isImageError={isError}
+                isImageLoaded={isLoaded}
                 isDescriptionError={isDescriptionError}
                 isDuplicateError={duplicateError}
                 savePic={this.savePic}

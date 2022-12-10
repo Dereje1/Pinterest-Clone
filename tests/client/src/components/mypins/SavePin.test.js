@@ -13,6 +13,7 @@ describe('The save pin action button', () => {
       isImageError: true,
       isDescriptionError: true,
       isDuplicateError: false,
+      isImageLoaded: false,
       savePic: jest.fn(),
     };
   });
@@ -62,11 +63,25 @@ describe('The save pin action button', () => {
     expect(toJson(wrapper)).toMatchSnapshot();
   });
 
+  test('will render with not yet loaded error only', () => {
+    const updatedProps = {
+      ...props,
+      isImageError: false,
+      isDescriptionError: false,
+      isImageLoaded: false,
+    };
+    const wrapper = shallow(<SavePin {...updatedProps} />);
+    const validation = wrapper.find({ 'aria-label': 'Pin Image' });
+    expect(validation.text()).toBe('Image loading...');
+    expect(toJson(wrapper)).toMatchSnapshot();
+  });
+
   test('will render with no errors', () => {
     const updatedProps = {
       ...props,
       isImageError: false,
       isDescriptionError: false,
+      isImageLoaded: true,
     };
     const wrapper = shallow(<SavePin {...updatedProps} />);
     const validation = wrapper.find({ 'aria-label': 'Pin Image' });
