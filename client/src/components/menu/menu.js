@@ -1,17 +1,12 @@
 // menu bar
 import React from 'react';
 import PropTypes from 'prop-types';
-import _ from 'lodash';
 import { NavLink, withRouter } from 'react-router-dom';
 import { connect } from 'react-redux';
 import { compose } from 'redux';
-import Paper from '@mui/material/Paper';
-import InputBase from '@mui/material/InputBase';
-import SearchIcon from '@mui/icons-material/Search';
-import Tooltip from '@mui/material/Tooltip';
-import HighlightOffIcon from '@mui/icons-material/HighlightOff';
 import { getUser } from '../../actions/authentication';
 import updateSearch from '../../actions/search';
+import Search from './search';
 import Cover from '../cover/cover';
 import SignIn from '../signin/signin';
 import './menu.scss';
@@ -31,7 +26,6 @@ export class Menu extends React.Component {
       menuIsCollapsed: window.innerWidth < 600, // test for screen size
       collapseToggle: false, // turns responsive hamburger on/off
       displaySignIn: false,
-      searchVal: '',
     };
   }
 
@@ -60,8 +54,6 @@ export class Menu extends React.Component {
     }
   }
 
-  onSearch = _.debounce((val, searchUpdate) => searchUpdate(val), 500);
-
   toggleCollapse = () => {
     // burger click handler for responsive mode
     const { collapseToggle } = this.state;
@@ -71,48 +63,6 @@ export class Menu extends React.Component {
   listenForOutClicks = (e) => {
     // clicks outside an extended menu will collpase it
     if (!e.target.closest('.menu')) this.toggleCollapse();
-  };
-
-  renderSearch = () => {
-    const { updateSearch: searchUpdate, location: { pathname } } = this.props;
-    const { searchVal } = this.state;
-    if (pathname !== '/') return null;
-    return (
-      <Paper
-        sx={{
-          p: '2px 4px',
-          display: 'flex',
-          alignItems: 'center',
-          justifyContent: 'start',
-          width: '40%',
-          height: '80%',
-          background: '#f8f8f8',
-        }}
-        variant="string"
-      >
-        {searchVal
-          ? (
-            <HighlightOffIcon
-              id="clear-search"
-              style={{ fontSize: '1.5em', cursor: 'pointer' }}
-              onClick={() => this.setState({ searchVal: '' }, () => searchUpdate(''))}
-            />
-          ) : (
-            <Tooltip title="Search by description or owner" placement="bottom">
-              <SearchIcon />
-            </Tooltip>
-          )
-        }
-        <InputBase
-          sx={{ ml: 1, flex: 1 }}
-          placeholder="Search..."
-          inputProps={{ 'aria-label': 'search' }}
-          onChange={e => this.setState({ searchVal: e.target.value },
-            () => this.onSearch(e.target.value, searchUpdate))}
-          value={searchVal}
-        />
-      </Paper>
-    );
   };
 
   renderMenu = () => {
@@ -142,7 +92,11 @@ export class Menu extends React.Component {
     const {
       menuIsCollapsed, collapseToggle, initialLoad, displaySignIn,
     } = this.state;
-    const { user: { authenticated, username } } = this.props;
+    const {
+      user: { authenticated, username },
+      updateSearch: searchUpdate,
+      location: { pathname },
+    } = this.props;
     if (!username) {
       // render cover
       document.body.classList.add('cover');
@@ -159,7 +113,10 @@ export class Menu extends React.Component {
               {' Clone'}
             </a>
           </div>
-          {this.renderSearch()}
+          <Search
+            searchUpdate={searchUpdate}
+            pathname={pathname}
+          />
           <div className="items signin">
             <i
               className="fa fa-sign-in"
@@ -186,7 +143,10 @@ export class Menu extends React.Component {
               {' Clone'}
             </a>
           </div>
-          {this.renderSearch()}
+          <Search
+            searchUpdate={searchUpdate}
+            pathname={pathname}
+          />
           {this.renderMenu()}
         </div>
         {

@@ -18,43 +18,10 @@ exports[`The Menu component will render for an authenticated user 1`] = `
          Clone
       </a>
     </div>
-    <ForwardRef(Paper)
-      sx={
-        Object {
-          "alignItems": "center",
-          "background": "#f8f8f8",
-          "display": "flex",
-          "height": "80%",
-          "justifyContent": "start",
-          "p": "2px 4px",
-          "width": "40%",
-        }
-      }
-      variant="string"
-    >
-      <ForwardRef(Tooltip)
-        placement="bottom"
-        title="Search by description or owner"
-      >
-        <Memo(ForwardRef(SearchIcon)) />
-      </ForwardRef(Tooltip)>
-      <ForwardRef(InputBase)
-        inputProps={
-          Object {
-            "aria-label": "search",
-          }
-        }
-        onChange={[Function]}
-        placeholder="Search..."
-        sx={
-          Object {
-            "flex": 1,
-            "ml": 1,
-          }
-        }
-        value=""
-      />
-    </ForwardRef(Paper)>
+    <Search
+      pathname="/"
+      searchUpdate={[MockFunction]}
+    />
     <div
       className="items extended"
     >
@@ -98,43 +65,10 @@ exports[`The Menu component will render for users authenticated as guest 1`] = `
        Clone
     </a>
   </div>
-  <ForwardRef(Paper)
-    sx={
-      Object {
-        "alignItems": "center",
-        "background": "#f8f8f8",
-        "display": "flex",
-        "height": "80%",
-        "justifyContent": "start",
-        "p": "2px 4px",
-        "width": "40%",
-      }
-    }
-    variant="string"
-  >
-    <ForwardRef(Tooltip)
-      placement="bottom"
-      title="Search by description or owner"
-    >
-      <Memo(ForwardRef(SearchIcon)) />
-    </ForwardRef(Tooltip)>
-    <ForwardRef(InputBase)
-      inputProps={
-        Object {
-          "aria-label": "search",
-        }
-      }
-      onChange={[Function]}
-      placeholder="Search..."
-      sx={
-        Object {
-          "flex": 1,
-          "ml": 1,
-        }
-      }
-      value=""
-    />
-  </ForwardRef(Paper)>
+  <Search
+    pathname="/"
+    searchUpdate={[MockFunction]}
+  />
   <div
     className="items signin"
   >
