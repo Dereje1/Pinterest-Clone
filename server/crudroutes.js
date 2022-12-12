@@ -34,18 +34,18 @@ const getPins = async (req, res) => {
   const { userId, isAdmin } = getUserProfile(req.user);
   try {
     const allPins = await pins.find({ isBroken: false }).exec();
-    let allPinLinks = [];
-    allPins.forEach(({ imgLink, originalImgLink }) => {
-      allPinLinks = [
-        ...allPinLinks,
-        {
-          imgLink,
-          originalImgLink,
-          cloudFrontLink: getCloudFrontLink(imgLink),
-        },
-      ];
-    });
     if (req.query.type === 'profile') {
+      let allPinLinks = [];
+      allPins.forEach(({ imgLink, originalImgLink }) => {
+        allPinLinks = [
+          ...allPinLinks,
+          {
+            imgLink,
+            originalImgLink,
+            cloudFrontLink: getCloudFrontLink(imgLink),
+          },
+        ];
+      });
       if (isAdmin) {
         res.json({ profilePins: filterPins({ rawPins: allPins, userId, isAdmin }), allPinLinks });
         return;
