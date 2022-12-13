@@ -9,7 +9,12 @@ const SavePin = ({
   isImageError, isDescriptionError, isDuplicateError, savePic, isImageLoaded,
 }) => {
   let validation;
-  if (isImageError && isDescriptionError) {
+  if (!isImageLoaded) {
+    validation = {
+      text: 'Image loading...',
+      color: '#aa9c9cd9',
+    };
+  } else if (isImageError && isDescriptionError) {
     validation = {
       text: 'Invalid image and description',
       color: '#f79f9fd9',
@@ -28,11 +33,6 @@ const SavePin = ({
     validation = {
       text: 'Image URL already exists',
       color: '#f79f9fd9',
-    };
-  } else if (!isImageLoaded) {
-    validation = {
-      text: 'Image loading...',
-      color: '#aa9c9cd9',
     };
   } else {
     validation = {

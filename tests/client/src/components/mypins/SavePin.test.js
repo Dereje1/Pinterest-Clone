@@ -13,7 +13,7 @@ describe('The save pin action button', () => {
       isImageError: true,
       isDescriptionError: true,
       isDuplicateError: false,
-      isImageLoaded: false,
+      isImageLoaded: true,
       savePic: jest.fn(),
     };
   });

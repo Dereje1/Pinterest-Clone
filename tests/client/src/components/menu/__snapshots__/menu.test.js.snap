@@ -1,152 +1,96 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`The Menu component will render for an authenticated user 1`] = `
-<Fragment>
+<div
+  className="menu"
+>
+  <Brand />
+  <Search
+    closeSearch={[Function]}
+    isShowing={false}
+    openSearch={[Function]}
+    pathname="/"
+    searchUpdate={[MockFunction]}
+  />
   <div
-    className="menu"
+    className="items extended"
   >
-    <div
-      className="brand"
-    >
-      <a
-        href="/"
-      >
-        <i
-          aria-hidden="true"
-          className="fa fa-pinterest"
-        />
-         Clone
-      </a>
-    </div>
-    <ForwardRef(Paper)
-      sx={
-        Object {
-          "alignItems": "center",
-          "background": "#f8f8f8",
-          "display": "flex",
-          "height": "80%",
-          "justifyContent": "start",
-          "p": "2px 4px",
-          "width": "40%",
-        }
-      }
-      variant="string"
-    >
-      <ForwardRef(Tooltip)
-        placement="bottom"
-        title="Search by description or owner"
-      >
-        <Memo(ForwardRef(SearchIcon)) />
-      </ForwardRef(Tooltip)>
-      <ForwardRef(InputBase)
-        inputProps={
-          Object {
-            "aria-label": "search",
-          }
-        }
-        onChange={[Function]}
-        placeholder="Search..."
-        sx={
-          Object {
-            "flex": 1,
-            "ml": 1,
-          }
-        }
-        value=""
-      />
-    </ForwardRef(Paper)>
-    <div
-      className="items extended"
-    >
-      <NavLink
-        exact={true}
-        to="/"
-      >
-        Home
-      </NavLink>
-      <NavLink
-        exact={true}
-        to="/pins"
-      >
-        My Pins
-      </NavLink>
-      <NavLink
-        onClick={[Function]}
-        to="/another"
-      >
-        Logout
-      </NavLink>
-    </div>
+    <AuthMenu />
   </div>
-</Fragment>
+</div>
 `;
 
 exports[`The Menu component will render for users authenticated as guest 1`] = `
 <div
   className="menu"
 >
-  <div
-    className="brand"
-  >
-    <a
-      href="/"
-    >
-      <i
-        aria-hidden="true"
-        className="fa fa-pinterest"
-      />
-       Clone
-    </a>
-  </div>
-  <ForwardRef(Paper)
-    sx={
-      Object {
-        "alignItems": "center",
-        "background": "#f8f8f8",
-        "display": "flex",
-        "height": "80%",
-        "justifyContent": "start",
-        "p": "2px 4px",
-        "width": "40%",
-      }
-    }
-    variant="string"
-  >
-    <ForwardRef(Tooltip)
-      placement="bottom"
-      title="Search by description or owner"
-    >
-      <Memo(ForwardRef(SearchIcon)) />
-    </ForwardRef(Tooltip)>
-    <ForwardRef(InputBase)
-      inputProps={
-        Object {
-          "aria-label": "search",
-        }
-      }
-      onChange={[Function]}
-      placeholder="Search..."
-      sx={
-        Object {
-          "flex": 1,
-          "ml": 1,
-        }
-      }
-      value=""
-    />
-  </ForwardRef(Paper)>
-  <div
-    className="items signin"
-  >
-    <i
-      aria-hidden="true"
-      className="fa fa-sign-in"
-      onClick={[Function]}
-    />
-  </div>
+  <Brand />
+  <Search
+    closeSearch={[Function]}
+    isShowing={false}
+    openSearch={[Function]}
+    pathname="/"
+    searchUpdate={[MockFunction]}
+  />
+  <Login
+    showSignIn={[Function]}
+  />
   <SignIn
     caller="menu"
     removeSignin={[Function]}
   />
+</div>
+`;
+
+exports[`The Menu component will render the Login 1`] = `
+<div
+  className="items signin"
+>
+  <i
+    aria-hidden="true"
+    className="fa fa-sign-in"
+    onClick={[MockFunction]}
+  />
+</div>
+`;
+
+exports[`The Menu component will render the auth menu 1`] = `
+<Fragment>
+  <NavLink
+    exact={true}
+    onClick={[MockFunction]}
+    to="/"
+  >
+    Home
+  </NavLink>
+  <NavLink
+    exact={true}
+    onClick={[MockFunction]}
+    to="/pins"
+  >
+    My Pins
+  </NavLink>
+  <NavLink
+    onClick={[Function]}
+    to="/another"
+  >
+    Logout
+  </NavLink>
+</Fragment>
+`;
+
+exports[`The Menu component will render the brand 1`] = `
+<div
+  className="brand"
+>
+  <a
+    href="/"
+  >
+    <i
+      aria-hidden="true"
+      className="fa fa-pinterest"
+    />
+     Clone
+  </a>
 </div>
 `;

@@ -101,3 +101,5 @@ export const encodeImageFileAsURL = imgFile => new Promise((resolve, reject) => 
   };
   reader.readAsDataURL(imgFile);
 });
+
+export const initialDisplayPerScroll = () => (window.innerWidth > 1440 ? 20 : 10);

@@ -4,6 +4,7 @@ import InfiniteScroll from 'react-infinite-scroll-component';
 import MasonryPins from './MasonryPins';
 import PinZoom from '../modal/modalzoom';
 import Loading from './Loading';
+import { initialDisplayPerScroll } from '../../utils/utils';
 import './imagebuild.scss';
 import error from '../mypins/error.png';
 
@@ -30,7 +31,7 @@ const ImageBuild = ({
   }, [pinList]);
 
   useEffect(() => {
-    setActivePins(loadedPins.slice(0, activePins.length + PINS_DISPLAY_PER_SCROLL));
+    setActivePins(loadedPins.slice(0, initialDisplayPerScroll()));
   }, [loadedPins]);
 
   // Masonry callback executes this function
@@ -43,13 +44,6 @@ const ImageBuild = ({
 
   // img onError callback executes this function
   const onBrokenImage = (id) => {
-    /*
-    handles broken image links
-    basically same as delete pic function but just
-    removes from state and not the databse as image
-    could become reactivated in a future time
-    still keep in database records until owner deletes
-    */
     let pinListCopy = JSON.parse(JSON.stringify(loadedPins));
     const indexOfBroken = pinListCopy.findIndex(p => p._id === id);
     const msg = `Broken Img - ${pinListCopy[indexOfBroken].imgDescription}`;
