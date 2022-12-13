@@ -23,6 +23,7 @@
     .items{
       height: 50px;
       margin-right: 5%;
+      margin-left: 2%;
       >a{
         color: #5e6870;
         text-decoration: none;
@@ -52,7 +53,7 @@
         &.burger{
           margin-right: 5%;
           >i{
-            padding-top: 4px;
+            padding-top: 7px;
             font-size: 2rem;
             cursor: pointer;
           }
@@ -62,6 +63,9 @@
         font-size: 50px;
         cursor: pointer;
       }
+    }
+    .search{
+      margin-left: auto;
     }
   }
 
