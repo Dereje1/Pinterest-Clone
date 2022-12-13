@@ -4,7 +4,9 @@
 import React from 'react';
 import { shallow } from 'enzyme';
 import toJson from 'enzyme-to-json';
-import { Menu, mapStateToProps } from '../../../../../client/src/components/menu/menu';
+import {
+  Menu, mapStateToProps, AuthMenu, Brand, Login,
+} from '../../../../../client/src/components/menu/menu';
 
 jest.useFakeTimers();
 describe('The Menu component', () => {
@@ -35,6 +37,17 @@ describe('The Menu component', () => {
     expect(cover.length).toBe(0);
     expect(toJson(wrapper)).toMatchSnapshot();
   });
+
+  test('will render for an open search bar', () => {
+    const wrapper = shallow(<Menu {...props} />);
+    expect(wrapper.state().showSearch).toBe(false);
+    const search = wrapper.find('Search');
+    search.props().openSearch();
+    expect(wrapper.state().showSearch).toBe(true);
+    search.props().closeSearch();
+    expect(wrapper.state().showSearch).toBe(false);
+  });
+
   test('will render for users authenticated as guest', () => {
     const updatedProps = {
       ...props,
@@ -115,9 +128,20 @@ describe('The Menu component', () => {
 
   test('will render the collapsed menu', () => {
     const wrapper = shallow(<Menu {...props} />);
-    wrapper.setState({ menuIsCollapsed: true });
+    wrapper.setState({ menuIsCollapsed: true, collapseToggle: true });
     const collapsedBurger = wrapper.find({ className: 'items collapsed burger' });
+    let responsiveMenuDrop = wrapper.find({ className: 'responsivemenu drop' });
+    let responsiveMenuLift = wrapper.find({ className: 'responsivemenu lift' });
+    const authMenu = wrapper.find('AuthMenu');
     expect(collapsedBurger.length).toBe(1);
+    expect(responsiveMenuDrop.length).toBe(1);
+    expect(responsiveMenuLift.length).toBe(0);
+    // toggle collapse
+    authMenu.props().toggleCollapse();
+    responsiveMenuDrop = wrapper.find({ className: 'responsivemenu drop' });
+    responsiveMenuLift = wrapper.find({ className: 'responsivemenu lift' });
+    expect(responsiveMenuDrop.length).toBe(0);
+    expect(responsiveMenuLift.length).toBe(1);
   });
 
   test('will toggle the sign-in modal for guest users', () => {
@@ -130,8 +154,8 @@ describe('The Menu component', () => {
     };
     const wrapper = shallow(<Menu {...updatedProps} />);
     expect(wrapper.state().displaySignIn).toBe(false);
-    const signInButton = wrapper.find({ className: 'fa fa-sign-in' });
-    signInButton.props().onClick();
+    const signInButton = wrapper.find('Login');
+    signInButton.props().showSignIn();
     expect(wrapper.state().displaySignIn).toBe(true);
     const signInModal = wrapper.find('SignIn');
     signInModal.props().removeSignin();
@@ -146,23 +170,7 @@ describe('The Menu component', () => {
         assign: mockedAssign,
       },
     }));
-    const wrapper = shallow(<Menu {...props} />);
-    wrapper.setState({ menuIsCollapsed: false });
-    const logoutLink = wrapper.find('NavLink').at(2);
-    logoutLink.props().onClick();
-    expect(mockedAssign).toHaveBeenCalledWith('auth/logout');
-  });
-
-  test('will logout the user from the collapsed menu', () => {
-    const windowSpy = jest.spyOn(global, 'window', 'get');
-    const mockedAssign = jest.fn();
-    windowSpy.mockImplementation(() => ({
-      location: {
-        assign: mockedAssign,
-      },
-    }));
-    const wrapper = shallow(<Menu {...props} />);
-    wrapper.setState({ menuIsCollapsed: true, initialLoad: false });
+    const wrapper = shallow(<AuthMenu />);
     const logoutLink = wrapper.find('NavLink').at(2);
     logoutLink.props().onClick();
     expect(mockedAssign).toHaveBeenCalledWith('auth/logout');
@@ -172,5 +180,20 @@ describe('The Menu component', () => {
     const stateToMap = { user: 'a user', other: 'any other' };
     const mappedProps = mapStateToProps(stateToMap);
     expect(mappedProps).toEqual({ user: 'a user' });
+  });
+
+  test('will render the brand', () => {
+    const wrapper = shallow(<Brand />);
+    expect(toJson(wrapper)).toMatchSnapshot();
+  });
+
+  test('will render the Login', () => {
+    const wrapper = shallow(<Login showSignIn={jest.fn()} />);
+    expect(toJson(wrapper)).toMatchSnapshot();
+  });
+
+  test('will render the auth menu', () => {
+    const wrapper = shallow(<AuthMenu toggleCollapse={jest.fn()} />);
+    expect(toJson(wrapper)).toMatchSnapshot();
   });
 });
