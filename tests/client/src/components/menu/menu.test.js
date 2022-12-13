@@ -8,7 +8,7 @@ import {
   Menu, mapStateToProps, AuthMenu, Brand, Login,
 } from '../../../../../client/src/components/menu/menu';
 
-jest.useFakeTimers();
+
 describe('The Menu component', () => {
   let props;
   beforeEach(() => {
@@ -74,33 +74,6 @@ describe('The Menu component', () => {
     const wrapper = shallow(<Menu {...updatedProps} />);
     const cover = wrapper.find('Cover');
     expect(cover.length).toBe(1);
-  });
-  xtest('will not render the search bar if not on the Home page', () => {
-    const updatedProps = {
-      ...props,
-      location: {
-        pathname: '/anotherPath',
-      },
-    };
-    const wrapper = shallow(<Menu {...updatedProps} />);
-    const result = wrapper.instance().renderSearch();
-    expect(result).toBe(null);
-  });
-  xtest('will update the search in state and the redux store on change', () => {
-    const wrapper = shallow(<Menu {...props} />);
-    const searchInput = wrapper.find('ForwardRef(InputBase)');
-    searchInput.props().onChange({ target: { value: 'abc' } });
-    jest.advanceTimersByTime(1000);
-    expect(props.updateSearch).toHaveBeenCalledWith('abc');
-    expect(wrapper.state().searchVal).toBe('abc');
-  });
-  xtest('will clear the search in state and the redux store on click', () => {
-    const wrapper = shallow(<Menu {...props} />);
-    wrapper.setState({ searchVal: 'abc' });
-    const clearButton = wrapper.find({ id: 'clear-search' });
-    clearButton.props().onClick();
-    expect(props.updateSearch).toHaveBeenCalledWith('');
-    expect(wrapper.state().searchVal).toBe('');
   });
   test('will update the ready state and others on CDU', () => {
     const wrapper = shallow(<Menu {...props} />);

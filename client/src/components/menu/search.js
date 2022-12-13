@@ -55,6 +55,7 @@ const Search = ({
       }}
     >
       <ArrowBackIcon
+        id="back"
         onClick={() => {
           clearSearch();
           closeSearch();
