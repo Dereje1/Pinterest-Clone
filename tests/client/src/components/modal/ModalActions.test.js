@@ -30,13 +30,16 @@ describe('Handling zoomed image action buttons', () => {
       },
       pinImage: null,
     };
+    const preventDefault = jest.fn();
     const wrapper = shallow(<ModalActions {...updatedProps} />);
     const iconButton = wrapper.find('ForwardRef(IconButton)');
     iconButton.props().onClick();
+    iconButton.props().onMouseDown({ preventDefault });
     expect(props.deletePin).toHaveBeenCalledWith({
       hasSaved: false,
       owns: true,
     });
+    expect(preventDefault).toHaveBeenCalled();
     expect(props.reset).toHaveBeenCalled();
     expect(toJson(wrapper)).toMatchSnapshot();
   });
@@ -75,13 +78,16 @@ describe('Handling zoomed image action buttons', () => {
 
 
   test('will render the pin button for unpinned images', () => {
+    const preventDefault = jest.fn();
     const wrapper = shallow(<ModalActions {...props} />);
     const iconButton = wrapper.find('ForwardRef(IconButton)');
     iconButton.props().onClick();
+    iconButton.props().onMouseDown({ preventDefault });
     expect(props.pinImage).toHaveBeenCalledWith({
       hasSaved: false,
       owns: false,
     });
+    expect(preventDefault).toHaveBeenCalled();
     expect(props.reset).toHaveBeenCalled();
     expect(toJson(wrapper)).toMatchSnapshot();
   });

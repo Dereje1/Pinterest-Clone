@@ -19,6 +19,7 @@ const GetAction = ({
           deletePin(element);
           reset();
         }}
+        onMouseDown={e => e.preventDefault()}
       >
         {
           element.owns
@@ -54,6 +55,7 @@ const GetAction = ({
         pinImage(element);
         reset();
       }}
+      onMouseDown={e => e.preventDefault()}
     >
       <Tooltip title="Pin image" placement="left">
         <PushPinOutlinedIcon style={{ fontSize: '2em' }} />
