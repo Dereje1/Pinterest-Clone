@@ -7,12 +7,14 @@ exports[`The pin zoom modal will render 1`] = `
   />
   <ForwardRef(Card)
     className="zoom cshow"
+    onBlur={[Function]}
     sx={
       Object {
         "top": 10,
         "width": "90%",
       }
     }
+    tabIndex={0}
   >
     <ForwardRef(CardHeader)
       action={

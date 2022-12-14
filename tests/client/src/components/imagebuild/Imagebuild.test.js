@@ -40,6 +40,7 @@ describe('The ImageBuild component', () => {
   });
 
   test('will call pinEnlarge for a single pin', () => {
+    document.body.scrollTop = 10;
     const wrapper = shallow(<ImageBuild {...props} />);
     const masonry = wrapper.find('MasonryPins');
     let pinZoom = wrapper.find('PinZoom');
@@ -61,6 +62,7 @@ describe('The ImageBuild component', () => {
   });
 
   test('will dismiss pinEnlarge if pin already zoomed', () => {
+    document.body.scrollTop = 10;
     const wrapper = shallow(<ImageBuild {...props} />);
     let masonry = wrapper.find('MasonryPins');
     let pinZoom = wrapper.find('PinZoom');

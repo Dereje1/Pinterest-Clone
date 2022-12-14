@@ -21,7 +21,6 @@ export const getFilteredPins = (pinList, search) => {
 export const getNewImageWidth = ({
   naturalWidth: imageWidth,
   naturalHeight: imageHeight,
-  parentDivStyle,
 }) => {
   // dynamically resize image
   let { innerWidth, innerHeight } = window;
@@ -37,7 +36,6 @@ export const getNewImageWidth = ({
     newWidth = imageWidth * (innerHeight / imageHeight);
   }
   return {
-    ...parentDivStyle,
     width: `${newWidth}px`,
     small: newWidth < 350,
     titleSize: `${newWidth < 500 ? 1.2 : 2}em`,

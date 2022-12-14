@@ -14,6 +14,7 @@
   border: 1px solid rgba(0,0,0,.2);
   border-radius: 6px;
   z-index: 1010;
+  outline: none;
   &.cshow{
     display: block;
     @include animation('zoom-pin');

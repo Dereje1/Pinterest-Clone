@@ -30,59 +30,35 @@ export class PinZoom extends Component {
     // initialize modal show state to false
     this.state = {
       show: false,
-      firstShow: false,
-      parentDivStyle: { top: 80, width: '90%' },
+      parentDivStyle: { top: 0, width: '90%' },
     };
+    this.zoomedImage = React.createRef();
   }
 
   componentDidMount() {
+    this.zoomedImage.current.focus();
     const { zoomInfo } = this.props;
     const { parentDivStyle } = this.state;
     const [, browserTop] = zoomInfo;
-    const divCopy = JSON.parse(JSON.stringify(parentDivStyle));
-    divCopy.top = browserTop;
-    window.addEventListener('click', this.outsideClick);
-    window.addEventListener('touchmove', this.outsideClick);
-    window.addEventListener('scroll', this.disableScroll);
+    // set top and scroll to current position and disable scroll
+    window.scrollTo(0, browserTop);
+    document.body.style.overflow = 'hidden';
     this.setState({
       show: true,
-      firstShow: true,
-      parentDivStyle: divCopy,
+      parentDivStyle: {
+        ...parentDivStyle,
+        top: browserTop,
+      },
     }, async () => { await delay(1000); });
   }
 
   componentWillUnmount() {
-    this.removeListeners();
+    document.body.style.overflowY = 'scroll';
   }
 
-  removeListeners = () => {
-    window.removeEventListener('click', this.outsideClick);
-    window.removeEventListener('scroll', this.disableScroll);
-    window.removeEventListener('touchmove', this.outsideClick);
-  };
-
-  outsideClick = (e) => {
-    // if modal and outside click/touch remove modal
-    const { show, firstShow } = this.state;
-    const closestElement = e.target.closest('.zoom');
-    // prevent keyframe animation on running with first load
-    if (!closestElement && firstShow) {
-      this.setState({ firstShow: false });
-      return;
-    }
-    if (!closestElement && show) this.close();
-  };
-
-  disableScroll = () => {
-    const { zoomInfo: zoomDist } = this.props;
-    window.scrollTo(0, zoomDist[1]);
-  };
-
   close = () => {
-    // sends a reset callback after closing modalstate which clears
-    // the message field
+    // sends a reset callback after closing modalstate
     const { reset } = this.props;
-    this.removeListeners();
     this.setState({
       show: false,
     }, async () => {
@@ -95,10 +71,13 @@ export class PinZoom extends Component {
   handleImage = (i) => {
     const { naturalWidth, naturalHeight } = i.target;
     const { parentDivStyle } = this.state;
-    const newDivStyle = getNewImageWidth({ naturalWidth, naturalHeight, parentDivStyle });
+    const newDivStyle = getNewImageWidth({ naturalWidth, naturalHeight });
     // const pcopy = JSON.parse(JSON.stringify(parentDivStyle));
     this.setState({
-      parentDivStyle: newDivStyle,
+      parentDivStyle: {
+        ...parentDivStyle,
+        ...newDivStyle,
+      },
     });
   };
 
@@ -117,7 +96,13 @@ export class PinZoom extends Component {
     return (
       <>
         {show && <div className="modal-overlay" />}
-        <Card sx={parentDivStyle} className={show ? 'zoom cshow' : 'zoom chide'}>
+        <Card
+          sx={parentDivStyle}
+          className={show ? 'zoom cshow' : 'zoom chide'}
+          onBlur={this.close}
+          ref={this.zoomedImage}
+          tabIndex={0}
+        >
           <CardHeader
             action={(
               <>

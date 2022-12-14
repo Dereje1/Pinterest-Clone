@@ -11,7 +11,14 @@ jest.useFakeTimers();
 
 describe('The pin zoom modal', () => {
   let props;
+  const focus = jest.fn();
   beforeEach(() => {
+    jest.spyOn(React, 'createRef').mockImplementation(() => ({
+      current: {
+        focus,
+      },
+    }));
+    global.scrollTo = jest.fn();
     props = {
       displayPinZoom: false,
       // [picobject, overlay button type, last scroll distance]
@@ -24,10 +31,13 @@ describe('The pin zoom modal', () => {
 
   afterEach(() => {
     props = null;
+    focus.mockClear();
+    global.scrollTo = null;
   });
 
   test('will render', () => {
     const wrapper = shallow(<PinZoom {...props} />);
+    expect(focus).toHaveBeenCalled();
     expect(toJson(wrapper)).toMatchSnapshot();
   });
 
@@ -85,64 +95,21 @@ describe('The pin zoom modal', () => {
     });
   });
 
-  test('will close the zoom window on outclick', async () => {
+  test('will close the zoom window on blur', async () => {
     const wrapper = shallow(<PinZoom {...props} />);
+    const zoomCard = wrapper.find({ className: 'zoom cshow' });
     wrapper.setState({ firstShow: false });
-    const e = {
-      target: {
-        closest: jest.fn(() => false),
-      },
-    };
-    wrapper.instance().outsideClick(e);
+    zoomCard.props().onBlur();
     jest.advanceTimersByTime(500);
     await Promise.resolve();
 
-    expect(e.target.closest).toHaveBeenCalledWith('.zoom');
     expect(wrapper.state().show).toBe(false);
     expect(props.reset).toHaveBeenCalledTimes(1);
   });
 
-  test('will not close the zoom window on outclick if on first load', () => {
-    const wrapper = shallow(<PinZoom {...props} />);
-    wrapper.setState({ show: true, firstShow: true });
-    const e = {
-      target: {
-        closest: jest.fn(() => false),
-      },
-    };
-    wrapper.instance().outsideClick(e);
-    expect(e.target.closest).toHaveBeenCalledWith('.zoom');
-    expect(wrapper.state().show).toBe(true);
-    expect(wrapper.state().firstShow).toBe(false);
-  });
-
   test('will disable the scroll', () => {
     global.scrollTo = jest.fn();
-    const wrapper = shallow(<PinZoom {...props} />);
-    wrapper.instance().disableScroll();
+    shallow(<PinZoom {...props} />);
     expect(global.scrollTo).toHaveBeenCalledWith(0, 10);
-  });
-
-  test('will add eventlisteners and set state when modal first mounts', () => {
-    global.addEventListener = jest.fn();
-    const wrapper = shallow(<PinZoom {...props} />);
-    const events = global.addEventListener.mock.calls.map(c => c[0]);
-    expect(global.addEventListener).toHaveBeenCalledTimes(3);
-    expect(events).toEqual(['click', 'touchmove', 'scroll']);
-    expect(wrapper.state()).toEqual({
-      show: true,
-      firstShow: true,
-      parentDivStyle: { top: 10, width: '90%' },
-    });
-  });
-
-  test('will remove eventlisteners when modal unloads', () => {
-    global.removeEventListener = jest.fn();
-    const wrapper = shallow(<PinZoom {...props} />);
-    wrapper.setState({ show: true });
-    wrapper.instance().componentWillUnmount();
-    const events = global.removeEventListener.mock.calls.map(c => c[0]);
-    expect(global.removeEventListener).toHaveBeenCalledTimes(3);
-    expect(events).toEqual(['click', 'scroll', 'touchmove']);
   });
 });

@@ -64,7 +64,7 @@ const ImageBuild = ({
     if (e.target.type === 'submit') return;
     if (displayPinZoom) return;
     setDisplayPinZoom(true);
-    setImageInfo([currentImg, e.pageY - e.clientY]);
+    setImageInfo([currentImg, document.body.scrollTop]);
   };
 
   const nextScroll = () => {
