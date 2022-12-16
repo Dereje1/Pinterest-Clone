@@ -34,30 +34,34 @@ exports[`The search component Will render search bar if selected by the user 1`]
     }
   }
 >
-  <Memo(ForwardRef(ArrowBackIcon))
-    id="back"
-    onClick={[Function]}
-    sx={
-      Object {
-        "cursor": "pointer",
-        "fontSize": 35,
-      }
-    }
-  />
   <ForwardRef(Paper)
+    component="form"
     sx={
       Object {
-        "background": "white",
-        "height": "50px",
-        "marginLeft": 3,
-        "marginRight": 3,
+        "alignItems": "center",
+        "display": "flex",
+        "marginBottom": "auto",
+        "marginTop": "auto",
         "p": "2px 4px",
-        "width": "200px",
+        "width": 360,
       }
     }
     variant="string"
   >
+    <ForwardRef(IconButton)
+      aria-label="menu"
+      id="back"
+      onClick={[Function]}
+      sx={
+        Object {
+          "p": "10px",
+        }
+      }
+    >
+      <Memo(ForwardRef(ArrowBackIcon)) />
+    </ForwardRef(IconButton)>
     <ForwardRef(InputBase)
+      autoFocus={true}
       inputProps={
         Object {
           "aria-label": "search",
@@ -73,17 +77,20 @@ exports[`The search component Will render search bar if selected by the user 1`]
       }
       value=""
     />
-  </ForwardRef(Paper)>
-  <Memo(ForwardRef(HighlightOffIcon))
-    id="clear-search"
-    onClick={[Function]}
-    style={
-      Object {
-        "cursor": "pointer",
-        "fontSize": 35,
-        "visibility": "hidden",
+    <ForwardRef(IconButton)
+      id="clear-search"
+      onClick={[Function]}
+      sx={
+        Object {
+          "cursor": "pointer",
+          "p": "10px",
+          "visibility": "hidden",
+        }
       }
-    }
-  />
+      type="button"
+    >
+      <Memo(ForwardRef(HighlightOffIcon)) />
+    </ForwardRef(IconButton)>
+  </ForwardRef(Paper)>
 </div>
 `;

@@ -68,8 +68,7 @@ export class PinZoom extends Component {
     });
   };
 
-  handleImage = (i) => {
-    const { naturalWidth, naturalHeight } = i.target;
+  handleImage = ({ target: { naturalWidth, naturalHeight } }) => {
     const { parentDivStyle } = this.state;
     const newDivStyle = getNewImageWidth({ naturalWidth, naturalHeight });
     // const pcopy = JSON.parse(JSON.stringify(parentDivStyle));
@@ -95,7 +94,7 @@ export class PinZoom extends Component {
     const [, day, mth, year] = new Date(pinInformation.createdAt).toUTCString().split(' ');
     return (
       <>
-        {show && <div className="modal-overlay" />}
+        <div className="modal-overlay" />
         <Card
           sx={parentDivStyle}
           className={show ? 'zoom cshow' : 'zoom chide'}

@@ -20,6 +20,7 @@ export class SignIn extends React.Component {
     window.addEventListener('click', this.listenForOutClicks);
   }
 
+  // TODO: handle with focus/blur instead of outclicks
   listenForOutClicks = (e) => {
     // clicks outside menu will collpase it
     const { caller } = this.props;

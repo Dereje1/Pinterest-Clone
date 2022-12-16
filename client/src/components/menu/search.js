@@ -7,6 +7,7 @@ import SearchIcon from '@mui/icons-material/Search';
 import Tooltip from '@mui/material/Tooltip';
 import HighlightOffIcon from '@mui/icons-material/HighlightOff';
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
+import IconButton from '@mui/material/IconButton';
 
 const Search = ({
   searchUpdate,
@@ -54,44 +55,52 @@ const Search = ({
         marginRight: 'auto',
       }}
     >
-      <ArrowBackIcon
-        id="back"
-        onClick={() => {
-          clearSearch();
-          closeSearch();
-        }}
-        sx={{ fontSize: 35, cursor: 'pointer' }}
-      />
 
       <Paper
+        component="form"
         sx={{
           p: '2px 4px',
-          background: 'white',
-          height: '50px',
-          width: '200px',
-          marginLeft: 3,
-          marginRight: 3,
+          display: 'flex',
+          alignItems: 'center',
+          width: 360,
+          marginTop: 'auto',
+          marginBottom: 'auto',
         }}
         variant="string"
       >
+        <IconButton
+          sx={{ p: '10px' }}
+          aria-label="menu"
+          id="back"
+          onClick={() => {
+            clearSearch();
+            closeSearch();
+          }}
+        >
+          <ArrowBackIcon />
+        </IconButton>
         <InputBase
           sx={{ width: '100%', height: '100%' }}
           placeholder="Search..."
           inputProps={{ 'aria-label': 'search' }}
           onChange={handleSearch}
           value={searchVal}
+          autoFocus
         />
+        <IconButton
+          type="button"
+          id="clear-search"
+          sx={{
+            p: '10px',
+            cursor: 'pointer',
+            visibility: searchVal ? 'visible' : 'hidden',
+          }}
+          onClick={clearSearch}
+        >
+          <HighlightOffIcon />
+        </IconButton>
       </Paper>
 
-      <HighlightOffIcon
-        id="clear-search"
-        style={{
-          fontSize: 35,
-          cursor: 'pointer',
-          visibility: searchVal ? 'visible' : 'hidden',
-        }}
-        onClick={clearSearch}
-      />
     </div>
 
   );
