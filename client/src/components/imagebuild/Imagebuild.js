@@ -24,6 +24,7 @@ const ImageBuild = ({
   const [loadedPins, setLoadedPins] = useState([]);
   const [activePins, setActivePins] = useState([]);
   const [scrollPosition, setScrollPosition] = useState(0);
+  const [batchSize, setBatchSize] = useState(initialDisplayPerScroll());
 
 
   useEffect(() => {
@@ -31,12 +32,8 @@ const ImageBuild = ({
   }, [pinList]);
 
   useEffect(() => {
-    if (!activePins.length) {
-      setActivePins(loadedPins.slice(0, initialDisplayPerScroll()));
-    } else {
-      setActivePins(loadedPins.slice(0, activePins.length));
-    }
-  }, [loadedPins]);
+    setActivePins(loadedPins.slice(0, batchSize));
+  }, [loadedPins, batchSize]);
 
   // Masonry callback executes this function
   const layoutComplete = () => {
@@ -73,7 +70,7 @@ const ImageBuild = ({
 
   const nextScroll = () => {
     setImagesLoaded(false);
-    setActivePins(loadedPins.slice(0, activePins.length + PINS_DISPLAY_PER_SCROLL));
+    setBatchSize(batchSize + PINS_DISPLAY_PER_SCROLL);
   };
 
   return (
