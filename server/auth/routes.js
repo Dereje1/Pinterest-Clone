@@ -30,8 +30,9 @@ const setGuest = (req, res) => {
 };
 
 const logOut = (req, res) => {
-  req.logout();
-  res.redirect('/');
+  req.logout(() => {
+    res.redirect('/');
+  });
 };
 
 const setAuthRoutes = (app, passport) => {

@@ -57,6 +57,8 @@ describe('Authentication routes', () => {
   test('will log a user out', () => {
     logOut(req, res);
     expect(req.logout).toHaveBeenCalled();
+    const [[logoutCallback]] = req.logout.mock.calls;
+    logoutCallback();
     expect(res.redirect).toHaveBeenCalledWith('/');
   });
 });

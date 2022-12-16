@@ -14,6 +14,29 @@ app.use(cookieSession({
   maxAge: 21 * 24 * 60 * 60 * 1000,
   keys: [process.env.SESSION_SECRET],
 }));
+
+/*
+TODO; temp patch for passport 0.6.0 upgrade error, remove after passport resolves issue
+see: https://github.com/jaredhanson/passport/issues/904#issuecomment-1307558283
+register regenerate & save after the cookieSession middleware initialization
+*/
+/* istanbul ignore next */
+app.use((request, response, next) => {
+  if (request.session && !request.session.regenerate) {
+    // eslint-disable-next-line no-param-reassign
+    request.session.regenerate = (cb) => {
+      cb();
+    };
+  }
+  if (request.session && !request.session.save) {
+    // eslint-disable-next-line no-param-reassign
+    request.session.save = (cb) => {
+      cb();
+    };
+  }
+  next();
+});
+
 app.use(express.static(path.join(__dirname, '../client/public')));
 
 require('./models/db'); // mongoose required common db
