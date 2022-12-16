@@ -31,7 +31,11 @@ const ImageBuild = ({
   }, [pinList]);
 
   useEffect(() => {
-    setActivePins(loadedPins.slice(0, initialDisplayPerScroll()));
+    if (!activePins.length) {
+      setActivePins(loadedPins.slice(0, initialDisplayPerScroll()));
+    } else {
+      setActivePins(loadedPins.slice(0, activePins.length));
+    }
   }, [loadedPins]);
 
   // Masonry callback executes this function
