@@ -9,11 +9,11 @@ exports[`The search component Will render only search Icon if not selected by th
     title="Search by description or owner"
   >
     <Memo(ForwardRef(SearchIcon))
+      fontSize="large"
       onClick={[MockFunction]}
       sx={
         Object {
           "cursor": "pointer",
-          "fontSize": 35,
           "justifySelf": "flex-end",
         }
       }

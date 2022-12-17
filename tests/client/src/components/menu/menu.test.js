@@ -5,7 +5,7 @@ import React from 'react';
 import { shallow } from 'enzyme';
 import toJson from 'enzyme-to-json';
 import {
-  Menu, mapStateToProps, AuthMenu, Brand, Login,
+  Menu, mapStateToProps, ExpandedMenu, Brand, Login,
 } from '../../../../../client/src/components/menu/menu';
 
 
@@ -75,46 +75,11 @@ describe('The Menu component', () => {
     const cover = wrapper.find('Cover');
     expect(cover.length).toBe(1);
   });
-  test('will update the ready state and others on CDU', () => {
-    const wrapper = shallow(<Menu {...props} />);
-    expect(wrapper.state().initialLoad).toBe(true);
-    jest.spyOn(window, 'addEventListener').mockImplementationOnce(() => { });
-    wrapper.setState({ collapseToggle: true });
-    const prevProps = {
-      user: undefined,
-    };
-    const prevState = {
-      collapseToggle: false,
-    };
-    wrapper.instance().componentDidUpdate(prevProps, prevState);
-    expect(wrapper.state().initialLoad).toBe(false);
-    expect(window.addEventListener).toHaveBeenCalledWith('click', expect.any(Function));
-  });
-  test('will togggle the menu collapse', () => {
-    const wrapper = shallow(<Menu {...props} />);
-    expect(wrapper.state().collapseToggle).toBe(false);
-    const e = { target: { closest: jest.fn() } };
-    wrapper.instance().listenForOutClicks(e);
-    expect(wrapper.state().collapseToggle).toBe(true);
-    expect(e.target.closest).toHaveBeenCalledWith('.menu');
-  });
 
   test('will render the collapsed menu', () => {
     const wrapper = shallow(<Menu {...props} />);
-    wrapper.setState({ menuIsCollapsed: true, collapseToggle: true });
-    const collapsedBurger = wrapper.find({ className: 'items collapsed burger' });
-    let responsiveMenuDrop = wrapper.find({ className: 'responsivemenu drop' });
-    let responsiveMenuLift = wrapper.find({ className: 'responsivemenu lift' });
-    const authMenu = wrapper.find('AuthMenu');
-    expect(collapsedBurger.length).toBe(1);
-    expect(responsiveMenuDrop.length).toBe(1);
-    expect(responsiveMenuLift.length).toBe(0);
-    // toggle collapse
-    authMenu.props().toggleCollapse();
-    responsiveMenuDrop = wrapper.find({ className: 'responsivemenu drop' });
-    responsiveMenuLift = wrapper.find({ className: 'responsivemenu lift' });
-    expect(responsiveMenuDrop.length).toBe(0);
-    expect(responsiveMenuLift.length).toBe(1);
+    wrapper.setState({ menuIsCollapsed: true });
+    expect(toJson(wrapper)).toMatchSnapshot();
   });
 
   test('will toggle the sign-in modal for guest users', () => {
@@ -143,7 +108,7 @@ describe('The Menu component', () => {
         assign: mockedAssign,
       },
     }));
-    const wrapper = shallow(<AuthMenu />);
+    const wrapper = shallow(<ExpandedMenu />);
     const logoutLink = wrapper.find('NavLink').at(2);
     logoutLink.props().onClick();
     expect(mockedAssign).toHaveBeenCalledWith('auth/logout');
@@ -166,7 +131,7 @@ describe('The Menu component', () => {
   });
 
   test('will render the auth menu', () => {
-    const wrapper = shallow(<AuthMenu toggleCollapse={jest.fn()} />);
+    const wrapper = shallow(<ExpandedMenu toggleCollapse={jest.fn()} />);
     expect(toJson(wrapper)).toMatchSnapshot();
   });
 });

@@ -38,7 +38,8 @@ const Search = ({
         <Tooltip title="Search by description or owner" placement="bottom">
           <SearchIcon
             onClick={openSearch}
-            sx={{ fontSize: 35, cursor: 'pointer', justifySelf: 'flex-end' }}
+            sx={{ cursor: 'pointer', justifySelf: 'flex-end' }}
+            fontSize="large"
           />
         </Tooltip>
       </div>
