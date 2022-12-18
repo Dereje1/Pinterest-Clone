@@ -36,7 +36,6 @@ exports[`The Menu component will render for users authenticated as guest 1`] = `
     showSignIn={[Function]}
   />
   <SignIn
-    caller="menu"
     removeSignin={[Function]}
   />
 </div>

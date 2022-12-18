@@ -4,11 +4,12 @@
 import React from 'react';
 import { shallow } from 'enzyme';
 import toJson from 'enzyme-to-json';
-import { LoginButtons } from '../../../../../client/src/components/signin/loginbuttons';
+import { LoginButtons, mapStateToProps } from '../../../../../client/src/components/signin/loginbuttons';
 
 describe('The sign in component', () => {
   let props;
   let mockedAssign;
+  let preventDefault;
   beforeEach(() => {
     props = {
       setGuest: jest.fn(),
@@ -23,6 +24,7 @@ describe('The sign in component', () => {
     };
     const windowSpy = jest.spyOn(global, 'window', 'get');
     mockedAssign = jest.fn();
+    preventDefault = jest.fn();
     windowSpy.mockImplementation(() => ({
       location: {
         assign: mockedAssign,
@@ -33,6 +35,7 @@ describe('The sign in component', () => {
   afterEach(() => {
     props = null;
     jest.clearAllMocks();
+    preventDefault.mockClear();
   });
 
   test('will render for cover page', () => {
@@ -88,23 +91,34 @@ describe('The sign in component', () => {
     const wrapper = shallow(<LoginButtons {...props} />);
     const twitterButton = wrapper.find({ id: 'twitterloginbutton' });
     twitterButton.props().onClick();
+    twitterButton.props().onMouseDown({ preventDefault });
     expect(mockedAssign).toHaveBeenCalledTimes(1);
     expect(mockedAssign).toHaveBeenCalledWith('/auth/twitter');
+    expect(preventDefault).toHaveBeenCalledTimes(1);
   });
 
   test('will handle google users', () => {
     const wrapper = shallow(<LoginButtons {...props} />);
     const googleButton = wrapper.find({ id: 'googleloginbutton' });
     googleButton.props().onClick();
+    googleButton.props().onMouseDown({ preventDefault });
     expect(mockedAssign).toHaveBeenCalledTimes(1);
     expect(mockedAssign).toHaveBeenCalledWith('/auth/google');
+    expect(preventDefault).toHaveBeenCalledTimes(1);
   });
 
   test('will handle github users', () => {
     const wrapper = shallow(<LoginButtons {...props} />);
-    const googleButton = wrapper.find({ id: 'githubloginbutton' });
-    googleButton.props().onClick();
+    const githubButton = wrapper.find({ id: 'githubloginbutton' });
+    githubButton.props().onClick();
+    githubButton.props().onMouseDown({ preventDefault });
     expect(mockedAssign).toHaveBeenCalledTimes(1);
     expect(mockedAssign).toHaveBeenCalledWith('/auth/github');
+    expect(preventDefault).toHaveBeenCalledTimes(1);
+  });
+
+  test('will map redux user state to props', () => {
+    const reduxProps = mapStateToProps({ user: 'test user' });
+    expect(reduxProps).toEqual({ user: 'test user' });
   });
 });

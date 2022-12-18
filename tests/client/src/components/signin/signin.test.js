@@ -10,7 +10,13 @@ jest.useFakeTimers();
 
 describe('The sign in component', () => {
   let props;
+  const focus = jest.fn();
   beforeEach(() => {
+    jest.spyOn(React, 'createRef').mockImplementation(() => ({
+      current: {
+        focus,
+      },
+    }));
     props = {
       removeSignin: jest.fn(),
       caller: 'menu',
@@ -20,21 +26,16 @@ describe('The sign in component', () => {
   afterEach(() => {
     props = null;
     jest.clearAllMocks();
+    focus.mockClear();
   });
 
   test('will render', () => {
     const wrapper = shallow(<SignIn {...props} />);
+    expect(focus).toHaveBeenCalled();
     expect(toJson(wrapper)).toMatchSnapshot();
   });
 
-  test('will listen for outclicks after rendering', () => {
-    jest.spyOn(window, 'addEventListener').mockImplementationOnce(() => { });
-    shallow(<SignIn {...props} />);
-    expect(window.addEventListener).toHaveBeenCalledWith('click', expect.any(Function));
-  });
-
   test('will reset the guest user', async () => {
-    jest.spyOn(window, 'removeEventListener').mockImplementationOnce(() => { });
     const wrapper = shallow(<SignIn {...props} />);
     wrapper.setState({ show: true });
     const loginButtons = wrapper.find('Connect(LoginButtons)');
@@ -43,41 +44,16 @@ describe('The sign in component', () => {
     await Promise.resolve();
     expect(wrapper.state().show).toBe(false);
     expect(props.removeSignin).toHaveBeenCalledTimes(1);
-    expect(window.removeEventListener).toHaveBeenCalledWith('click', expect.any(Function));
   });
 
-  test('will remove component on outclicks if the caller was menu', async () => {
-    jest.spyOn(window, 'removeEventListener').mockImplementationOnce(() => { });
+  test('will remove component on blur', async () => {
     const wrapper = shallow(<SignIn {...props} />);
     wrapper.setState({ show: true });
-    wrapper.instance().listenForOutClicks({ target: { closest: jest.fn(() => false) } });
+    const signInModal = wrapper.find({ id: 'sign-in' });
+    signInModal.props().onBlur();
     jest.advanceTimersByTime(1000);
     await Promise.resolve();
     expect(wrapper.state().show).toBe(false);
     expect(props.removeSignin).toHaveBeenCalledTimes(1);
-    expect(window.removeEventListener).toHaveBeenCalledWith('click', expect.any(Function));
-  });
-
-  test('will remove component on outclicks if the caller was home', async () => {
-    jest.spyOn(window, 'removeEventListener').mockImplementationOnce(() => { });
-    const updaatedProps = { ...props, caller: 'home' };
-    const wrapper = shallow(<SignIn {...updaatedProps} />);
-    wrapper.setState({ show: true });
-    wrapper.instance().listenForOutClicks({ target: { closest: jest.fn(() => false) } });
-    jest.advanceTimersByTime(1000);
-    await Promise.resolve();
-    expect(wrapper.state().show).toBe(false);
-    expect(props.removeSignin).toHaveBeenCalledTimes(1);
-    expect(window.removeEventListener).toHaveBeenCalledWith('click', expect.any(Function));
-  });
-
-  test('will not remove component on outclicks for any other caller', () => {
-    jest.spyOn(window, 'removeEventListener').mockImplementationOnce(() => { });
-    const updaatedProps = { ...props, caller: 'anyother' };
-    const wrapper = shallow(<SignIn {...updaatedProps} />);
-    wrapper.instance().listenForOutClicks({ target: { closest: jest.fn(() => false) } });
-    expect(wrapper.state().show).toBe(true);
-    expect(props.removeSignin).not.toHaveBeenCalled();
-    expect(window.removeEventListener).not.toHaveBeenCalled();
   });
 });

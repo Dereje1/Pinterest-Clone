@@ -8,6 +8,7 @@ exports[`The collapsible menu component will render for home 1`] = `
     sx={
       Object {
         "marginLeft": 1,
+        "marginRight": 1,
       }
     }
   />
@@ -162,6 +163,7 @@ exports[`The collapsible menu component will render for my pins 1`] = `
     sx={
       Object {
         "marginLeft": 1,
+        "marginRight": 1,
       }
     }
   />

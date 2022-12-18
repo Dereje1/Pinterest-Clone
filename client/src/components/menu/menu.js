@@ -89,7 +89,6 @@ export class Menu extends React.Component {
         {displaySignIn && (
           <SignIn
             removeSignin={() => this.setState({ displaySignIn: false })}
-            caller="menu"
           />
         )}
       </>

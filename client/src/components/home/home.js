@@ -77,7 +77,6 @@ export class Home extends Component {
               && (
                 <SignIn
                   removeSignin={() => this.setState({ displaySignIn: false })}
-                  caller="home"
                 />
               )
           }

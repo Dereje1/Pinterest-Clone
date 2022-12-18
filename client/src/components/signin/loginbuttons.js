@@ -9,7 +9,7 @@ import { connect } from 'react-redux';
 import { setGuest } from '../../actions/authentication';
 import './loginbuttons.scss';
 
-const mapStateToProps = ({ user }) => ({ user });
+export const mapStateToProps = ({ user }) => ({ user });
 
 const actionCreators = {
   setGuest,
@@ -21,15 +21,36 @@ const handleLogin = (loc) => { // twitter/ google authentication
 
 const providerMap = {
   twitter:
-  <Button key="twiiter" id="twitterloginbutton" variant="outlined" startIcon={<TwitterIcon style={{ fontSize: 25 }} />} onClick={() => handleLogin('/auth/twitter')}>
+  <Button
+    key="twiiter"
+    id="twitterloginbutton"
+    variant="outlined"
+    startIcon={<TwitterIcon style={{ fontSize: 25 }} />}
+    onClick={() => handleLogin('/auth/twitter')}
+    onMouseDown={e => e.preventDefault()}
+  >
     Continue With Twitter
   </Button>,
   google:
-  <Button key="google" id="googleloginbutton" variant="outlined" startIcon={<GoogleIcon style={{ fontSize: 25 }} />} onClick={() => handleLogin('/auth/google')}>
+  <Button
+    key="google"
+    id="googleloginbutton"
+    variant="outlined"
+    startIcon={<GoogleIcon style={{ fontSize: 25 }} />}
+    onClick={() => handleLogin('/auth/google')}
+    onMouseDown={e => e.preventDefault()}
+  >
     Continue With Google
   </Button>,
   github:
-  <Button key="github" id="githubloginbutton" variant="outlined" startIcon={<GitHubIcon style={{ fontSize: 25 }} />} onClick={() => handleLogin('/auth/github')}>
+  <Button
+    key="github"
+    id="githubloginbutton"
+    variant="outlined"
+    startIcon={<GitHubIcon style={{ fontSize: 25 }} />}
+    onClick={() => handleLogin('/auth/github')}
+    onMouseDown={e => e.preventDefault()}
+  >
     Continue With Github&nbsp;&nbsp;
   </Button>,
 };

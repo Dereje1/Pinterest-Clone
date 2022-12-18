@@ -1,5 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import Card from '@mui/material/Card';
 import LoginButtons from './loginbuttons';
 import {
   delay,
@@ -13,29 +14,13 @@ export class SignIn extends React.Component {
     this.state = {
       show: false,
     };
+    this.signInModal = React.createRef();
   }
 
   componentDidMount() {
+    this.signInModal.current.focus();
     this.setState({ show: true });
-    window.addEventListener('click', this.listenForOutClicks);
   }
-
-  // TODO: handle with focus/blur instead of outclicks
-  listenForOutClicks = (e) => {
-    // clicks outside menu will collpase it
-    const { caller } = this.props;
-    if (!e.target.closest('#sign-in')
-      && !e.target.closest('.items')
-      && caller === 'menu') {
-      this.resetGuest();
-    }
-    if (!e.target.closest('#sign-in')
-      && !e.target.closest('.actionbutton')
-      && !e.target.closest('.MuiButtonBase-root')
-      && caller === 'home') {
-      this.resetGuest();
-    }
-  };
 
   resetGuest = () => {
     const { removeSignin } = this.props;
@@ -43,7 +28,6 @@ export class SignIn extends React.Component {
       show: false,
     }, async () => {
       await delay(1000);
-      window.removeEventListener('click', this.listenForOutClicks);
       removeSignin();
     });
   };
@@ -53,9 +37,15 @@ export class SignIn extends React.Component {
     return (
       <>
         {show && <div className="modal-overlay" />}
-        <div id="sign-in" className={show ? 'signshow' : 'signhide'}>
+        <Card
+          id="sign-in"
+          className={show ? 'signshow' : 'signhide'}
+          ref={this.signInModal}
+          onBlur={this.resetGuest}
+          tabIndex={0}
+        >
           <LoginButtons guest={this.resetGuest} />
-        </div>
+        </Card>
       </>
     );
   }
@@ -67,5 +57,4 @@ SignIn.propTypes = {
   // callback to toggle login div
   removeSignin: PropTypes.func.isRequired,
   // used for eventlistener targeting to close login div
-  caller: PropTypes.string.isRequired,
 };

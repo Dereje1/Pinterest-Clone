@@ -5,13 +5,15 @@ exports[`The sign in component will render 1`] = `
   <div
     className="modal-overlay"
   />
-  <div
+  <ForwardRef(Card)
     className="signshow"
     id="sign-in"
+    onBlur={[Function]}
+    tabIndex={0}
   >
     <Connect(LoginButtons)
       guest={[Function]}
     />
-  </div>
+  </ForwardRef(Card)>
 </Fragment>
 `;

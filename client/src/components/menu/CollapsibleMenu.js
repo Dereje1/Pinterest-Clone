@@ -74,7 +74,7 @@ const CollapsibleMenu = ({ pathname }) => {
       <MenuIcon
         onClick={toggleDrawer}
         fontSize="large"
-        sx={{ marginLeft: 1 }}
+        sx={{ marginLeft: 1, marginRight: 1 }}
       />
       <Drawer
         anchor="top"
