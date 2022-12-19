@@ -6,7 +6,7 @@ exports[`The sign in component will render 1`] = `
     className="modal-overlay"
   />
   <div
-    className="signin signshow"
+    className="signinmodal signshow"
     onBlur={[Function]}
     role="menuitem"
     tabIndex={0}

@@ -49,7 +49,7 @@ describe('The sign in component', () => {
   test('will remove component on blur', async () => {
     const wrapper = shallow(<SignIn {...props} />);
     wrapper.setState({ show: true });
-    const signInModal = wrapper.find({ className: 'signin signshow' });
+    const signInModal = wrapper.find({ className: 'signinmodal signshow' });
     signInModal.props().onBlur();
     jest.advanceTimersByTime(1000);
     await Promise.resolve();

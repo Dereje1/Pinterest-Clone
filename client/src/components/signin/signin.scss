@@ -1,6 +1,6 @@
 @import "../../common.scss";
 
-.signin{
+.signinmodal{
     position: fixed;
     left: 0;
     right: 0;
@@ -17,7 +17,6 @@
     justify-content: space-around;
     align-items: center;
     border-radius: 10px;
-    visibility: hidden;
     &.signshow{
         @include animation('dropdown');
         animation-duration: 1s;

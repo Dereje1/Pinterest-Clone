@@ -37,7 +37,7 @@ export class SignIn extends React.Component {
       <>
         {show && <div className="modal-overlay" />}
         <div
-          className={show ? 'signin signshow' : 'signin signhide'}
+          className={show ? 'signinmodal signshow' : 'signinmodal signhide'}
           ref={this.signInModal}
           onBlur={this.resetGuest}
           tabIndex={0}
