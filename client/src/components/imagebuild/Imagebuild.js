@@ -61,9 +61,9 @@ const ImageBuild = ({
   };
 
   // Zoom modal takes event and pic info and executes
-  const pinEnlarge = (e, currentImg) => { // calls zoom in modal for the clicked picture
-    if (e.target.type === 'submit') return;
-    if (displayPinZoom) return;
+  const pinEnlarge = (e, currentImg) => {
+    // disregard for save/delete calls or if already zoomed
+    if (e.target.className.includes('actionbutton') || displayPinZoom) return;
     setDisplayPinZoom(true);
     setImageInfo([currentImg, document.body.scrollTop]);
   };
