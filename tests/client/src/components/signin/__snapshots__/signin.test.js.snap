@@ -6,8 +6,6 @@ exports[`The sign in component will render 1`] = `
     className="modal-overlay"
   />
   <ForwardRef(Card)
-    className="signshow"
-    id="sign-in"
     onBlur={[Function]}
     tabIndex={0}
   >
