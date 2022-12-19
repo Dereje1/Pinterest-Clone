@@ -17,3 +17,4 @@ codecov
 .env
 nodemon.json
 /myscripts
+.DS_Store

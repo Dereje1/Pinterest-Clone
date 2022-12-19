@@ -2,60 +2,18 @@
 
 exports[`The sign in component will render for Guest users on homepage 1`] = `
 <Fragment>
-  <ForwardRef(Button)
-    id="twitterloginbutton"
-    key="twiiter"
-    onClick={[Function]}
-    onMouseDown={[Function]}
-    startIcon={
-      <Memo
-        style={
-          Object {
-            "fontSize": 25,
-          }
-        }
-      />
-    }
-    variant="outlined"
-  >
-    Continue With Twitter
-  </ForwardRef(Button)>
-  <ForwardRef(Button)
-    id="googleloginbutton"
+  <ProviderButton
+    key="twitter"
+    service="twitter"
+  />
+  <ProviderButton
     key="google"
-    onClick={[Function]}
-    onMouseDown={[Function]}
-    startIcon={
-      <Memo
-        style={
-          Object {
-            "fontSize": 25,
-          }
-        }
-      />
-    }
-    variant="outlined"
-  >
-    Continue With Google
-  </ForwardRef(Button)>
-  <ForwardRef(Button)
-    id="githubloginbutton"
+    service="google"
+  />
+  <ProviderButton
     key="github"
-    onClick={[Function]}
-    onMouseDown={[Function]}
-    startIcon={
-      <Memo
-        style={
-          Object {
-            "fontSize": 25,
-          }
-        }
-      />
-    }
-    variant="outlined"
-  >
-    Continue With Github  
-  </ForwardRef(Button)>
+    service="github"
+  />
 </Fragment>
 `;
 
@@ -77,60 +35,18 @@ exports[`The sign in component will render for cover page 1`] = `
   >
     Continue As Guest        
   </ForwardRef(Button)>
-  <ForwardRef(Button)
-    id="twitterloginbutton"
-    key="twiiter"
-    onClick={[Function]}
-    onMouseDown={[Function]}
-    startIcon={
-      <Memo
-        style={
-          Object {
-            "fontSize": 25,
-          }
-        }
-      />
-    }
-    variant="outlined"
-  >
-    Continue With Twitter
-  </ForwardRef(Button)>
-  <ForwardRef(Button)
-    id="googleloginbutton"
+  <ProviderButton
+    key="twitter"
+    service="twitter"
+  />
+  <ProviderButton
     key="google"
-    onClick={[Function]}
-    onMouseDown={[Function]}
-    startIcon={
-      <Memo
-        style={
-          Object {
-            "fontSize": 25,
-          }
-        }
-      />
-    }
-    variant="outlined"
-  >
-    Continue With Google
-  </ForwardRef(Button)>
-  <ForwardRef(Button)
-    id="githubloginbutton"
+    service="google"
+  />
+  <ProviderButton
     key="github"
-    onClick={[Function]}
-    onMouseDown={[Function]}
-    startIcon={
-      <Memo
-        style={
-          Object {
-            "fontSize": 25,
-          }
-        }
-      />
-    }
-    variant="outlined"
-  >
-    Continue With Github  
-  </ForwardRef(Button)>
+    service="github"
+  />
 </Fragment>
 `;
 
@@ -152,23 +68,9 @@ exports[`The sign in component will render only available providers 1`] = `
   >
     Continue As Guest        
   </ForwardRef(Button)>
-  <ForwardRef(Button)
-    id="githubloginbutton"
+  <ProviderButton
     key="github"
-    onClick={[Function]}
-    onMouseDown={[Function]}
-    startIcon={
-      <Memo
-        style={
-          Object {
-            "fontSize": 25,
-          }
-        }
-      />
-    }
-    variant="outlined"
-  >
-    Continue With Github  
-  </ForwardRef(Button)>
+    service="github"
+  />
 </Fragment>
 `;

@@ -147,7 +147,7 @@ class PinCreate extends Component {
               </>
             )}
             title={`Create pin from ${upload ? 'file' : 'link'}`}
-            titleTypographyProps={{ fontSize: '1.2em', fontWeight: 'bold' }}
+            titleTypographyProps={{ fontSize: '1em', fontWeight: 'bold' }}
           />
           <CardMedia
             component="img"

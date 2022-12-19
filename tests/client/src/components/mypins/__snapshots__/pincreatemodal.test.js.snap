@@ -49,7 +49,7 @@ exports[`The pin creation modal will render for links to images 1`] = `
       title="Create pin from link"
       titleTypographyProps={
         Object {
-          "fontSize": "1.2em",
+          "fontSize": "1em",
           "fontWeight": "bold",
         }
       }
@@ -172,7 +172,7 @@ exports[`The pin creation modal will render for uploading images 1`] = `
       title="Create pin from file"
       titleTypographyProps={
         Object {
-          "fontSize": "1.2em",
+          "fontSize": "1em",
           "fontWeight": "bold",
         }
       }

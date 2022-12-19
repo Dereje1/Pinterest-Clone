@@ -19,40 +19,23 @@ const handleLogin = (loc) => { // twitter/ google authentication
   window.location.assign(loc);
 };
 
-const providerMap = {
-  twitter:
-  <Button
-    key="twiiter"
-    id="twitterloginbutton"
-    variant="outlined"
-    startIcon={<TwitterIcon style={{ fontSize: 25 }} />}
-    onClick={() => handleLogin('/auth/twitter')}
-    onMouseDown={e => e.preventDefault()}
-  >
-    Continue With Twitter
-  </Button>,
-  google:
-  <Button
-    key="google"
-    id="googleloginbutton"
-    variant="outlined"
-    startIcon={<GoogleIcon style={{ fontSize: 25 }} />}
-    onClick={() => handleLogin('/auth/google')}
-    onMouseDown={e => e.preventDefault()}
-  >
-    Continue With Google
-  </Button>,
-  github:
-  <Button
-    key="github"
-    id="githubloginbutton"
-    variant="outlined"
-    startIcon={<GitHubIcon style={{ fontSize: 25 }} />}
-    onClick={() => handleLogin('/auth/github')}
-    onMouseDown={e => e.preventDefault()}
-  >
-    Continue With Github&nbsp;&nbsp;
-  </Button>,
+export const ProviderButton = ({ service }) => {
+  const providerIcons = {
+    twitter: <TwitterIcon style={{ fontSize: 25 }} />,
+    google: <GoogleIcon style={{ fontSize: 25 }} />,
+    github: <GitHubIcon style={{ fontSize: 25 }} />,
+  };
+  return (
+    <Button
+      id={`${service}loginbutton`}
+      variant="outlined"
+      startIcon={providerIcons[service]}
+      onClick={() => handleLogin(`/auth/${service}`)}
+      onMouseDown={e => e.preventDefault()}
+    >
+      {`Continue With ${service.charAt(0).toUpperCase() + service.slice(1)}`}
+    </Button>
+  );
 };
 
 export class LoginButtons extends React.Component {
@@ -80,7 +63,7 @@ export class LoginButtons extends React.Component {
 
         {
           providerKeys.map((service) => {
-            if (providers[service]) return providerMap[service];
+            if (providers[service]) return <ProviderButton key={service} service={service} />;
             return null;
           })
         }
@@ -102,4 +85,8 @@ LoginButtons.propTypes = {
   // used for reseting back to guest mode in signin
   guest: PropTypes.func.isRequired,
   user: PropTypes.shape(PropTypes.shape),
+};
+
+ProviderButton.propTypes = {
+  service: PropTypes.string.isRequired,
 };
