@@ -43,7 +43,7 @@ exports[`The Menu component will render for users authenticated as guest 1`] = `
 
 exports[`The Menu component will render the Login 1`] = `
 <div
-  className="items signin"
+  className="items login"
 >
   <i
     aria-hidden="true"

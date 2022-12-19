@@ -1,6 +1,5 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import Card from '@mui/material/Card';
 import LoginButtons from './loginbuttons';
 import {
   delay,
@@ -37,13 +36,15 @@ export class SignIn extends React.Component {
     return (
       <>
         {show && <div className="modal-overlay" />}
-        <Card
+        <div
+          className={show ? 'signin signshow' : 'signin signhide'}
           ref={this.signInModal}
           onBlur={this.resetGuest}
           tabIndex={0}
+          role="menuitem"
         >
           <LoginButtons guest={this.resetGuest} />
-        </Card>
+        </div>
       </>
     );
   }

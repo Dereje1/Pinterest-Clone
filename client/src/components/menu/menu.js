@@ -28,7 +28,7 @@ export const Brand = () => (
 );
 
 export const Login = ({ showSignIn }) => (
-  <div className="items signin">
+  <div className="items login">
     <i
       className="fa fa-sign-in"
       aria-hidden="true"
