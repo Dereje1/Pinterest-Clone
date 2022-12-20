@@ -186,7 +186,6 @@ exports[`The Mypins Component Mypins landing page will render welcome message if
         To get started, you can create your own pin, or save an existing pin from the
          
         <Link
-          exact={true}
           to="/"
         >
           home
