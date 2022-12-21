@@ -7,6 +7,7 @@ import AddIcon from '@mui/icons-material/Add';
 import Avatar from '@mui/material/Avatar';
 import Card from '@mui/material/Card';
 import CommentForm from './CommentForm';
+import { formatDate } from '../../utils/utils';
 
 const Comments = ({
   stylingProps, imgLink, comments, handleNewComment,
@@ -23,7 +24,9 @@ const Comments = ({
   };
 
   const updateComments = (comment) => {
-    handleNewComment(comment);
+    if (comment.trim().length) {
+      handleNewComment(comment);
+    }
     setOpen(false);
   };
 
@@ -65,6 +68,9 @@ const Comments = ({
               <CardContent>
                 <Typography sx={{ mb: 1.5 }} color="text.secondary">
                   {`${c.comment} idx - ${idx}`}
+                </Typography>
+                <Typography variant="subtitle2" sx={{ color: '#4c62bc', fontWeight: 'bold' }}>
+                  {`${c.displayName} - ${formatDate(c.createdAt)}`}
                 </Typography>
               </CardContent>
             </Card>

@@ -17,6 +17,7 @@ const ImageBuild = ({
   pinList,
   displayBrokenImage,
   ready,
+  displayName
 }) => {
   const [displayPinZoom, setDisplayPinZoom] = useState(false);
   const [imageInfo, setImageInfo] = useState([]);
@@ -97,6 +98,7 @@ const ImageBuild = ({
             zoomInfo={imageInfo}
             pinImage={pinImage}
             deletePin={deletePin}
+            displayName={displayName}
           />
         )}
       </div>

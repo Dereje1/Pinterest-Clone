@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import Button from '@mui/material/Button';
 import TextField from '@mui/material/TextField';
@@ -8,6 +8,10 @@ import DialogContent from '@mui/material/DialogContent';
 
 const CommentForm = ({ open, handleClose, handleSubmit }) => {
   const [comment, setComment] = useState('');
+
+  useEffect(() => {
+    setComment('');
+  }, [open]);
 
   return (
     <div>

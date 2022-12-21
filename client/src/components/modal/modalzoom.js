@@ -12,7 +12,7 @@ import { styled } from '@mui/styles';
 import ModalActions from './ModalActions';
 import Comments from './Comments';
 import {
-  delay, getNewImageWidth, getFormattedDescription,
+  delay, getNewImageWidth, getFormattedDescription, formatDate,
 } from '../../utils/utils';
 import stubComments from './stubComments';
 import './modal.scss';
@@ -110,7 +110,8 @@ export class PinZoom extends Component {
 
   handleNewComment = (comment) => {
     const { comments } = this.state;
-    this.setState({ comments: [...comments, { comment }] });
+    const { displayName } = this.props;
+    this.setState({ comments: [...comments, { comment, displayName, createdAt: Date.now() }] });
   };
 
   render() {
@@ -125,7 +126,6 @@ export class PinZoom extends Component {
     const totalPins = (pinInformation.savedBy) ? pinInformation.savedBy.length : 0;
     // const pinnedBy = totalPins ? getPinners(pinInformation.savedBy) : '';
     const formattedDescription = getFormattedDescription(pinInformation.imgDescription);
-    const [, day, mth, year] = new Date(pinInformation.createdAt).toUTCString().split(' ');
     return (
       <>
         <div className="modal-overlay" />
@@ -170,7 +170,7 @@ export class PinZoom extends Component {
                 </span>
                 <br />
                 <span style={{ fontSize: parentDivStyle.dateSize, marginLeft: 0 }}>
-                  {`${day} ${mth} ${year}`}
+                  {formatDate(pinInformation.createdAt)}
                 </span>
               </>
             )}

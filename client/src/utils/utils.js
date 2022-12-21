@@ -111,3 +111,8 @@ export const encodeImageFileAsURL = imgFile => new Promise((resolve, reject) => 
 });
 
 export const initialDisplayPerScroll = () => (window.innerWidth > 1440 ? 20 : 10);
+
+export const formatDate = (date) => {
+  const [, day, mth, year] = new Date(date).toUTCString().split(' ');
+  return `${day} ${mth} ${year}`;
+};
