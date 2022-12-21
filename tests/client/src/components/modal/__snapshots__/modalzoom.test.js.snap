@@ -11,7 +11,7 @@ exports[`The pin zoom modal will render 1`] = `
     sx={
       Object {
         "top": 10,
-        "width": "90%",
+        "width": undefined,
       }
     }
     tabIndex={0}
@@ -95,6 +95,13 @@ exports[`The pin zoom modal will render 1`] = `
       id="pin-zoom"
       image="imgLink id-1"
       onLoad={[Function]}
+      sx={
+        Object {
+          "marginLeft": "auto",
+          "marginRight": "auto",
+          "width": "90%",
+        }
+      }
     />
   </ForwardRef(Card)>
 </Fragment>

@@ -35,6 +35,16 @@ export const getNewImageWidth = ({
   if (screenResolution > imageResolultion) {
     newWidth = imageWidth * (innerHeight / imageHeight);
   }
+
+  let parentWidth = newWidth;
+  if (newWidth < 500) {
+    if (innerWidth < 500) {
+      parentWidth = innerWidth;
+    } else {
+      parentWidth = 500;
+    }
+  }
+
   return {
     width: `${newWidth}px`,
     small: newWidth < 350,
@@ -42,6 +52,7 @@ export const getNewImageWidth = ({
     subTitleSize: `${newWidth < 500 ? 0.9 : 1.2}em`,
     dateSize: `${newWidth < 500 ? 0.45 : 0.6}em`,
     pinnersSize: '3em',
+    parentWidth,
   };
 };
 

@@ -55,6 +55,7 @@ describe('The pin zoom modal', () => {
     expect(wrapper.state().parentDivStyle).toEqual({
       top: 10,
       width: '622.5px',
+      parentWidth: 622.5,
       small: false,
       pinnersSize: '3em',
       subTitleSize: '1.2em',
@@ -76,6 +77,7 @@ describe('The pin zoom modal', () => {
       subTitleSize: '1.2em',
       titleSize: '2em',
       dateSize: '0.6em',
+      parentWidth: 980,
     });
   });
 
@@ -92,6 +94,7 @@ describe('The pin zoom modal', () => {
       subTitleSize: '0.9em',
       titleSize: '1.2em',
       dateSize: '0.45em',
+      parentWidth: 500,
     });
   });
 

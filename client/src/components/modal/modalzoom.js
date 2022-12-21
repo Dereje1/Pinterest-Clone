@@ -96,7 +96,10 @@ export class PinZoom extends Component {
       <>
         <div className="modal-overlay" />
         <Card
-          sx={parentDivStyle}
+          sx={{
+            width: parentDivStyle.parentWidth,
+            top: parentDivStyle.top,
+          }}
           className={show ? 'zoom cshow' : 'zoom chide'}
           onBlur={this.close}
           ref={this.zoomedImage}
@@ -138,6 +141,11 @@ export class PinZoom extends Component {
             image={pinInformation.imgLink}
             onLoad={this.handleImage}
             id="pin-zoom"
+            sx={{
+              width: parentDivStyle.width,
+              marginLeft: 'auto',
+              marginRight: 'auto',
+            }}
           />
         </Card>
       </>
