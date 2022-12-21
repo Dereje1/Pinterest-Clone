@@ -46,13 +46,12 @@ export const getNewImageWidth = ({
   }
 
   return {
-    width: `${newWidth}px`,
-    small: newWidth < 350,
+    imgWidth: `${newWidth}px`,
+    parentWidth,
     titleSize: `${newWidth < 500 ? 1.2 : 2}em`,
     subTitleSize: `${newWidth < 500 ? 0.9 : 1.2}em`,
     dateSize: `${newWidth < 500 ? 0.45 : 0.6}em`,
-    pinnersSize: '3em',
-    parentWidth,
+    pinnersSize: '2em',
   };
 };
 

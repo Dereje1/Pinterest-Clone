@@ -2,22 +2,25 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import Card from '@mui/material/Card';
-import Tooltip from '@mui/material/Tooltip';
 import CardHeader from '@mui/material/CardHeader';
 import CardMedia from '@mui/material/CardMedia';
 import Badge from '@mui/material/Badge';
-import PinDropIcon from '@mui/icons-material/PinDrop';
+import IconButton from '@mui/material/IconButton';
+import CommentOutlinedIcon from '@mui/icons-material/CommentOutlined';
+import CommentIcon from '@mui/icons-material/Comment';
 import { styled } from '@mui/styles';
 import ModalActions from './ModalActions';
+import Comments from './Comments';
 import {
-  delay, getNewImageWidth, getPinners, getFormattedDescription,
+  delay, getNewImageWidth, getFormattedDescription,
 } from '../../utils/utils';
+import comments from './stubComments';
 import './modal.scss';
 
-const StyledBadge = styled(Badge)(() => ({
+const StyledBadge = styled(Badge)(({ name }) => ({
   '& .MuiBadge-badge': {
-    right: 16,
-    top: 0,
+    right: name === 'pin' ? 32 : 43,
+    top: name === 'pin' ? 17 : 13,
     border: '2px solid grey',
     padding: '0 4px',
   },
@@ -31,6 +34,7 @@ export class PinZoom extends Component {
     this.state = {
       show: false,
       parentDivStyle: { top: 0, width: '90%' },
+      commentsStylingProps: null,
     };
     this.zoomedImage = React.createRef();
   }
@@ -80,16 +84,33 @@ export class PinZoom extends Component {
     });
   };
 
+  handleComments = () => {
+    const { commentsStylingProps, parentDivStyle } = this.state;
+    if (!commentsStylingProps) {
+      const { current: { clientHeight: cardHeight, children } } = this.zoomedImage;
+      const [, image] = children;
+      const { clientHeight: imageHeight } = image;
+      this.setState({
+        commentsStylingProps: {
+          width: parentDivStyle.parentWidth,
+          height: imageHeight + (window.innerHeight - cardHeight - 20),
+        },
+      });
+      return;
+    }
+    this.setState({ commentsStylingProps: null });
+  };
+
 
   render() {
     const {
       zoomInfo, pinImage, deletePin,
     } = this.props;
-    const { show, parentDivStyle } = this.state;
+    const { show, parentDivStyle, commentsStylingProps } = this.state;
     if (!zoomInfo.length) return null;
     const [pinInformation] = zoomInfo;
     const totalPins = (pinInformation.savedBy) ? pinInformation.savedBy.length : 0;
-    const pinnedBy = totalPins ? getPinners(pinInformation.savedBy) : '';
+    // const pinnedBy = totalPins ? getPinners(pinInformation.savedBy) : '';
     const formattedDescription = getFormattedDescription(pinInformation.imgDescription);
     const [, day, mth, year] = new Date(pinInformation.createdAt).toUTCString().split(' ');
     return (
@@ -108,16 +129,23 @@ export class PinZoom extends Component {
           <CardHeader
             action={(
               <>
-                <ModalActions
-                  element={pinInformation}
-                  pinImage={pinImage}
-                  deletePin={deletePin}
-                  reset={this.close}
-                />
-                <StyledBadge badgeContent={totalPins} color="secondary" showZero>
-                  <Tooltip title={pinnedBy}>
-                    <PinDropIcon style={{ fontSize: parentDivStyle.pinnersSize }} />
-                  </Tooltip>
+                <StyledBadge badgeContent={comments.length} color="primary" showZero name="comments">
+                  <IconButton
+                    onClick={this.handleComments}
+                    onMouseDown={e => e.preventDefault()}
+                  >
+                    {commentsStylingProps
+                      ? <CommentIcon style={{ fontSize: '1.7em' }} />
+                      : <CommentOutlinedIcon style={{ fontSize: '1.7em' }} />}
+                  </IconButton>
+                </StyledBadge>
+                <StyledBadge badgeContent={totalPins} color="secondary" showZero name="pin">
+                  <ModalActions
+                    element={pinInformation}
+                    pinImage={pinImage}
+                    deletePin={deletePin}
+                    reset={this.close}
+                  />
                 </StyledBadge>
               </>
             )}
@@ -136,17 +164,27 @@ export class PinZoom extends Component {
             titleTypographyProps={{ fontSize: parentDivStyle.titleSize, fontWeight: 'bold' }}
             subheaderTypographyProps={{ fontSize: parentDivStyle.subTitleSize, fontWeight: 'bold' }}
           />
-          <CardMedia
-            component="img"
-            image={pinInformation.imgLink}
-            onLoad={this.handleImage}
-            id="pin-zoom"
-            sx={{
-              width: parentDivStyle.width,
-              marginLeft: 'auto',
-              marginRight: 'auto',
-            }}
-          />
+          { !commentsStylingProps ? (
+            <CardMedia
+              component="img"
+              image={pinInformation.imgLink}
+              onLoad={this.handleImage}
+              id="pin-zoom"
+              sx={{
+                width: parentDivStyle.imgWidth,
+                marginLeft: 'auto',
+                marginRight: 'auto',
+              }}
+            />
+          )
+            : (
+              <Comments
+                stylingProps={commentsStylingProps}
+                imgLink={pinInformation.imgLink}
+                comments={comments}
+              />
+            )
+          }
         </Card>
       </>
     );
