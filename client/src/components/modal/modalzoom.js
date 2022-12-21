@@ -14,7 +14,7 @@ import Comments from './Comments';
 import {
   delay, getNewImageWidth, getFormattedDescription,
 } from '../../utils/utils';
-import comments from './stubComments';
+import stubComments from './stubComments';
 import './modal.scss';
 
 const StyledBadge = styled(Badge)(({ name }) => ({
@@ -35,6 +35,8 @@ export class PinZoom extends Component {
       show: false,
       parentDivStyle: { top: 0, width: '90%' },
       commentsStylingProps: null,
+      cancelBlur: false,
+      comments: stubComments,
     };
     this.zoomedImage = React.createRef();
   }
@@ -62,6 +64,8 @@ export class PinZoom extends Component {
 
   close = () => {
     // sends a reset callback after closing modalstate
+    const { cancelBlur } = this.state;
+    if (cancelBlur) return;
     const { reset } = this.props;
     this.setState({
       show: false,
@@ -95,18 +99,27 @@ export class PinZoom extends Component {
           width: parentDivStyle.parentWidth,
           height: imageHeight + (window.innerHeight - cardHeight - 20),
         },
+        cancelBlur: true,
       });
       return;
     }
-    this.setState({ commentsStylingProps: null });
+    // need to reinstate focus for blur to work again
+    this.zoomedImage.current.focus();
+    this.setState({ commentsStylingProps: null, cancelBlur: false });
   };
 
+  handleNewComment = (comment) => {
+    const { comments } = this.state;
+    this.setState({ comments: [...comments, { comment }] });
+  };
 
   render() {
     const {
       zoomInfo, pinImage, deletePin,
     } = this.props;
-    const { show, parentDivStyle, commentsStylingProps } = this.state;
+    const {
+      show, parentDivStyle, commentsStylingProps, comments,
+    } = this.state;
     if (!zoomInfo.length) return null;
     const [pinInformation] = zoomInfo;
     const totalPins = (pinInformation.savedBy) ? pinInformation.savedBy.length : 0;
@@ -182,6 +195,7 @@ export class PinZoom extends Component {
                 stylingProps={commentsStylingProps}
                 imgLink={pinInformation.imgLink}
                 comments={comments}
+                handleNewComment={this.handleNewComment}
               />
             )
           }
