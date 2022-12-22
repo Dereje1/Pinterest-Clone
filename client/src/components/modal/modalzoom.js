@@ -1,6 +1,7 @@
 // displays pin zoom modal
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
+/* MUI */
 import Card from '@mui/material/Card';
 import CardHeader from '@mui/material/CardHeader';
 import CardMedia from '@mui/material/CardMedia';
@@ -9,6 +10,8 @@ import IconButton from '@mui/material/IconButton';
 import CommentOutlinedIcon from '@mui/icons-material/CommentOutlined';
 import CommentIcon from '@mui/icons-material/Comment';
 import { styled } from '@mui/styles';
+/* local components and utility */
+import RESTcall from '../../crud';
 import ModalActions from './ModalActions';
 import Comments from './Comments';
 import {
@@ -110,13 +113,26 @@ export class PinZoom extends Component {
 
   handleNewComment = (comment) => {
     const { comments } = this.state;
-    const { displayName } = this.props;
-    this.setState({ comments: [...comments, { comment, displayName, createdAt: Date.now() }] });
+    const { user: { displayName }, zoomInfo } = this.props;
+    const [pin] = zoomInfo;
+    this.setState({
+      comments:
+      [
+        ...comments,
+        { comment, displayName, createdAt: Date.now() },
+      ],
+    }, async () => {
+      await RESTcall({
+        address: `/api/comment/${pin._id}`,
+        method: 'put',
+        payload: { comment },
+      });
+    });
   };
 
   render() {
     const {
-      zoomInfo, pinImage, deletePin,
+      zoomInfo, pinImage, deletePin, user: { authenticated },
     } = this.props;
     const {
       show, parentDivStyle, commentsStylingProps, comments,
@@ -196,6 +212,7 @@ export class PinZoom extends Component {
                 imgLink={pinInformation.imgLink}
                 comments={comments}
                 handleNewComment={this.handleNewComment}
+                authenticated={authenticated}
               />
             )
           }
@@ -222,4 +239,5 @@ PinZoom.propTypes = {
   // what type of button to place on pic/thumbnail executed by caller
   pinImage: PropTypes.func,
   deletePin: PropTypes.func,
+  user: PropTypes.objectOf(PropTypes.any).isRequired,
 };

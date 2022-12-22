@@ -181,6 +181,7 @@ export class Mypins extends Component {
                   ready={ready}
                   displayBrokenImage
                   displayName={displayName}
+                  user={user}
                 />
               )
               : (

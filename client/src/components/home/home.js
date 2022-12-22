@@ -66,7 +66,7 @@ export class Home extends Component {
   }
 
   render() {
-    const { user: { authenticated, username, displayName }, search } = this.props;
+    const { user, user: { authenticated, username }, search } = this.props;
     const { pinList, displaySignIn, ready } = this.state;
     const filteredPins = getFilteredPins(pinList, search);
     if (username !== null) {
@@ -85,7 +85,7 @@ export class Home extends Component {
             deletePin={null}
             pinList={filteredPins}
             ready={ready}
-            displayName={displayName}
+            user={user}
           />
         </React.Fragment>
       );

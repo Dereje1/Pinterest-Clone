@@ -10,7 +10,11 @@ import CommentForm from './CommentForm';
 import { formatDate } from '../../utils/utils';
 
 const Comments = ({
-  stylingProps, imgLink, comments, handleNewComment,
+  stylingProps,
+  imgLink,
+  comments,
+  handleNewComment,
+  authenticated,
 }) => {
   const [open, setOpen] = React.useState(false);
 
@@ -32,6 +36,16 @@ const Comments = ({
 
   return (
     <div style={{ ...stylingProps, overflowY: 'auto', paddingBottom: 3 }}>
+      <Fab
+        color="primary"
+        aria-label="add"
+        onMouseDown={e => e.preventDefault()}
+        onClick={handleClickOpen}
+        sx={{ position: 'absolute', bottom: 10, right: 10 }}
+        disabled={!authenticated}
+      >
+        <AddIcon />
+      </Fab>
       <div style={{
         display: 'flex',
         justifyContent: 'space-between',
@@ -46,16 +60,10 @@ const Comments = ({
           <Avatar
             alt="Remy Sharp"
             src={imgLink}
-            sx={{ width: 56, height: 56, marginRight: 3 }}
+            sx={{
+              width: 56, height: 56, marginRight: 3,
+            }}
           />
-          <Fab
-            color="primary"
-            aria-label="add"
-            onMouseDown={e => e.preventDefault()}
-            onClick={handleClickOpen}
-          >
-            <AddIcon />
-          </Fab>
         </div>
       </div>
       {
@@ -94,4 +102,5 @@ Comments.propTypes = {
   imgLink: PropTypes.string.isRequired,
   stylingProps: PropTypes.objectOf(PropTypes.number).isRequired,
   handleNewComment: PropTypes.func.isRequired,
+  authenticated: PropTypes.bool.isRequired,
 };

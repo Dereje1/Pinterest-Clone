@@ -103,6 +103,27 @@ const unpin = async (req, res) => {
   }
 };
 
+const addComment = async (req, res) => {
+  const { userId, displayName, service } = getUserProfile(req.user);
+  const pinID = req.params._id;
+  const { comment } = req.body;
+  try {
+    const commentPayload = {
+      userId,
+      displayName,
+      service,
+      comment,
+    };
+    const update = { $push: { comments: { ...commentPayload } } };
+    const modified = { new: true };
+    const updatedPin = await pins.findByIdAndUpdate(pinID, update, modified).exec();
+    console.log(`${displayName} commented on ${updatedPin.imgDescription}`);
+    res.json(updatedPin);
+  } catch (error) {
+    res.json(error);
+  }
+};
+
 const deletePin = async (req, res) => {
   const { userId, displayName, isAdmin } = getUserProfile(req.user);
   const query = { _id: req.params._id };
@@ -132,6 +153,9 @@ router.put('/api/pin/:_id', isLoggedIn, pinImage);
 
 // Removes user from a pin's savedby list
 router.put('/api/unpin/:_id', isLoggedIn, unpin);
+
+// Adds a comment to a pin
+router.put('/api/comment/:_id', isLoggedIn, addComment);
 
 // deletes a pin if owned by user
 router.delete('/api/:_id', isLoggedIn, deletePin);
