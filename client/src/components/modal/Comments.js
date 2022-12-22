@@ -5,7 +5,11 @@ import Typography from '@mui/material/Typography';
 import Fab from '@mui/material/Fab';
 import AddIcon from '@mui/icons-material/Add';
 import Card from '@mui/material/Card';
+import Button from '@mui/material/Button';
+import IconButton from '@mui/material/IconButton';
+import CloseIcon from '@mui/icons-material/Close';
 import CommentForm from './CommentForm';
+import PinnersDialog from './PinnersDialog';
 import { formatDate } from '../../utils/utils';
 
 const Comments = ({
@@ -15,23 +19,25 @@ const Comments = ({
   handleNewComment,
   authenticated,
   toggleComments,
+  closePin,
 }) => {
-  const [open, setOpen] = React.useState(false);
+  const [openCommentForm, setOpenCommentForm] = React.useState(false);
+  const [openPinnersDialog, setOpenPinnersDialog] = React.useState(false);
 
-  const handleClickOpen = () => {
-    setOpen(true);
+  const handleOpenCommentForm = () => {
+    setOpenCommentForm(true);
   };
 
-  const handleClose = (event, reason) => {
+  const handleCloseCommentForm = (event, reason) => {
     if (reason && reason === 'backdropClick') return;
-    setOpen(false);
+    setOpenCommentForm(false);
   };
 
-  const updateComments = (comment) => {
+  const submitComment = (comment) => {
     if (comment.trim().length) {
       handleNewComment(comment);
     }
-    setOpen(false);
+    setOpenCommentForm(false);
   };
 
   return (
@@ -40,7 +46,7 @@ const Comments = ({
         color="primary"
         aria-label="add"
         onMouseDown={e => e.preventDefault()}
-        onClick={handleClickOpen}
+        onClick={handleOpenCommentForm}
         sx={{ position: 'absolute', bottom: 10, right: 10 }}
         disabled={!authenticated}
       >
@@ -57,17 +63,35 @@ const Comments = ({
       }}
       >
         <div
-          style={{ display: 'flex', marginLeft: 20, cursor: 'pointer' }}
-          onClick={toggleComments}
-          onKeyDown={() => {}}
-          role="button"
-          tabIndex="0"
+          style={{
+            display: 'flex',
+            justifyContent: 'space-between',
+            alignItems: 'center',
+            width: '100%',
+            paddingLeft: 10,
+            paddingRight: 10,
+          }}
         >
-          <img
-            alt={pinInformation.imgDescription}
-            src={pinInformation.imgLink}
-            style={{ objectFit: 'scale-down', width: 56, height: 56 }}
-          />
+          <div
+            onClick={toggleComments}
+            onKeyDown={() => {}}
+            role="button"
+            tabIndex="0"
+            style={{ cursor: 'pointer' }}
+          >
+            <img
+              alt={pinInformation.imgDescription}
+              src={pinInformation.imgLink}
+              style={{ objectFit: 'scale-down', width: 56, height: 56 }}
+            />
+          </div>
+          {pinInformation.savedBy.length
+            ? <Button variant="text" onClick={() => setOpenPinnersDialog(true)}>Pinners</Button>
+            : null
+          }
+          <IconButton onClick={closePin}>
+            <CloseIcon />
+          </IconButton>
         </div>
       </div>
       {
@@ -109,9 +133,14 @@ const Comments = ({
         ))
       }
       <CommentForm
-        open={open}
-        handleClose={handleClose}
-        handleSubmit={updateComments}
+        open={openCommentForm}
+        handleClose={handleCloseCommentForm}
+        handleSubmit={submitComment}
+      />
+      <PinnersDialog
+        open={openPinnersDialog}
+        onClose={() => setOpenPinnersDialog(false)}
+        pinnersList={pinInformation.savedBy}
       />
     </div>
   );
@@ -126,4 +155,5 @@ Comments.propTypes = {
   handleNewComment: PropTypes.func.isRequired,
   authenticated: PropTypes.bool.isRequired,
   toggleComments: PropTypes.func.isRequired,
+  closePin: PropTypes.func.isRequired,
 };

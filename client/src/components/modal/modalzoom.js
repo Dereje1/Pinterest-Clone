@@ -64,10 +64,10 @@ export class PinZoom extends Component {
     document.body.style.overflowY = 'scroll';
   }
 
-  close = () => {
+  close = (_, forceClose = false) => {
     // sends a reset callback after closing modalstate
     const { cancelBlur } = this.state;
-    if (cancelBlur) return;
+    if (cancelBlur && !forceClose) return;
     const { reset } = this.props;
     this.setState({
       show: false,
@@ -213,6 +213,7 @@ export class PinZoom extends Component {
                 handleNewComment={this.handleNewComment}
                 authenticated={authenticated}
                 toggleComments={this.toggleComments}
+                closePin={e => this.close(e, true)}
               />
             )
           }
