@@ -90,7 +90,7 @@ export class PinZoom extends Component {
     });
   };
 
-  handleComments = () => {
+  toggleComments = () => {
     const { commentsStylingProps, parentDivStyle } = this.state;
     if (!commentsStylingProps) {
       const { current: { clientHeight: cardHeight, children } } = this.zoomedImage;
@@ -159,7 +159,7 @@ export class PinZoom extends Component {
               <>
                 <StyledBadge badgeContent={comments.length} color="primary" showZero name="comments">
                   <IconButton
-                    onClick={this.handleComments}
+                    onClick={this.toggleComments}
                     onMouseDown={e => e.preventDefault()}
                   >
                     {commentsStylingProps
@@ -208,10 +208,11 @@ export class PinZoom extends Component {
             : (
               <Comments
                 stylingProps={commentsStylingProps}
-                imgLink={pinInformation.imgLink}
+                pinInformation={pinInformation}
                 comments={comments}
                 handleNewComment={this.handleNewComment}
                 authenticated={authenticated}
+                toggleComments={this.toggleComments}
               />
             )
           }

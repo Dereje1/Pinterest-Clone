@@ -4,17 +4,17 @@ import CardContent from '@mui/material/CardContent';
 import Typography from '@mui/material/Typography';
 import Fab from '@mui/material/Fab';
 import AddIcon from '@mui/icons-material/Add';
-import Avatar from '@mui/material/Avatar';
 import Card from '@mui/material/Card';
 import CommentForm from './CommentForm';
 import { formatDate } from '../../utils/utils';
 
 const Comments = ({
   stylingProps,
-  imgLink,
+  pinInformation,
   comments,
   handleNewComment,
   authenticated,
+  toggleComments,
 }) => {
   const [open, setOpen] = React.useState(false);
 
@@ -56,19 +56,42 @@ const Comments = ({
         marginBottom: 10,
       }}
       >
-        <div style={{ display: 'flex', marginLeft: 20 }}>
-          <Avatar
-            alt="Remy Sharp"
-            src={imgLink}
-            sx={{
-              width: 56, height: 56, marginRight: 3,
-            }}
+        <div
+          style={{ display: 'flex', marginLeft: 20, cursor: 'pointer' }}
+          onClick={toggleComments}
+          onKeyDown={() => {}}
+          role="button"
+          tabIndex="0"
+        >
+          <img
+            alt={pinInformation.imgDescription}
+            src={pinInformation.imgLink}
+            style={{ objectFit: 'scale-down', width: 56, height: 56 }}
           />
         </div>
       </div>
       {
-        comments.map(({ comment, displayName, createdAt }) => (
-          <React.Fragment key={Math.floor(Math.random() * 10000)}>
+        !comments.length && (
+          <Card
+            sx={{ margin: 1 }}
+            raised
+          >
+            <CardContent>
+              <Typography variant="h6" color="text.secondary" sx={{ margin: 'auto' }}>
+                {authenticated
+                  ? `Be the first to write a comment on ${pinInformation.imgDescription}...`
+                  : `Login and be the first to write a comment on ${pinInformation.imgDescription}...`
+                }
+              </Typography>
+            </CardContent>
+          </Card>
+        )
+      }
+      {
+        comments.map(({
+          _id, comment, displayName, createdAt,
+        }) => (
+          <React.Fragment key={_id}>
             <Card
               sx={{ margin: 1 }}
               raised
@@ -83,7 +106,6 @@ const Comments = ({
               </CardContent>
             </Card>
           </React.Fragment>
-
         ))
       }
       <CommentForm
@@ -99,8 +121,9 @@ export default Comments;
 
 Comments.propTypes = {
   comments: PropTypes.arrayOf(PropTypes.any).isRequired,
-  imgLink: PropTypes.string.isRequired,
+  pinInformation: PropTypes.objectOf(PropTypes.any).isRequired,
   stylingProps: PropTypes.objectOf(PropTypes.number).isRequired,
   handleNewComment: PropTypes.func.isRequired,
   authenticated: PropTypes.bool.isRequired,
+  toggleComments: PropTypes.func.isRequired,
 };
