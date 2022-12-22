@@ -92,15 +92,19 @@ returns
     savedBy: modifiedSavedBy, // send only display names of pinners
     owns: // need for displaying action button on pin
     hasSaved: // need for displaying action button on pin
+    comments: modifiedComments, // send only display names, comment and date of commenters
     createdDate: send full
 };
 */
 const filterPins = ({ rawPins, userId, isAdmin }) => rawPins.map((pin) => {
   const {
-    _id, imgDescription, imgLink, owner, savedBy, createdAt,
+    _id, imgDescription, imgLink, owner, savedBy, createdAt: pinCreatedAt, comments,
   } = pin;
   const savedIds = savedBy.map(s => s.id);
   const savedNames = savedBy.map(pinner => pinner.name);
+  const modifiedComments = comments.map(
+    ({ displayName, comment, createdAt }) => ({ displayName, comment, createdAt }),
+  );
   return {
     _id,
     imgDescription,
@@ -109,7 +113,8 @@ const filterPins = ({ rawPins, userId, isAdmin }) => rawPins.map((pin) => {
     savedBy: savedNames,
     owns: Boolean(userId && (userId === owner.id || isAdmin)),
     hasSaved: Boolean(userId && savedIds.includes(userId)),
-    createdAt,
+    comments: modifiedComments,
+    createdAt: pinCreatedAt,
   };
 });
 

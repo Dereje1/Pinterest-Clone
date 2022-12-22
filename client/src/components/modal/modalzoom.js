@@ -17,7 +17,6 @@ import Comments from './Comments';
 import {
   delay, getNewImageWidth, getFormattedDescription, formatDate,
 } from '../../utils/utils';
-import stubComments from './stubComments';
 import './modal.scss';
 
 const StyledBadge = styled(Badge)(({ name }) => ({
@@ -39,7 +38,7 @@ export class PinZoom extends Component {
       parentDivStyle: { top: 0, width: '90%' },
       commentsStylingProps: null,
       cancelBlur: false,
-      comments: stubComments,
+      comments: props.zoomInfo[0].comments,
     };
     this.zoomedImage = React.createRef();
   }

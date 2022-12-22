@@ -67,7 +67,7 @@ const Comments = ({
         </div>
       </div>
       {
-        comments.map((c, idx) => (
+        comments.map(({ comment, displayName, createdAt }) => (
           <React.Fragment key={Math.floor(Math.random() * 10000)}>
             <Card
               sx={{ margin: 1 }}
@@ -75,10 +75,10 @@ const Comments = ({
             >
               <CardContent>
                 <Typography sx={{ mb: 1.5 }} color="text.secondary">
-                  {`${c.comment} idx - ${idx}`}
+                  {comment}
                 </Typography>
                 <Typography variant="subtitle2" sx={{ color: '#4c62bc', fontWeight: 'bold' }}>
-                  {`${c.displayName} - ${formatDate(c.createdAt)}`}
+                  {`${displayName} - ${formatDate(createdAt)}`}
                 </Typography>
               </CardContent>
             </Card>
