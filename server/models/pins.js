@@ -1,6 +1,15 @@
 // mongoose shcema on what to store fror pins?
 const mongoose = require('mongoose');
 
+const commentSchema = new mongoose.Schema({
+  name: { type: String, required: true },
+  service: { type: String, required: true },
+  userId: { type: String, required: true },
+  comment: { type: String, required: true },
+}, {
+  timestamps: true, // timestamps options for subfields
+});
+
 const pinSchema = mongoose.Schema({
   owner: {
     name: { type: String, required: true },
@@ -18,7 +27,12 @@ const pinSchema = mongoose.Schema({
     }],
     default: [],
   },
+  comments: {
+    type: [commentSchema],
+    default: [],
+  },
   isBroken: { type: Boolean },
 }, { timestamps: true });
+
 
 module.exports = mongoose.model('pin', pinSchema);
