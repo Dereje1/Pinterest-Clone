@@ -83,12 +83,13 @@ npm test
 
 ## Built With
 
+* [Node.js](https://nodejs.org/) - JavaScript runtime
+* [React](https://reactjs.org/) - A JavaScript library for building user interfaces
 * [MongoDB](https://www.mongodb.com/) - Database
 * [Express](https://expressjs.com/) - Node.js web application framework
-* [React](https://reactjs.org/) - A JavaScript library for building user interfaces
-* [Node.js](https://nodejs.org/) - JavaScript runtime
+* [Material UI](https://mui.com/) - A library of React UI components that implements Google's Material Design.
 * [react-masonry-component](https://www.npmjs.com/package/react-masonry-component) - A React.js Masonry component.
- 
+
 ## Authors
 
 * **Dereje Getahun** - [Dereje Getahun](https://github.com/Dereje1)
