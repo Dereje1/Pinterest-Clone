@@ -35,7 +35,7 @@ export class PinZoom extends Component {
     this.state = {
       show: false,
       parentDivStyle: { top: 0, width: '90%' },
-      commentsStylingProps: null,
+      commentsShowing: null,
       cancelBlur: false,
     };
     this.zoomedImage = React.createRef();
@@ -89,13 +89,13 @@ export class PinZoom extends Component {
   };
 
   toggleComments = () => {
-    const { commentsStylingProps, parentDivStyle } = this.state;
-    if (!commentsStylingProps) {
+    const { commentsShowing, parentDivStyle } = this.state;
+    if (!commentsShowing) {
       const { current: { clientHeight: cardHeight, children } } = this.zoomedImage;
       const [, image] = children;
       const { clientHeight: imageHeight } = image;
       this.setState({
-        commentsStylingProps: {
+        commentsShowing: {
           width: parentDivStyle.parentWidth,
           height: imageHeight + (window.innerHeight - cardHeight - 20),
         },
@@ -105,7 +105,7 @@ export class PinZoom extends Component {
     }
     // need to reinstate focus for blur to work again
     this.zoomedImage.current.focus();
-    this.setState({ commentsStylingProps: null, cancelBlur: false });
+    this.setState({ commentsShowing: null, cancelBlur: false });
   };
 
 
@@ -114,7 +114,7 @@ export class PinZoom extends Component {
       zoomInfo, pinImage, deletePin, user: { authenticated }, handleNewComment,
     } = this.props;
     const {
-      show, parentDivStyle, commentsStylingProps,
+      show, parentDivStyle, commentsShowing,
     } = this.state;
     if (!zoomInfo.length) return null;
     const [pinInformation] = zoomInfo;
@@ -142,7 +142,7 @@ export class PinZoom extends Component {
                     onClick={this.toggleComments}
                     onMouseDown={e => e.preventDefault()}
                   >
-                    {commentsStylingProps
+                    {commentsShowing
                       ? <CommentIcon style={{ fontSize: '1.7em' }} />
                       : <CommentOutlinedIcon style={{ fontSize: '1.7em' }} />}
                   </IconButton>
@@ -172,7 +172,7 @@ export class PinZoom extends Component {
             titleTypographyProps={{ fontSize: parentDivStyle.titleSize, fontWeight: 'bold' }}
             subheaderTypographyProps={{ fontSize: parentDivStyle.subTitleSize, fontWeight: 'bold' }}
           />
-          { !commentsStylingProps ? (
+          { !commentsShowing ? (
             <CardMedia
               component="img"
               image={pinInformation.imgLink}
@@ -187,7 +187,7 @@ export class PinZoom extends Component {
           )
             : (
               <Comments
-                stylingProps={commentsStylingProps}
+                stylingProps={commentsShowing}
                 pinInformation={pinInformation}
                 comments={pinInformation.comments}
                 handleNewComment={handleNewComment}

@@ -135,7 +135,7 @@ export class Mypins extends Component {
   }
 
   render() {
-    const { user, user: { authenticated, displayName } } = this.props;
+    const { user, user: { authenticated } } = this.props;
     const {
       displayPinCreate, showDeleteImageModal,
       deletableImgInfo, allPinLinks, pinList,
@@ -180,7 +180,6 @@ export class Mypins extends Component {
                   pinList={pinList}
                   ready={ready}
                   displayBrokenImage
-                  displayName={displayName}
                   user={user}
                 />
               )

@@ -20,7 +20,11 @@ const PinnersDialog = ({ onClose, open, pinnersList }) => {
   };
 
   return (
-    <Dialog onClose={handleClose} open={open}>
+    <Dialog
+      onClose={handleClose}
+      open={open}
+      PaperProps={{ sx: { position: 'fixed', top: 0 } }}
+    >
       <List sx={{ pt: 0 }}>
         {pinnersList.map(pinner => (
           <ListItem onClick={() => handleListItemClick(pinner)} key={pinner}>

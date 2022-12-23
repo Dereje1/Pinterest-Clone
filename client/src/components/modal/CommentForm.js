@@ -21,7 +21,7 @@ const CommentForm = ({ open, handleClose, handleSubmit }) => {
             autoFocus
             margin="dense"
             id="comment_form"
-            label="Comment"
+            label="Add a comment"
             type="text"
             multiline
             rows={3}

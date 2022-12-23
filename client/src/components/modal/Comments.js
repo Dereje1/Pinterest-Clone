@@ -121,11 +121,16 @@ const Comments = ({
               raised
             >
               <CardContent>
+                <div style={{ display: 'flex', alignItems: 'center' }}>
+                  <Typography variant="subtitle1" sx={{ color: '#4c62bc', fontWeight: 'bold' }}>
+                    {`${displayName}`}
+                  </Typography>
+                  <Typography color="text.secondary" sx={{ ml: 1, fontSize: 12 }}>
+                    {`- ${formatDate(createdAt)}`}
+                  </Typography>
+                </div>
                 <Typography sx={{ mb: 1.5 }} color="text.secondary">
                   {comment}
-                </Typography>
-                <Typography variant="subtitle2" sx={{ color: '#4c62bc', fontWeight: 'bold' }}>
-                  {`${displayName} - ${formatDate(createdAt)}`}
                 </Typography>
               </CardContent>
             </Card>
