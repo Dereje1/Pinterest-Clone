@@ -11,7 +11,6 @@ import CommentOutlinedIcon from '@mui/icons-material/CommentOutlined';
 import CommentIcon from '@mui/icons-material/Comment';
 import { styled } from '@mui/styles';
 /* local components and utility */
-import RESTcall from '../../crud';
 import ModalActions from './ModalActions';
 import Comments from './Comments';
 import {
@@ -38,7 +37,6 @@ export class PinZoom extends Component {
       parentDivStyle: { top: 0, width: '90%' },
       commentsStylingProps: null,
       cancelBlur: false,
-      comments: props.zoomInfo[0].comments,
     };
     this.zoomedImage = React.createRef();
   }
@@ -110,31 +108,13 @@ export class PinZoom extends Component {
     this.setState({ commentsStylingProps: null, cancelBlur: false });
   };
 
-  handleNewComment = (comment) => {
-    const { comments } = this.state;
-    const { user: { displayName }, zoomInfo } = this.props;
-    const [pin] = zoomInfo;
-    this.setState({
-      comments:
-      [
-        ...comments,
-        { comment, displayName, createdAt: Date.now() },
-      ],
-    }, async () => {
-      await RESTcall({
-        address: `/api/comment/${pin._id}`,
-        method: 'put',
-        payload: { comment },
-      });
-    });
-  };
 
   render() {
     const {
-      zoomInfo, pinImage, deletePin, user: { authenticated },
+      zoomInfo, pinImage, deletePin, user: { authenticated }, handleNewComment,
     } = this.props;
     const {
-      show, parentDivStyle, commentsStylingProps, comments,
+      show, parentDivStyle, commentsStylingProps,
     } = this.state;
     if (!zoomInfo.length) return null;
     const [pinInformation] = zoomInfo;
@@ -157,7 +137,7 @@ export class PinZoom extends Component {
           <CardHeader
             action={(
               <>
-                <StyledBadge badgeContent={comments.length} color="primary" showZero name="comments">
+                <StyledBadge badgeContent={pinInformation.comments.length} color="primary" showZero name="comments">
                   <IconButton
                     onClick={this.toggleComments}
                     onMouseDown={e => e.preventDefault()}
@@ -209,8 +189,8 @@ export class PinZoom extends Component {
               <Comments
                 stylingProps={commentsStylingProps}
                 pinInformation={pinInformation}
-                comments={comments}
-                handleNewComment={this.handleNewComment}
+                comments={pinInformation.comments}
+                handleNewComment={handleNewComment}
                 authenticated={authenticated}
                 toggleComments={this.toggleComments}
                 closePin={e => this.close(e, true)}
@@ -241,4 +221,5 @@ PinZoom.propTypes = {
   pinImage: PropTypes.func,
   deletePin: PropTypes.func,
   user: PropTypes.objectOf(PropTypes.any).isRequired,
+  handleNewComment: PropTypes.func.isRequired,
 };

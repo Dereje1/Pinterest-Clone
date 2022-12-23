@@ -62,7 +62,9 @@ const getPins = async (req, res) => {
 
 const pinImage = async (req, res) => {
   const pinID = req.params._id;
-  const { userId, displayName, service } = getUserProfile(req.user);
+  const {
+    userId, displayName, service, isAdmin,
+  } = getUserProfile(req.user);
 
   try {
     const pin = await pins.findById(pinID).exec();
@@ -76,8 +78,9 @@ const pinImage = async (req, res) => {
       const update = { $set: { savedBy: [...pin.savedBy, newPinnerInfo] } };
       const modified = { new: true };
       const updatedPin = await pins.findByIdAndUpdate(pinID, update, modified).exec();
+      const [filteredAndUpdatedPin] = filterPins({ rawPins: [updatedPin], userId, isAdmin });
       console.log(`${displayName} pinned ${updatedPin.imgDescription}`);
-      res.json(updatedPin);
+      res.json(filteredAndUpdatedPin);
     } else {
       console.log(`${displayName} has the pin - ${pin.imgDescription} already saved`);
       res.end();
@@ -104,7 +107,9 @@ const unpin = async (req, res) => {
 };
 
 const addComment = async (req, res) => {
-  const { userId, displayName, service } = getUserProfile(req.user);
+  const {
+    userId, displayName, service, isAdmin,
+  } = getUserProfile(req.user);
   const pinID = req.params._id;
   const { comment } = req.body;
   try {
@@ -117,8 +122,9 @@ const addComment = async (req, res) => {
     const update = { $push: { comments: { ...commentPayload } } };
     const modified = { new: true };
     const updatedPin = await pins.findByIdAndUpdate(pinID, update, modified).exec();
+    const [filteredAndUpdatedPin] = filterPins({ rawPins: [updatedPin], userId, isAdmin });
     console.log(`${displayName} commented on ${updatedPin.imgDescription}`);
-    res.json(updatedPin);
+    res.json(filteredAndUpdatedPin);
   } catch (error) {
     res.json(error);
   }
