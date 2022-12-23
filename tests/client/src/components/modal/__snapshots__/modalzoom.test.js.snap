@@ -123,3 +123,17 @@ exports[`The pin zoom modal will render 1`] = `
   </ForwardRef(Card)>
 </Fragment>
 `;
+
+exports[`The styled badge Will render for comments 1`] = `
+<ForwardRef(Badge)
+  className="ForwardRef(Badge)-root-1 ForwardRef(Badge)-root-3"
+  name="comments"
+/>
+`;
+
+exports[`The styled badge Will render for pins 1`] = `
+<ForwardRef(Badge)
+  className="ForwardRef(Badge)-root-1 ForwardRef(Badge)-root-2"
+  name="pin"
+/>
+`;

@@ -18,7 +18,7 @@ import {
 } from '../../utils/utils';
 import './modal.scss';
 
-const StyledBadge = styled(Badge)(({ name }) => ({
+export const StyledBadge = styled(Badge)(({ name }) => ({
   '& .MuiBadge-badge': {
     right: name === 'pin' ? 32 : 43,
     top: name === 'pin' ? 17 : 13,
@@ -48,7 +48,7 @@ export class PinZoom extends Component {
     const [, browserTop] = zoomInfo;
     // set top and scroll to current position and disable scroll
     window.scrollTo(0, browserTop);
-    document.body.style.overflow = 'hidden';
+    document.body.style.overflowY = 'hidden';
     this.setState({
       show: true,
       parentDivStyle: {

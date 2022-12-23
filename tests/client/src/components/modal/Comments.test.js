@@ -76,6 +76,13 @@ describe('The comments window', () => {
     expect(props.handleNewComment).toHaveBeenCalledWith('a new comment');
   });
 
+  test('will not submit a comment if empty', () => {
+    const wrapper = shallow(<Comments {...props} />);
+    const commentForm = wrapper.find('CommentForm');
+    commentForm.props().handleSubmit('      ');
+    expect(props.handleNewComment).not.toHaveBeenCalled();
+  });
+
   test('will open and close the pinners dialog', () => {
     const wrapper = shallow(<Comments {...props} />);
     const pinnersButton = wrapper.find('ForwardRef(Button)');

@@ -4,7 +4,7 @@
 import React from 'react';
 import { shallow } from 'enzyme';
 import toJson from 'enzyme-to-json';
-import { PinZoom } from '../../../../../client/src/components/modal/modalzoom';
+import { PinZoom, StyledBadge } from '../../../../../client/src/components/modal/modalzoom';
 import { pinsStub } from '../../../pinsStub';
 
 jest.useFakeTimers();
@@ -16,6 +16,10 @@ describe('The pin zoom modal', () => {
     jest.spyOn(React, 'createRef').mockImplementation(() => ({
       current: {
         focus,
+        clientHeight: 50,
+        children: [{}, {
+          clientHeight: 25,
+        }],
       },
     }));
     global.scrollTo = jest.fn();
@@ -26,8 +30,8 @@ describe('The pin zoom modal', () => {
       reset: jest.fn(),
       pinImage: jest.fn(),
       deletePin: null,
-      user: {},
       handleNewComment: jest.fn(),
+      user: { authenticated: true },
     };
   });
 
@@ -116,5 +120,110 @@ describe('The pin zoom modal', () => {
     global.scrollTo = jest.fn();
     shallow(<PinZoom {...props} />);
     expect(global.scrollTo).toHaveBeenCalledWith(0, 10);
+  });
+
+  test('will toggle the comments window', () => {
+    const wrapper = shallow(<PinZoom {...props} />);
+    // set image props
+    wrapper.instance().handleImage({ target: { naturalWidth: 600, naturalHeight: 600 } });
+    // toggle comment on
+    const commentIcon = wrapper.find('ForwardRef(CardHeader)')
+      .props()
+      .action
+      .props
+      .children[0]
+      .props
+      .children
+      .props;
+    commentIcon.onClick();
+    commentIcon.onMouseDown({ preventDefault: jest.fn() });
+    expect(wrapper.state().commentsShowing).toEqual({ height: 955, width: 830 });
+    expect(wrapper.state().cancelBlur).toEqual(true);
+    // toggle comment off
+    commentIcon.onClick();
+    expect(wrapper.state().commentsShowing).toEqual(null);
+    expect(wrapper.state().cancelBlur).toEqual(false);
+  });
+
+  test('will force close the comments window', () => {
+    const wrapper = shallow(<PinZoom {...props} />);
+    // set image props
+    wrapper.instance().handleImage({ target: { naturalWidth: 600, naturalHeight: 600 } });
+    // toggle comment on
+    const commentIcon = wrapper.find('ForwardRef(CardHeader)')
+      .props()
+      .action
+      .props
+      .children[0]
+      .props
+      .children
+      .props;
+    commentIcon.onClick();
+    const commentsWindow = wrapper.find('Comments');
+    expect(wrapper.state().show).toBe(true);
+    commentsWindow.props().closePin();
+    expect(wrapper.state().show).toBe(false);
+  });
+
+  test('will not close the comments window if blur is not cancelled', () => {
+    const wrapper = shallow(<PinZoom {...props} />);
+    // set image props
+    wrapper.instance().handleImage({ target: { naturalWidth: 600, naturalHeight: 600 } });
+    // toggle comment on
+    const commentIcon = wrapper.find('ForwardRef(CardHeader)')
+      .props()
+      .action
+      .props
+      .children[0]
+      .props
+      .children
+      .props;
+    // show comments div
+    commentIcon.onClick();
+    wrapper.setState({ cancelBlur: true });
+    expect(wrapper.state().show).toBe(true);
+    wrapper.instance().close();
+    expect(wrapper.state().show).toBe(true);
+  });
+
+  test('will set zero on badge content for pins icon if savedby is not defined', () => {
+    const updatedProps = {
+      ...props,
+      zoomInfo: [
+        {
+          ...pinsStub[0],
+          savedBy: undefined,
+        },
+        10,
+      ],
+    };
+    const wrapper = shallow(<PinZoom {...updatedProps} />);
+    // toggle comment on
+    const pinsIcon = wrapper.find('ForwardRef(CardHeader)')
+      .props()
+      .action
+      .props
+      .children[1]
+      .props;
+    expect(pinsIcon.badgeContent).toBe(0);
+  });
+
+  test('will enable scroll on unmount', () => {
+    const wrapper = shallow(<PinZoom {...props} />);
+    expect(document.body.style.overflowY).toBe('hidden');
+    wrapper.instance().componentWillUnmount();
+    expect(document.body.style.overflowY).toBe('scroll');
+  });
+});
+
+describe('The styled badge', () => {
+  test('Will render for pins', () => {
+    const badge = shallow(<StyledBadge name="pin" />);
+    expect(toJson(badge)).toMatchSnapshot();
+  });
+
+  test('Will render for comments', () => {
+    const badge = shallow(<StyledBadge name="comments" />);
+    expect(toJson(badge)).toMatchSnapshot();
   });
 });
