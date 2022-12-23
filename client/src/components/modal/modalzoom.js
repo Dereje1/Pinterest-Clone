@@ -48,7 +48,7 @@ export class PinZoom extends Component {
     const [, browserTop] = zoomInfo;
     // set top and scroll to current position and disable scroll
     window.scrollTo(0, browserTop);
-    document.body.style.overflowY = 'hidden';
+    document.body.style.overflow = 'hidden';
     this.setState({
       show: true,
       parentDivStyle: {

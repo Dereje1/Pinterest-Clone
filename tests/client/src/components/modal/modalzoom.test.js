@@ -210,7 +210,7 @@ describe('The pin zoom modal', () => {
 
   test('will enable scroll on unmount', () => {
     const wrapper = shallow(<PinZoom {...props} />);
-    expect(document.body.style.overflowY).toBe('hidden');
+    expect(document.body.style.overflow).toBe('hidden');
     wrapper.instance().componentWillUnmount();
     expect(document.body.style.overflowY).toBe('scroll');
   });
