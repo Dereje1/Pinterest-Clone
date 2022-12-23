@@ -5,7 +5,10 @@ import React from 'react';
 import { shallow } from 'enzyme';
 import toJson from 'enzyme-to-json';
 import ImageBuild from '../../../../../client/src/components/imagebuild/Imagebuild';
+import RESTcall from '../../../../../client/src/crud';
 import { pinsStub } from '../../../pinsStub';
+
+jest.mock('../../../../../client/src/crud');
 
 describe('The ImageBuild component', () => {
   let props;
@@ -18,6 +21,10 @@ describe('The ImageBuild component', () => {
       ready: true,
       user: {},
     };
+  });
+
+  afterEach(() => {
+    RESTcall.mockClear();
   });
 
   test('will render....', () => {
@@ -126,5 +133,48 @@ describe('The ImageBuild component', () => {
     infiniteScroll.props().next();
     Loading = wrapper.find('Loading');
     expect(Loading.props().imagesLoaded).toBe(false);
+  });
+
+  test('will update comments while pin is zoomed', async () => {
+    document.body.scrollTop = 10;
+    const wrapper = shallow(<ImageBuild {...props} />);
+    const masonry = wrapper.find('MasonryPins');
+    let pinZoom = wrapper.find('PinZoom');
+    expect(pinZoom.isEmptyRender()).toBe(true);
+    // zoom into pin and assert pin has correct info
+    masonry.props().pinEnlarge({ target: { className: 'any' } }, pinsStub[1]);
+    pinZoom = wrapper.find('PinZoom');
+    expect(pinZoom.isEmptyRender()).toBe(false);
+    expect(pinZoom.props().zoomInfo).toEqual([pinsStub[1], 10]);
+    // trigger a new comment
+    await pinZoom.props().handleNewComment('tester comment');
+    expect(RESTcall).toHaveBeenCalledTimes(1);
+    expect(RESTcall).toHaveBeenCalledWith({
+      address: '/api/comment/2',
+      method: 'put',
+      payload: {
+        comment: 'tester comment',
+      },
+    });
+    // assert that new comment is reflected in zoomed pin
+    pinZoom = wrapper.find('PinZoom');
+    expect(pinZoom.props().zoomInfo[0]).toEqual({ _id: 2, comments: ['tester comment'] });
+  });
+
+  test('will close pinzoom if zoomed pin disapears (ex. deleted from profile)', () => {
+    document.body.scrollTop = 10;
+    const wrapper = shallow(<ImageBuild {...props} />);
+    const masonry = wrapper.find('MasonryPins');
+    let pinZoom = wrapper.find('PinZoom');
+    expect(pinZoom.isEmptyRender()).toBe(true);
+    // zoom into pin and assert pin has correct info
+    masonry.props().pinEnlarge({ target: { className: 'any' } }, pinsStub[1]);
+    pinZoom = wrapper.find('PinZoom');
+    expect(pinZoom.isEmptyRender()).toBe(false);
+    expect(pinZoom.props().zoomInfo).toEqual([pinsStub[1], 10]);
+    // update pins list and assert that zoomed pin is gone
+    wrapper.setProps({ ...props, pinList: [pinsStub[0], pinsStub[2]] });
+    pinZoom = wrapper.find('PinZoom');
+    expect(pinZoom.isEmptyRender()).toBe(true);
   });
 });

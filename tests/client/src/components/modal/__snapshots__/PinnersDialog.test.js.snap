@@ -1,0 +1,63 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`The pinners dialog will render 1`] = `
+<ForwardRef(Dialog)
+  PaperProps={
+    Object {
+      "sx": Object {
+        "position": "fixed",
+        "top": 0,
+      },
+    }
+  }
+  onClose={[MockFunction]}
+  open={true}
+>
+  <ForwardRef(List)
+    sx={
+      Object {
+        "pt": 0,
+      }
+    }
+  >
+    <ForwardRef(ListItem)
+      key="savedBy - id-1"
+    >
+      <ForwardRef(ListItemAvatar)>
+        <ForwardRef(Avatar)
+          sx={
+            Object {
+              "bgcolor": "#bbdefb",
+              "color": "#1e88e5",
+            }
+          }
+        >
+          <Memo(ForwardRef(PersonIcon)) />
+        </ForwardRef(Avatar)>
+      </ForwardRef(ListItemAvatar)>
+      <ForwardRef(ListItemText)
+        primary="savedBy - id-1"
+      />
+    </ForwardRef(ListItem)>
+    <ForwardRef(ListItem)
+      key="savedBy2 - id-1"
+    >
+      <ForwardRef(ListItemAvatar)>
+        <ForwardRef(Avatar)
+          sx={
+            Object {
+              "bgcolor": "#bbdefb",
+              "color": "#1e88e5",
+            }
+          }
+        >
+          <Memo(ForwardRef(PersonIcon)) />
+        </ForwardRef(Avatar)>
+      </ForwardRef(ListItemAvatar)>
+      <ForwardRef(ListItemText)
+        primary="savedBy2 - id-1"
+      />
+    </ForwardRef(ListItem)>
+  </ForwardRef(List)>
+</ForwardRef(Dialog)>
+`;

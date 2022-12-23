@@ -15,7 +15,6 @@ import { formatDate } from '../../utils/utils';
 const Comments = ({
   stylingProps,
   pinInformation,
-  comments,
   handleNewComment,
   authenticated,
   toggleComments,
@@ -73,6 +72,7 @@ const Comments = ({
           }}
         >
           <div
+            id="thumbnail"
             onClick={toggleComments}
             onKeyDown={() => {}}
             role="button"
@@ -95,7 +95,7 @@ const Comments = ({
         </div>
       </div>
       {
-        !comments.length && (
+        !pinInformation.comments.length && (
           <Card
             sx={{ margin: 1 }}
             raised
@@ -112,7 +112,7 @@ const Comments = ({
         )
       }
       {
-        comments.map(({
+        pinInformation.comments.map(({
           _id, comment, displayName, createdAt,
         }) => (
           <React.Fragment key={_id}>
@@ -154,7 +154,6 @@ const Comments = ({
 export default Comments;
 
 Comments.propTypes = {
-  comments: PropTypes.arrayOf(PropTypes.any).isRequired,
   pinInformation: PropTypes.objectOf(PropTypes.any).isRequired,
   stylingProps: PropTypes.objectOf(PropTypes.number).isRequired,
   handleNewComment: PropTypes.func.isRequired,

@@ -73,6 +73,7 @@ exports[`The Mypins Component Mypins landing page will render pins if found 1`] 
         Array [
           Object {
             "_id": 2,
+            "comments": Array [],
             "createdAt": "2020-12-25T00:00:00.000+00:00",
             "hasSaved": true,
             "imgDescription": "imgDescription id-2",
@@ -86,6 +87,7 @@ exports[`The Mypins Component Mypins landing page will render pins if found 1`] 
           },
           Object {
             "_id": 3,
+            "comments": Array [],
             "createdAt": "2020-12-25T00:00:00.000+00:00",
             "hasSaved": false,
             "imgDescription": "imgDescription id-3",

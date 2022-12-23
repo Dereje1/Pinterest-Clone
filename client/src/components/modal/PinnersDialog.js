@@ -10,36 +10,26 @@ import PersonIcon from '@mui/icons-material/Person';
 import { blue } from '@mui/material/colors';
 
 
-const PinnersDialog = ({ onClose, open, pinnersList }) => {
-  const handleClose = () => {
-    onClose();
-  };
-
-  const handleListItemClick = (value) => {
-    onClose(value);
-  };
-
-  return (
-    <Dialog
-      onClose={handleClose}
-      open={open}
-      PaperProps={{ sx: { position: 'fixed', top: 0 } }}
-    >
-      <List sx={{ pt: 0 }}>
-        {pinnersList.map(pinner => (
-          <ListItem onClick={() => handleListItemClick(pinner)} key={pinner}>
-            <ListItemAvatar>
-              <Avatar sx={{ bgcolor: blue[100], color: blue[600] }}>
-                <PersonIcon />
-              </Avatar>
-            </ListItemAvatar>
-            <ListItemText primary={pinner} />
-          </ListItem>
-        ))}
-      </List>
-    </Dialog>
-  );
-};
+const PinnersDialog = ({ onClose, open, pinnersList }) => (
+  <Dialog
+    onClose={onClose}
+    open={open}
+    PaperProps={{ sx: { position: 'fixed', top: 0 } }}
+  >
+    <List sx={{ pt: 0 }}>
+      {pinnersList.map(pinner => (
+        <ListItem key={pinner}>
+          <ListItemAvatar>
+            <Avatar sx={{ bgcolor: blue[100], color: blue[600] }}>
+              <PersonIcon />
+            </Avatar>
+          </ListItemAvatar>
+          <ListItemText primary={pinner} />
+        </ListItem>
+      ))}
+    </List>
+  </Dialog>
+);
 
 PinnersDialog.propTypes = {
   onClose: PropTypes.func.isRequired,

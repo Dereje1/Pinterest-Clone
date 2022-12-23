@@ -14,6 +14,11 @@ const restMock = jest.fn().mockImplementation((...args) => {
     });
   } if (address.includes('/api/unpin') && method === 'put' && !payload) {
     return Promise.resolve();
+  } if (address.includes('/api/comment') && method === 'put') {
+    return Promise.resolve({
+      _id: 2,
+      comments: ['tester comment'],
+    });
   } if (address.includes('/api/?type=profile') && method === 'get' && !payload) {
     return Promise.resolve({ profilePins: [pinsStub[1], pinsStub[2]], allPinLinks: [] });
   } if (address.includes('/api/') && method === 'delete') {

@@ -1,0 +1,418 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`The comments window will render with comments 1`] = `
+<div
+  style={
+    Object {
+      "height": 30,
+      "overflowY": "auto",
+      "paddingBottom": 3,
+      "width": 20,
+    }
+  }
+>
+  <ForwardRef(Fab)
+    aria-label="add"
+    color="primary"
+    disabled={false}
+    onClick={[Function]}
+    onMouseDown={[Function]}
+    sx={
+      Object {
+        "bottom": 10,
+        "position": "absolute",
+        "right": 10,
+      }
+    }
+  >
+    <Memo(ForwardRef(AddIcon)) />
+  </ForwardRef(Fab)>
+  <div
+    style={
+      Object {
+        "alignItems": "center",
+        "background": "white",
+        "display": "flex",
+        "justifyContent": "space-between",
+        "marginBottom": 10,
+        "position": "sticky",
+        "top": 0,
+      }
+    }
+  >
+    <div
+      style={
+        Object {
+          "alignItems": "center",
+          "display": "flex",
+          "justifyContent": "space-between",
+          "paddingLeft": 10,
+          "paddingRight": 10,
+          "width": "100%",
+        }
+      }
+    >
+      <div
+        id="thumbnail"
+        onClick={[MockFunction]}
+        onKeyDown={[Function]}
+        role="button"
+        style={
+          Object {
+            "cursor": "pointer",
+          }
+        }
+        tabIndex="0"
+      >
+        <img
+          alt="imgDescription id-1"
+          src="imgLink id-1"
+          style={
+            Object {
+              "height": 56,
+              "objectFit": "scale-down",
+              "width": 56,
+            }
+          }
+        />
+      </div>
+      <ForwardRef(Button)
+        onClick={[Function]}
+        variant="text"
+      >
+        Pinners
+      </ForwardRef(Button)>
+      <ForwardRef(IconButton)
+        onClick={[MockFunction]}
+      >
+        <Memo(ForwardRef(CloseIcon)) />
+      </ForwardRef(IconButton)>
+    </div>
+  </div>
+  <ForwardRef(Card)
+    raised={true}
+    sx={
+      Object {
+        "margin": 1,
+      }
+    }
+  >
+    <ForwardRef(CardContent)>
+      <div
+        style={
+          Object {
+            "alignItems": "center",
+            "display": "flex",
+          }
+        }
+      >
+        <ForwardRef(Typography)
+          sx={
+            Object {
+              "color": "#4c62bc",
+              "fontWeight": "bold",
+            }
+          }
+          variant="subtitle1"
+        >
+          tester-displayName
+        </ForwardRef(Typography)>
+        <ForwardRef(Typography)
+          color="text.secondary"
+          sx={
+            Object {
+              "fontSize": 12,
+              "ml": 1,
+            }
+          }
+        >
+          - 28 Jul 2021
+        </ForwardRef(Typography)>
+      </div>
+      <ForwardRef(Typography)
+        color="text.secondary"
+        sx={
+          Object {
+            "mb": 1.5,
+          }
+        }
+      >
+        Test comment
+      </ForwardRef(Typography)>
+    </ForwardRef(CardContent)>
+  </ForwardRef(Card)>
+  <CommentForm
+    handleClose={[Function]}
+    handleSubmit={[Function]}
+    open={false}
+  />
+  <PinnersDialog
+    onClose={[Function]}
+    open={false}
+    pinnersList={
+      Array [
+        "savedBy - id-1",
+        "savedBy2 - id-1",
+      ]
+    }
+  />
+</div>
+`;
+
+exports[`The comments window will render with no comments for authenticated users 1`] = `
+<div
+  style={
+    Object {
+      "height": 30,
+      "overflowY": "auto",
+      "paddingBottom": 3,
+      "width": 20,
+    }
+  }
+>
+  <ForwardRef(Fab)
+    aria-label="add"
+    color="primary"
+    disabled={false}
+    onClick={[Function]}
+    onMouseDown={[Function]}
+    sx={
+      Object {
+        "bottom": 10,
+        "position": "absolute",
+        "right": 10,
+      }
+    }
+  >
+    <Memo(ForwardRef(AddIcon)) />
+  </ForwardRef(Fab)>
+  <div
+    style={
+      Object {
+        "alignItems": "center",
+        "background": "white",
+        "display": "flex",
+        "justifyContent": "space-between",
+        "marginBottom": 10,
+        "position": "sticky",
+        "top": 0,
+      }
+    }
+  >
+    <div
+      style={
+        Object {
+          "alignItems": "center",
+          "display": "flex",
+          "justifyContent": "space-between",
+          "paddingLeft": 10,
+          "paddingRight": 10,
+          "width": "100%",
+        }
+      }
+    >
+      <div
+        id="thumbnail"
+        onClick={[MockFunction]}
+        onKeyDown={[Function]}
+        role="button"
+        style={
+          Object {
+            "cursor": "pointer",
+          }
+        }
+        tabIndex="0"
+      >
+        <img
+          alt="imgDescription id-2"
+          src="imgLink id-2"
+          style={
+            Object {
+              "height": 56,
+              "objectFit": "scale-down",
+              "width": 56,
+            }
+          }
+        />
+      </div>
+      <ForwardRef(Button)
+        onClick={[Function]}
+        variant="text"
+      >
+        Pinners
+      </ForwardRef(Button)>
+      <ForwardRef(IconButton)
+        onClick={[MockFunction]}
+      >
+        <Memo(ForwardRef(CloseIcon)) />
+      </ForwardRef(IconButton)>
+    </div>
+  </div>
+  <ForwardRef(Card)
+    raised={true}
+    sx={
+      Object {
+        "margin": 1,
+      }
+    }
+  >
+    <ForwardRef(CardContent)>
+      <ForwardRef(Typography)
+        color="text.secondary"
+        sx={
+          Object {
+            "margin": "auto",
+          }
+        }
+        variant="h6"
+      >
+        Be the first to write a comment on imgDescription id-2...
+      </ForwardRef(Typography)>
+    </ForwardRef(CardContent)>
+  </ForwardRef(Card)>
+  <CommentForm
+    handleClose={[Function]}
+    handleSubmit={[Function]}
+    open={false}
+  />
+  <PinnersDialog
+    onClose={[Function]}
+    open={false}
+    pinnersList={
+      Array [
+        "savedBy - id-2",
+        "savedBy2 - id-2",
+      ]
+    }
+  />
+</div>
+`;
+
+exports[`The comments window will render with no comments for unauthenticated users 1`] = `
+<div
+  style={
+    Object {
+      "height": 30,
+      "overflowY": "auto",
+      "paddingBottom": 3,
+      "width": 20,
+    }
+  }
+>
+  <ForwardRef(Fab)
+    aria-label="add"
+    color="primary"
+    disabled={true}
+    onClick={[Function]}
+    onMouseDown={[Function]}
+    sx={
+      Object {
+        "bottom": 10,
+        "position": "absolute",
+        "right": 10,
+      }
+    }
+  >
+    <Memo(ForwardRef(AddIcon)) />
+  </ForwardRef(Fab)>
+  <div
+    style={
+      Object {
+        "alignItems": "center",
+        "background": "white",
+        "display": "flex",
+        "justifyContent": "space-between",
+        "marginBottom": 10,
+        "position": "sticky",
+        "top": 0,
+      }
+    }
+  >
+    <div
+      style={
+        Object {
+          "alignItems": "center",
+          "display": "flex",
+          "justifyContent": "space-between",
+          "paddingLeft": 10,
+          "paddingRight": 10,
+          "width": "100%",
+        }
+      }
+    >
+      <div
+        id="thumbnail"
+        onClick={[MockFunction]}
+        onKeyDown={[Function]}
+        role="button"
+        style={
+          Object {
+            "cursor": "pointer",
+          }
+        }
+        tabIndex="0"
+      >
+        <img
+          alt="imgDescription id-2"
+          src="imgLink id-2"
+          style={
+            Object {
+              "height": 56,
+              "objectFit": "scale-down",
+              "width": 56,
+            }
+          }
+        />
+      </div>
+      <ForwardRef(Button)
+        onClick={[Function]}
+        variant="text"
+      >
+        Pinners
+      </ForwardRef(Button)>
+      <ForwardRef(IconButton)
+        onClick={[MockFunction]}
+      >
+        <Memo(ForwardRef(CloseIcon)) />
+      </ForwardRef(IconButton)>
+    </div>
+  </div>
+  <ForwardRef(Card)
+    raised={true}
+    sx={
+      Object {
+        "margin": 1,
+      }
+    }
+  >
+    <ForwardRef(CardContent)>
+      <ForwardRef(Typography)
+        color="text.secondary"
+        sx={
+          Object {
+            "margin": "auto",
+          }
+        }
+        variant="h6"
+      >
+        Login and be the first to write a comment on imgDescription id-2...
+      </ForwardRef(Typography)>
+    </ForwardRef(CardContent)>
+  </ForwardRef(Card)>
+  <CommentForm
+    handleClose={[Function]}
+    handleSubmit={[Function]}
+    open={false}
+  />
+  <PinnersDialog
+    onClose={[Function]}
+    open={false}
+    pinnersList={
+      Array [
+        "savedBy - id-2",
+        "savedBy2 - id-2",
+      ]
+    }
+  />
+</div>
+`;

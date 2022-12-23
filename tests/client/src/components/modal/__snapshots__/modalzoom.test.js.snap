@@ -51,6 +51,7 @@ exports[`The pin zoom modal will render 1`] = `
                   "_id": 1,
                   "comments": Array [
                     Object {
+                      "_id": "Comment_id_1",
                       "comment": "Test comment",
                       "createdAt": "2021-07-28T16:30:48.572Z",
                       "displayName": "tester-displayName",

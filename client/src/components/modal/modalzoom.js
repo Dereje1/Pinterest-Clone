@@ -189,7 +189,6 @@ export class PinZoom extends Component {
               <Comments
                 stylingProps={commentsShowing}
                 pinInformation={pinInformation}
-                comments={pinInformation.comments}
                 handleNewComment={handleNewComment}
                 authenticated={authenticated}
                 toggleComments={this.toggleComments}
