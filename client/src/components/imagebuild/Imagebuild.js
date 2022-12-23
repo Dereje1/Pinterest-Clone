@@ -4,6 +4,7 @@ import InfiniteScroll from 'react-infinite-scroll-component';
 import MasonryPins from './MasonryPins';
 import PinZoom from '../modal/modalzoom';
 import Loading from './Loading';
+import RESTcall from '../../crud';
 import { initialDisplayPerScroll } from '../../utils/utils';
 import './imagebuild.scss';
 import error from '../mypins/error.png';
@@ -17,6 +18,7 @@ const ImageBuild = ({
   pinList,
   displayBrokenImage,
   ready,
+  user,
 }) => {
   const [displayPinZoom, setDisplayPinZoom] = useState(false);
   const [imageInfo, setImageInfo] = useState([]);
@@ -33,6 +35,12 @@ const ImageBuild = ({
 
   useEffect(() => {
     setActivePins(loadedPins.slice(0, batchSize));
+    if (displayPinZoom) {
+      const [zoomedImg] = imageInfo;
+      const [pin] = loadedPins.filter(p => p._id === zoomedImg._id);
+      if (pin) setImageInfo([pin, document.body.scrollTop]);
+      else setDisplayPinZoom(false);
+    }
   }, [loadedPins, batchSize]);
 
   // Masonry callback executes this function
@@ -58,6 +66,23 @@ const ImageBuild = ({
         ...pinListCopy.slice(indexOfBroken + 1)];
     }
     setLoadedPins(pinListCopy);
+  };
+
+  const handleNewComment = async (newComment) => {
+    const [pin] = imageInfo;
+
+    const updatedPin = await RESTcall({
+      address: `/api/comment/${pin._id}`,
+      method: 'put',
+      payload: { comment: newComment },
+    });
+    const indexOfUpdate = loadedPins.findIndex(p => p._id === updatedPin._id);
+    const updatedPins = [
+      ...loadedPins.slice(0, indexOfUpdate),
+      updatedPin,
+      ...loadedPins.slice(indexOfUpdate + 1),
+    ];
+    setLoadedPins(updatedPins);
   };
 
   // Zoom modal takes event and pic info and executes
@@ -97,6 +122,8 @@ const ImageBuild = ({
             zoomInfo={imageInfo}
             pinImage={pinImage}
             deletePin={deletePin}
+            user={user}
+            handleNewComment={handleNewComment}
           />
         )}
       </div>
@@ -121,4 +148,5 @@ ImageBuild.propTypes = {
   pinList: PropTypes.arrayOf(PropTypes.any),
   displayBrokenImage: PropTypes.bool,
   ready: PropTypes.bool.isRequired,
+  user: PropTypes.objectOf(PropTypes.any).isRequired,
 };

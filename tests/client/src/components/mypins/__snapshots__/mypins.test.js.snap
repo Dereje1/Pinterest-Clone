@@ -73,6 +73,7 @@ exports[`The Mypins Component Mypins landing page will render pins if found 1`] 
         Array [
           Object {
             "_id": 2,
+            "comments": Array [],
             "createdAt": "2020-12-25T00:00:00.000+00:00",
             "hasSaved": true,
             "imgDescription": "imgDescription id-2",
@@ -86,6 +87,7 @@ exports[`The Mypins Component Mypins landing page will render pins if found 1`] 
           },
           Object {
             "_id": 3,
+            "comments": Array [],
             "createdAt": "2020-12-25T00:00:00.000+00:00",
             "hasSaved": false,
             "imgDescription": "imgDescription id-3",
@@ -100,6 +102,15 @@ exports[`The Mypins Component Mypins landing page will render pins if found 1`] 
         ]
       }
       ready={true}
+      user={
+        Object {
+          "authenticated": true,
+          "displayName": "tester displayName",
+          "service": "tester service",
+          "userId": "tester user Id",
+          "username": "tester username",
+        }
+      }
     />
   </div>
 </Fragment>
@@ -186,7 +197,6 @@ exports[`The Mypins Component Mypins landing page will render welcome message if
         To get started, you can create your own pin, or save an existing pin from the
          
         <Link
-          exact={true}
           to="/"
         >
           home

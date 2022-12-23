@@ -1,6 +1,6 @@
 const nock = require('nock');
 const {
-  addPin, getPins, pinImage, unpin, deletePin,
+  addPin, getPins, pinImage, unpin, deletePin, addComment,
 } = require('../../server/crudroutes');
 const pins = require('../../server/models/pins'); // schema for pins
 const {
@@ -319,7 +319,11 @@ describe('Pinning an image', () => {
       },
       { new: true },
     );
-    expect(res.json).toHaveBeenCalledWith({ ...rawPinsStub[2], savedBy: newSavedBy });
+    expect(res.json).toHaveBeenCalledWith({
+      ...allPinsResponse[2],
+      savedBy: newSavedBy.map(s => s.name),
+      hasSaved: true,
+    });
     expect(res.end).toHaveBeenCalledTimes(0);
   });
 
@@ -343,7 +347,7 @@ describe('Pinning an image', () => {
   });
 });
 
-describe('Deleting/unpinning an image', () => {
+describe('Deleting an image', () => {
   let res;
   const req = {
     user,
@@ -459,6 +463,95 @@ describe('Unpinning an image', () => {
       }),
     );
     await unpin(req, res);
+    expect(res.json).toHaveBeenCalledWith(Error('Mocked rejection'));
+  });
+});
+
+describe('Adding a comment', () => {
+  let res;
+  const req = {
+    user,
+    body: {
+      comment: 'a new comment',
+    },
+    params: { _id: 3 },
+  };
+  beforeEach(() => {
+    res = { json: jest.fn(), end: jest.fn() };
+  });
+  afterEach(() => {
+    jest.restoreAllMocks();
+  });
+
+  test('will add a comment to a pin', async () => {
+    const newCommentResponseStub = {
+      _id: 'comment-Id-2',
+      userId: 'twitter test id',
+      displayName: 'tester-twitter',
+      createdAt: 'today',
+      comment: 'a new comment',
+    };
+    pins.findByIdAndUpdate = jest.fn().mockImplementation(
+      () => ({
+        exec: jest.fn().mockResolvedValue(
+          { ...rawPinsStub[2], comments: [...rawPinsStub[2].comments, newCommentResponseStub] },
+        ),
+      }),
+    );
+
+    setupMocks(rawPinsStub[2]);
+    await addComment(req, res);
+    expect(pins.findByIdAndUpdate).toHaveBeenCalledTimes(1);
+    expect(pins.findByIdAndUpdate).toHaveBeenCalledWith(
+      3,
+      {
+        $push:
+                {
+                  comments: {
+                    userId: 'twitter test id',
+                    displayName: 'tester-twitter',
+                    comment: 'a new comment',
+                    service: 'twitter',
+                  },
+                },
+      },
+      { new: true },
+    );
+
+    expect(res.json).toHaveBeenCalledWith({
+      _id: '3',
+      imgDescription: 'description-3',
+      imgLink: 'https://stub-3',
+      owner: 'tester-another',
+      savedBy: ['tester-another'],
+      owns: true,
+      hasSaved: false,
+      comments: [
+        {
+          _id: 'comment-Id-1',
+          displayName: 'tester-google',
+          comment: 'unit tests',
+          createdAt: 'today',
+        },
+        {
+          _id: 'comment-Id-2',
+          displayName: 'tester-twitter',
+          comment: 'a new comment',
+          createdAt: 'today',
+        },
+      ],
+    });
+    expect(res.end).toHaveBeenCalledTimes(0);
+  });
+
+
+  test('will respond with error if PUT is rejected', async () => {
+    pins.findByIdAndUpdate = jest.fn().mockImplementation(
+      () => ({
+        exec: jest.fn().mockRejectedValue(new Error('Mocked rejection')),
+      }),
+    );
+    await addComment(req, res);
     expect(res.json).toHaveBeenCalledWith(Error('Mocked rejection'));
   });
 });

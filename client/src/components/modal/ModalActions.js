@@ -24,11 +24,11 @@ const GetAction = ({
         {
           element.owns
             ? (
-              <Tooltip title="Permanently delete image" placement="left">
+              <Tooltip title="Permanently delete image" placement="bottom">
                 <DeleteForeverIcon style={{ fontSize: '2em', color: '#d12929' }} />
               </Tooltip>
             ) : (
-              <Tooltip title="Unpin image" placement="left">
+              <Tooltip title="Unpin image" placement="bottom">
                 <DeleteIcon style={{ fontSize: '2em', color: '#d12929' }} />
               </Tooltip>
             )
@@ -40,7 +40,7 @@ const GetAction = ({
   if (element.hasSaved || element.owns) { // If the user has already saved this pin
     return (
       <IconButton aria-label="settings" style={{ margin: '1vh' }} disableRipple>
-        <Tooltip title={element.owns ? 'You own this image' : 'You pinned this image'} placement="left">
+        <Tooltip title={element.owns ? 'You own this image' : 'You pinned this image'} placement="bottom">
           <PushPinIcon style={{ fontSize: '2em', color: element.owns ? '#c50000' : '#3a1c1cde' }} />
         </Tooltip>
       </IconButton>
@@ -57,7 +57,7 @@ const GetAction = ({
       }}
       onMouseDown={e => e.preventDefault()}
     >
-      <Tooltip title="Pin image" placement="left">
+      <Tooltip title="Pin image" placement="bottom">
         <PushPinOutlinedIcon style={{ fontSize: '2em' }} />
       </Tooltip>
     </IconButton>

@@ -29,11 +29,11 @@ export class Home extends Component {
     });
   }
 
-  pinImage(element) { // saves a pic owned by somebody else into current users profile
+  async pinImage(element) { // saves a pic owned by somebody else into current users profile
     // can not do this unless logged in
     const {
       user: {
-        displayName, username,
+        username,
       },
     } = this.props;
     const { pinList } = this.state;
@@ -43,30 +43,24 @@ export class Home extends Component {
       });
       return;
     }
-    // add current pinner info to saved by array of pin
-    const updatedPins = pinList.map((pin) => {
-      if (pin._id === element._id) {
-        return {
-          ...pin,
-          savedBy: [...pin.savedBy, displayName],
-          hasSaved: true,
-        };
-      }
-      return pin;
+    const updatedPin = await RESTcall({
+      address: `/api/pin/${element._id}`,
+      method: 'put',
     });
-    // update client then update db
+
+    const indexOfUpdate = pinList.findIndex(p => p._id === updatedPin._id);
+    const updatedPins = [
+      ...pinList.slice(0, indexOfUpdate),
+      updatedPin,
+      ...pinList.slice(indexOfUpdate + 1),
+    ];
     this.setState({
       pinList: updatedPins,
-    }, async () => {
-      await RESTcall({
-        address: `/api/pin/${element._id}`,
-        method: 'put',
-      });
     });
   }
 
   render() {
-    const { user: { authenticated, username }, search } = this.props;
+    const { user, user: { authenticated, username }, search } = this.props;
     const { pinList, displaySignIn, ready } = this.state;
     const filteredPins = getFilteredPins(pinList, search);
     if (username !== null) {
@@ -85,6 +79,7 @@ export class Home extends Component {
             deletePin={null}
             pinList={filteredPins}
             ready={ready}
+            user={user}
           />
         </React.Fragment>
       );

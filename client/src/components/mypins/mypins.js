@@ -180,6 +180,7 @@ export class Mypins extends Component {
                   pinList={pinList}
                   ready={ready}
                   displayBrokenImage
+                  user={user}
                 />
               )
               : (
@@ -199,7 +200,7 @@ export class Mypins extends Component {
                     To get started, you can create your own pin,
                     or save an existing pin from the
                     {' '}
-                    <Link exact to="/">home</Link>
+                    <Link to="/">home</Link>
                     {' '}
                     page
                   </Typography>
