@@ -319,7 +319,11 @@ describe('Pinning an image', () => {
       },
       { new: true },
     );
-    expect(res.json).toHaveBeenCalledWith({ ...rawPinsStub[2], savedBy: newSavedBy });
+    expect(res.json).toHaveBeenCalledWith({
+      ...allPinsResponse[2],
+      savedBy: newSavedBy.map(s => s.name),
+      hasSaved: true,
+    });
     expect(res.end).toHaveBeenCalledTimes(0);
   });
 

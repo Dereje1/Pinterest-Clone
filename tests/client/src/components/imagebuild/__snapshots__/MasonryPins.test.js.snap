@@ -47,6 +47,13 @@ exports[`The MasonryPins component will render.... 1`] = `
       element={
         Object {
           "_id": 1,
+          "comments": Array [
+            Object {
+              "comment": "Test comment",
+              "createdAt": "2021-07-28T16:30:48.572Z",
+              "displayName": "tester-displayName",
+            },
+          ],
           "createdAt": "2020-12-25T00:00:00.000+00:00",
           "hasSaved": false,
           "imgDescription": "imgDescription id-1",

@@ -16,6 +16,7 @@ describe('The ImageBuild component', () => {
       pinList: pinsStub,
       displayBrokenImage: false,
       ready: true,
+      user: {},
     };
   });
 

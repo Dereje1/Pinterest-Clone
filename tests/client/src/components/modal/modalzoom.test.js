@@ -26,6 +26,8 @@ describe('The pin zoom modal', () => {
       reset: jest.fn(),
       pinImage: jest.fn(),
       deletePin: null,
+      user: {},
+      handleNewComment: jest.fn(),
     };
   });
 
@@ -54,13 +56,13 @@ describe('The pin zoom modal', () => {
     wrapper.instance().handleImage({ target: { naturalWidth: 600, naturalHeight: 800 } });
     expect(wrapper.state().parentDivStyle).toEqual({
       top: 10,
-      width: '622.5px',
+      imgWidth: '622.5px',
       parentWidth: 622.5,
-      small: false,
-      pinnersSize: '3em',
+      pinnersSize: '2em',
       subTitleSize: '1.2em',
       titleSize: '2em',
       dateSize: '0.6em',
+      width: '90%',
     });
   });
 
@@ -71,13 +73,13 @@ describe('The pin zoom modal', () => {
     wrapper.instance().handleImage({ target: { naturalWidth: 1200, naturalHeight: 800 } });
     expect(wrapper.state().parentDivStyle).toEqual({
       top: 10,
-      width: '980px',
-      small: false,
-      pinnersSize: '3em',
+      imgWidth: '980px',
+      pinnersSize: '2em',
       subTitleSize: '1.2em',
       titleSize: '2em',
       dateSize: '0.6em',
       parentWidth: 980,
+      width: '90%',
     });
   });
 
@@ -88,13 +90,13 @@ describe('The pin zoom modal', () => {
     wrapper.instance().handleImage({ target: { naturalWidth: 600, naturalHeight: 1200 } });
     expect(wrapper.state().parentDivStyle).toEqual({
       top: 10,
-      width: '415px',
-      small: false,
-      pinnersSize: '3em',
+      imgWidth: '415px',
+      pinnersSize: '2em',
       subTitleSize: '0.9em',
       titleSize: '1.2em',
       dateSize: '0.45em',
       parentWidth: 500,
+      width: '90%',
     });
   });
 

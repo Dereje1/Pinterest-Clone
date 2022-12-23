@@ -13,6 +13,12 @@ describe('filtering pins before returning to client', () => {
     owner: { name: 'tester', id: 'any id' },
     savedBy: [{ id: 'any id', name: 'tester' }],
     createdAt: 'creation date',
+    comments: [{
+      _id: 'comment-Id-1',
+      displayName: 'tester-google',
+      createdAt: 'today',
+      comment: 'unit tests',
+    }],
   };
 
   test('Will filter the pins for the owner', () => {
@@ -31,6 +37,12 @@ describe('filtering pins before returning to client', () => {
           owns: true,
           savedBy: ['tester'],
           createdAt: 'creation date',
+          comments: [{
+            _id: 'comment-Id-1',
+            displayName: 'tester-google',
+            createdAt: 'today',
+            comment: 'unit tests',
+          }],
         },
       ],
     );
@@ -52,6 +64,12 @@ describe('filtering pins before returning to client', () => {
           owns: false,
           savedBy: ['tester'],
           createdAt: 'creation date',
+          comments: [{
+            _id: 'comment-Id-1',
+            displayName: 'tester-google',
+            createdAt: 'today',
+            comment: 'unit tests',
+          }],
         },
       ],
     );
@@ -69,6 +87,12 @@ describe('filtering pins before returning to client', () => {
           owns: false,
           savedBy: ['tester'],
           createdAt: 'creation date',
+          comments: [{
+            _id: 'comment-Id-1',
+            displayName: 'tester-google',
+            createdAt: 'today',
+            comment: 'unit tests',
+          }],
         },
       ],
     );
@@ -90,6 +114,12 @@ describe('filtering pins before returning to client', () => {
           owns: true,
           savedBy: ['tester'],
           createdAt: 'creation date',
+          comments: [{
+            _id: 'comment-Id-1',
+            displayName: 'tester-google',
+            createdAt: 'today',
+            comment: 'unit tests',
+          }],
         },
       ],
     );

@@ -11,6 +11,13 @@ const pinsStub = [
     owns: false,
     hasSaved: false,
     createdAt: '2020-12-25T00:00:00.000+00:00',
+    comments: [
+      {
+        comment: 'Test comment',
+        displayName: 'tester-displayName',
+        createdAt: '2021-07-28T16:30:48.572Z',
+      },
+    ],
   },
   {
     _id: 2,

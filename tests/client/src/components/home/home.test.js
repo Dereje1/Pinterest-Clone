@@ -54,7 +54,7 @@ describe('The Home Component', () => {
     const imageBuild = wrapper.find('ImageBuild');
     let imageToPin = wrapper.state().pinList.filter(p => p._id === pinsStub[0]._id)[0];
     expect(imageToPin.savedBy.includes('tester displayName')).toBe(false);
-    imageBuild.props().pinImage(pinsStub[0]);
+    await imageBuild.props().pinImage(pinsStub[0]);
     [imageToPin] = wrapper.state().pinList.filter(p => p._id === pinsStub[0]._id);
     expect(imageToPin.savedBy.includes('tester displayName')).toBe(true);
     expect(RESTcall).toHaveBeenCalledTimes(2);

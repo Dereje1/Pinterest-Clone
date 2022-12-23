@@ -19,42 +19,58 @@ exports[`The pin zoom modal will render 1`] = `
     <ForwardRef(CardHeader)
       action={
         <React.Fragment>
-          <GetAction
-            deletePin={null}
-            element={
-              Object {
-                "_id": 1,
-                "createdAt": "2020-12-25T00:00:00.000+00:00",
-                "hasSaved": false,
-                "imgDescription": "imgDescription id-1",
-                "imgLink": "imgLink id-1",
-                "owner": "owner id-1",
-                "owns": false,
-                "savedBy": Array [
-                  "savedBy - id-1",
-                  "savedBy2 - id-1",
-                ],
-              }
-            }
-            pinImage={[MockFunction]}
-            reset={[Function]}
-          />
           <Styled(ForwardRef(Badge))
-            badgeContent={2}
-            color="secondary"
+            badgeContent={1}
+            color="primary"
+            name="comments"
             showZero={true}
           >
-            <ForwardRef(Tooltip)
-              title="savedBy - id-1, savedBy2 - id-1"
+            <ForwardRef(IconButton)
+              onClick={[Function]}
+              onMouseDown={[Function]}
             >
               <Memo
                 style={
                   Object {
-                    "fontSize": undefined,
+                    "fontSize": "1.7em",
                   }
                 }
               />
-            </ForwardRef(Tooltip)>
+            </ForwardRef(IconButton)>
+          </Styled(ForwardRef(Badge))>
+          <Styled(ForwardRef(Badge))
+            badgeContent={2}
+            color="secondary"
+            name="pin"
+            showZero={true}
+          >
+            <GetAction
+              deletePin={null}
+              element={
+                Object {
+                  "_id": 1,
+                  "comments": Array [
+                    Object {
+                      "comment": "Test comment",
+                      "createdAt": "2021-07-28T16:30:48.572Z",
+                      "displayName": "tester-displayName",
+                    },
+                  ],
+                  "createdAt": "2020-12-25T00:00:00.000+00:00",
+                  "hasSaved": false,
+                  "imgDescription": "imgDescription id-1",
+                  "imgLink": "imgLink id-1",
+                  "owner": "owner id-1",
+                  "owns": false,
+                  "savedBy": Array [
+                    "savedBy - id-1",
+                    "savedBy2 - id-1",
+                  ],
+                }
+              }
+              pinImage={[MockFunction]}
+              reset={[Function]}
+            />
           </Styled(ForwardRef(Badge))>
         </React.Fragment>
       }
@@ -99,7 +115,7 @@ exports[`The pin zoom modal will render 1`] = `
         Object {
           "marginLeft": "auto",
           "marginRight": "auto",
-          "width": "90%",
+          "width": undefined,
         }
       }
     />

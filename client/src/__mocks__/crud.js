@@ -7,8 +7,13 @@ const restMock = jest.fn().mockImplementation((...args) => {
     return Promise.resolve(pinsStub);
   } if (address.includes('/api/broken') && method === 'get' && !payload) {
     return Promise.resolve([]);
-  } if (address.includes('/api/') && method === 'put' && !payload) {
-    return Promise.resolve([]);
+  } if (address.includes('/api/pin') && method === 'put' && !payload) {
+    return Promise.resolve({
+      _id: 1,
+      savedBy: ['tester displayName'],
+    });
+  } if (address.includes('/api/unpin') && method === 'put' && !payload) {
+    return Promise.resolve();
   } if (address.includes('/api/?type=profile') && method === 'get' && !payload) {
     return Promise.resolve({ profilePins: [pinsStub[1], pinsStub[2]], allPinLinks: [] });
   } if (address.includes('/api/') && method === 'delete') {

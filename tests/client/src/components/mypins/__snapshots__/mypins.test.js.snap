@@ -100,6 +100,15 @@ exports[`The Mypins Component Mypins landing page will render pins if found 1`] 
         ]
       }
       ready={true}
+      user={
+        Object {
+          "authenticated": true,
+          "displayName": "tester displayName",
+          "service": "tester service",
+          "userId": "tester user Id",
+          "username": "tester username",
+        }
+      }
     />
   </div>
 </Fragment>

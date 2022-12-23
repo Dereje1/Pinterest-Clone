@@ -12,7 +12,7 @@ exports[`Handling zoomed image action buttons will render the delete button for 
   }
 >
   <ForwardRef(Tooltip)
-    placement="left"
+    placement="bottom"
     title="Permanently delete image"
   >
     <Memo(ForwardRef(DeleteForeverIcon))
@@ -39,7 +39,7 @@ exports[`Handling zoomed image action buttons will render the delete button for 
   }
 >
   <ForwardRef(Tooltip)
-    placement="left"
+    placement="bottom"
     title="Unpin image"
   >
     <Memo(ForwardRef(DeleteIcon))
@@ -65,7 +65,7 @@ exports[`Handling zoomed image action buttons will render the disabled pin butto
   }
 >
   <ForwardRef(Tooltip)
-    placement="left"
+    placement="bottom"
     title="You pinned this image"
   >
     <Memo(ForwardRef(PushPinIcon))
@@ -92,7 +92,7 @@ exports[`Handling zoomed image action buttons will render the pin button for unp
   }
 >
   <ForwardRef(Tooltip)
-    placement="left"
+    placement="bottom"
     title="Pin image"
   >
     <Memo(ForwardRef(PushPinOutlinedIcon))
