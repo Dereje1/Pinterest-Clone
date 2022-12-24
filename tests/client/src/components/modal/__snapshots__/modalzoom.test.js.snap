@@ -107,19 +107,31 @@ exports[`The pin zoom modal will render 1`] = `
         }
       }
     />
-    <ForwardRef(CardMedia)
-      component="img"
-      id="pin-zoom"
-      image="imgLink id-1"
-      onLoad={[Function]}
+    <ForwardRef(CardContent)
       sx={
         Object {
-          "marginLeft": "auto",
-          "marginRight": "auto",
-          "width": undefined,
+          "&:last-child": Object {
+            "pb": 0,
+          },
+          "background": "",
+          "padding": 0,
         }
       }
-    />
+    >
+      <ForwardRef(CardMedia)
+        component="img"
+        id="pin-zoom"
+        image="imgLink id-1"
+        onLoad={[Function]}
+        sx={
+          Object {
+            "marginLeft": "auto",
+            "marginRight": "auto",
+            "width": undefined,
+          }
+        }
+      />
+    </ForwardRef(CardContent)>
   </ForwardRef(Card)>
 </Fragment>
 `;

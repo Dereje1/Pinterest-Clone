@@ -4,6 +4,7 @@ import PropTypes from 'prop-types';
 /* MUI */
 import Card from '@mui/material/Card';
 import CardHeader from '@mui/material/CardHeader';
+import { CardContent } from '@mui/material';
 import CardMedia from '@mui/material/CardMedia';
 import Badge from '@mui/material/Badge';
 import IconButton from '@mui/material/IconButton';
@@ -172,30 +173,38 @@ export class PinZoom extends Component {
             titleTypographyProps={{ fontSize: parentDivStyle.titleSize, fontWeight: 'bold' }}
             subheaderTypographyProps={{ fontSize: parentDivStyle.subTitleSize, fontWeight: 'bold' }}
           />
-          { !commentsShowing ? (
-            <CardMedia
-              component="img"
-              image={pinInformation.imgLink}
-              onLoad={this.handleImage}
-              id="pin-zoom"
-              sx={{
-                width: parentDivStyle.imgWidth,
-                marginLeft: 'auto',
-                marginRight: 'auto',
-              }}
-            />
-          )
-            : (
-              <Comments
-                stylingProps={commentsShowing}
-                pinInformation={pinInformation}
-                handleNewComment={handleNewComment}
-                authenticated={authenticated}
-                toggleComments={this.toggleComments}
-                closePin={e => this.close(e, true)}
+          <CardContent sx={{
+            background: parentDivStyle.isNoFit && !commentsShowing ? 'black' : '',
+            padding: 0,
+            '&:last-child': { pb: 0 },
+          }}
+          >
+            { !commentsShowing ? (
+              <CardMedia
+                component="img"
+                image={pinInformation.imgLink}
+                onLoad={this.handleImage}
+                id="pin-zoom"
+                sx={{
+                  width: parentDivStyle.imgWidth,
+                  marginLeft: 'auto',
+                  marginRight: 'auto',
+                }}
               />
             )
-          }
+              : (
+                <Comments
+                  stylingProps={commentsShowing}
+                  pinInformation={pinInformation}
+                  handleNewComment={handleNewComment}
+                  authenticated={authenticated}
+                  toggleComments={this.toggleComments}
+                  closePin={e => this.close(e, true)}
+                />
+              )
+            }
+          </CardContent>
+
         </Card>
       </>
     );

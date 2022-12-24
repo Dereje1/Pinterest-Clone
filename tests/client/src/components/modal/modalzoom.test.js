@@ -67,6 +67,7 @@ describe('The pin zoom modal', () => {
       titleSize: '2em',
       dateSize: '0.6em',
       width: '90%',
+      isNoFit: false,
     });
   });
 
@@ -84,6 +85,7 @@ describe('The pin zoom modal', () => {
       dateSize: '0.6em',
       parentWidth: 980,
       width: '90%',
+      isNoFit: false,
     });
   });
 
@@ -101,7 +103,10 @@ describe('The pin zoom modal', () => {
       dateSize: '0.45em',
       parentWidth: 500,
       width: '90%',
+      isNoFit: true,
     });
+    const cardContent = wrapper.find('ForwardRef(CardContent)');
+    expect(cardContent.props().sx.background).toBe('black');
   });
 
   test('will close the zoom window on blur', async () => {

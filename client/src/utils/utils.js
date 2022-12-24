@@ -30,6 +30,7 @@ export const getNewImageWidth = ({
   // minor x direction adjustment for padding too
   innerWidth -= (innerWidth * 0.02);
   let newWidth = innerWidth;
+  let isNoFit = false;
   const imageResolultion = imageWidth / imageHeight;
   const screenResolution = innerWidth / innerHeight;
   if (screenResolution > imageResolultion) {
@@ -42,6 +43,7 @@ export const getNewImageWidth = ({
       parentWidth = innerWidth;
     } else {
       parentWidth = 500;
+      isNoFit = true;
     }
   }
 
@@ -52,6 +54,7 @@ export const getNewImageWidth = ({
     subTitleSize: `${newWidth < 500 ? 0.9 : 1.2}em`,
     dateSize: `${newWidth < 500 ? 0.45 : 0.6}em`,
     pinnersSize: '2em',
+    isNoFit,
   };
 };
 
