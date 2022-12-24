@@ -27,8 +27,7 @@ const Comments = ({
     setOpenCommentForm(true);
   };
 
-  const handleCloseCommentForm = (event, reason) => {
-    if (reason && reason === 'backdropClick') return;
+  const handleCloseCommentForm = () => {
     setOpenCommentForm(false);
   };
 
@@ -95,7 +94,15 @@ const Comments = ({
         </div>
       </div>
       {
-        !pinInformation.comments.length && (
+        openCommentForm && (
+          <CommentForm
+            handleClose={handleCloseCommentForm}
+            handleSubmit={submitComment}
+          />
+        )
+      }
+      {
+        !openCommentForm && !pinInformation.comments.length && (
           <Card
             sx={{ margin: 1 }}
             raised
@@ -112,7 +119,7 @@ const Comments = ({
         )
       }
       {
-        pinInformation.comments.map(({
+        !openCommentForm && pinInformation.comments.map(({
           _id, comment, displayName, createdAt,
         }) => (
           <React.Fragment key={_id}>
@@ -137,11 +144,6 @@ const Comments = ({
           </React.Fragment>
         ))
       }
-      <CommentForm
-        open={openCommentForm}
-        handleClose={handleCloseCommentForm}
-        handleSubmit={submitComment}
-      />
       <PinnersDialog
         open={openPinnersDialog}
         onClose={() => setOpenPinnersDialog(false)}

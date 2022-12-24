@@ -43,34 +43,21 @@ describe('The comments window', () => {
     const fabButton = wrapper.find('ForwardRef(Fab)');
     let commentForm = wrapper.find('CommentForm');
     // assert closed -> open
-    expect(commentForm.props().open).toBe(false);
+    expect(commentForm.isEmptyRender()).toBe(true);
     fabButton.props().onClick();
     fabButton.props().onMouseDown({ preventDefault: jest.fn() });
     commentForm = wrapper.find('CommentForm');
-    expect(commentForm.props().open).toBe(true);
+    expect(commentForm.isEmptyRender()).toBe(false);
     // assert open -> closed
     commentForm.props().handleClose();
     commentForm = wrapper.find('CommentForm');
-    expect(commentForm.props().open).toBe(false);
-  });
-
-  test('will not close the comment form on a backdrop click', () => {
-    const wrapper = shallow(<Comments {...props} />);
-    const fabButton = wrapper.find('ForwardRef(Fab)');
-    let commentForm = wrapper.find('CommentForm');
-    // assert open
-    fabButton.props().onClick();
-    fabButton.props().onMouseDown({ preventDefault: jest.fn() });
-    commentForm = wrapper.find('CommentForm');
-    expect(commentForm.props().open).toBe(true);
-    // assert still open
-    commentForm.props().handleClose('', 'backdropClick');
-    commentForm = wrapper.find('CommentForm');
-    expect(commentForm.props().open).toBe(true);
+    expect(commentForm.isEmptyRender()).toBe(true);
   });
 
   test('will submit a comment', () => {
     const wrapper = shallow(<Comments {...props} />);
+    const fabButton = wrapper.find('ForwardRef(Fab)');
+    fabButton.props().onClick();
     const commentForm = wrapper.find('CommentForm');
     commentForm.props().handleSubmit('a new comment');
     expect(props.handleNewComment).toHaveBeenCalledWith('a new comment');
@@ -78,6 +65,8 @@ describe('The comments window', () => {
 
   test('will not submit a comment if empty', () => {
     const wrapper = shallow(<Comments {...props} />);
+    const fabButton = wrapper.find('ForwardRef(Fab)');
+    fabButton.props().onClick();
     const commentForm = wrapper.find('CommentForm');
     commentForm.props().handleSubmit('      ');
     expect(props.handleNewComment).not.toHaveBeenCalled();

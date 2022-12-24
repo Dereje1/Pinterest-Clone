@@ -1,38 +1,44 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`will render the form to add comments 1`] = `
-<div>
-  <ForwardRef(Dialog)
+<div
+  style={
+    Object {
+      "alignItems": "flex-end",
+      "display": "flex",
+      "flexDirection": "column",
+      "margin": 5,
+    }
+  }
+>
+  <ForwardRef(TextField)
+    autoFocus={true}
     fullWidth={true}
-    onClose={[MockFunction]}
-    open={true}
+    id="comment_form"
+    label="Add a comment"
+    multiline={true}
+    onChange={[Function]}
+    rows={3}
+    type="text"
+    value=""
+  />
+  <div
+    style={
+      Object {
+        "marginTop": 1,
+      }
+    }
   >
-    <ForwardRef(DialogContent)>
-      <ForwardRef(TextField)
-        autoFocus={true}
-        fullWidth={true}
-        id="comment_form"
-        label="Add a comment"
-        margin="dense"
-        multiline={true}
-        onChange={[Function]}
-        rows={3}
-        type="text"
-        value=""
-      />
-    </ForwardRef(DialogContent)>
-    <ForwardRef(DialogActions)>
-      <ForwardRef(Button)
-        onClick={[MockFunction]}
-      >
-        Cancel
-      </ForwardRef(Button)>
-      <ForwardRef(Button)
-        onClick={[Function]}
-      >
-        Submit
-      </ForwardRef(Button)>
-    </ForwardRef(DialogActions)>
-  </ForwardRef(Dialog)>
+    <ForwardRef(Button)
+      onClick={[MockFunction]}
+    >
+      Cancel
+    </ForwardRef(Button)>
+    <ForwardRef(Button)
+      onClick={[Function]}
+    >
+      Submit
+    </ForwardRef(Button)>
+  </div>
 </div>
 `;

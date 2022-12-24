@@ -141,11 +141,6 @@ exports[`The comments window will render with comments 1`] = `
       </ForwardRef(Typography)>
     </ForwardRef(CardContent)>
   </ForwardRef(Card)>
-  <CommentForm
-    handleClose={[Function]}
-    handleSubmit={[Function]}
-    open={false}
-  />
   <PinnersDialog
     onClose={[Function]}
     open={false}
@@ -270,11 +265,6 @@ exports[`The comments window will render with no comments for authenticated user
       </ForwardRef(Typography)>
     </ForwardRef(CardContent)>
   </ForwardRef(Card)>
-  <CommentForm
-    handleClose={[Function]}
-    handleSubmit={[Function]}
-    open={false}
-  />
   <PinnersDialog
     onClose={[Function]}
     open={false}
@@ -399,11 +389,6 @@ exports[`The comments window will render with no comments for unauthenticated us
       </ForwardRef(Typography)>
     </ForwardRef(CardContent)>
   </ForwardRef(Card)>
-  <CommentForm
-    handleClose={[Function]}
-    handleSubmit={[Function]}
-    open={false}
-  />
   <PinnersDialog
     onClose={[Function]}
     open={false}
