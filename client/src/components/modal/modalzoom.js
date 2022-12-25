@@ -50,6 +50,7 @@ export class PinZoom extends Component {
     // set top and scroll to current position and disable scroll
     window.scrollTo(0, browserTop);
     document.body.style.overflow = 'hidden';
+    window.addEventListener('scroll', this.disableScroll);
     this.setState({
       show: true,
       parentDivStyle: {
@@ -61,7 +62,14 @@ export class PinZoom extends Component {
 
   componentWillUnmount() {
     document.body.style.overflowY = 'scroll';
+    window.removeEventListener('scroll', this.disableScroll);
   }
+
+  disableScroll = () => {
+    const { zoomInfo } = this.props;
+    const [, browserTop] = zoomInfo;
+    window.scrollTo(0, browserTop);
+  };
 
   close = (_, forceClose = false) => {
     // sends a reset callback after closing modalstate

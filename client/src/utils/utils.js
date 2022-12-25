@@ -43,8 +43,8 @@ export const getNewImageWidth = ({
       parentWidth = innerWidth;
     } else {
       parentWidth = 500;
-      isNoFit = true;
     }
+    isNoFit = true;
   }
 
   return {

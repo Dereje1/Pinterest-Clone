@@ -213,10 +213,22 @@ describe('The pin zoom modal', () => {
     expect(pinsIcon.badgeContent).toBe(0);
   });
 
-  test('will enable scroll on unmount', () => {
+  test('will add eventlisteners to listen for scrolling events on mount', () => {
+    global.addEventListener = jest.fn();
+    shallow(<PinZoom {...props} />);
+    const events = global.addEventListener.mock.calls.map(c => c[0]);
+    expect(global.addEventListener).toHaveBeenCalledTimes(1);
+    expect(events).toEqual(['scroll']);
+  });
+
+  test('will remove eventlisteners and reinstate scroll when modal unloads', () => {
+    global.removeEventListener = jest.fn();
     const wrapper = shallow(<PinZoom {...props} />);
     expect(document.body.style.overflow).toBe('hidden');
     wrapper.instance().componentWillUnmount();
+    const events = global.removeEventListener.mock.calls.map(c => c[0]);
+    expect(global.removeEventListener).toHaveBeenCalledTimes(1);
+    expect(events).toEqual(['scroll']);
     expect(document.body.style.overflowY).toBe('scroll');
   });
 });
