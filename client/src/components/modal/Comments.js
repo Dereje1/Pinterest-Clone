@@ -40,16 +40,18 @@ const Comments = ({
 
   return (
     <div style={{ ...stylingProps, overflowY: 'auto', paddingBottom: 3 }}>
-      <Fab
-        color="primary"
-        aria-label="add"
-        onMouseDown={e => e.preventDefault()}
-        onClick={handleOpenCommentForm}
-        sx={{ position: 'absolute', bottom: 10, right: 10 }}
-        disabled={!authenticated}
-      >
-        <AddIcon />
-      </Fab>
+      { !openCommentForm && (
+        <Fab
+          color="primary"
+          aria-label="add"
+          onMouseDown={e => e.preventDefault()}
+          onClick={handleOpenCommentForm}
+          sx={{ position: 'absolute', bottom: 10, right: 10 }}
+          disabled={!authenticated}
+        >
+          <AddIcon />
+        </Fab>
+      )}
       <div style={{
         display: 'flex',
         justifyContent: 'space-between',

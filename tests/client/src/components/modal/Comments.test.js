@@ -40,14 +40,16 @@ describe('The comments window', () => {
 
   test('will open and close the comment form', () => {
     const wrapper = shallow(<Comments {...props} />);
-    const fabButton = wrapper.find('ForwardRef(Fab)');
+    let fabButton = wrapper.find('ForwardRef(Fab)');
     let commentForm = wrapper.find('CommentForm');
     // assert closed -> open
     expect(commentForm.isEmptyRender()).toBe(true);
     fabButton.props().onClick();
     fabButton.props().onMouseDown({ preventDefault: jest.fn() });
     commentForm = wrapper.find('CommentForm');
+    fabButton = wrapper.find('ForwardRef(Fab)');
     expect(commentForm.isEmptyRender()).toBe(false);
+    expect(fabButton.isEmptyRender()).toBe(true);
     // assert open -> closed
     commentForm.props().handleClose();
     commentForm = wrapper.find('CommentForm');
