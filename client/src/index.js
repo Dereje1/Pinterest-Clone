@@ -16,6 +16,7 @@ import { BrowserRouter, Route, Switch } from 'react-router-dom';
 import Menu from './components/menu/menu';
 import Home from './components/home/home';
 import Mypins from './components/mypins/mypins';
+import Profile from './components/profile/Profile';
 // import combined reducer to pass to store here
 import reducers from './reducers/index';
 
@@ -33,6 +34,7 @@ const Routes = (
       <Switch>
         <Route path="/" exact component={Home} />
         <Route path="/pins" component={Mypins} />
+        <Route path="/profile/:userid" component={Profile} />
       </Switch>
     </BrowserRouter>
   </Provider>
