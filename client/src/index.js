@@ -34,7 +34,7 @@ const Routes = (
       <Switch>
         <Route path="/" exact component={Home} />
         <Route path="/pins" component={Mypins} />
-        <Route path="/profile/:userid" component={Profile} />
+        <Route path="/profile/:userInfo" component={Profile} />
       </Switch>
     </BrowserRouter>
   </Provider>

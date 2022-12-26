@@ -132,9 +132,15 @@ const addComment = async (req, res) => {
 
 const getProfilePins = async (req, res) => {
   const userId = req.params.userid;
+  const { userId: loggedInUserid } = getUserProfile(req.user);
   try {
+    if (loggedInUserid === userId) {
+      res.json({ redirect: true });
+    }
     const userPins = await pins.find({ $or: [{ 'owner.id': userId }, { 'savedBy.id': userId }] }).exec();
-    res.json(filterPins({ rawPins: userPins, userId, isAdmin: false }));
+    res.json({
+      pins: filterPins({ rawPins: userPins, userId, isAdmin: false }),
+    });
   } catch (error) {
     res.json(error);
   }
@@ -161,10 +167,10 @@ const deletePin = async (req, res) => {
 // adds a new pin to the db
 router.post('/api/newpin', isLoggedIn, addPin);
 
-// gets pins: all or just user's saved and owned pins,
+// gets pins: all or just logged in user's saved and owned pins,
 router.get('/api/', getPins);
 
-// gets pins: all or just user's saved and owned pins,
+// gets pins for a single user
 router.get('/api/userProfile/:userid', isLoggedIn, getProfilePins);
 
 // Adds a user to a pin's savedby list

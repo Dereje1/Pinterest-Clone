@@ -101,7 +101,7 @@ const filterPins = ({ rawPins, userId, isAdmin }) => rawPins.map((pin) => {
     _id: pinId, imgDescription, imgLink, owner, savedBy, createdAt: pinCreatedAt, comments,
   } = pin;
   const savedIds = savedBy.map(s => s.id);
-  const savedNames = savedBy.map(pinner => ({ name: pinner.name, userId: pinner.id }));
+  const savedNames = savedBy.map(({ name, id, service }) => ({ name, userId: id, service }));
   const modifiedComments = comments.map(
     ({
       _id, displayName, comment, createdAt,
