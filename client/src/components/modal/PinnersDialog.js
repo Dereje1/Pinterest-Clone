@@ -1,5 +1,6 @@
 import * as React from 'react';
 import PropTypes from 'prop-types';
+import { Link } from 'react-router-dom';
 import Avatar from '@mui/material/Avatar';
 import List from '@mui/material/List';
 import ListItem from '@mui/material/ListItem';
@@ -18,13 +19,13 @@ const PinnersDialog = ({ onClose, open, pinnersList }) => (
   >
     <List sx={{ pt: 0 }}>
       {pinnersList.map(pinner => (
-        <ListItem key={pinner}>
+        <ListItem key={pinner.userId}>
           <ListItemAvatar>
             <Avatar sx={{ bgcolor: blue[100], color: blue[600] }}>
               <PersonIcon />
             </Avatar>
           </ListItemAvatar>
-          <ListItemText primary={pinner} />
+          <Link to={`/profile/${pinner.userId}`}><ListItemText primary={pinner.name} /></Link>
         </ListItem>
       ))}
     </List>
@@ -34,7 +35,7 @@ const PinnersDialog = ({ onClose, open, pinnersList }) => (
 PinnersDialog.propTypes = {
   onClose: PropTypes.func.isRequired,
   open: PropTypes.bool.isRequired,
-  pinnersList: PropTypes.arrayOf(PropTypes.string).isRequired,
+  pinnersList: PropTypes.arrayOf(PropTypes.objectOf(PropTypes.string)).isRequired,
 };
 
 export default PinnersDialog;
