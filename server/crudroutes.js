@@ -130,6 +130,16 @@ const addComment = async (req, res) => {
   }
 };
 
+const getProfilePins = async (req, res) => {
+  const userId = req.params.userid;
+  try {
+    const userPins = await pins.find({ $or: [{ 'owner.id': userId }, { 'savedBy.id': userId }] }).exec();
+    res.json(filterPins({ rawPins: userPins, userId, isAdmin: false }));
+  } catch (error) {
+    res.json(error);
+  }
+};
+
 const deletePin = async (req, res) => {
   const { userId, displayName, isAdmin } = getUserProfile(req.user);
   const query = { _id: req.params._id };
@@ -153,6 +163,9 @@ router.post('/api/newpin', isLoggedIn, addPin);
 
 // gets pins: all or just user's saved and owned pins,
 router.get('/api/', getPins);
+
+// gets pins: all or just user's saved and owned pins,
+router.get('/api/userProfile/:userid', isLoggedIn, getProfilePins);
 
 // Adds a user to a pin's savedby list
 router.put('/api/pin/:_id', isLoggedIn, pinImage);
