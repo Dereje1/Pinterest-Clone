@@ -11,7 +11,9 @@ import PersonIcon from '@mui/icons-material/Person';
 import { blue } from '@mui/material/colors';
 
 
-const PinnersDialog = ({ onClose, open, pinnersList }) => (
+const PinnersDialog = ({
+  onClose, open, pinnersList, closePin,
+}) => (
   <Dialog
     onClose={onClose}
     open={open}
@@ -25,7 +27,7 @@ const PinnersDialog = ({ onClose, open, pinnersList }) => (
               <PersonIcon />
             </Avatar>
           </ListItemAvatar>
-          <Link to={`/profile/${pinner.userId}`}><ListItemText primary={pinner.name} /></Link>
+          <Link onClick={() => { onClose(); closePin(); }} to={`/profile/${pinner.userId}`}><ListItemText primary={pinner.name} /></Link>
         </ListItem>
       ))}
     </List>
@@ -36,6 +38,7 @@ PinnersDialog.propTypes = {
   onClose: PropTypes.func.isRequired,
   open: PropTypes.bool.isRequired,
   pinnersList: PropTypes.arrayOf(PropTypes.objectOf(PropTypes.string)).isRequired,
+  closePin: PropTypes.func.isRequired,
 };
 
 export default PinnersDialog;

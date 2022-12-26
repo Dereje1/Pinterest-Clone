@@ -150,6 +150,7 @@ const Comments = ({
         open={openPinnersDialog}
         onClose={() => setOpenPinnersDialog(false)}
         pinnersList={pinInformation.savedBy}
+        closePin={closePin}
       />
     </div>
   );
