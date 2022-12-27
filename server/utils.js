@@ -113,7 +113,7 @@ const filterPins = ({ rawPins, userId, isAdmin }) => rawPins.map((pin) => {
     _id: pinId,
     imgDescription,
     imgLink: getCloudFrontLink(imgLink),
-    owner: owner.name,
+    owner: { name: owner.name, userId: owner.id, service: owner.service },
     savedBy: savedNames,
     owns: Boolean(userId && (userId === owner.id || isAdmin)),
     hasSaved: Boolean(userId && savedIds.includes(userId)),

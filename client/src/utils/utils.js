@@ -12,7 +12,7 @@ export const getFilteredPins = (pinList, search) => {
   if (!search) return pinList;
   const filteredPins = pinList.filter(({ owner, imgDescription }) => {
     const isFoundInDescription = imgDescription.toLowerCase().includes(search);
-    const isFoundInOwnerName = owner.toLowerCase().includes(search);
+    const isFoundInOwnerName = owner.name.toLowerCase().includes(search);
     return isFoundInDescription || isFoundInOwnerName;
   });
   return filteredPins;
