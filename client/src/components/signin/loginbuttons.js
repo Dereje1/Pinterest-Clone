@@ -1,12 +1,10 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import Button from '@mui/material/Button';
-import TwitterIcon from '@mui/icons-material/Twitter';
-import GoogleIcon from '@mui/icons-material/Google';
-import GitHubIcon from '@mui/icons-material/GitHub';
 import AccountCircleIcon from '@mui/icons-material/AccountCircle';
 import { connect } from 'react-redux';
 import { setGuest } from '../../actions/authentication';
+import { getProviderIcons } from '../common/common';
 import './loginbuttons.scss';
 
 export const mapStateToProps = ({ user }) => ({ user });
@@ -20,16 +18,12 @@ const handleLogin = (loc) => { // twitter/ google authentication
 };
 
 export const ProviderButton = ({ service }) => {
-  const providerIcons = {
-    twitter: <TwitterIcon style={{ fontSize: 25 }} />,
-    google: <GoogleIcon style={{ fontSize: 25 }} />,
-    github: <GitHubIcon style={{ fontSize: 25 }} />,
-  };
+  const providerIcons = getProviderIcons({ fontSize: 25 });
   return (
     <Button
       id={`${service}loginbutton`}
       variant="outlined"
-      startIcon={providerIcons[service]}
+      startIcon={providerIcons[service].icon}
       onClick={() => handleLogin(`/auth/${service}`)}
       onMouseDown={e => e.preventDefault()}
     >

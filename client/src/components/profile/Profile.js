@@ -1,18 +1,16 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useLayoutEffect } from 'react';
 import { useParams, useLocation } from 'react-router-dom';
 import { useSelector } from 'react-redux';
 import Typography from '@mui/material/Typography';
 import Avatar from '@mui/material/Avatar';
 import Button from '@mui/material/Button';
 import ButtonGroup from '@mui/material/ButtonGroup';
-import FolderIcon from '@mui/icons-material/Folder';
-import TwitterIcon from '@mui/icons-material/Twitter';
-import GoogleIcon from '@mui/icons-material/Google';
-import GitHubIcon from '@mui/icons-material/GitHub';
 import ImageBuild from '../imagebuild/Imagebuild';
 import RESTcall from '../../crud';
+import { getProviderIcons } from '../common/common';
 import error from '../mypins/error.png';
 
+const providerIcons = getProviderIcons({ fontSize: 25 });
 
 const Profile = () => {
   const [pinsOwned, setPinsOwned] = useState([]);
@@ -23,13 +21,6 @@ const Profile = () => {
   const [userid, service, displayName] = useParams().userInfo.split('-');
   const { pathname } = useLocation();
   const loggedInUser = useSelector(state => state.user);
-
-  const providerIcons = {
-    none: { icon: <FolderIcon style={{ fontSize: 30 }} />, color: 'grey' },
-    twitter: { icon: <TwitterIcon style={{ fontSize: 30 }} />, color: '#1DA1F2' },
-    google: { icon: <GoogleIcon style={{ fontSize: 30 }} />, color: '#4285F4' },
-    github: { icon: <GitHubIcon style={{ fontSize: 30 }} />, color: '#1d7b20' },
-  };
 
   const getProfileData = async () => {
     setReady(false);
@@ -51,7 +42,7 @@ const Profile = () => {
     setDisplaySetting('created');
   }, [pathname]);
 
-  useEffect(() => {
+  useLayoutEffect(() => {
     document.body.style.overflowY = 'scroll';
   });
 

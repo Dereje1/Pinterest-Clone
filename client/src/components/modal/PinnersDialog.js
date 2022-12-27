@@ -7,15 +7,9 @@ import ListItem from '@mui/material/ListItem';
 import ListItemAvatar from '@mui/material/ListItemAvatar';
 import ListItemText from '@mui/material/ListItemText';
 import Dialog from '@mui/material/Dialog';
-import TwitterIcon from '@mui/icons-material/Twitter';
-import GoogleIcon from '@mui/icons-material/Google';
-import GitHubIcon from '@mui/icons-material/GitHub';
+import { getProviderIcons } from '../common/common';
 
-const providerIcons = {
-  twitter: { icon: <TwitterIcon style={{ fontSize: 20 }} />, color: '#1DA1F2' },
-  google: { icon: <GoogleIcon style={{ fontSize: 20 }} />, color: '#4285F4' },
-  github: { icon: <GitHubIcon style={{ fontSize: 20 }} />, color: '#1d7b20' },
-};
+const providerIcons = getProviderIcons({ fontSize: 20 });
 
 const PinnersDialog = ({
   onClose, open, pinnersList,
