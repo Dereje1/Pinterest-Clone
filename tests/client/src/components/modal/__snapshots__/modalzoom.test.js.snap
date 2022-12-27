@@ -61,11 +61,23 @@ exports[`The pin zoom modal will render 1`] = `
                   "hasSaved": false,
                   "imgDescription": "imgDescription id-1",
                   "imgLink": "imgLink id-1",
-                  "owner": "owner id-1",
+                  "owner": Object {
+                    "name": "owner id-1",
+                    "service": "google",
+                    "userId": "1",
+                  },
                   "owns": false,
                   "savedBy": Array [
-                    "savedBy - id-1",
-                    "savedBy2 - id-1",
+                    Object {
+                      "name": "savedBy - id-1",
+                      "service": "google",
+                      "userId": "1",
+                    },
+                    Object {
+                      "name": "savedBy - id-1",
+                      "service": "github",
+                      "userId": "1",
+                    },
                   ],
                 }
               }
@@ -77,9 +89,26 @@ exports[`The pin zoom modal will render 1`] = `
       }
       subheader={
         <React.Fragment>
-          <span>
+          <ForwardRef(Link)
+            component={
+              Object {
+                "$$typeof": Symbol(react.forward_ref),
+                "propTypes": Object {
+                  "innerRef": [Function],
+                  "onClick": [Function],
+                  "replace": [Function],
+                  "target": [Function],
+                  "to": [Function],
+                },
+                "render": [Function],
+              }
+            }
+            onMouseDown={[Function]}
+            to="/profile/1-google-owner id-1"
+            underline="none"
+          >
             owner id-1
-          </span>
+          </ForwardRef(Link)>
           <br />
           <span
             style={

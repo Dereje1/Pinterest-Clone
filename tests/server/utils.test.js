@@ -10,8 +10,8 @@ describe('filtering pins before returning to client', () => {
     _id: 'mongoose _id',
     imgDescription: 'description',
     imgLink: 'https://stub',
-    owner: { name: 'tester', id: 'any id' },
-    savedBy: [{ id: 'any id', name: 'tester' }],
+    owner: { name: 'tester', id: 'any id', service: 'twitter' },
+    savedBy: [{ id: 'any id', name: 'tester', service: 'twitter' }],
     createdAt: 'creation date',
     comments: [{
       _id: 'comment-Id-1',
@@ -24,7 +24,7 @@ describe('filtering pins before returning to client', () => {
   test('Will filter the pins for the owner', () => {
     const rawPins = [{
       ...rawPinsStub,
-      owner: { name: 'tester', id: 'twitter test id' },
+      owner: { name: 'tester', id: 'twitter test id', service: 'twitter' },
     }];
     expect(filterPins({ rawPins, userId: 'twitter test id', isAdmin: false })).toStrictEqual(
       [
@@ -33,9 +33,9 @@ describe('filtering pins before returning to client', () => {
           hasSaved: false,
           imgDescription: 'description',
           imgLink: 'https://stub',
-          owner: 'tester',
+          owner: { name: 'tester', userId: 'twitter test id', service: 'twitter' },
           owns: true,
-          savedBy: ['tester'],
+          savedBy: [{ userId: 'any id', name: 'tester', service: 'twitter' }],
           createdAt: 'creation date',
           comments: [{
             _id: 'comment-Id-1',
@@ -51,7 +51,7 @@ describe('filtering pins before returning to client', () => {
   test('Will filter the pins for the pinner/saver', () => {
     const rawPins = [{
       ...rawPinsStub,
-      savedBy: [{ id: 'twitter test id', name: 'tester' }],
+      savedBy: [{ id: 'twitter test id', name: 'tester', service: 'twitter' }],
     }];
     expect(filterPins({ rawPins, userId: 'twitter test id', isAdmin: false })).toStrictEqual(
       [
@@ -60,9 +60,9 @@ describe('filtering pins before returning to client', () => {
           hasSaved: true,
           imgDescription: 'description',
           imgLink: 'https://stub',
-          owner: 'tester',
+          owner: { name: 'tester', userId: 'any id', service: 'twitter' },
           owns: false,
-          savedBy: ['tester'],
+          savedBy: [{ userId: 'twitter test id', name: 'tester', service: 'twitter' }],
           createdAt: 'creation date',
           comments: [{
             _id: 'comment-Id-1',
@@ -83,9 +83,9 @@ describe('filtering pins before returning to client', () => {
           hasSaved: false,
           imgDescription: 'description',
           imgLink: 'https://stub',
-          owner: 'tester',
+          owner: { name: 'tester', userId: 'any id', service: 'twitter' },
           owns: false,
-          savedBy: ['tester'],
+          savedBy: [{ userId: 'any id', name: 'tester', service: 'twitter' }],
           createdAt: 'creation date',
           comments: [{
             _id: 'comment-Id-1',
@@ -110,9 +110,9 @@ describe('filtering pins before returning to client', () => {
           hasSaved: false,
           imgDescription: 'description',
           imgLink: 'https://stub',
-          owner: 'tester',
+          owner: { name: 'tester', userId: 'any id', service: 'twitter' },
           owns: true,
-          savedBy: ['tester'],
+          savedBy: [{ userId: 'any id', name: 'tester', service: 'twitter' }],
           createdAt: 'creation date',
           comments: [{
             _id: 'comment-Id-1',

@@ -19,7 +19,7 @@ describe('The Mypins Component', () => {
         authenticated: true,
         displayName: 'tester displayName',
         username: 'tester username',
-        service: 'tester service',
+        service: 'twitter',
         userId: 'tester user Id',
       },
     };

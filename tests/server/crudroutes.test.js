@@ -312,7 +312,7 @@ describe('Pinning an image', () => {
         $set:
                 {
                   savedBy: [
-                    { id: 'another test id', name: 'tester-another' },
+                    { id: 'another test id', name: 'tester-another', service: 'other-service' },
                     { id: 'twitter test id', name: 'tester-twitter', service: 'twitter' },
                   ],
                 },
@@ -321,7 +321,7 @@ describe('Pinning an image', () => {
     );
     expect(res.json).toHaveBeenCalledWith({
       ...allPinsResponse[2],
-      savedBy: newSavedBy.map(s => s.name),
+      savedBy: newSavedBy.map(({ name, id, service }) => ({ name, userId: id, service })),
       hasSaved: true,
     });
     expect(res.end).toHaveBeenCalledTimes(0);
@@ -522,8 +522,8 @@ describe('Adding a comment', () => {
       _id: '3',
       imgDescription: 'description-3',
       imgLink: 'https://stub-3',
-      owner: 'tester-another',
-      savedBy: ['tester-another'],
+      owner: { userId: 'another test id', name: 'tester-another', service: 'other-service' },
+      savedBy: [{ userId: 'another test id', name: 'tester-another', service: 'other-service' }],
       owns: true,
       hasSaved: false,
       comments: [
