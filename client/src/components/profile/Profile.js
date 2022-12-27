@@ -15,10 +15,10 @@ import error from '../mypins/error.png';
 
 
 const Profile = () => {
-  const [userPinsOwned, setUserPinsOwned] = useState([]);
-  const [userPinsSaved, setUserPinsSaved] = useState([]);
+  const [pinsOwned, setPinsOwned] = useState([]);
+  const [pinsSaved, setPinsSaved] = useState([]);
   const [ready, setReady] = useState(false);
-  const [displaySetting, setDisplaySetting] = useState('owned');
+  const [displaySetting, setDisplaySetting] = useState('created');
 
   const [userid, service, displayName] = useParams().userInfo.split('-');
   const { pathname } = useLocation();
@@ -37,8 +37,8 @@ const Profile = () => {
     if (redirect) {
       window.location.assign('/pins');
     }
-    setUserPinsOwned(pins.filter(p => p.owns));
-    setUserPinsSaved(pins.filter(p => p.hasSaved));
+    setPinsOwned(pins.filter(p => p.owns));
+    setPinsSaved(pins.filter(p => p.hasSaved));
     setReady(true);
   };
 
@@ -48,10 +48,14 @@ const Profile = () => {
 
   useEffect(() => {
     getProfileData();
-    setDisplaySetting('owned');
+    setDisplaySetting('created');
   }, [pathname]);
 
-  const pins = displaySetting === 'owned' ? userPinsOwned : userPinsSaved;
+  useEffect(() => {
+    document.body.style.overflowY = 'scroll';
+  });
+
+  const pins = displaySetting === 'created' ? pinsOwned : pinsSaved;
   return (
     <>
       <div style={{
@@ -68,16 +72,16 @@ const Profile = () => {
         >
           PROFILE
         </Typography>
-        <Avatar sx={{ bgcolor: providerIcons[service].color }}>
+        <Avatar sx={{ bgcolor: providerIcons[service].color, mt: 3 }}>
           {providerIcons[service].icon}
         </Avatar>
-        <Typography variant="h6">{displayName}</Typography>
-        <ButtonGroup variant="text" aria-label="text button group" sx={{ mt: 5 }}>
+        <Typography variant="h6" sx={{ mt: 3 }}>{displayName}</Typography>
+        <ButtonGroup variant="text" aria-label="text button group" sx={{ mt: 3 }}>
           <Button
-            color={displaySetting === 'owned' ? 'secondary' : 'primary'}
-            onClick={() => setDisplaySetting('owned')}
+            color={displaySetting === 'created' ? 'secondary' : 'primary'}
+            onClick={() => setDisplaySetting('created')}
           >
-            Pins owned
+            Pins created
           </Button>
           <Button
             color={displaySetting === 'saved' ? 'secondary' : 'primary'}
@@ -109,7 +113,7 @@ const Profile = () => {
             variant="h6"
             color="text.secondary"
           >
-            {`${displayName} has not created any pins`}
+            {`${displayName} has not ${displaySetting} any pins`}
           </Typography>
           <img
             alt="no-pins-created"
