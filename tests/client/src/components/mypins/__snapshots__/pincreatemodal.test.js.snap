@@ -57,7 +57,7 @@ exports[`The pin creation modal will render for links to images 1`] = `
     <ForwardRef(CardMedia)
       component="img"
       id="new-pin-image"
-      image="load-error.png"
+      image="/load-error.png"
       onError={[Function]}
       onLoad={[Function]}
       sx={
@@ -180,7 +180,7 @@ exports[`The pin creation modal will render for uploading images 1`] = `
     <ForwardRef(CardMedia)
       component="img"
       id="new-pin-image"
-      image="load-error.png"
+      image="/load-error.png"
       onError={[Function]}
       onLoad={[Function]}
       sx={

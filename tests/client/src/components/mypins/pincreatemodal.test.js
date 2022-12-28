@@ -7,7 +7,7 @@ import toJson from 'enzyme-to-json';
 import PinCreate from '../../../../../client/src/components/mypins/pincreatemodal';
 import * as utils from '../../../../../client/src/utils/utils';
 
-jest.mock('../../../../../client/src/components/mypins/error.png', () => 'load-error.png');
+jest.mock('../../../../../client/src/components/mypins/error.png', () => '/load-error.png');
 jest.useFakeTimers();
 
 describe('The pin creation modal', () => {
@@ -63,7 +63,7 @@ describe('The pin creation modal', () => {
     wrapper.setState({ isLoaded: false });
     expect(wrapper.state().isLoaded).toBe(false);
     const img = wrapper.find({ id: 'new-pin-image' });
-    img.props().onLoad({ target: { currentSrc: 'load-error.png' } });
+    img.props().onLoad({ target: { currentSrc: 'http://localhost/load-error.png' } });
     expect(wrapper.state().isLoaded).toBe(true);
     expect(wrapper.state().isError).toBe(true);
   });
