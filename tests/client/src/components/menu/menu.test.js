@@ -111,7 +111,7 @@ describe('The Menu component', () => {
     const wrapper = shallow(<ExpandedMenu />);
     const logoutLink = wrapper.find('NavLink').at(2);
     logoutLink.props().onClick();
-    expect(mockedAssign).toHaveBeenCalledWith('auth/logout');
+    expect(mockedAssign).toHaveBeenCalledWith('/auth/logout');
   });
 
   test('will map redux state to props', () => {

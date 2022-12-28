@@ -27,7 +27,7 @@ describe('The collapsible menu component', () => {
     const wrapper = shallow(<CollapsibleMenu pathname="/" />);
     const logoutLink = wrapper.find('ForwardRef(MenuItem)').at(2);
     logoutLink.props().onClick();
-    expect(mockedAssign).toHaveBeenCalledWith('auth/logout');
+    expect(mockedAssign).toHaveBeenCalledWith('/auth/logout');
   });
 
   test('will toggle the drawer', () => {
