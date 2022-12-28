@@ -188,5 +188,5 @@ router.put('/api/comment/:_id', isLoggedIn, addComment);
 router.delete('/api/:_id', isLoggedIn, deletePin);
 
 module.exports = {
-  router, addPin, getPins, pinImage, unpin, deletePin, addComment,
+  router, addPin, getPins, pinImage, unpin, deletePin, addComment, getProfilePins,
 };

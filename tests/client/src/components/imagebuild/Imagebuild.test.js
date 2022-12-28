@@ -177,4 +177,46 @@ describe('The ImageBuild component', () => {
     pinZoom = wrapper.find('PinZoom');
     expect(pinZoom.isEmptyRender()).toBe(true);
   });
+
+  test('ImageBuild sub-component will signal to pin/save an image', async () => {
+    const wrapper = shallow(<ImageBuild {...props} />);
+    // await Promise.resolve();
+    let masonry = wrapper.find('MasonryPins');
+    let imageToPin = masonry.props().pins.filter(p => p._id === pinsStub[0]._id)[0];
+    let savedByNames = imageToPin.savedBy.map(s => s.name);
+    expect(savedByNames.includes('tester displayName')).toBe(false);
+    await masonry.props().pinImage(pinsStub[0]);
+    masonry = wrapper.find('MasonryPins');
+    [imageToPin] = masonry.props().pins.filter(p => p._id === pinsStub[0]._id);
+    savedByNames = imageToPin.savedBy.map(s => s.name);
+    expect(savedByNames.includes('tester displayName')).toBe(true);
+    expect(RESTcall).toHaveBeenCalledTimes(1);
+    expect(RESTcall.mock.calls).toEqual([
+      [
+        {
+          address: '/api/pin/1',
+          method: 'put',
+        },
+      ],
+    ]);
+  });
+
+  test('Shall display the sign in component for non-authenticated (guest) users on save', async () => {
+    const updatedProps = {
+      ...props,
+      user: {
+        ...props.user,
+        authenticated: false,
+        username: 'Guest',
+      },
+    };
+    const wrapper = shallow(<ImageBuild {...updatedProps} />);
+    const masonry = wrapper.find('MasonryPins');
+    await masonry.props().pinImage(pinsStub[0]);
+    let signIn = wrapper.find('SignIn');
+    expect(signIn.length).toBe(1);
+    signIn.props().removeSignin();
+    signIn = wrapper.find('SignIn');
+    expect(signIn.length).toBe(0);
+  });
 });

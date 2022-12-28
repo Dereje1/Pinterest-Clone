@@ -1,6 +1,6 @@
 const nock = require('nock');
 const {
-  addPin, getPins, pinImage, unpin, deletePin, addComment,
+  addPin, getPins, pinImage, unpin, deletePin, addComment, getProfilePins,
 } = require('../../server/crudroutes');
 const pins = require('../../server/models/pins'); // schema for pins
 const {
@@ -552,6 +552,45 @@ describe('Adding a comment', () => {
       }),
     );
     await addComment(req, res);
+    expect(res.json).toHaveBeenCalledWith(Error('Mocked rejection'));
+  });
+});
+
+describe('Retrieving pins for a profile page', () => {
+  let res;
+  const req = {
+    params: {
+      userid: 'profile-request-Id',
+    },
+    user,
+  };
+  beforeEach(() => {
+    res = { json: jest.fn() };
+    process.env = {
+      ...process.env,
+      ADMIN_USER_ID: 'xxx',
+    };
+  });
+  afterEach(() => {
+    jest.restoreAllMocks();
+  });
+
+  test('will retrieve pins for the profile page', async () => {
+    setupMocks([]);
+    await getProfilePins(req, res);
+    expect(pins.find).toHaveBeenCalledTimes(2);
+    expect(pins.find).toHaveBeenNthCalledWith(1, { 'owner.id': 'profile-request-Id' });
+    expect(pins.find).toHaveBeenNthCalledWith(2, { 'savedBy.id': 'profile-request-Id' });
+    expect(res.json).toHaveBeenCalledWith({ createdPins: [], savedPins: [] });
+  });
+
+  test('will respond with error if GET is rejected', async () => {
+    pins.find = jest.fn().mockImplementation(
+      () => ({
+        exec: jest.fn().mockRejectedValue(new Error('Mocked rejection')),
+      }),
+    );
+    await getProfilePins(req, res);
     expect(res.json).toHaveBeenCalledWith(Error('Mocked rejection'));
   });
 });

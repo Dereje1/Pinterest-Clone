@@ -26,14 +26,20 @@ const Profile = () => {
   const loggedInUser = useSelector(state => state.user);
 
   const getProfileData = async () => {
-    setReady(false);
-    const { createdPins, savedPins, redirect } = await RESTcall({ address: `/api/userProfile/${userid}` });
-    if (redirect) {
-      window.location.assign('/pins');
+    try {
+      setReady(false);
+      const { createdPins, savedPins, redirect } = await RESTcall({ address: `/api/userProfile/${userid}` });
+      if (redirect) {
+        window.location.assign('/pins');
+      }
+      setPinsOwned(createdPins);
+      setPinsSaved(savedPins);
+      setReady(true);
+    } catch (err) {
+      setPinsOwned([]);
+      setPinsSaved([]);
+      setReady(false);
     }
-    setPinsOwned(createdPins);
-    setPinsSaved(savedPins);
-    setReady(true);
   };
 
   useEffect(() => {

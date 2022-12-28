@@ -158,7 +158,6 @@ export class PinZoom extends Component {
                       : <CommentOutlinedIcon style={{ fontSize: '1.7em' }} />}
                   </IconButton>
                 </StyledBadge>
-                {/* TODO: unable to pin/unpin from a user's profile page */}
                 <StyledBadge badgeContent={totalPins} color="secondary" showZero name="pin">
                   <ModalActions
                     element={pinInformation}
