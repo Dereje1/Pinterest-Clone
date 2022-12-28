@@ -1,5 +1,6 @@
 const router = require('express').Router();
 const pins = require('./models/pins'); // schema for pins
+const users = require('./models/user');
 const isLoggedIn = require('./auth/isloggedin');
 const {
   getUserProfile, filterPins, uploadImageToS3, getCloudFrontLink,
@@ -131,17 +132,25 @@ const addComment = async (req, res) => {
 };
 
 const getProfilePins = async (req, res) => {
-  const userId = req.params.userid;
+  const params = req.params.userid;
+  const [userId, service, displayName] = params.split('-');
   const { userId: loggedInUserid } = getUserProfile(req.user);
+
   try {
-    if (loggedInUserid === userId) {
+    const [user] = await users.find({
+      $and: [{ [`${service}.id`]: userId }, { [`${service}.displayName`]: displayName }],
+    }).exec();
+
+    if (loggedInUserid === userId || !user) {
       res.json({ redirect: true });
+      return;
     }
     const createdPins = await pins.find({ 'owner.id': userId }).exec();
     const savedPins = await pins.find({ 'savedBy.id': userId }).exec();
     res.json({
       createdPins: filterPins({ rawPins: createdPins, userId: loggedInUserid, isAdmin: false }),
       savedPins: filterPins({ rawPins: savedPins, userId: loggedInUserid, isAdmin: false }),
+      user: { userId: user[service].id, service, displayName: user[service].displayName },
     });
   } catch (error) {
     res.json(error);

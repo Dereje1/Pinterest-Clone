@@ -3,6 +3,7 @@ const {
   addPin, getPins, pinImage, unpin, deletePin, addComment, getProfilePins,
 } = require('../../server/crudroutes');
 const pins = require('../../server/models/pins'); // schema for pins
+const users = require('../../server/models/user'); // schema for pins
 const {
   user, rawPinsStub, allPinsResponse,
 } = require('./stub');
@@ -27,6 +28,11 @@ const setupMocks = (response = rawPinsStub) => {
   pins.findById = jest.fn().mockImplementation(
     () => ({
       exec: jest.fn().mockResolvedValue(response),
+    }),
+  );
+  users.find = jest.fn().mockImplementation(
+    () => ({
+      exec: jest.fn().mockResolvedValue([{ twitter: { id: 'requestUserId', displayName: 'requestDisplayName' } }]),
     }),
   );
 };
@@ -558,13 +564,14 @@ describe('Adding a comment', () => {
 
 describe('Retrieving pins for a profile page', () => {
   let res;
-  const req = {
-    params: {
-      userid: 'profile-request-Id',
-    },
-    user,
-  };
+  let req;
   beforeEach(() => {
+    req = {
+      params: {
+        userid: 'requestUserId-twitter-requestDisplayName',
+      },
+      user,
+    };
     res = { json: jest.fn() };
     process.env = {
       ...process.env,
@@ -579,9 +586,35 @@ describe('Retrieving pins for a profile page', () => {
     setupMocks([]);
     await getProfilePins(req, res);
     expect(pins.find).toHaveBeenCalledTimes(2);
-    expect(pins.find).toHaveBeenNthCalledWith(1, { 'owner.id': 'profile-request-Id' });
-    expect(pins.find).toHaveBeenNthCalledWith(2, { 'savedBy.id': 'profile-request-Id' });
-    expect(res.json).toHaveBeenCalledWith({ createdPins: [], savedPins: [] });
+    expect(pins.find).toHaveBeenNthCalledWith(1, { 'owner.id': 'requestUserId' });
+    expect(pins.find).toHaveBeenNthCalledWith(2, { 'savedBy.id': 'requestUserId' });
+    expect(res.json).toHaveBeenCalledWith({
+      createdPins: [],
+      savedPins: [],
+      user: {
+        displayName: 'requestDisplayName',
+        service: 'twitter',
+        userId: 'requestUserId',
+      },
+    });
+  });
+
+  test('will redirect if requested profile is same as logged in', async () => {
+    req = {
+      ...req,
+      user: {
+        ...user,
+        twitter: {
+          id: 'requestUserId',
+          displayName: 'tester-twitter',
+        },
+      },
+    };
+    setupMocks([]);
+    await getProfilePins(req, res);
+    expect(res.json).toHaveBeenCalledWith({
+      redirect: true,
+    });
   });
 
   test('will respond with error if GET is rejected', async () => {

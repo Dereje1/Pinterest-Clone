@@ -53,6 +53,9 @@ const restMock = jest.fn().mockImplementation((...args) => {
     return Promise.resolve({
       createdPins: [pinsStub[2]],
       savedPins: [pinsStub[1]],
+      user: {
+        userId: 'stubId', service: 'twitter', displayName: 'stubName',
+      },
     });
   }
   return Promise.reject(new Error(`Requested method:${method} and path: ${address} not mocked!!`));

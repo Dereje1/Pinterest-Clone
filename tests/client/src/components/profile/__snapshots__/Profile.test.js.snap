@@ -9,6 +9,8 @@ exports[`The profile page Will render for pins created by the user 1`] = `
         "display": "flex",
         "flexDirection": "column",
         "justifyContent": "space-between",
+        "marginLeft": 10,
+        "marginRight": 10,
         "marginTop": 60,
       }
     }
@@ -120,6 +122,8 @@ exports[`The profile page Will render for pins saved by the user 1`] = `
         "display": "flex",
         "flexDirection": "column",
         "justifyContent": "space-between",
+        "marginLeft": 10,
+        "marginRight": 10,
         "marginTop": 60,
       }
     }

@@ -19,8 +19,9 @@ const Profile = () => {
   const [ready, setReady] = useState(false);
   const [displaySetting, setDisplaySetting] = useState('created');
   const [displayLogin, setDisplayLogin] = useState(false);
+  const [retrievedUser, setRetrievedUser] = useState({ userId: '', service: 'twitter', displayName: '' });
 
-  const [userid, service, displayName] = useParams().userInfo.split('-');
+  const { userInfo } = useParams();
   const { pathname } = useLocation();
   const history = useHistory();
   const loggedInUser = useSelector(state => state.user);
@@ -28,12 +29,16 @@ const Profile = () => {
   const getProfileData = async () => {
     try {
       setReady(false);
-      const { createdPins, savedPins, redirect } = await RESTcall({ address: `/api/userProfile/${userid}` });
+      const {
+        createdPins, savedPins, user, redirect,
+      } = await RESTcall({ address: `/api/userProfile/${userInfo}` });
       if (redirect) {
         window.location.assign('/pins');
+        return;
       }
       setPinsOwned(createdPins);
       setPinsSaved(savedPins);
+      setRetrievedUser(user);
       setReady(true);
     } catch (err) {
       setPinsOwned([]);
@@ -50,6 +55,7 @@ const Profile = () => {
   useEffect(() => {
     const userObjectIsAvailable = Boolean(Object.keys(loggedInUser).length);
     if (userObjectIsAvailable && !loggedInUser.authenticated) {
+      setReady(true);
       setDisplayLogin(true);
     }
   }, [loggedInUser]);
@@ -59,6 +65,7 @@ const Profile = () => {
   });
 
   const pins = displaySetting === 'created' ? pinsOwned : pinsSaved;
+  if (!ready) return null;
 
   if (displayLogin) {
     return (
@@ -78,6 +85,8 @@ const Profile = () => {
         justifyContent: 'space-between',
         alignItems: 'center',
         marginTop: 60,
+        marginLeft: 10,
+        marginRight: 10,
       }}
       >
         <Typography
@@ -86,10 +95,10 @@ const Profile = () => {
         >
           PROFILE
         </Typography>
-        <Avatar sx={{ bgcolor: providerIcons[service].color, mt: 3 }}>
-          {providerIcons[service].icon}
+        <Avatar sx={{ bgcolor: providerIcons[retrievedUser.service].color, mt: 3 }}>
+          {providerIcons[retrievedUser.service].icon}
         </Avatar>
-        <Typography variant="h6" sx={{ mt: 3 }}>{displayName}</Typography>
+        <Typography variant="h6" sx={{ mt: 3 }}>{retrievedUser.displayName}</Typography>
         <ButtonGroup variant="text" aria-label="text button group" sx={{ mt: 3 }}>
           <Button
             color={displaySetting === 'created' ? 'secondary' : 'primary'}
@@ -127,7 +136,7 @@ const Profile = () => {
             variant="h6"
             color="text.secondary"
           >
-            {`${displayName} has not ${displaySetting} any pins`}
+            {`${retrievedUser.displayName} has not ${displaySetting} any pins`}
           </Typography>
           <img
             alt="no-pins-created"
