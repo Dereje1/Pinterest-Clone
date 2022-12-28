@@ -32,7 +32,7 @@ const getUserName = ({ service, displayName, username }) => (
       {displayName}
     </Typography>
     <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-      <Avatar sx={{ bgcolor: providerIcons[service].color }}>
+      <Avatar sx={{ width: 32, height: 32, bgcolor: providerIcons[service].color }}>
         {providerIcons[service].icon}
       </Avatar>
       <Typography style={{ marginLeft: 15 }}>
@@ -78,10 +78,9 @@ export class Mypins extends Component {
       method: 'post',
       payload: pinJSON,
     });
-    const { owner, imgLink, originalImgLink } = newPin;
+    const { imgLink, originalImgLink } = newPin;
     const addedPin = {
       ...newPin,
-      owner: owner.name,
       owns: true,
       hasSaved: false,
     };

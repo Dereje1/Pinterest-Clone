@@ -47,6 +47,8 @@ exports[`The Mypins Component Mypins landing page will render pins if found 1`] 
             sx={
               Object {
                 "bgcolor": "#1DA1F2",
+                "height": 32,
+                "width": 32,
               }
             }
           >
@@ -201,6 +203,8 @@ exports[`The Mypins Component Mypins landing page will render welcome message if
             sx={
               Object {
                 "bgcolor": "#1DA1F2",
+                "height": 32,
+                "width": 32,
               }
             }
           >

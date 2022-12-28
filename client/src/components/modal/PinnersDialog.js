@@ -23,7 +23,7 @@ const PinnersDialog = ({
       {pinnersList.map(pinner => (
         <ListItem key={pinner.userId} component={Link} to={`/profile/${pinner.userId}-${pinner.service}-${pinner.name}`}>
           <ListItemAvatar>
-            <Avatar sx={{ bgcolor: providerIcons[pinner.service].color }}>
+            <Avatar sx={{ width: 26, height: 26, bgcolor: providerIcons[pinner.service].color }}>
               {providerIcons[pinner.service].icon}
             </Avatar>
           </ListItemAvatar>

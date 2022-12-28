@@ -42,6 +42,8 @@ exports[`The pinners dialog will render 1`] = `
           sx={
             Object {
               "bgcolor": "#4285F4",
+              "height": 26,
+              "width": 26,
             }
           }
         >
@@ -80,6 +82,8 @@ exports[`The pinners dialog will render 1`] = `
           sx={
             Object {
               "bgcolor": "#1d7b20",
+              "height": 26,
+              "width": 26,
             }
           }
         >
