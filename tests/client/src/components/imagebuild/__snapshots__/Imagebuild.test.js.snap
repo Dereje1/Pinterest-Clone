@@ -16,7 +16,7 @@ exports[`The ImageBuild component will render.... 1`] = `
         layoutComplete={[Function]}
         onBrokenImage={[Function]}
         pinEnlarge={[Function]}
-        pinImage={[MockFunction]}
+        pinImage={[Function]}
         pins={
           Array [
             Object {

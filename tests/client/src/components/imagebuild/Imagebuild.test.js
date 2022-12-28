@@ -14,7 +14,7 @@ describe('The ImageBuild component', () => {
   let props;
   beforeEach(() => {
     props = {
-      pinImage: jest.fn(),
+      pinImage: true,
       deletePin: jest.fn(),
       pinList: pinsStub,
       displayBrokenImage: false,

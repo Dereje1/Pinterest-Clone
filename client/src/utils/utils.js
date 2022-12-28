@@ -119,3 +119,12 @@ export const formatDate = (date) => {
   const [, day, mth, year] = new Date(date).toUTCString().split(' ');
   return `${day} ${mth} ${year}`;
 };
+
+export const updatePinList = (oldList, newPin) => {
+  const indexOfUpdate = oldList.findIndex(p => p._id === newPin._id);
+  return [
+    ...oldList.slice(0, indexOfUpdate),
+    newPin,
+    ...oldList.slice(indexOfUpdate + 1),
+  ];
+};

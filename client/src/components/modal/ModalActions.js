@@ -10,13 +10,6 @@ import Tooltip from '@mui/material/Tooltip';
 const GetAction = ({
   element, pinImage, deletePin, reset,
 }) => {
-  if (!pinImage && !deletePin) {
-    return (
-      <IconButton aria-label="settings" style={{ margin: '1vh' }} disableRipple onMouseDown={e => e.preventDefault()}>
-        <PushPinIcon style={{ fontSize: '2em', color: '#09289c7d' }} />
-      </IconButton>
-    );
-  }
   if (!pinImage) { // means called from profile page
     return (
       <IconButton
