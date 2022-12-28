@@ -1,0 +1,229 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`The profile page Will render for pins created by the user 1`] = `
+<Fragment>
+  <div
+    style={
+      Object {
+        "alignItems": "center",
+        "display": "flex",
+        "flexDirection": "column",
+        "justifyContent": "space-between",
+        "marginTop": 60,
+      }
+    }
+  >
+    <ForwardRef(Typography)
+      color="text.secondary"
+      variant="h4"
+    >
+      PROFILE
+    </ForwardRef(Typography)>
+    <ForwardRef(Avatar)
+      sx={
+        Object {
+          "bgcolor": "#1DA1F2",
+          "mt": 3,
+        }
+      }
+    >
+      <Memo(ForwardRef(TwitterIcon))
+        style={
+          Object {
+            "fontSize": 25,
+          }
+        }
+      />
+    </ForwardRef(Avatar)>
+    <ForwardRef(Typography)
+      sx={
+        Object {
+          "mt": 3,
+        }
+      }
+      variant="h6"
+    >
+      stubName
+    </ForwardRef(Typography)>
+    <ForwardRef(ButtonGroup)
+      aria-label="text button group"
+      sx={
+        Object {
+          "mt": 3,
+        }
+      }
+      variant="text"
+    >
+      <ForwardRef(Button)
+        color="secondary"
+        onClick={[Function]}
+      >
+        Pins created
+      </ForwardRef(Button)>
+      <ForwardRef(Button)
+        color="primary"
+        onClick={[Function]}
+      >
+        Pins saved
+      </ForwardRef(Button)>
+    </ForwardRef(ButtonGroup)>
+  </div>
+  <ImageBuild
+    deletePin={null}
+    pinImage={true}
+    pinList={
+      Array [
+        Object {
+          "_id": 3,
+          "comments": Array [],
+          "createdAt": "2020-12-25T00:00:00.000+00:00",
+          "hasSaved": false,
+          "imgDescription": "imgDescription id-3",
+          "imgLink": "imgLink id-3",
+          "owner": Object {
+            "name": "owner id-3",
+            "service": "github",
+            "userId": "3",
+          },
+          "owns": true,
+          "savedBy": Array [
+            Object {
+              "name": "savedBy - id-3",
+              "service": "google",
+              "userId": "3",
+            },
+            Object {
+              "name": "savedBy - id-3",
+              "service": "github",
+              "userId": "3",
+            },
+          ],
+        },
+      ]
+    }
+    ready={true}
+    user={
+      Object {
+        "authenticated": true,
+      }
+    }
+  />
+</Fragment>
+`;
+
+exports[`The profile page Will render for pins saved by the user 1`] = `
+<Fragment>
+  <div
+    style={
+      Object {
+        "alignItems": "center",
+        "display": "flex",
+        "flexDirection": "column",
+        "justifyContent": "space-between",
+        "marginTop": 60,
+      }
+    }
+  >
+    <ForwardRef(Typography)
+      color="text.secondary"
+      variant="h4"
+    >
+      PROFILE
+    </ForwardRef(Typography)>
+    <ForwardRef(Avatar)
+      sx={
+        Object {
+          "bgcolor": "#1DA1F2",
+          "mt": 3,
+        }
+      }
+    >
+      <Memo(ForwardRef(TwitterIcon))
+        style={
+          Object {
+            "fontSize": 25,
+          }
+        }
+      />
+    </ForwardRef(Avatar)>
+    <ForwardRef(Typography)
+      sx={
+        Object {
+          "mt": 3,
+        }
+      }
+      variant="h6"
+    >
+      stubName
+    </ForwardRef(Typography)>
+    <ForwardRef(ButtonGroup)
+      aria-label="text button group"
+      sx={
+        Object {
+          "mt": 3,
+        }
+      }
+      variant="text"
+    >
+      <ForwardRef(Button)
+        color="primary"
+        onClick={[Function]}
+      >
+        Pins created
+      </ForwardRef(Button)>
+      <ForwardRef(Button)
+        color="secondary"
+        onClick={[Function]}
+      >
+        Pins saved
+      </ForwardRef(Button)>
+    </ForwardRef(ButtonGroup)>
+  </div>
+  <ImageBuild
+    deletePin={null}
+    pinImage={true}
+    pinList={
+      Array [
+        Object {
+          "_id": 2,
+          "comments": Array [],
+          "createdAt": "2020-12-25T00:00:00.000+00:00",
+          "hasSaved": true,
+          "imgDescription": "imgDescription id-2",
+          "imgLink": "imgLink id-2",
+          "owner": Object {
+            "name": "owner id-2",
+            "service": "twitter",
+            "userId": "2",
+          },
+          "owns": false,
+          "savedBy": Array [
+            Object {
+              "name": "savedBy - id-2",
+              "service": "google",
+              "userId": "2",
+            },
+            Object {
+              "name": "savedBy - id-2",
+              "service": "github",
+              "userId": "2",
+            },
+          ],
+        },
+      ]
+    }
+    ready={true}
+    user={
+      Object {
+        "authenticated": true,
+      }
+    }
+  />
+</Fragment>
+`;
+
+exports[`The profile page Will render signin for non-authenticated users 1`] = `
+<SignIn
+  removeSignin={[Function]}
+/>
+`;

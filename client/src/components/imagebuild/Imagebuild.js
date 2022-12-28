@@ -4,8 +4,9 @@ import InfiniteScroll from 'react-infinite-scroll-component';
 import MasonryPins from './MasonryPins';
 import PinZoom from '../modal/modalzoom';
 import Loading from './Loading';
+import SignIn from '../signin/signin';
 import RESTcall from '../../crud';
-import { initialDisplayPerScroll } from '../../utils/utils';
+import { initialDisplayPerScroll, updatePinList } from '../../utils/utils';
 import './imagebuild.scss';
 import error from '../mypins/error.png';
 
@@ -27,6 +28,7 @@ const ImageBuild = ({
   const [activePins, setActivePins] = useState([]);
   const [scrollPosition, setScrollPosition] = useState(0);
   const [batchSize, setBatchSize] = useState(initialDisplayPerScroll());
+  const [displayLogin, setDisplayLogin] = useState(false);
 
 
   useEffect(() => {
@@ -76,13 +78,27 @@ const ImageBuild = ({
       method: 'put',
       payload: { comment: newComment },
     });
-    const indexOfUpdate = loadedPins.findIndex(p => p._id === updatedPin._id);
-    const updatedPins = [
-      ...loadedPins.slice(0, indexOfUpdate),
-      updatedPin,
-      ...loadedPins.slice(indexOfUpdate + 1),
-    ];
-    setLoadedPins(updatedPins);
+
+    setLoadedPins(updatePinList(loadedPins, updatedPin));
+  };
+
+  const handlePinImage = async (element) => {
+    try {
+      const { username } = user;
+      // can not do this unless logged in
+      if (username === 'Guest') {
+        setDisplayLogin(true);
+        return;
+      }
+      const updatedPin = await RESTcall({
+        address: `/api/pin/${element._id}`,
+        method: 'put',
+      });
+
+      setLoadedPins(updatePinList(loadedPins, updatedPin));
+    } catch (err) {
+      console.log(err);
+    }
   };
 
   // Zoom modal takes event and pic info and executes
@@ -111,7 +127,7 @@ const ImageBuild = ({
             layoutComplete={layoutComplete}
             pinEnlarge={pinEnlarge}
             onBrokenImage={onBrokenImage}
-            pinImage={pinImage}
+            pinImage={pinImage && handlePinImage}
             deletePin={deletePin}
             pins={activePins}
           />
@@ -120,10 +136,15 @@ const ImageBuild = ({
           <PinZoom
             reset={() => setDisplayPinZoom(false)}
             zoomInfo={imageInfo}
-            pinImage={pinImage}
+            pinImage={pinImage && handlePinImage}
             deletePin={deletePin}
             user={user}
             handleNewComment={handleNewComment}
+          />
+        )}
+        { displayLogin && (
+          <SignIn
+            removeSignin={() => setDisplayLogin(false)}
           />
         )}
       </div>
@@ -135,14 +156,14 @@ export default ImageBuild;
 
 ImageBuild.defaultProps = {
   pinList: [null],
-  pinImage: null,
+  pinImage: undefined,
   deletePin: null,
   displayBrokenImage: undefined,
 };
 
 ImageBuild.propTypes = {
   // what type of button to place on pic/thumbnail executed by caller
-  pinImage: PropTypes.func,
+  pinImage: PropTypes.bool,
   deletePin: PropTypes.func,
   // caller will send list of pins after AJAX request complete
   pinList: PropTypes.arrayOf(PropTypes.any),

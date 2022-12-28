@@ -3,9 +3,7 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import { Link } from 'react-router-dom';
-import TwitterIcon from '@mui/icons-material/Twitter';
-import GoogleIcon from '@mui/icons-material/Google';
-import GitHubIcon from '@mui/icons-material/GitHub';
+import Avatar from '@mui/material/Avatar';
 import Typography from '@mui/material/Typography';
 import Button from '@mui/material/Button';
 import Dialog from '@mui/material/Dialog';
@@ -16,50 +14,33 @@ import PinCreate from './pincreatemodal';
 import ImageBuild from '../imagebuild/Imagebuild';
 import Loading from '../imagebuild/Loading';
 import RESTcall from '../../crud'; // pin CRUD
+import { getProviderIcons } from '../common/common';
 import './mypins.scss';
 
-const getUserName = ({ service, displayName, username }) => {
-  const serviceObj = {
-    twitter:
-  <>
-    <TwitterIcon style={{ fontSize: 30, color: '#1DA1F2' }} />
-    <Typography style={{ marginLeft: 15 }}>
-      {`@${username}`}
+const providerIcons = getProviderIcons({ fontSize: 25 });
+
+const getUserName = ({ service, displayName, username }) => (
+  <div style={{
+    marginTop: 80,
+    display: 'flex',
+    flexDirection: 'column',
+    justifyContent: 'center',
+    alignItems: 'center',
+  }}
+  >
+    <Typography variant="h4">
+      {displayName}
     </Typography>
-  </>,
-    google:
-  <>
-    <GoogleIcon style={{ fontSize: 30, color: '#4285F4' }} />
-    <Typography style={{ marginLeft: 15 }}>
-      {username}
-    </Typography>
-  </>,
-    github:
-  <>
-    <GitHubIcon style={{ fontSize: 30, color: '#1d7b20' }} />
-    <Typography style={{ marginLeft: 15 }}>
-      {`@${username}`}
-    </Typography>
-  </>,
-  };
-  return (
-    <div style={{
-      marginTop: 80,
-      display: 'flex',
-      flexDirection: 'column',
-      justifyContent: 'center',
-      alignItems: 'center',
-    }}
-    >
-      <Typography variant="h4">
-        {displayName}
+    <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+      <Avatar sx={{ width: 32, height: 32, bgcolor: providerIcons[service].color }}>
+        {providerIcons[service].icon}
+      </Avatar>
+      <Typography style={{ marginLeft: 15 }}>
+        {service === 'google' ? username : `@${username}`}
       </Typography>
-      <div style={{ display: 'flex', alignItems: 'center' }}>
-        {serviceObj[service]}
-      </div>
     </div>
-  );
-};
+  </div>
+);
 
 export class Mypins extends Component {
 
@@ -97,10 +78,9 @@ export class Mypins extends Component {
       method: 'post',
       payload: pinJSON,
     });
-    const { owner, imgLink, originalImgLink } = newPin;
+    const { imgLink, originalImgLink } = newPin;
     const addedPin = {
       ...newPin,
-      owner: owner.name,
       owns: true,
       hasSaved: false,
     };

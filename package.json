@@ -40,7 +40,7 @@
     "react-dom": "^17.0.0",
     "react-infinite-scroll-component": "^6.1.0",
     "react-masonry-component": "^6.3.0",
-    "react-redux": "^5.0.6",
+    "react-redux": "^7.2.1",
     "react-router-dom": "^5.0.0",
     "redux": "^3.7.2",
     "redux-thunk": "^2.2.0"

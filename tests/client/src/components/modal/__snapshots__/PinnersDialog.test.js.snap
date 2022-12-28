@@ -21,18 +21,39 @@ exports[`The pinners dialog will render 1`] = `
     }
   >
     <ForwardRef(ListItem)
-      key="savedBy - id-1"
+      component={
+        Object {
+          "$$typeof": Symbol(react.forward_ref),
+          "propTypes": Object {
+            "innerRef": [Function],
+            "onClick": [Function],
+            "replace": [Function],
+            "target": [Function],
+            "to": [Function],
+          },
+          "render": [Function],
+        }
+      }
+      key="1"
+      to="/profile/1-google-savedBy - id-1"
     >
       <ForwardRef(ListItemAvatar)>
         <ForwardRef(Avatar)
           sx={
             Object {
-              "bgcolor": "#bbdefb",
-              "color": "#1e88e5",
+              "bgcolor": "#4285F4",
+              "height": 26,
+              "width": 26,
             }
           }
         >
-          <Memo(ForwardRef(PersonIcon)) />
+          <Memo(ForwardRef(GoogleIcon))
+            style={
+              Object {
+                "fontSize": 20,
+              }
+            }
+          />
         </ForwardRef(Avatar)>
       </ForwardRef(ListItemAvatar)>
       <ForwardRef(ListItemText)
@@ -40,22 +61,43 @@ exports[`The pinners dialog will render 1`] = `
       />
     </ForwardRef(ListItem)>
     <ForwardRef(ListItem)
-      key="savedBy2 - id-1"
+      component={
+        Object {
+          "$$typeof": Symbol(react.forward_ref),
+          "propTypes": Object {
+            "innerRef": [Function],
+            "onClick": [Function],
+            "replace": [Function],
+            "target": [Function],
+            "to": [Function],
+          },
+          "render": [Function],
+        }
+      }
+      key="1"
+      to="/profile/1-github-savedBy - id-1"
     >
       <ForwardRef(ListItemAvatar)>
         <ForwardRef(Avatar)
           sx={
             Object {
-              "bgcolor": "#bbdefb",
-              "color": "#1e88e5",
+              "bgcolor": "#1d7b20",
+              "height": 26,
+              "width": 26,
             }
           }
         >
-          <Memo(ForwardRef(PersonIcon)) />
+          <Memo(ForwardRef(GitHubIcon))
+            style={
+              Object {
+                "fontSize": 20,
+              }
+            }
+          />
         </ForwardRef(Avatar)>
       </ForwardRef(ListItemAvatar)>
       <ForwardRef(ListItemText)
-        primary="savedBy2 - id-1"
+        primary="savedBy - id-1"
       />
     </ForwardRef(ListItem)>
   </ForwardRef(List)>

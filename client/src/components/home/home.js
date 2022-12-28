@@ -29,36 +29,6 @@ export class Home extends Component {
     });
   }
 
-  async pinImage(element) { // saves a pic owned by somebody else into current users profile
-    // can not do this unless logged in
-    const {
-      user: {
-        username,
-      },
-    } = this.props;
-    const { pinList } = this.state;
-    if (username === 'Guest') {
-      this.setState({
-        displaySignIn: true,
-      });
-      return;
-    }
-    const updatedPin = await RESTcall({
-      address: `/api/pin/${element._id}`,
-      method: 'put',
-    });
-
-    const indexOfUpdate = pinList.findIndex(p => p._id === updatedPin._id);
-    const updatedPins = [
-      ...pinList.slice(0, indexOfUpdate),
-      updatedPin,
-      ...pinList.slice(indexOfUpdate + 1),
-    ];
-    this.setState({
-      pinList: updatedPins,
-    });
-  }
-
   render() {
     const { user, user: { authenticated, username }, search } = this.props;
     const { pinList, displaySignIn, ready } = this.state;
@@ -75,7 +45,7 @@ export class Home extends Component {
               )
           }
           <ImageBuild
-            pinImage={e => this.pinImage(e)}
+            pinImage
             deletePin={null}
             pinList={filteredPins}
             ready={ready}

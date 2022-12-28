@@ -146,8 +146,16 @@ exports[`The comments window will render with comments 1`] = `
     open={false}
     pinnersList={
       Array [
-        "savedBy - id-1",
-        "savedBy2 - id-1",
+        Object {
+          "name": "savedBy - id-1",
+          "service": "google",
+          "userId": "1",
+        },
+        Object {
+          "name": "savedBy - id-1",
+          "service": "github",
+          "userId": "1",
+        },
       ]
     }
   />
@@ -270,8 +278,16 @@ exports[`The comments window will render with no comments for authenticated user
     open={false}
     pinnersList={
       Array [
-        "savedBy - id-2",
-        "savedBy2 - id-2",
+        Object {
+          "name": "savedBy - id-2",
+          "service": "google",
+          "userId": "2",
+        },
+        Object {
+          "name": "savedBy - id-2",
+          "service": "github",
+          "userId": "2",
+        },
       ]
     }
   />
@@ -394,8 +410,16 @@ exports[`The comments window will render with no comments for unauthenticated us
     open={false}
     pinnersList={
       Array [
-        "savedBy - id-2",
-        "savedBy2 - id-2",
+        Object {
+          "name": "savedBy - id-2",
+          "service": "google",
+          "userId": "2",
+        },
+        Object {
+          "name": "savedBy - id-2",
+          "service": "github",
+          "userId": "2",
+        },
       ]
     }
   />

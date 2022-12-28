@@ -54,7 +54,7 @@ const CollapsibleMenu = ({ pathname }) => {
             My Pins
           </ListItemText>
         </MenuItem>
-        <MenuItem onClick={() => window.location.assign('auth/logout')}>
+        <MenuItem onClick={() => window.location.assign('/auth/logout')}>
           <ListItemIcon>
             <LogoutIcon fontSize="medium" />
           </ListItemIcon>

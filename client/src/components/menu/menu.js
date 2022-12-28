@@ -41,7 +41,7 @@ export const ExpandedMenu = () => (
   <>
     <NavLink exact to="/">Home</NavLink>
     <NavLink exact to="/pins">My Pins</NavLink>
-    <NavLink to="/another" onClick={() => window.location.assign('auth/logout')}>Logout</NavLink>
+    <NavLink to="/another" onClick={() => window.location.assign('/auth/logout')}>Logout</NavLink>
   </>
 );
 

@@ -93,7 +93,7 @@ class PinCreate extends Component {
   onLoad = ({ target }) => {
     this.setState({
       isLoaded: true,
-      isError: target.currentSrc === error,
+      isError: target.currentSrc === `${window.location.origin}${error}`,
     });
   };
 

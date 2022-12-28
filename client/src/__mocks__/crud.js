@@ -10,7 +10,7 @@ const restMock = jest.fn().mockImplementation((...args) => {
   } if (address.includes('/api/pin') && method === 'put' && !payload) {
     return Promise.resolve({
       _id: 1,
-      savedBy: ['tester displayName'],
+      savedBy: [{ name: 'tester displayName', userId: 'tester id', service: 'google' }],
     });
   } if (address.includes('/api/unpin') && method === 'put' && !payload) {
     return Promise.resolve();
@@ -48,6 +48,11 @@ const restMock = jest.fn().mockImplementation((...args) => {
       authenticated: false,
       userIp: 'Tester userIp',
       username: 'Tester guest',
+    });
+  } if (address.includes('/api/userProfile') && method === 'get' && !payload) {
+    return Promise.resolve({
+      createdPins: [pinsStub[2]],
+      savedPins: [pinsStub[1]],
     });
   }
   return Promise.reject(new Error(`Requested method:${method} and path: ${address} not mocked!!`));

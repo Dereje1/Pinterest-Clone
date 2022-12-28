@@ -45,7 +45,7 @@ const MasonryPins = ({
               pinImage={pinImage}
               deletePin={deletePin}
             />
-            <div className="owner">{`${element.owner}`}</div>
+            <div className="owner">{`${element.owner.name}`}</div>
           </div>
         ))
       }

@@ -8,6 +8,7 @@ const configMain = {
   output: {
     filename: 'bundle.js',
     path: path.resolve(__dirname, './client/public'),
+    publicPath: '/',
   },
   module: {
     rules: [

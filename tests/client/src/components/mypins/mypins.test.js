@@ -19,7 +19,7 @@ describe('The Mypins Component', () => {
         authenticated: true,
         displayName: 'tester displayName',
         username: 'tester username',
-        service: 'tester service',
+        service: 'twitter',
         userId: 'tester user Id',
       },
     };
@@ -143,7 +143,7 @@ describe('The Mypins Component', () => {
     expect(wrapper.state().pinList.length).toBe(3);
     expect(wrapper.state().pinList[2]).toStrictEqual({
       savedBy: [],
-      owner: 'A new pin by tester',
+      owner: { name: 'A new pin by tester' },
       imgLink: 's3 new link',
       originalImgLink: 'original new link',
       imgDescription: 'new description',

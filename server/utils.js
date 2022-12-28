@@ -101,7 +101,7 @@ const filterPins = ({ rawPins, userId, isAdmin }) => rawPins.map((pin) => {
     _id: pinId, imgDescription, imgLink, owner, savedBy, createdAt: pinCreatedAt, comments,
   } = pin;
   const savedIds = savedBy.map(s => s.id);
-  const savedNames = savedBy.map(pinner => pinner.name);
+  const savedNames = savedBy.map(({ name, id, service }) => ({ name, userId: id, service }));
   const modifiedComments = comments.map(
     ({
       _id, displayName, comment, createdAt,
@@ -113,7 +113,7 @@ const filterPins = ({ rawPins, userId, isAdmin }) => rawPins.map((pin) => {
     _id: pinId,
     imgDescription,
     imgLink: getCloudFrontLink(imgLink),
-    owner: owner.name,
+    owner: { name: owner.name, userId: owner.id, service: owner.service },
     savedBy: savedNames,
     owns: Boolean(userId && (userId === owner.id || isAdmin)),
     hasSaved: Boolean(userId && savedIds.includes(userId)),

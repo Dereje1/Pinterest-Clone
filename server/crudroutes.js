@@ -130,6 +130,24 @@ const addComment = async (req, res) => {
   }
 };
 
+const getProfilePins = async (req, res) => {
+  const userId = req.params.userid;
+  const { userId: loggedInUserid } = getUserProfile(req.user);
+  try {
+    if (loggedInUserid === userId) {
+      res.json({ redirect: true });
+    }
+    const createdPins = await pins.find({ 'owner.id': userId }).exec();
+    const savedPins = await pins.find({ 'savedBy.id': userId }).exec();
+    res.json({
+      createdPins: filterPins({ rawPins: createdPins, userId: loggedInUserid, isAdmin: false }),
+      savedPins: filterPins({ rawPins: savedPins, userId: loggedInUserid, isAdmin: false }),
+    });
+  } catch (error) {
+    res.json(error);
+  }
+};
+
 const deletePin = async (req, res) => {
   const { userId, displayName, isAdmin } = getUserProfile(req.user);
   const query = { _id: req.params._id };
@@ -151,8 +169,11 @@ const deletePin = async (req, res) => {
 // adds a new pin to the db
 router.post('/api/newpin', isLoggedIn, addPin);
 
-// gets pins: all or just user's saved and owned pins,
+// gets pins: all or just logged in user's saved and owned pins,
 router.get('/api/', getPins);
+
+// gets pins for a single user
+router.get('/api/userProfile/:userid', isLoggedIn, getProfilePins);
 
 // Adds a user to a pin's savedby list
 router.put('/api/pin/:_id', isLoggedIn, pinImage);
@@ -167,5 +188,5 @@ router.put('/api/comment/:_id', isLoggedIn, addComment);
 router.delete('/api/:_id', isLoggedIn, deletePin);
 
 module.exports = {
-  router, addPin, getPins, pinImage, unpin, deletePin, addComment,
+  router, addPin, getPins, pinImage, unpin, deletePin, addComment, getProfilePins,
 };

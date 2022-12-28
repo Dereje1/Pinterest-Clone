@@ -1,6 +1,7 @@
 // displays pin zoom modal
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
+import { Link as RouterLink } from 'react-router-dom';
 /* MUI */
 import Card from '@mui/material/Card';
 import CardHeader from '@mui/material/CardHeader';
@@ -10,6 +11,7 @@ import Badge from '@mui/material/Badge';
 import IconButton from '@mui/material/IconButton';
 import CommentOutlinedIcon from '@mui/icons-material/CommentOutlined';
 import CommentIcon from '@mui/icons-material/Comment';
+import Link from '@mui/material/Link';
 import { styled } from '@mui/styles';
 /* local components and utility */
 import ModalActions from './ModalActions';
@@ -169,9 +171,14 @@ export class PinZoom extends Component {
             title={formattedDescription}
             subheader={(
               <>
-                <span>
-                  {pinInformation.owner}
-                </span>
+                <Link
+                  component={RouterLink}
+                  underline="none"
+                  to={`/profile/${pinInformation.owner.userId}-${pinInformation.owner.service}-${pinInformation.owner.name}`}
+                  onMouseDown={e => e.preventDefault()}
+                >
+                  {pinInformation.owner.name}
+                </Link>
                 <br />
                 <span style={{ fontSize: parentDivStyle.dateSize, marginLeft: 0 }}>
                   {formatDate(pinInformation.createdAt)}

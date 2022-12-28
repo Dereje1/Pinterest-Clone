@@ -48,27 +48,6 @@ describe('The Home Component', () => {
     expect(RESTcall).toHaveBeenCalledWith({ address: '/api/?type=All', method: 'get' });
   });
 
-  test('ImageBuild sub-component will signal to pin/save an image', async () => {
-    const wrapper = shallow(<Home {...props} />);
-    await Promise.resolve();
-    const imageBuild = wrapper.find('ImageBuild');
-    let imageToPin = wrapper.state().pinList.filter(p => p._id === pinsStub[0]._id)[0];
-    expect(imageToPin.savedBy.includes('tester displayName')).toBe(false);
-    await imageBuild.props().pinImage(pinsStub[0]);
-    [imageToPin] = wrapper.state().pinList.filter(p => p._id === pinsStub[0]._id);
-    expect(imageToPin.savedBy.includes('tester displayName')).toBe(true);
-    expect(RESTcall).toHaveBeenCalledTimes(2);
-    expect(RESTcall.mock.calls).toEqual([
-      [{ address: '/api/?type=All', method: 'get' }],
-      [
-        {
-          address: '/api/pin/1',
-          method: 'put',
-        },
-      ],
-    ]);
-  });
-
   test('Will filter pins if matching search found', async () => {
     const updatedProps = {
       ...props,
@@ -79,23 +58,5 @@ describe('The Home Component', () => {
     const imageBuild = wrapper.find('ImageBuild');
     const displayedPinList = imageBuild.props().pinList;
     expect(displayedPinList).toStrictEqual([pinsStub[2]]);
-  });
-
-  test('Shall display the sign in component for non-authenticated (guest) users on save', async () => {
-    const updatedProps = {
-      ...props,
-      user: {
-        ...props.user,
-        authenticated: false,
-        username: 'Guest',
-      },
-    };
-    const wrapper = shallow(<Home {...updatedProps} />);
-    await Promise.resolve();
-    const imageBuild = wrapper.find('ImageBuild');
-    imageBuild.props().pinImage(pinsStub[0]);
-
-    const signIn = wrapper.find('SignIn');
-    expect(signIn.length).toBe(1);
   });
 });

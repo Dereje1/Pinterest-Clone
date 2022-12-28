@@ -12,7 +12,7 @@ export const getFilteredPins = (pinList, search) => {
   if (!search) return pinList;
   const filteredPins = pinList.filter(({ owner, imgDescription }) => {
     const isFoundInDescription = imgDescription.toLowerCase().includes(search);
-    const isFoundInOwnerName = owner.toLowerCase().includes(search);
+    const isFoundInOwnerName = owner.name.toLowerCase().includes(search);
     return isFoundInDescription || isFoundInOwnerName;
   });
   return filteredPins;
@@ -118,4 +118,13 @@ export const initialDisplayPerScroll = () => (window.innerWidth > 1440 ? 20 : 10
 export const formatDate = (date) => {
   const [, day, mth, year] = new Date(date).toUTCString().split(' ');
   return `${day} ${mth} ${year}`;
+};
+
+export const updatePinList = (oldList, newPin) => {
+  const indexOfUpdate = oldList.findIndex(p => p._id === newPin._id);
+  return [
+    ...oldList.slice(0, indexOfUpdate),
+    newPin,
+    ...oldList.slice(indexOfUpdate + 1),
+  ];
 };

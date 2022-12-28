@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import './imagebuild.scss';
 
 const HandleThumbnailImage = ({ element, pinImage, deletePin }) => {
-  if (!pinImage) { // means profile page
+  if (!pinImage) { // means logged in user's profile page
     return (
       <button
         type="submit"
