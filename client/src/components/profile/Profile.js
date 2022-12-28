@@ -1,11 +1,12 @@
 import React, { useEffect, useState, useLayoutEffect } from 'react';
-import { useParams, useLocation } from 'react-router-dom';
+import { useParams, useLocation, useHistory } from 'react-router-dom';
 import { useSelector } from 'react-redux';
 import Typography from '@mui/material/Typography';
 import Avatar from '@mui/material/Avatar';
 import Button from '@mui/material/Button';
 import ButtonGroup from '@mui/material/ButtonGroup';
 import ImageBuild from '../imagebuild/Imagebuild';
+import SignIn from '../signin/signin';
 import RESTcall from '../../crud';
 import { getProviderIcons } from '../common/common';
 import error from '../mypins/error.png';
@@ -17,36 +18,52 @@ const Profile = () => {
   const [pinsSaved, setPinsSaved] = useState([]);
   const [ready, setReady] = useState(false);
   const [displaySetting, setDisplaySetting] = useState('created');
+  const [displayLogin, setDisplayLogin] = useState(false);
 
   const [userid, service, displayName] = useParams().userInfo.split('-');
   const { pathname } = useLocation();
+  const history = useHistory();
   const loggedInUser = useSelector(state => state.user);
 
   const getProfileData = async () => {
     setReady(false);
-    const { pins, redirect } = await RESTcall({ address: `/api/userProfile/${userid}` });
+    const { createdPins, savedPins, redirect } = await RESTcall({ address: `/api/userProfile/${userid}` });
     if (redirect) {
       window.location.assign('/pins');
     }
-    setPinsOwned(pins.filter(p => p.owns));
-    setPinsSaved(pins.filter(p => p.hasSaved));
+    setPinsOwned(createdPins);
+    setPinsSaved(savedPins);
     setReady(true);
   };
-
-  useEffect(() => {
-    getProfileData();
-  }, []);
 
   useEffect(() => {
     getProfileData();
     setDisplaySetting('created');
   }, [pathname]);
 
+  useEffect(() => {
+    const userObjectIsAvailable = Boolean(Object.keys(loggedInUser).length);
+    if (userObjectIsAvailable && !loggedInUser.authenticated) {
+      setDisplayLogin(true);
+    }
+  }, [loggedInUser]);
+
   useLayoutEffect(() => {
     document.body.style.overflowY = 'scroll';
   });
 
   const pins = displaySetting === 'created' ? pinsOwned : pinsSaved;
+
+  if (displayLogin) {
+    return (
+      <SignIn
+        removeSignin={() => {
+          history.push('/');
+        }}
+      />
+    );
+  }
+
   return (
     <>
       <div style={{
@@ -85,7 +102,7 @@ const Profile = () => {
 
       { pins.length ? (
         <ImageBuild
-          pinImage={null}
+          pinImage
           deletePin={null}
           pinList={pins}
           ready={ready}

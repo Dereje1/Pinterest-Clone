@@ -137,9 +137,11 @@ const getProfilePins = async (req, res) => {
     if (loggedInUserid === userId) {
       res.json({ redirect: true });
     }
-    const userPins = await pins.find({ $or: [{ 'owner.id': userId }, { 'savedBy.id': userId }] }).exec();
+    const createdPins = await pins.find({ 'owner.id': userId }).exec();
+    const savedPins = await pins.find({ 'savedBy.id': userId }).exec();
     res.json({
-      pins: filterPins({ rawPins: userPins, userId, isAdmin: false }),
+      createdPins: filterPins({ rawPins: createdPins, userId: loggedInUserid, isAdmin: false }),
+      savedPins: filterPins({ rawPins: savedPins, userId: loggedInUserid, isAdmin: false }),
     });
   } catch (error) {
     res.json(error);
