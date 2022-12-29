@@ -5,6 +5,7 @@ import Typography from '@mui/material/Typography';
 import Avatar from '@mui/material/Avatar';
 import Button from '@mui/material/Button';
 import ButtonGroup from '@mui/material/ButtonGroup';
+import Box from '@mui/material/Box';
 import ImageBuild from '../imagebuild/Imagebuild';
 import SignIn from '../signin/signin';
 import RESTcall from '../../crud';
@@ -129,15 +130,24 @@ const Profile = () => {
           flexDirection: 'column',
           justifyContent: 'space-between',
           alignItems: 'center',
-          marginTop: 60,
         }}
         >
-          <Typography
-            variant="h6"
-            color="text.secondary"
+          <Box sx={{
+            marginLeft: 'auto',
+            marginRight: 'auto',
+            marginTop: 2,
+            padding: 2,
+            textAlign: 'center',
+          }}
           >
-            {`${retrievedUser.displayName} has not ${displaySetting} any pins`}
-          </Typography>
+            <Typography
+              variant="h6"
+              color="text.secondary"
+            >
+              {`${retrievedUser.displayName} has not ${displaySetting} any pins`}
+            </Typography>
+          </Box>
+
           <img
             alt="no-pins-created"
             src={error}

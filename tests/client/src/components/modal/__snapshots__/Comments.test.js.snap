@@ -284,7 +284,7 @@ exports[`The comments window will render with no comments for authenticated user
           "userId": "2",
         },
         Object {
-          "name": "savedBy - id-2",
+          "name": "savedBy - id-2git",
           "service": "github",
           "userId": "2",
         },
@@ -416,7 +416,7 @@ exports[`The comments window will render with no comments for unauthenticated us
           "userId": "2",
         },
         Object {
-          "name": "savedBy - id-2",
+          "name": "savedBy - id-2git",
           "service": "github",
           "userId": "2",
         },

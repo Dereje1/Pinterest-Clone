@@ -59,7 +59,7 @@ export class Home extends Component {
 
 }
 
-const mapStateToProps = state => state;
+export const mapStateToProps = state => state;
 
 export default connect(mapStateToProps)(Home);
 

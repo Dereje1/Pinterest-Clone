@@ -208,7 +208,7 @@ exports[`The profile page Will render for pins saved by the user 1`] = `
               "userId": "2",
             },
             Object {
-              "name": "savedBy - id-2",
+              "name": "savedBy - id-2git",
               "service": "github",
               "userId": "2",
             },
@@ -223,6 +223,127 @@ exports[`The profile page Will render for pins saved by the user 1`] = `
       }
     }
   />
+</Fragment>
+`;
+
+exports[`The profile page Will render no image sign if user has not pinned or created any 1`] = `
+<Fragment>
+  <div
+    style={
+      Object {
+        "alignItems": "center",
+        "display": "flex",
+        "flexDirection": "column",
+        "justifyContent": "space-between",
+        "marginLeft": 10,
+        "marginRight": 10,
+        "marginTop": 60,
+      }
+    }
+  >
+    <ForwardRef(Typography)
+      color="text.secondary"
+      variant="h4"
+    >
+      PROFILE
+    </ForwardRef(Typography)>
+    <ForwardRef(Avatar)
+      sx={
+        Object {
+          "bgcolor": "#1DA1F2",
+          "mt": 3,
+        }
+      }
+    >
+      <Memo(ForwardRef(TwitterIcon))
+        style={
+          Object {
+            "fontSize": 25,
+          }
+        }
+      />
+    </ForwardRef(Avatar)>
+    <ForwardRef(Typography)
+      sx={
+        Object {
+          "mt": 3,
+        }
+      }
+      variant="h6"
+    >
+      stubName
+    </ForwardRef(Typography)>
+    <ForwardRef(ButtonGroup)
+      aria-label="text button group"
+      sx={
+        Object {
+          "mt": 3,
+        }
+      }
+      variant="text"
+    >
+      <ForwardRef(Button)
+        color="secondary"
+        onClick={[Function]}
+      >
+        Pins created
+      </ForwardRef(Button)>
+      <ForwardRef(Button)
+        color="primary"
+        onClick={[Function]}
+      >
+        Pins saved
+      </ForwardRef(Button)>
+    </ForwardRef(ButtonGroup)>
+  </div>
+  <div
+    style={
+      Object {
+        "alignItems": "center",
+        "display": "flex",
+        "flexDirection": "column",
+        "justifyContent": "space-between",
+      }
+    }
+  >
+    <ForwardRef(Box)
+      sx={
+        Object {
+          "marginLeft": "auto",
+          "marginRight": "auto",
+          "marginTop": 2,
+          "padding": 2,
+          "textAlign": "center",
+        }
+      }
+    >
+      <ForwardRef(Typography)
+        color="text.secondary"
+        variant="h6"
+      >
+        stubName has not created any pins
+      </ForwardRef(Typography)>
+    </ForwardRef(Box)>
+    <img
+      alt="no-pins-created"
+      src={
+        Object {
+          "canInstrument": true,
+          "createTransformer": [Function],
+          "getCacheKey": [Function],
+          "getCacheKeyAsync": [Function],
+          "process": [Function],
+          "processAsync": [Function],
+        }
+      }
+      style={
+        Object {
+          "height": 250,
+          "width": 250,
+        }
+      }
+    />
+  </div>
 </Fragment>
 `;
 

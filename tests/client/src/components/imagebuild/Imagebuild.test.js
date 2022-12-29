@@ -201,6 +201,29 @@ describe('The ImageBuild component', () => {
     ]);
   });
 
+  test('ImageBuild sub-component will signal to unpin an image', async () => {
+    const wrapper = shallow(<ImageBuild {...props} />);
+    // await Promise.resolve();
+    let masonry = wrapper.find('MasonryPins');
+    let imageToUnPin = masonry.props().pins.filter(p => p._id === pinsStub[1]._id)[0];
+    let savedByNames = imageToUnPin.savedBy.map(s => s.name);
+    expect(savedByNames.includes('savedBy - id-2git')).toBe(true);
+    await masonry.props().pinImage(pinsStub[1]);
+    masonry = wrapper.find('MasonryPins');
+    [imageToUnPin] = masonry.props().pins.filter(p => p._id === pinsStub[1]._id);
+    savedByNames = imageToUnPin.savedBy.map(s => s.name);
+    expect(savedByNames.includes('savedBy - id-2git')).toBe(false);
+    expect(RESTcall).toHaveBeenCalledTimes(1);
+    expect(RESTcall.mock.calls).toEqual([
+      [
+        {
+          address: '/api/unpin/2',
+          method: 'put',
+        },
+      ],
+    ]);
+  });
+
   test('Shall display the sign in component for non-authenticated (guest) users on save', async () => {
     const updatedProps = {
       ...props,

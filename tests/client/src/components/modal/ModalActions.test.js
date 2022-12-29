@@ -72,7 +72,18 @@ describe('Handling zoomed image action buttons', () => {
         owns: false,
       },
     };
+
     const wrapper = shallow(<ModalActions {...updatedProps} />);
+    const preventDefault = jest.fn();
+    const iconButton = wrapper.find('ForwardRef(IconButton)');
+    iconButton.props().onClick();
+    iconButton.props().onMouseDown({ preventDefault });
+    expect(props.pinImage).toHaveBeenCalledWith({
+      hasSaved: true,
+      owns: false,
+    });
+    expect(preventDefault).toHaveBeenCalled();
+    expect(props.reset).toHaveBeenCalled();
     expect(toJson(wrapper)).toMatchSnapshot();
   });
 

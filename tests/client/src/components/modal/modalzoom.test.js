@@ -121,9 +121,12 @@ describe('The pin zoom modal', () => {
     expect(props.reset).toHaveBeenCalledTimes(1);
   });
 
-  test('will disable the scroll', () => {
+  test('will disable the scrol on mount and when user tries to scroll', () => {
     global.scrollTo = jest.fn();
-    shallow(<PinZoom {...props} />);
+    const wrapper = shallow(<PinZoom {...props} />);
+    expect(global.scrollTo).toHaveBeenCalledWith(0, 10);
+    global.scrollTo.mockClear();
+    wrapper.instance().disableScroll();
     expect(global.scrollTo).toHaveBeenCalledWith(0, 10);
   });
 

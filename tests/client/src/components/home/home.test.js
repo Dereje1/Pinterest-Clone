@@ -1,6 +1,6 @@
 import React from 'react';
 import { shallow } from 'enzyme';
-import { Home } from '../../../../../client/src/components/home/home';
+import { Home, mapStateToProps } from '../../../../../client/src/components/home/home';
 import RESTcall from '../../../../../client/src/crud';
 import { pinsStub } from '../../../pinsStub';
 
@@ -24,17 +24,42 @@ describe('The Home Component', () => {
   afterEach(() => {
     RESTcall.mockClear();
   });
+  test('Shall not render if username has not been populated yet', () => {
+    const updatedProps = {
+      ...props,
+      user: {
+        ...props.user,
+        username: null,
+      },
+    };
+    const wrapper = shallow(<Home {...updatedProps} />);
+    expect(wrapper.isEmptyRender()).toBe(true);
+  });
+
   test('Shall not include the sign in component for authenticated users', () => {
     const wrapper = shallow(<Home {...props} />);
     const signIn = wrapper.find('SignIn');
     expect(signIn.length).toBe(0);
   });
+
   test('Shall include the sign in component for non-authenticated users', () => {
     const wrapper = shallow(<Home {...props} />);
     wrapper.setProps({ user: { authenticated: false } });
     wrapper.setState({ displaySignIn: true });
     const signIn = wrapper.find('SignIn');
     expect(signIn.length).toBe(1);
+  });
+
+  test('Shall dismiss the sign in component for non-authenticated users on blur', () => {
+    const wrapper = shallow(<Home {...props} />);
+    wrapper.setProps({ user: { authenticated: false } });
+    wrapper.setState({ displaySignIn: true });
+    let signIn = wrapper.find('SignIn');
+    expect(signIn.length).toBe(1);
+    signIn.props().removeSignin();
+    expect(wrapper.state().displaySignIn).toBe(false);
+    signIn = wrapper.find('SignIn');
+    expect(signIn.length).toBe(0);
   });
 
   test('ImageBuild sub-component shall recieve the pins on CDM as props', async () => {
@@ -58,5 +83,10 @@ describe('The Home Component', () => {
     const imageBuild = wrapper.find('ImageBuild');
     const displayedPinList = imageBuild.props().pinList;
     expect(displayedPinList).toStrictEqual([pinsStub[2]]);
+  });
+
+  test('Shall map redux state to component props', () => {
+    const mappedProps = mapStateToProps({ reduxState: 'state' });
+    expect(mappedProps).toStrictEqual({ reduxState: 'state' });
   });
 });

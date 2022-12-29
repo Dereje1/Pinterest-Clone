@@ -27,7 +27,7 @@ const pinsStub = [
     owner: { name: 'owner id-2', service: 'twitter', userId: '2' },
     savedBy: [
       { name: 'savedBy - id-2', service: 'google', userId: '2' },
-      { name: 'savedBy - id-2', service: 'github', userId: '2' },
+      { name: 'savedBy - id-2git', service: 'github', userId: '2' },
     ],
     owns: false,
     hasSaved: true,

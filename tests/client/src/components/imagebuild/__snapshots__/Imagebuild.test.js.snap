@@ -72,7 +72,7 @@ exports[`The ImageBuild component will render.... 1`] = `
                   "userId": "2",
                 },
                 Object {
-                  "name": "savedBy - id-2",
+                  "name": "savedBy - id-2git",
                   "service": "github",
                   "userId": "2",
                 },

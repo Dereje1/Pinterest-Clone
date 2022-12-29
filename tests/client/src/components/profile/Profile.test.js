@@ -61,6 +61,26 @@ describe('The profile page', () => {
     expect(toJson(wrapper)).toMatchSnapshot();
   });
 
+  test('Will render signin for non-authenticated users', async () => {
+    // Mock redux hooks
+    useSelector.mockImplementationOnce(() => ({ authenticated: false }));
+    const wrapper = shallow(<Profile />);
+    expect(toJson(wrapper)).toMatchSnapshot();
+  });
+
+  test('Will render no image sign if user has not pinned or created any', async () => {
+    RESTcall.mockImplementationOnce(() => Promise.resolve({
+      createdPins: [],
+      savedPins: [],
+      user: {
+        userId: 'stubId', service: 'twitter', displayName: 'stubName',
+      },
+    }));
+    const wrapper = shallow(<Profile />);
+    await Promise.resolve();
+    expect(toJson(wrapper)).toMatchSnapshot();
+  });
+
   test('Will change the display setting', async () => {
     const wrapper = shallow(<Profile />);
     await Promise.resolve();
@@ -90,13 +110,6 @@ describe('The profile page', () => {
     expect(mockedAssign).toHaveBeenCalledWith('/pins');
   });
 
-  test('Will render signin for non-authenticated users', async () => {
-    // Mock redux hooks
-    useSelector.mockImplementationOnce(() => ({ authenticated: false }));
-    const wrapper = shallow(<Profile />);
-    expect(toJson(wrapper)).toMatchSnapshot();
-  });
-
   test('Will redirect to root if user chooses not to sign in', async () => {
     // Mock redux hooks
     const push = jest.fn();
@@ -106,5 +119,12 @@ describe('The profile page', () => {
     const signin = wrapper.find('SignIn');
     signin.props().removeSignin();
     expect(push).toHaveBeenCalledWith('/');
+  });
+
+  test('Will not render if REST call is rejected', async () => {
+    RESTcall.mockImplementationOnce(() => Promise.reject());
+    const wrapper = shallow(<Profile />);
+    await Promise.resolve();
+    expect(wrapper.isEmptyRender()).toBe(true);
   });
 });

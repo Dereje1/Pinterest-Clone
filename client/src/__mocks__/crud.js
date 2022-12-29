@@ -13,7 +13,10 @@ const restMock = jest.fn().mockImplementation((...args) => {
       savedBy: [{ name: 'tester displayName', userId: 'tester id', service: 'google' }],
     });
   } if (address.includes('/api/unpin') && method === 'put' && !payload) {
-    return Promise.resolve();
+    return Promise.resolve({
+      _id: 2,
+      savedBy: [{ name: 'savedBy - id-2', service: 'google', userId: '2' }],
+    });
   } if (address.includes('/api/comment') && method === 'put') {
     return Promise.resolve({
       _id: 2,

@@ -119,7 +119,7 @@ exports[`The Mypins Component Mypins landing page will render pins if found 1`] 
                 "userId": "2",
               },
               Object {
-                "name": "savedBy - id-2",
+                "name": "savedBy - id-2git",
                 "service": "github",
                 "userId": "2",
               },
