@@ -431,6 +431,10 @@ describe('Unpinning an image', () => {
   };
   beforeEach(() => {
     res = { json: jest.fn(), end: jest.fn() };
+    process.env = {
+      ...process.env,
+      ADMIN_USER_ID: 'xxx',
+    };
   });
   afterEach(() => {
     jest.restoreAllMocks();
@@ -459,7 +463,7 @@ describe('Unpinning an image', () => {
       },
       { new: true },
     );
-    expect(res.json).toHaveBeenCalledWith({ ...rawPinsStub[1], savedBy: [] });
+    expect(res.json).toHaveBeenCalledWith({ ...allPinsResponse[1], savedBy: [], hasSaved: false });
   });
 
   test('will respond with error if PUT is rejected', async () => {
@@ -500,7 +504,10 @@ describe('Adding a comment', () => {
     pins.findByIdAndUpdate = jest.fn().mockImplementation(
       () => ({
         exec: jest.fn().mockResolvedValue(
-          { ...rawPinsStub[2], comments: [...rawPinsStub[2].comments, newCommentResponseStub] },
+          {
+            ...rawPinsStub[2],
+            comments: [...rawPinsStub[2].comments, newCommentResponseStub],
+          },
         ),
       }),
     );
@@ -530,7 +537,7 @@ describe('Adding a comment', () => {
       imgLink: 'https://stub-3',
       owner: { userId: 'another test id', name: 'tester-another', service: 'other-service' },
       savedBy: [{ userId: 'another test id', name: 'tester-another', service: 'other-service' }],
-      owns: true,
+      owns: false,
       hasSaved: false,
       comments: [
         {

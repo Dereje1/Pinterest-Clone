@@ -91,7 +91,7 @@ const ImageBuild = ({
         return;
       }
       const updatedPin = await RESTcall({
-        address: `/api/pin/${element._id}`,
+        address: element.hasSaved ? `/api/unpin/${element._id}` : `/api/pin/${element._id}`,
         method: 'put',
       });
 

@@ -54,10 +54,12 @@ exports[`Handling zoomed image action buttons will render the delete button for 
 </ForwardRef(IconButton)>
 `;
 
-exports[`Handling zoomed image action buttons will render the disabled pin button for already pinned/owned images 1`] = `
+exports[`Handling zoomed image action buttons will render the disabled pin button for already owned images 1`] = `
 <ForwardRef(IconButton)
   aria-label="settings"
   disableRipple={true}
+  onClick={null}
+  onMouseDown={[Function]}
   style={
     Object {
       "margin": "1vh",
@@ -66,12 +68,12 @@ exports[`Handling zoomed image action buttons will render the disabled pin butto
 >
   <ForwardRef(Tooltip)
     placement="bottom"
-    title="You pinned this image"
+    title="You own this image"
   >
     <Memo(ForwardRef(PushPinIcon))
       style={
         Object {
-          "color": "#3a1c1cde",
+          "color": "#c50000",
           "fontSize": "2em",
         }
       }
@@ -98,6 +100,34 @@ exports[`Handling zoomed image action buttons will render the pin button for unp
     <Memo(ForwardRef(PushPinOutlinedIcon))
       style={
         Object {
+          "fontSize": "2em",
+        }
+      }
+    />
+  </ForwardRef(Tooltip)>
+</ForwardRef(IconButton)>
+`;
+
+exports[`Handling zoomed image action buttons will render the unpin button for already pinned images 1`] = `
+<ForwardRef(IconButton)
+  aria-label="settings"
+  disableRipple={false}
+  onClick={[Function]}
+  onMouseDown={[Function]}
+  style={
+    Object {
+      "margin": "1vh",
+    }
+  }
+>
+  <ForwardRef(Tooltip)
+    placement="bottom"
+    title="Unpin this image"
+  >
+    <Memo(ForwardRef(PushPinIcon))
+      style={
+        Object {
+          "color": "#3a1c1cde",
           "fontSize": "2em",
         }
       }

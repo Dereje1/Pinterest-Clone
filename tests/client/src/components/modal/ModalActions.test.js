@@ -64,12 +64,24 @@ describe('Handling zoomed image action buttons', () => {
     expect(toJson(wrapper)).toMatchSnapshot();
   });
 
-  test('will render the disabled pin button for already pinned/owned images', () => {
+  test('will render the unpin button for already pinned images', () => {
     const updatedProps = {
       ...props,
       element: {
         hasSaved: true,
         owns: false,
+      },
+    };
+    const wrapper = shallow(<ModalActions {...updatedProps} />);
+    expect(toJson(wrapper)).toMatchSnapshot();
+  });
+
+  test('will render the disabled pin button for already owned images', () => {
+    const updatedProps = {
+      ...props,
+      element: {
+        hasSaved: false,
+        owns: true,
       },
     };
     const wrapper = shallow(<ModalActions {...updatedProps} />);

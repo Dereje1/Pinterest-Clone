@@ -92,7 +92,7 @@ const pinImage = async (req, res) => {
 };
 
 const unpin = async (req, res) => {
-  const { userId, displayName } = getUserProfile(req.user);
+  const { userId, displayName, isAdmin } = getUserProfile(req.user);
   const pinID = req.params._id;
   try {
     const pin = await pins.findById(pinID).exec();
@@ -100,8 +100,9 @@ const unpin = async (req, res) => {
     const update = { $set: { savedBy: pinToUpdate } };
     const modified = { new: true };
     const updatedPin = await pins.findByIdAndUpdate(pinID, update, modified).exec();
+    const [filteredAndUpdatedPin] = filterPins({ rawPins: [updatedPin], userId, isAdmin });
     console.log(`${displayName} unpinned ${updatedPin.imgDescription}`);
-    res.json(updatedPin);
+    res.json(filteredAndUpdatedPin);
   } catch (error) {
     res.json(error);
   }
