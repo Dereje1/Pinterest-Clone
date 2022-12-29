@@ -7,6 +7,7 @@ import Button from '@mui/material/Button';
 import ButtonGroup from '@mui/material/ButtonGroup';
 import Box from '@mui/material/Box';
 import ImageBuild from '../imagebuild/Imagebuild';
+import Loading from '../imagebuild/Loading';
 import SignIn from '../signin/signin';
 import RESTcall from '../../crud';
 import { getProviderIcons } from '../common/common';
@@ -66,7 +67,7 @@ const Profile = () => {
   });
 
   const pins = displaySetting === 'created' ? pinsOwned : pinsSaved;
-  if (!ready) return null;
+  if (!ready) return <div style={{ marginTop: 100 }}><Loading /></div>;
 
   if (displayLogin) {
     return (

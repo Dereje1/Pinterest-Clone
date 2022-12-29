@@ -121,10 +121,10 @@ describe('The profile page', () => {
     expect(push).toHaveBeenCalledWith('/');
   });
 
-  test('Will not render if REST call is rejected', async () => {
+  test('Will not render loading if not ready or REST call is rejected', async () => {
     RESTcall.mockImplementationOnce(() => Promise.reject());
     const wrapper = shallow(<Profile />);
     await Promise.resolve();
-    expect(wrapper.isEmptyRender()).toBe(true);
+    expect(wrapper.find('Loading').length).toBe(1);
   });
 });
