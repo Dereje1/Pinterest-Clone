@@ -142,8 +142,12 @@ const getProfilePins = async (req, res) => {
       $and: [{ [`${service}.id`]: userId }, { [`${service}.displayName`]: displayName }],
     }).exec();
 
-    if (loggedInUserid === userId || !user) {
-      res.json({ redirect: true });
+    if (!user) {
+      res.json({ redirect: '/' });
+      return;
+    }
+    if (loggedInUserid === userId) {
+      res.json({ redirect: '/pins' });
       return;
     }
     const createdPins = await pins.find({ 'owner.id': userId }).exec();

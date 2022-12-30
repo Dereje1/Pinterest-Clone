@@ -35,7 +35,7 @@ const Profile = () => {
         createdPins, savedPins, user, redirect,
       } = await RESTcall({ address: `/api/userProfile/${userInfo}` });
       if (redirect) {
-        window.location.assign('/pins');
+        history.push(redirect);
         return;
       }
       setPinsOwned(createdPins);

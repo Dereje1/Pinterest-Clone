@@ -606,7 +606,29 @@ describe('Retrieving pins for a profile page', () => {
     });
   });
 
-  test('will redirect if requested profile is same as logged in', async () => {
+  test('will redirect to home page, if requested profile can not be found', async () => {
+    req = {
+      ...req,
+      user: {
+        ...user,
+        twitter: {
+          id: 'requestUserId',
+          displayName: 'tester-twitter',
+        },
+      },
+    };
+    users.find = jest.fn().mockImplementation(
+      () => ({
+        exec: jest.fn().mockResolvedValue([]),
+      }),
+    );
+    await getProfilePins(req, res);
+    expect(res.json).toHaveBeenCalledWith({
+      redirect: '/',
+    });
+  });
+
+  test('will redirect to logged in user profile, if requested profile is same as logged in', async () => {
     req = {
       ...req,
       user: {
@@ -620,7 +642,7 @@ describe('Retrieving pins for a profile page', () => {
     setupMocks([]);
     await getProfilePins(req, res);
     expect(res.json).toHaveBeenCalledWith({
-      redirect: true,
+      redirect: '/pins',
     });
   });
 

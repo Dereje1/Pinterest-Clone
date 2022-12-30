@@ -33,19 +33,9 @@ import { useHistory } from 'react-router-dom';
 import RESTcall from '../../../../../client/src/crud';
 
 describe('The profile page', () => {
-  const windowSpy = jest.spyOn(global, 'window', 'get');
-  const mockedAssign = jest.fn();
-  beforeEach(() => {
-    windowSpy.mockImplementation(() => ({
-      location: {
-        assign: mockedAssign,
-      },
-    }));
-  });
   afterEach(() => {
     useSelector.mockClear();
     RESTcall.mockClear();
-    mockedAssign.mockClear();
   });
   test('Will render for pins created by the user', async () => {
     const wrapper = shallow(<Profile />);
@@ -103,11 +93,13 @@ describe('The profile page', () => {
     expect(savedButton.props().color).toBe('primary');
   });
 
-  test('Will redirect to logged in user\'s profile page if query matches', async () => {
-    RESTcall.mockImplementationOnce(() => Promise.resolve({ redirect: true }));
+  test('Will redirect to server response if query can not be handled', async () => {
+    const push = jest.fn();
+    useHistory.mockImplementation(() => ({ push }));
+    RESTcall.mockImplementationOnce(() => Promise.resolve({ redirect: '/serverresponse' }));
     shallow(<Profile />);
     await Promise.resolve();
-    expect(mockedAssign).toHaveBeenCalledWith('/pins');
+    expect(push).toHaveBeenCalledWith('/serverresponse');
   });
 
   test('Will redirect to root if user chooses not to sign in', async () => {
