@@ -575,7 +575,7 @@ describe('Retrieving pins for a profile page', () => {
   beforeEach(() => {
     req = {
       params: {
-        userid: 'requestUserId-twitter-requestDisplayName',
+        userid: 'requestUserId-twitter-request-DisplayName',
       },
       user,
     };
@@ -595,6 +595,13 @@ describe('Retrieving pins for a profile page', () => {
     expect(pins.find).toHaveBeenCalledTimes(2);
     expect(pins.find).toHaveBeenNthCalledWith(1, { 'owner.id': 'requestUserId' });
     expect(pins.find).toHaveBeenNthCalledWith(2, { 'savedBy.id': 'requestUserId' });
+    expect(users.find).toHaveBeenCalledWith({
+      $and:
+      [
+        { 'twitter.id': 'requestUserId' },
+        { 'twitter.displayName': 'request-DisplayName' },
+      ],
+    });
     expect(res.json).toHaveBeenCalledWith({
       createdPins: [],
       savedPins: [],

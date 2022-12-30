@@ -134,9 +134,10 @@ const addComment = async (req, res) => {
 
 const getProfilePins = async (req, res) => {
   const params = req.params.userid;
-  const [userId, service, displayName] = params.split('-');
   const { userId: loggedInUserid } = getUserProfile(req.user);
-
+  // displayNames can contain '-', therefore rejoin if accidentally split
+  const [userId, service, ...remainder] = params.split('-');
+  const displayName = remainder.join('-');
   try {
     const [user] = await users.find({
       $and: [{ [`${service}.id`]: userId }, { [`${service}.displayName`]: displayName }],
