@@ -42,10 +42,10 @@ exports[`Handling zoomed image action buttons will render the delete button for 
     placement="bottom"
     title="Unpin image"
   >
-    <Memo(ForwardRef(DeleteIcon))
+    <Memo(ForwardRef(PushPinIcon))
       style={
         Object {
-          "color": "#d12929",
+          "color": "#3a1c1cde",
           "fontSize": "2em",
         }
       }

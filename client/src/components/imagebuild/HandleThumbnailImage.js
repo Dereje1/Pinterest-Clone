@@ -3,7 +3,8 @@ import PropTypes from 'prop-types';
 import './imagebuild.scss';
 
 const HandleThumbnailImage = ({ element, pinImage, deletePin }) => {
-  if (!pinImage) { // means logged in user's profile page
+  /* For the logged in user's profile page */
+  if (!pinImage) {
     return (
       <button
         type="submit"
@@ -14,11 +15,23 @@ const HandleThumbnailImage = ({ element, pinImage, deletePin }) => {
       </button>
     );
   }
-  // finds the status of image to determine what kind of button to place on pic
-  if (element.hasSaved || element.owns) { // If the user has already saved this pin
-    return null; // no button
+  /* For anything other than the logged in user's profile page */
+  if (element.owns) {
+    return null;
   }
-  // user has not saved this pin show save button
+
+  if (element.hasSaved) {
+    return (
+      <button
+        type="submit"
+        className="actionbutton"
+        onClick={() => pinImage(element)}
+      >
+        Unpin
+      </button>
+    );
+  }
+
   return (
     <button
       type="submit"

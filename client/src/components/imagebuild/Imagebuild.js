@@ -82,7 +82,7 @@ const ImageBuild = ({
     setLoadedPins(updatePinList(loadedPins, updatedPin));
   };
 
-  const handlePinImage = async (element) => {
+  const togglePinImage = async (element) => {
     try {
       const { username } = user;
       // can not do this unless logged in
@@ -127,7 +127,7 @@ const ImageBuild = ({
             layoutComplete={layoutComplete}
             pinEnlarge={pinEnlarge}
             onBrokenImage={onBrokenImage}
-            pinImage={pinImage && handlePinImage}
+            pinImage={pinImage && togglePinImage}
             deletePin={deletePin}
             pins={activePins}
           />
@@ -136,7 +136,7 @@ const ImageBuild = ({
           <PinZoom
             reset={() => setDisplayPinZoom(false)}
             zoomInfo={imageInfo}
-            pinImage={pinImage && handlePinImage}
+            pinImage={pinImage && togglePinImage}
             deletePin={deletePin}
             user={user}
             handleNewComment={handleNewComment}

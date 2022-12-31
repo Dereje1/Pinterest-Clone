@@ -4,7 +4,6 @@ import IconButton from '@mui/material/IconButton';
 import PushPinIcon from '@mui/icons-material/PushPin';
 import PushPinOutlinedIcon from '@mui/icons-material/PushPinOutlined';
 import DeleteForeverIcon from '@mui/icons-material/DeleteForever';
-import DeleteIcon from '@mui/icons-material/Delete';
 import Tooltip from '@mui/material/Tooltip';
 
 const GetAction = ({
@@ -29,7 +28,7 @@ const GetAction = ({
               </Tooltip>
             ) : (
               <Tooltip title="Unpin image" placement="bottom">
-                <DeleteIcon style={{ fontSize: '2em', color: '#d12929' }} />
+                <PushPinIcon style={{ fontSize: '2em', color: '#3a1c1cde' }} />
               </Tooltip>
             )
         }
