@@ -20,8 +20,8 @@ describe('The search component', () => {
     props = null;
   });
 
-  test('Will not render anything if not at root path', () => {
-    const updatedProps = { ...props, pathname: '/anotherpath' };
+  test('Will not render anything if at /pins path', () => {
+    const updatedProps = { ...props, pathname: '/pins' };
     const wrapper = shallow(<Search {...updatedProps} />);
     expect(wrapper.isEmptyRender()).toBe(true);
   });

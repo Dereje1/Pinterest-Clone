@@ -30,7 +30,7 @@ const Search = ({
     onDebounceSearch(value, searchUpdate);
   };
 
-  if (pathname !== '/') return null;
+  if (pathname === '/pins') return null;
 
   if (!isShowing) {
     return (
