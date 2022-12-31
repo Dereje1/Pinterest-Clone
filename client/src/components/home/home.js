@@ -4,7 +4,6 @@ import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import RESTcall from '../../crud';
 import ImageBuild from '../imagebuild/Imagebuild';
-import SignIn from '../signin/signin';
 import { shuffleImages, getFilteredPins } from '../../utils/utils';
 
 export class Home extends Component {
@@ -13,7 +12,6 @@ export class Home extends Component {
     super(props);
     this.state = {
       pinList: [], // stores all pins in db in state
-      displaySignIn: false,
       ready: false,
     };
   }
@@ -30,20 +28,12 @@ export class Home extends Component {
   }
 
   render() {
-    const { user, user: { authenticated, username }, search } = this.props;
-    const { pinList, displaySignIn, ready } = this.state;
+    const { user, user: { username }, search } = this.props;
+    const { pinList, ready } = this.state;
     const filteredPins = getFilteredPins(pinList, search);
     if (username !== null) {
       return (
         <React.Fragment>
-          {
-            !authenticated && displaySignIn
-              && (
-                <SignIn
-                  removeSignin={() => this.setState({ displaySignIn: false })}
-                />
-              )
-          }
           <ImageBuild
             pinImage
             deletePin={null}

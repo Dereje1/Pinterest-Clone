@@ -36,32 +36,6 @@ describe('The Home Component', () => {
     expect(wrapper.isEmptyRender()).toBe(true);
   });
 
-  test('Shall not include the sign in component for authenticated users', () => {
-    const wrapper = shallow(<Home {...props} />);
-    const signIn = wrapper.find('SignIn');
-    expect(signIn.length).toBe(0);
-  });
-
-  test('Shall include the sign in component for non-authenticated users', () => {
-    const wrapper = shallow(<Home {...props} />);
-    wrapper.setProps({ user: { authenticated: false } });
-    wrapper.setState({ displaySignIn: true });
-    const signIn = wrapper.find('SignIn');
-    expect(signIn.length).toBe(1);
-  });
-
-  test('Shall dismiss the sign in component for non-authenticated users on blur', () => {
-    const wrapper = shallow(<Home {...props} />);
-    wrapper.setProps({ user: { authenticated: false } });
-    wrapper.setState({ displaySignIn: true });
-    let signIn = wrapper.find('SignIn');
-    expect(signIn.length).toBe(1);
-    signIn.props().removeSignin();
-    expect(wrapper.state().displaySignIn).toBe(false);
-    signIn = wrapper.find('SignIn');
-    expect(signIn.length).toBe(0);
-  });
-
   test('ImageBuild sub-component shall recieve the pins on CDM as props', async () => {
     const wrapper = shallow(<Home {...props} />);
     await Promise.resolve();
