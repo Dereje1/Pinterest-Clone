@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import PropTypes from 'prop-types';
 import _ from 'lodash';
 import Paper from '@mui/material/Paper';
@@ -18,6 +18,11 @@ const Search = ({
 }) => {
   const [searchVal, updateSearchVal] = useState('');
 
+  useEffect(() => {
+    if (pathname !== '/') closeSearch();
+    if (pathname === '/' && Boolean(searchVal)) openSearch();
+  }, [pathname]);
+
   const clearSearch = () => {
     updateSearchVal('');
     searchUpdate('');
@@ -30,7 +35,7 @@ const Search = ({
     onDebounceSearch(value, searchUpdate);
   };
 
-  if (pathname === '/pins') return null;
+  if (pathname !== '/') return null;
 
   if (!isShowing) {
     return (

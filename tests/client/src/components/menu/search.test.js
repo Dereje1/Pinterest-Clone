@@ -24,6 +24,7 @@ describe('The search component', () => {
     const updatedProps = { ...props, pathname: '/pins' };
     const wrapper = shallow(<Search {...updatedProps} />);
     expect(wrapper.isEmptyRender()).toBe(true);
+    expect(props.closeSearch).toHaveBeenCalled();
   });
 
   test('Will render only search Icon if not selected by the user', () => {
@@ -81,5 +82,24 @@ describe('The search component', () => {
     searchInput = wrapper.find('ForwardRef(InputBase)');
     expect(searchInput.props().value).toBe('');
     expect(props.searchUpdate).toHaveBeenNthCalledWith(2, '');
+  });
+
+  test('Will keep search open with prev value if user comes back to home', () => {
+    // start with root path and update search val
+    const updatedProps = { ...props, isShowing: true };
+    const wrapper = shallow(<Search {...updatedProps} />);
+    // update search val
+    let searchInput = wrapper.find('ForwardRef(InputBase)');
+    searchInput.props().onChange({ target: { value: 'abc' } });
+    expect(wrapper.isEmptyRender()).toBe(false);
+    // go back to a non searchable path
+    wrapper.setProps({ ...props, pathname: '/pins' });
+    expect(wrapper.isEmptyRender()).toBe(true);
+    expect(props.closeSearch).toHaveBeenCalled();
+    // then go back to root path again
+    wrapper.setProps({ ...props, pathname: '/', isShowing: true });
+    searchInput = wrapper.find('ForwardRef(InputBase)');
+    expect(props.openSearch).toHaveBeenCalled();
+    expect(searchInput.props().value).toBe('abc');
   });
 });

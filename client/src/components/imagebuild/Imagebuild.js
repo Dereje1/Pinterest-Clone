@@ -116,6 +116,11 @@ const ImageBuild = ({
 
   return (
     <React.Fragment>
+      { displayLogin && (
+        <SignIn
+          removeSignin={() => setDisplayLogin(false)}
+        />
+      )}
       <div id="mainframe">
         <InfiniteScroll
           dataLength={activePins.length}
@@ -140,11 +145,6 @@ const ImageBuild = ({
             deletePin={deletePin}
             user={user}
             handleNewComment={handleNewComment}
-          />
-        )}
-        { displayLogin && (
-          <SignIn
-            removeSignin={() => setDisplayLogin(false)}
           />
         )}
       </div>
