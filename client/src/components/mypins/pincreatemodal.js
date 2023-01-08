@@ -25,7 +25,6 @@ import {
 } from '../../utils/utils';
 import './pincreate.scss';
 
-
 class PinCreate extends Component {
 
   constructor(props) {
@@ -197,7 +196,7 @@ class PinCreate extends Component {
                       id="pin-img-link"
                       label="Paste image address here http://..."
                       variant="standard"
-                      onChange={e => this.processImage(e)}
+                      onChange={(e) => this.processImage(e)}
                       value={picPreview}
                       error={isError}
                       color="success"
@@ -224,10 +223,9 @@ class PinCreate extends Component {
 
 export default PinCreate;
 
-
 PinCreate.propTypes = {
   // data used for pin creation
-  allPinLinks: PropTypes.arrayOf(PropTypes.object).isRequired,
+  allPinLinks: PropTypes.arrayOf(PropTypes.shape).isRequired,
   // callback in mypins to turn modal off
   reset: PropTypes.func.isRequired,
   // POST request via axios

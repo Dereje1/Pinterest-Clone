@@ -80,7 +80,7 @@ describe('The app will', () => {
   });
   test('set the auth routes', () => {
     setAuthRoutes(app, passport);
-    const allowedRoutes = app.get.mock.calls.map(r => r[0]);
+    const allowedRoutes = app.get.mock.calls.map((r) => r[0]);
     expect(allowedRoutes).toEqual([
       '/auth/profile',
       '/auth/guest',

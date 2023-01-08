@@ -55,7 +55,7 @@ const getApiKeys = () => {
 
 /* Isolate auth service used from req.user and generate proffile */
 const getUserProfile = (user) => {
-  const [service] = ['google', 'twitter', 'github'].filter(s => user && Boolean(user[s].id));
+  const [service] = ['google', 'twitter', 'github'].filter((s) => user && Boolean(user[s].id));
   const userId = service && user[service].id;
   const displayName = service && user[service].displayName;
   const username = service && user[service].username;
@@ -100,7 +100,7 @@ const filterPins = ({ rawPins, userId, isAdmin }) => rawPins.map((pin) => {
   const {
     _id: pinId, imgDescription, imgLink, owner, savedBy, createdAt: pinCreatedAt, comments,
   } = pin;
-  const savedIds = savedBy.map(s => s.id);
+  const savedIds = savedBy.map((s) => s.id);
   const savedNames = savedBy.map(({ name, id, service }) => ({ name, userId: id, service }));
   const modifiedComments = comments.map(
     ({
@@ -134,7 +134,7 @@ const validateURL = (string) => {
   }
 };
 
-const processImage = url => new Promise((resolve, reject) => {
+const processImage = (url) => new Promise((resolve, reject) => {
   const urlType = validateURL(url);
   if (!urlType) {
     reject(new Error('Invalid URL type'));

@@ -17,7 +17,7 @@ const handleLogin = (loc) => { // twitter/ google authentication
   window.location.assign(loc);
 };
 
-export const ProviderButton = ({ service }) => {
+export function ProviderButton({ service }) {
   const providerIcons = getProviderIcons({ fontSize: 25 });
   return (
     <Button
@@ -25,12 +25,12 @@ export const ProviderButton = ({ service }) => {
       variant="outlined"
       startIcon={providerIcons[service].icon}
       onClick={() => handleLogin(`/auth/${service}`)}
-      onMouseDown={e => e.preventDefault()}
+      onMouseDown={(e) => e.preventDefault()}
     >
       {`Continue With ${service.charAt(0).toUpperCase() + service.slice(1)}`}
     </Button>
   );
-};
+}
 
 export class LoginButtons extends React.Component {
 
@@ -45,7 +45,7 @@ export class LoginButtons extends React.Component {
     if (!providers) return null;
     const providerKeys = Object.keys(providers);
     return (
-      <React.Fragment>
+      <>
         {
 
           username !== 'Guest' && (
@@ -61,7 +61,7 @@ export class LoginButtons extends React.Component {
             return null;
           })
         }
-      </React.Fragment>
+      </>
     );
   }
 

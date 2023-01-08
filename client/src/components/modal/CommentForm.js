@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import Button from '@mui/material/Button';
 import TextField from '@mui/material/TextField';
 
-const CommentForm = ({ handleClose, handleSubmit }) => {
+function CommentForm({ handleClose, handleSubmit }) {
   const [comment, setComment] = useState('');
 
   return (
@@ -20,7 +20,7 @@ const CommentForm = ({ handleClose, handleSubmit }) => {
         rows={3}
         fullWidth
         value={comment}
-        onChange={e => setComment(e.target.value)}
+        onChange={(e) => setComment(e.target.value)}
       />
       <div style={{ marginTop: 1 }}>
         <Button onClick={handleClose}>Cancel</Button>
@@ -28,7 +28,7 @@ const CommentForm = ({ handleClose, handleSubmit }) => {
       </div>
     </div>
   );
-};
+}
 
 export default CommentForm;
 

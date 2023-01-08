@@ -6,12 +6,14 @@ const mongoose = require('mongoose');
 const dbURI = process.env.MONGOLAB_URI;
 mongoose.Promise = global.Promise;
 // Create the database connection
-mongoose.connect(dbURI,
+mongoose.connect(
+  dbURI,
   {
     useUnifiedTopology: true,
     useNewUrlParser: true,
     useFindAndModify: false,
-  });
+  },
+);
 
 // CONNECTION EVENTS
 // When successfully connected

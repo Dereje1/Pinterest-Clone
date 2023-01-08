@@ -33,15 +33,13 @@ export class Home extends Component {
     const filteredPins = getFilteredPins(pinList, search);
     if (username !== null) {
       return (
-        <React.Fragment>
-          <ImageBuild
-            pinImage
-            deletePin={null}
-            pinList={filteredPins}
-            ready={ready}
-            user={user}
-          />
-        </React.Fragment>
+        <ImageBuild
+          pinImage
+          deletePin={null}
+          pinList={filteredPins}
+          ready={ready}
+          user={user}
+        />
       );
     }
     return null;
@@ -49,7 +47,7 @@ export class Home extends Component {
 
 }
 
-export const mapStateToProps = state => state;
+export const mapStateToProps = (state) => state;
 
 export default connect(mapStateToProps)(Home);
 

@@ -3,7 +3,7 @@ import RESTcall from '../crud';
 
 // action gets user authentication status from /profile that is generated
 // and updates store
-export const getUser = path => async (dispatch) => {
+export const getUser = (path) => async (dispatch) => {
   try {
     const payload = await RESTcall({ address: path });
     dispatch({
@@ -19,7 +19,7 @@ export const getUser = path => async (dispatch) => {
 };
 
 // fake guest account setter look at backend /authconfig/routes
-export const setGuest = path => async (dispatch) => {
+export const setGuest = (path) => async (dispatch) => {
   try {
     const payload = await RESTcall({ address: path });
     dispatch({

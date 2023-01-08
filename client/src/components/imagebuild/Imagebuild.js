@@ -13,14 +13,14 @@ import error from '../mypins/error.png';
 const PINS_DISPLAY_PER_SCROLL = 10;
 
 // builds images, component shared by both home and mypins
-const ImageBuild = ({
+function ImageBuild({
   pinImage,
   deletePin,
   pinList,
   displayBrokenImage,
   ready,
   user,
-}) => {
+}) {
   const [displayPinZoom, setDisplayPinZoom] = useState(false);
   const [imageInfo, setImageInfo] = useState([]);
   const [imagesLoaded, setImagesLoaded] = useState(false);
@@ -30,7 +30,6 @@ const ImageBuild = ({
   const [batchSize, setBatchSize] = useState(initialDisplayPerScroll());
   const [displayLogin, setDisplayLogin] = useState(false);
 
-
   useEffect(() => {
     setLoadedPins(pinList);
   }, [pinList]);
@@ -39,7 +38,7 @@ const ImageBuild = ({
     setActivePins(loadedPins.slice(0, batchSize));
     if (displayPinZoom) {
       const [zoomedImg] = imageInfo;
-      const [pin] = loadedPins.filter(p => p._id === zoomedImg._id);
+      const [pin] = loadedPins.filter((p) => p._id === zoomedImg._id);
       if (pin) setImageInfo([pin, document.body.scrollTop]);
       else setDisplayPinZoom(false);
     }
@@ -56,7 +55,7 @@ const ImageBuild = ({
   // img onError callback executes this function
   const onBrokenImage = (id) => {
     let pinListCopy = JSON.parse(JSON.stringify(loadedPins));
-    const indexOfBroken = pinListCopy.findIndex(p => p._id === id);
+    const indexOfBroken = pinListCopy.findIndex((p) => p._id === id);
     const msg = `Broken Img - ${pinListCopy[indexOfBroken].imgDescription}`;
     console.log(msg);
     // update copy -->no mutation but do not delete from db
@@ -115,7 +114,7 @@ const ImageBuild = ({
   };
 
   return (
-    <React.Fragment>
+    <>
       { displayLogin && (
         <SignIn
           removeSignin={() => setDisplayLogin(false)}
@@ -149,9 +148,9 @@ const ImageBuild = ({
         )}
       </div>
       <Loading imagesLoaded={imagesLoaded} ready={ready} />
-    </React.Fragment>
+    </>
   );
-};
+}
 export default ImageBuild;
 
 ImageBuild.defaultProps = {
@@ -166,8 +165,8 @@ ImageBuild.propTypes = {
   pinImage: PropTypes.bool,
   deletePin: PropTypes.func,
   // caller will send list of pins after AJAX request complete
-  pinList: PropTypes.arrayOf(PropTypes.any),
+  pinList: PropTypes.arrayOf(PropTypes.shape),
   displayBrokenImage: PropTypes.bool,
   ready: PropTypes.bool.isRequired,
-  user: PropTypes.objectOf(PropTypes.any).isRequired,
+  user: PropTypes.objectOf(PropTypes.shape).isRequired,
 };

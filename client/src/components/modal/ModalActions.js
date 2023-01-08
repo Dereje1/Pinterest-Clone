@@ -6,9 +6,9 @@ import PushPinOutlinedIcon from '@mui/icons-material/PushPinOutlined';
 import DeleteForeverIcon from '@mui/icons-material/DeleteForever';
 import Tooltip from '@mui/material/Tooltip';
 
-const GetAction = ({
+function GetAction({
   element, pinImage, deletePin, reset,
-}) => {
+}) {
   if (!pinImage) { // means called from profile page
     return (
       <IconButton
@@ -18,7 +18,7 @@ const GetAction = ({
           deletePin(element);
           reset();
         }}
-        onMouseDown={e => e.preventDefault()}
+        onMouseDown={(e) => e.preventDefault()}
       >
         {
           element.owns
@@ -44,7 +44,7 @@ const GetAction = ({
         style={{ margin: '1vh' }}
         disableRipple={element.owns}
         onClick={element.hasSaved ? () => { pinImage(element); } : null}
-        onMouseDown={e => e.preventDefault()}
+        onMouseDown={(e) => e.preventDefault()}
       >
         <Tooltip title={element.owns ? 'You own this image' : 'Unpin this image'} placement="bottom">
           <PushPinIcon style={{ fontSize: '2em', color: element.owns ? '#c50000' : '#3a1c1cde' }} />
@@ -60,14 +60,14 @@ const GetAction = ({
       onClick={() => {
         pinImage(element);
       }}
-      onMouseDown={e => e.preventDefault()}
+      onMouseDown={(e) => e.preventDefault()}
     >
       <Tooltip title="Pin image" placement="bottom">
         <PushPinOutlinedIcon style={{ fontSize: '2em' }} />
       </Tooltip>
     </IconButton>
   );
-};
+}
 
 export default GetAction;
 
@@ -77,7 +77,7 @@ GetAction.defaultProps = {
 };
 
 GetAction.propTypes = {
-  element: PropTypes.objectOf(PropTypes.any).isRequired,
+  element: PropTypes.objectOf(PropTypes.shape).isRequired,
   // what type of button to place on pic/thumbnail executed by caller
   pinImage: PropTypes.func,
   deletePin: PropTypes.func,

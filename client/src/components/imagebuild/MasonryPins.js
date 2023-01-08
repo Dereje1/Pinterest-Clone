@@ -3,14 +3,14 @@ import PropTypes from 'prop-types';
 import Masonry from 'react-masonry-component';
 import HandleThumbnailImage from './HandleThumbnailImage';
 
-const MasonryPins = ({
+function MasonryPins({
   layoutComplete,
   pinEnlarge,
   onBrokenImage,
   pinImage,
   deletePin,
   pins,
-}) => {
+}) {
   const [loadedImages, setLoadedImages] = useState([]);
 
   return (
@@ -20,12 +20,12 @@ const MasonryPins = ({
       options={{ fitWidth: true }}
     >
       {
-        pins.map(element => (
+        pins.map((element) => (
           <div
             key={element._id}
             role="button"
             className="image-box"
-            onClick={e => pinEnlarge(e, element)}
+            onClick={(e) => pinEnlarge(e, element)}
             onKeyDown={() => {}}
             tabIndex={0}
           >
@@ -51,7 +51,7 @@ const MasonryPins = ({
       }
     </Masonry>
   );
-};
+}
 export default MasonryPins;
 
 MasonryPins.defaultProps = {
@@ -66,5 +66,5 @@ MasonryPins.propTypes = {
   layoutComplete: PropTypes.func.isRequired,
   pinEnlarge: PropTypes.func.isRequired,
   onBrokenImage: PropTypes.func.isRequired,
-  pins: PropTypes.arrayOf(PropTypes.any),
+  pins: PropTypes.arrayOf(PropTypes.shape),
 };

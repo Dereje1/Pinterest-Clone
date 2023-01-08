@@ -2,7 +2,6 @@ const ip = require('ip');
 const isLoggedIn = require('./isloggedin');
 const { getUserProfile, getApiKeys } = require('../utils');
 
-
 const PROVIDERS = [
   { name: 'twitter', options: {} },
   { name: 'google', options: { scope: ['profile', 'email'] } },

@@ -99,7 +99,6 @@ describe('Handling zoomed image action buttons', () => {
     expect(toJson(wrapper)).toMatchSnapshot();
   });
 
-
   test('will render the pin button for unpinned images', () => {
     const preventDefault = jest.fn();
     const wrapper = shallow(<ModalActions {...props} />);

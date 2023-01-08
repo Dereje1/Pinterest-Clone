@@ -10,7 +10,6 @@ import { pinsStub } from '../../../pinsStub';
 
 jest.mock('../../../../../client/src/crud');
 
-
 describe('The Mypins Component', () => {
   let props;
   beforeEach(() => {

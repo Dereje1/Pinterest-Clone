@@ -42,5 +42,6 @@ module.exports = {
     'react/no-did-update-set-state': 0,
     'no-param-reassign': ['error', { props: true, ignorePropertyModificationsFor: ['user', 'req', 'res'] }],
     'import/no-named-as-default': 0,
+    'react/jsx-props-no-spreading': 'off',
   },
 };

@@ -219,7 +219,7 @@ describe('The pin zoom modal', () => {
   test('will add eventlisteners to listen for scrolling events on mount', () => {
     global.addEventListener = jest.fn();
     shallow(<PinZoom {...props} />);
-    const events = global.addEventListener.mock.calls.map(c => c[0]);
+    const events = global.addEventListener.mock.calls.map((c) => c[0]);
     expect(global.addEventListener).toHaveBeenCalledTimes(1);
     expect(events).toEqual(['scroll']);
   });
@@ -229,7 +229,7 @@ describe('The pin zoom modal', () => {
     const wrapper = shallow(<PinZoom {...props} />);
     expect(document.body.style.overflow).toBe('hidden');
     wrapper.instance().componentWillUnmount();
-    const events = global.removeEventListener.mock.calls.map(c => c[0]);
+    const events = global.removeEventListener.mock.calls.map((c) => c[0]);
     expect(global.removeEventListener).toHaveBeenCalledTimes(1);
     expect(events).toEqual(['scroll']);
     expect(document.body.style.overflowY).toBe('scroll');

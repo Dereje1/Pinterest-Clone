@@ -69,7 +69,7 @@ const pinImage = async (req, res) => {
 
   try {
     const pin = await pins.findById(pinID).exec();
-    const alreadyPinned = pin.savedBy.some(p => p.id === userId);
+    const alreadyPinned = pin.savedBy.some((p) => p.id === userId);
     if (!alreadyPinned) {
       const newPinnerInfo = {
         name: displayName,
@@ -96,7 +96,7 @@ const unpin = async (req, res) => {
   const pinID = req.params._id;
   try {
     const pin = await pins.findById(pinID).exec();
-    const pinToUpdate = pin.savedBy.filter(s => s.id !== userId);
+    const pinToUpdate = pin.savedBy.filter((s) => s.id !== userId);
     const update = { $set: { savedBy: pinToUpdate } };
     const modified = { new: true };
     const updatedPin = await pins.findByIdAndUpdate(pinID, update, modified).exec();

@@ -34,5 +34,4 @@ const pinSchema = mongoose.Schema({
   isBroken: { type: Boolean },
 }, { timestamps: true });
 
-
 module.exports = mongoose.model('pin', pinSchema);
