@@ -1,7 +1,7 @@
-/* eslint-disable no-import-assign */
 /**
  * @jest-environment jsdom
  */
+/* eslint-disable no-import-assign */
 import React from 'react';
 import { shallow } from 'enzyme';
 import toJson from 'enzyme-to-json';

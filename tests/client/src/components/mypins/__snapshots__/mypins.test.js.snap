@@ -13,278 +13,274 @@ exports[`The Mypins Component Mypins landing page will render bubbles until read
 `;
 
 exports[`The Mypins Component Mypins landing page will render pins if found 1`] = `
-<Fragment>
-  <div>
+<div>
+  <div
+    id="mypinframe"
+  >
     <div
-      id="mypinframe"
+      style={
+        Object {
+          "alignItems": "center",
+          "display": "flex",
+          "flexDirection": "column",
+          "justifyContent": "center",
+          "marginTop": 80,
+        }
+      }
     >
+      <ForwardRef(Typography)
+        variant="h4"
+      >
+        tester displayName
+      </ForwardRef(Typography)>
       <div
         style={
           Object {
             "alignItems": "center",
             "display": "flex",
-            "flexDirection": "column",
             "justifyContent": "center",
-            "marginTop": 80,
           }
         }
       >
-        <ForwardRef(Typography)
-          variant="h4"
-        >
-          tester displayName
-        </ForwardRef(Typography)>
-        <div
-          style={
+        <ForwardRef(Avatar)
+          sx={
             Object {
-              "alignItems": "center",
-              "display": "flex",
-              "justifyContent": "center",
+              "bgcolor": "#1DA1F2",
+              "height": 32,
+              "width": 32,
             }
           }
         >
-          <ForwardRef(Avatar)
-            sx={
-              Object {
-                "bgcolor": "#1DA1F2",
-                "height": 32,
-                "width": 32,
-              }
-            }
-          >
-            <Memo(ForwardRef(TwitterIcon))
-              style={
-                Object {
-                  "fontSize": 25,
-                }
-              }
-            />
-          </ForwardRef(Avatar)>
-          <ForwardRef(Typography)
+          <Memo(ForwardRef(TwitterIcon))
             style={
               Object {
-                "marginLeft": 15,
+                "fontSize": 25,
               }
             }
-          >
-            @tester username
-          </ForwardRef(Typography)>
-        </div>
-      </div>
-      <div
-        id="creatpinwrapper"
-        onClick={[Function]}
-        onKeyDown={[Function]}
-        role="button"
-        tabIndex={0}
-      >
-        <div
-          id="createpin"
-        >
-          <i
-            aria-hidden="true"
-            className="fa fa-plus-circle"
           />
-        </div>
-        <h3
-          id="createpintext"
+        </ForwardRef(Avatar)>
+        <ForwardRef(Typography)
+          style={
+            Object {
+              "marginLeft": 15,
+            }
+          }
         >
-          Create Pin
-        </h3>
+          @tester username
+        </ForwardRef(Typography)>
       </div>
     </div>
-    <ImageBuild
-      deletePin={[Function]}
-      displayBrokenImage={true}
-      pinImage={null}
-      pinList={
-        Array [
-          Object {
-            "_id": 2,
-            "comments": Array [],
-            "createdAt": "2020-12-25T00:00:00.000+00:00",
-            "hasSaved": true,
-            "imgDescription": "imgDescription id-2",
-            "imgLink": "imgLink id-2",
-            "owner": Object {
-              "name": "owner id-2",
-              "service": "twitter",
+    <div
+      id="creatpinwrapper"
+      onClick={[Function]}
+      onKeyDown={[Function]}
+      role="button"
+      tabIndex={0}
+    >
+      <div
+        id="createpin"
+      >
+        <i
+          aria-hidden="true"
+          className="fa fa-plus-circle"
+        />
+      </div>
+      <h3
+        id="createpintext"
+      >
+        Create Pin
+      </h3>
+    </div>
+  </div>
+  <ImageBuild
+    deletePin={[Function]}
+    displayBrokenImage={true}
+    pinImage={null}
+    pinList={
+      Array [
+        Object {
+          "_id": 2,
+          "comments": Array [],
+          "createdAt": "2020-12-25T00:00:00.000+00:00",
+          "hasSaved": true,
+          "imgDescription": "imgDescription id-2",
+          "imgLink": "imgLink id-2",
+          "owner": Object {
+            "name": "owner id-2",
+            "service": "twitter",
+            "userId": "2",
+          },
+          "owns": false,
+          "savedBy": Array [
+            Object {
+              "name": "savedBy - id-2",
+              "service": "google",
               "userId": "2",
             },
-            "owns": false,
-            "savedBy": Array [
-              Object {
-                "name": "savedBy - id-2",
-                "service": "google",
-                "userId": "2",
-              },
-              Object {
-                "name": "savedBy - id-2git",
-                "service": "github",
-                "userId": "2",
-              },
-            ],
+            Object {
+              "name": "savedBy - id-2git",
+              "service": "github",
+              "userId": "2",
+            },
+          ],
+        },
+        Object {
+          "_id": 3,
+          "comments": Array [],
+          "createdAt": "2020-12-25T00:00:00.000+00:00",
+          "hasSaved": false,
+          "imgDescription": "imgDescription id-3",
+          "imgLink": "imgLink id-3",
+          "owner": Object {
+            "name": "owner id-3",
+            "service": "github",
+            "userId": "3",
           },
-          Object {
-            "_id": 3,
-            "comments": Array [],
-            "createdAt": "2020-12-25T00:00:00.000+00:00",
-            "hasSaved": false,
-            "imgDescription": "imgDescription id-3",
-            "imgLink": "imgLink id-3",
-            "owner": Object {
-              "name": "owner id-3",
+          "owns": true,
+          "savedBy": Array [
+            Object {
+              "name": "savedBy - id-3",
+              "service": "google",
+              "userId": "3",
+            },
+            Object {
+              "name": "savedBy - id-3",
               "service": "github",
               "userId": "3",
             },
-            "owns": true,
-            "savedBy": Array [
-              Object {
-                "name": "savedBy - id-3",
-                "service": "google",
-                "userId": "3",
-              },
-              Object {
-                "name": "savedBy - id-3",
-                "service": "github",
-                "userId": "3",
-              },
-            ],
-          },
-        ]
+          ],
+        },
+      ]
+    }
+    ready={true}
+    user={
+      Object {
+        "authenticated": true,
+        "displayName": "tester displayName",
+        "service": "twitter",
+        "userId": "tester user Id",
+        "username": "tester username",
       }
-      ready={true}
-      user={
-        Object {
-          "authenticated": true,
-          "displayName": "tester displayName",
-          "service": "twitter",
-          "userId": "tester user Id",
-          "username": "tester username",
-        }
-      }
-    />
-  </div>
-</Fragment>
+    }
+  />
+</div>
 `;
 
 exports[`The Mypins Component Mypins landing page will render welcome message if no pins found 1`] = `
-<Fragment>
-  <div>
+<div>
+  <div
+    id="mypinframe"
+  >
     <div
-      id="mypinframe"
+      style={
+        Object {
+          "alignItems": "center",
+          "display": "flex",
+          "flexDirection": "column",
+          "justifyContent": "center",
+          "marginTop": 80,
+        }
+      }
     >
+      <ForwardRef(Typography)
+        variant="h4"
+      >
+        tester displayName
+      </ForwardRef(Typography)>
       <div
         style={
           Object {
             "alignItems": "center",
             "display": "flex",
-            "flexDirection": "column",
             "justifyContent": "center",
-            "marginTop": 80,
           }
         }
       >
-        <ForwardRef(Typography)
-          variant="h4"
-        >
-          tester displayName
-        </ForwardRef(Typography)>
-        <div
-          style={
+        <ForwardRef(Avatar)
+          sx={
             Object {
-              "alignItems": "center",
-              "display": "flex",
-              "justifyContent": "center",
+              "bgcolor": "#1DA1F2",
+              "height": 32,
+              "width": 32,
             }
           }
         >
-          <ForwardRef(Avatar)
-            sx={
-              Object {
-                "bgcolor": "#1DA1F2",
-                "height": 32,
-                "width": 32,
-              }
-            }
-          >
-            <Memo(ForwardRef(TwitterIcon))
-              style={
-                Object {
-                  "fontSize": 25,
-                }
-              }
-            />
-          </ForwardRef(Avatar)>
-          <ForwardRef(Typography)
+          <Memo(ForwardRef(TwitterIcon))
             style={
               Object {
-                "marginLeft": 15,
+                "fontSize": 25,
               }
             }
-          >
-            @tester username
-          </ForwardRef(Typography)>
-        </div>
-      </div>
-      <div
-        id="creatpinwrapper"
-        onClick={[Function]}
-        onKeyDown={[Function]}
-        role="button"
-        tabIndex={0}
-      >
-        <div
-          id="createpin"
-        >
-          <i
-            aria-hidden="true"
-            className="fa fa-plus-circle"
           />
-        </div>
-        <h3
-          id="createpintext"
+        </ForwardRef(Avatar)>
+        <ForwardRef(Typography)
+          style={
+            Object {
+              "marginLeft": 15,
+            }
+          }
         >
-          Create Pin
-        </h3>
+          @tester username
+        </ForwardRef(Typography)>
       </div>
     </div>
-    <ForwardRef(Box)
-      sx={
+    <div
+      id="creatpinwrapper"
+      onClick={[Function]}
+      onKeyDown={[Function]}
+      role="button"
+      tabIndex={0}
+    >
+      <div
+        id="createpin"
+      >
+        <i
+          aria-hidden="true"
+          className="fa fa-plus-circle"
+        />
+      </div>
+      <h3
+        id="createpintext"
+      >
+        Create Pin
+      </h3>
+    </div>
+  </div>
+  <ForwardRef(Box)
+    sx={
+      Object {
+        "backgroundColor": "#eeeeee",
+        "marginLeft": "auto",
+        "marginRight": "auto",
+        "marginTop": 10,
+        "padding": 2,
+      }
+    }
+  >
+    <ForwardRef(Typography)
+      style={
         Object {
-          "backgroundColor": "#eeeeee",
-          "marginLeft": "auto",
-          "marginRight": "auto",
-          "marginTop": 10,
-          "padding": 2,
+          "textAlign": "center",
         }
       }
+      variant="h4"
     >
-      <ForwardRef(Typography)
-        style={
-          Object {
-            "textAlign": "center",
-          }
-        }
-        variant="h4"
+      Welcome!
+    </ForwardRef(Typography)>
+    <ForwardRef(Typography)
+      textAlign="center"
+      variant="h6"
+    >
+      To get started, you can create your own pin, or save an existing pin from the
+       
+      <Link
+        to="/"
       >
-        Welcome!
-      </ForwardRef(Typography)>
-      <ForwardRef(Typography)
-        textAlign="center"
-        variant="h6"
-      >
-        To get started, you can create your own pin, or save an existing pin from the
-         
-        <Link
-          to="/"
-        >
-          home
-        </Link>
-         
-        page
-      </ForwardRef(Typography)>
-    </ForwardRef(Box)>
-  </div>
-</Fragment>
+        home
+      </Link>
+       
+      page
+    </ForwardRef(Typography)>
+  </ForwardRef(Box)>
+</div>
 `;
