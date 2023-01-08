@@ -36,14 +36,14 @@ const GetAction = ({
     );
   }
 
-  // finds the status of image to determine what kind of button to place on pic
+  // finds the status of image to determine what kind of pin to place on image
   if (element.hasSaved || element.owns) { // If the user has already saved this pin
     return (
       <IconButton
         aria-label="settings"
         style={{ margin: '1vh' }}
         disableRipple={element.owns}
-        onClick={element.hasSaved ? () => { pinImage(element); reset(); } : null}
+        onClick={element.hasSaved ? () => { pinImage(element); } : null}
         onMouseDown={e => e.preventDefault()}
       >
         <Tooltip title={element.owns ? 'You own this image' : 'Unpin this image'} placement="bottom">
@@ -52,14 +52,13 @@ const GetAction = ({
       </IconButton>
     ); // no button
   }
-  // user has not saved this pin show save button
+  // user has not saved this pin show outlined pin
   return (
     <IconButton
       aria-label="settings"
       style={{ margin: '1vh' }}
       onClick={() => {
         pinImage(element);
-        reset();
       }}
       onMouseDown={e => e.preventDefault()}
     >

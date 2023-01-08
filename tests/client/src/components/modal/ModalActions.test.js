@@ -83,7 +83,7 @@ describe('Handling zoomed image action buttons', () => {
       owns: false,
     });
     expect(preventDefault).toHaveBeenCalled();
-    expect(props.reset).toHaveBeenCalled();
+    expect(props.reset).not.toHaveBeenCalled();
     expect(toJson(wrapper)).toMatchSnapshot();
   });
 
@@ -111,7 +111,7 @@ describe('Handling zoomed image action buttons', () => {
       owns: false,
     });
     expect(preventDefault).toHaveBeenCalled();
-    expect(props.reset).toHaveBeenCalled();
+    expect(props.reset).not.toHaveBeenCalled();
     expect(toJson(wrapper)).toMatchSnapshot();
   });
 });

@@ -82,7 +82,7 @@ const ImageBuild = ({
     setLoadedPins(updatePinList(loadedPins, updatedPin));
   };
 
-  const togglePinImage = async (element) => {
+  const togglePinImage = async ({ _id, hasSaved }) => {
     try {
       const { username } = user;
       // can not do this unless logged in
@@ -91,7 +91,7 @@ const ImageBuild = ({
         return;
       }
       const updatedPin = await RESTcall({
-        address: element.hasSaved ? `/api/unpin/${element._id}` : `/api/pin/${element._id}`,
+        address: `/api/${hasSaved ? 'unpin' : 'pin'}/${_id}`,
         method: 'put',
       });
 
