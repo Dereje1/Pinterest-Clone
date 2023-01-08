@@ -1,5 +1,5 @@
 #Get image
-FROM node:14
+FROM node:18
 #Assign workdir and copy all files
 WORKDIR /tmp
 COPY . .
