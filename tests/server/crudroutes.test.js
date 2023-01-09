@@ -4,6 +4,7 @@ const {
 } = require('../../server/crudroutes');
 const pins = require('../../server/models/pins'); // schema for pins
 const users = require('../../server/models/user'); // schema for pins
+const pinLinks = require('../../server/models/pinlinks'); // schema for pins
 const {
   user, rawPinsStub, allPinsResponse,
 } = require('./stub');
@@ -51,9 +52,22 @@ describe('Retrieving pins', () => {
       ...process.env,
       ADMIN_USER_ID: 'xxx',
     };
+    pinLinks.find = jest.fn().mockImplementation(
+      () => ({
+        exec: jest.fn().mockResolvedValue([
+          {
+            pin_id: 'stub pin_id',
+            imgLink: 'stub imgLink',
+            originalImgLink: 'stub originalImgLink',
+            cloudFrontLink: 'stub originalImgLink',
+          },
+        ]),
+      }),
+    );
   });
   afterEach(() => {
     jest.restoreAllMocks();
+    pinLinks.find.mockClear();
   });
 
   test('will retrieve all pins for the home page', async () => {
@@ -75,13 +89,14 @@ describe('Retrieving pins', () => {
     expect(pins.find).toHaveBeenCalledWith({ $or: [{ 'owner.id': user.twitter.id }, { 'savedBy.id': user.twitter.id }] });
     expect(res.json).toHaveBeenCalledWith({
       profilePins: allPinsResponse.filter((p) => p.owns || p.hasSaved),
-      allPinLinks: profilePinsRaw.reduce(
-        (acc, { imgLink, originalImgLink }) => [
-          ...acc,
-          { imgLink, originalImgLink, cloudFrontLink: imgLink },
-        ],
-        [],
-      ),
+      allPinLinks: [
+        {
+          pin_id: 'stub pin_id',
+          imgLink: 'stub imgLink',
+          originalImgLink: 'stub originalImgLink',
+          cloudFrontLink: 'stub originalImgLink',
+        },
+      ],
     });
   });
 
@@ -97,17 +112,14 @@ describe('Retrieving pins', () => {
     expect(pins.find).toHaveBeenCalledWith({ isBroken: false });
     expect(res.json).toHaveBeenCalledWith({
       profilePins: allPinsResponse.map((pin) => ({ ...pin, owns: true })),
-      allPinLinks: rawPinsStub.reduce(
-        (acc, { imgLink, originalImgLink }) => [
-          ...acc,
-          {
-            imgLink,
-            originalImgLink,
-            cloudFrontLink: imgLink,
-          },
-        ],
-        [],
-      ),
+      allPinLinks: [
+        {
+          pin_id: 'stub pin_id',
+          imgLink: 'stub imgLink',
+          originalImgLink: 'stub originalImgLink',
+          cloudFrontLink: 'stub originalImgLink',
+        },
+      ],
     });
   });
 
@@ -136,6 +148,7 @@ describe('Adding a pin', () => {
       S3_BUCKET_NAME: 'pinterest.clone',
     };
     res = { json: jest.fn() };
+    pinLinks.create = jest.fn().mockResolvedValue({});
   });
   afterEach(() => {
     jest.restoreAllMocks();
@@ -152,6 +165,7 @@ describe('Adding a pin', () => {
         },
         imgDescription: 'description-4',
         imgLink: 'https://stub-4',
+        _id: 123,
       },
     };
 
@@ -167,6 +181,11 @@ describe('Adding a pin', () => {
       originalImgLink: req.body.imgLink,
       imgLink: 'https://s3-uploaded-location-stub-4',
       isBroken: false,
+    });
+    expect(pinLinks.create).toHaveBeenCalledWith({
+      cloudFrontLink: expect.any(String),
+      imgLink: expect.any(String),
+      pin_id: '123',
     });
     expect(res.json).toHaveBeenCalledWith({ ...req.body });
     expect(mockS3Instance.upload).toHaveBeenCalledWith({
@@ -189,6 +208,7 @@ describe('Adding a pin', () => {
         },
         imgDescription: 'description-4',
         imgLink: 'data:image/jpeg;base64,/stub-4-data-protocol/',
+        _id: 123,
       },
     };
     mockS3Instance.upload.mockClear();
@@ -222,6 +242,7 @@ describe('Adding a pin', () => {
         },
         imgDescription: 'description-4',
         imgLink: 'htt://stub-4',
+        _id: 123,
       },
     };
     mockS3Instance.upload.mockClear();
@@ -249,6 +270,7 @@ describe('Adding a pin', () => {
         },
         imgDescription: 'description-4',
         imgLink: 'https://stub-4',
+        _id: 123,
       },
     };
 
@@ -360,9 +382,15 @@ describe('Deleting an image', () => {
   };
   beforeEach(() => {
     res = { json: jest.fn(), end: jest.fn() };
+    pinLinks.findOneAndRemove = jest.fn().mockImplementation(
+      () => ({
+        exec: jest.fn().mockResolvedValue([]),
+      }),
+    );
   });
   afterEach(() => {
     jest.restoreAllMocks();
+    pinLinks.findOneAndRemove.mockClear();
   });
 
   test('will delete an image if the user is an owner', async () => {
@@ -378,6 +406,7 @@ describe('Deleting an image', () => {
     expect(pins.findById).toHaveBeenCalledWith(1);
     expect(pins.findOneAndRemove).toHaveBeenCalledTimes(1);
     expect(pins.findOneAndRemove).toHaveBeenCalledWith({ _id: 1 });
+    expect(pinLinks.findOneAndRemove).toHaveBeenCalledWith({ pin_id: 1 });
     expect(res.json).toHaveBeenCalledWith(rawPinsStub[0]);
   });
 

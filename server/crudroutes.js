@@ -1,9 +1,10 @@
 const router = require('express').Router();
 const pins = require('./models/pins'); // schema for pins
 const users = require('./models/user');
+const pinLinks = require('./models/pinlinks');
 const isLoggedIn = require('./auth/isloggedin');
 const {
-  getUserProfile, filterPins, uploadImageToS3, getCloudFrontLink,
+  getUserProfile, filterPins, uploadImageToS3,
 } = require('./utils');
 
 const addPin = async (req, res) => {
@@ -24,6 +25,13 @@ const addPin = async (req, res) => {
       originalImgLink,
     };
     const addedpin = await pins.create({ ...updatedPinInfo, isBroken: false });
+    // store links information
+    await pinLinks.create({
+      pin_id: addedpin._id.toString(),
+      imgLink: addedpin.imgLink,
+      originalImgLink: addedpin.originalImgLink,
+      cloudFrontLink: newImgLink ? `https://d1ttxrulihk8wq.cloudfront.net/${newImgLink.split('/')[4]}` : '',
+    });
     console.log(`${displayName} added pin ${addedpin.imgDescription}`);
     res.json(addedpin);
   } catch (error) {
@@ -36,17 +44,7 @@ const getPins = async (req, res) => {
   try {
     const allPins = await pins.find({ isBroken: false }).exec();
     if (req.query.type === 'profile') {
-      let allPinLinks = [];
-      allPins.forEach(({ imgLink, originalImgLink }) => {
-        allPinLinks = [
-          ...allPinLinks,
-          {
-            imgLink,
-            originalImgLink,
-            cloudFrontLink: getCloudFrontLink(imgLink),
-          },
-        ];
-      });
+      const allPinLinks = await pinLinks.find({}).exec();
       if (isAdmin) {
         res.json({ profilePins: filterPins({ rawPins: allPins, userId, isAdmin }), allPinLinks });
         return;
@@ -171,6 +169,7 @@ const deletePin = async (req, res) => {
     const pin = await pins.findById(pinID).exec();
     if (userId === pin.owner.id || isAdmin) {
       const removedPin = await pins.findOneAndRemove(query).exec();
+      await pinLinks.findOneAndRemove({ pin_id: pinID }).exec();
       console.log(`${displayName} deleted pin ${removedPin.imgDescription}`);
       res.json(removedPin);
     } else {
