@@ -182,13 +182,13 @@ describe('The ImageBuild component', () => {
     const wrapper = shallow(<ImageBuild {...props} />);
     // await Promise.resolve();
     let masonry = wrapper.find('MasonryPins');
-    let imageToPin = masonry.props().pins.filter(p => p._id === pinsStub[0]._id)[0];
-    let savedByNames = imageToPin.savedBy.map(s => s.name);
+    let imageToPin = masonry.props().pins.filter((p) => p._id === pinsStub[0]._id)[0];
+    let savedByNames = imageToPin.savedBy.map((s) => s.name);
     expect(savedByNames.includes('tester displayName')).toBe(false);
     await masonry.props().pinImage(pinsStub[0]);
     masonry = wrapper.find('MasonryPins');
-    [imageToPin] = masonry.props().pins.filter(p => p._id === pinsStub[0]._id);
-    savedByNames = imageToPin.savedBy.map(s => s.name);
+    [imageToPin] = masonry.props().pins.filter((p) => p._id === pinsStub[0]._id);
+    savedByNames = imageToPin.savedBy.map((s) => s.name);
     expect(savedByNames.includes('tester displayName')).toBe(true);
     expect(RESTcall).toHaveBeenCalledTimes(1);
     expect(RESTcall.mock.calls).toEqual([
@@ -205,13 +205,13 @@ describe('The ImageBuild component', () => {
     const wrapper = shallow(<ImageBuild {...props} />);
     // await Promise.resolve();
     let masonry = wrapper.find('MasonryPins');
-    let imageToUnPin = masonry.props().pins.filter(p => p._id === pinsStub[1]._id)[0];
-    let savedByNames = imageToUnPin.savedBy.map(s => s.name);
+    let imageToUnPin = masonry.props().pins.filter((p) => p._id === pinsStub[1]._id)[0];
+    let savedByNames = imageToUnPin.savedBy.map((s) => s.name);
     expect(savedByNames.includes('savedBy - id-2git')).toBe(true);
     await masonry.props().pinImage(pinsStub[1]);
     masonry = wrapper.find('MasonryPins');
-    [imageToUnPin] = masonry.props().pins.filter(p => p._id === pinsStub[1]._id);
-    savedByNames = imageToUnPin.savedBy.map(s => s.name);
+    [imageToUnPin] = masonry.props().pins.filter((p) => p._id === pinsStub[1]._id);
+    savedByNames = imageToUnPin.savedBy.map((s) => s.name);
     expect(savedByNames.includes('savedBy - id-2git')).toBe(false);
     expect(RESTcall).toHaveBeenCalledTimes(1);
     expect(RESTcall.mock.calls).toEqual([

@@ -14,7 +14,7 @@ import MenuIcon from '@mui/icons-material/Menu';
 
 const ListItemTextStyling = { marginLeft: 5, fontSize: 20, fontWeight: 'bold' };
 
-const CollapsibleMenu = ({ pathname }) => {
+function CollapsibleMenu({ pathname }) {
   const [openDrawer, setOpenDrawer] = useState(false);
 
   const toggleDrawer = (event) => {
@@ -85,7 +85,7 @@ const CollapsibleMenu = ({ pathname }) => {
       </Drawer>
     </div>
   );
-};
+}
 
 export default CollapsibleMenu;
 

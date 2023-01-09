@@ -102,10 +102,10 @@ export class Mypins extends Component {
     const { pinList, displayPinCreate, allPinLinks } = this.state;
     if (displayPinCreate) return;
     this.setState({
-      pinList: pinList.filter(p => p._id !== _id),
+      pinList: pinList.filter((p) => p._id !== _id),
       showDeleteImageModal: false,
       deletableImgInfo: null,
-      allPinLinks: owns ? allPinLinks.filter(links => links.imgLink !== imgLink) : allPinLinks,
+      allPinLinks: owns ? allPinLinks.filter((links) => links.imgLink !== imgLink) : allPinLinks,
     }, async () => {
       await RESTcall({
         address: owns ? `/api/${_id}` : `/api/unpin/${_id}`,
@@ -125,109 +125,107 @@ export class Mypins extends Component {
     if (!ready) return <div style={{ marginTop: 100 }}><Loading /></div>;
 
     return (
-      <React.Fragment>
-        <div>
-          <div id="mypinframe">
-            {getUserName(user)}
-            <div
-              id="creatpinwrapper"
-              onClick={() => this.pinForm()}
-              role="button"
-              onKeyDown={() => { }}
-              tabIndex={0}
-            >
-              <div id="createpin">
-                <i className="fa fa-plus-circle" aria-hidden="true" />
-              </div>
-              <h3 id="createpintext">Create Pin</h3>
+      <div>
+        <div id="mypinframe">
+          {getUserName(user)}
+          <div
+            id="creatpinwrapper"
+            onClick={() => this.pinForm()}
+            role="button"
+            onKeyDown={() => { }}
+            tabIndex={0}
+          >
+            <div id="createpin">
+              <i className="fa fa-plus-circle" aria-hidden="true" />
             </div>
+            <h3 id="createpintext">Create Pin</h3>
           </div>
-          {
-            pinList.length
-              ? (
-                <ImageBuild
-                  pinImage={null}
-                  deletePin={(e) => {
-                    if (e.owns) {
-                      this.setState({
-                        showDeleteImageModal: true,
-                        deletableImgInfo: e,
-                      });
-                    } else {
-                      this.deletePic(e);
-                    }
-                  }}
-                  pinList={pinList}
-                  ready={ready}
-                  displayBrokenImage
-                  user={user}
-                />
-              )
-              : (
-                <Box
-                  sx={{
-                    marginLeft: 'auto',
-                    marginRight: 'auto',
-                    marginTop: 10,
-                    padding: 2,
-                    backgroundColor: '#eeeeee',
-                  }}
-                >
-                  <Typography variant="h4" style={{ textAlign: 'center' }}>
-                    Welcome!
-                  </Typography>
-                  <Typography variant="h6" textAlign="center">
-                    To get started, you can create your own pin,
-                    or save an existing pin from the
-                    {' '}
-                    <Link to="/">home</Link>
-                    {' '}
-                    page
-                  </Typography>
-                </Box>
-              )
-          }
-
-          {displayPinCreate && (
-            <PinCreate
-              reset={() => this.setState({ displayPinCreate: false })}
-              savePin={pinJSON => this.addPic(pinJSON)}
-              allPinLinks={allPinLinks}
-            />
-          )}
-          { showDeleteImageModal && (
-            <Dialog
-              open={showDeleteImageModal}
-              aria-labelledby="alert-dialog-title"
-              aria-describedby="alert-dialog-description"
-            >
-              <DialogTitle id="alert-dialog-title">
-                {`Permanently delete ${showDeleteImageModal && deletableImgInfo.imgDescription}?`}
-              </DialogTitle>
-              <DialogActions>
-                <Button
-                  id="cancel-delete-alert"
-                  onClick={() => this.setState({
-                    showDeleteImageModal: false,
-                    deletableImgInfo: null,
-                  })}
-                >
-                  Cancel
-                </Button>
-                <Button id="resume-delete-alert" onClick={() => this.deletePic(deletableImgInfo)} autoFocus>
-                  Delete
-                </Button>
-              </DialogActions>
-            </Dialog>
-          )}
         </div>
-      </React.Fragment>
+        {
+          pinList.length
+            ? (
+              <ImageBuild
+                pinImage={null}
+                deletePin={(e) => {
+                  if (e.owns) {
+                    this.setState({
+                      showDeleteImageModal: true,
+                      deletableImgInfo: e,
+                    });
+                  } else {
+                    this.deletePic(e);
+                  }
+                }}
+                pinList={pinList}
+                ready={ready}
+                displayBrokenImage
+                user={user}
+              />
+            )
+            : (
+              <Box
+                sx={{
+                  marginLeft: 'auto',
+                  marginRight: 'auto',
+                  marginTop: 10,
+                  padding: 2,
+                  backgroundColor: '#eeeeee',
+                }}
+              >
+                <Typography variant="h4" style={{ textAlign: 'center' }}>
+                  Welcome!
+                </Typography>
+                <Typography variant="h6" textAlign="center">
+                  To get started, you can create your own pin,
+                  or save an existing pin from the
+                  {' '}
+                  <Link to="/">home</Link>
+                  {' '}
+                  page
+                </Typography>
+              </Box>
+            )
+        }
+
+        {displayPinCreate && (
+          <PinCreate
+            reset={() => this.setState({ displayPinCreate: false })}
+            savePin={(pinJSON) => this.addPic(pinJSON)}
+            allPinLinks={allPinLinks}
+          />
+        )}
+        { showDeleteImageModal && (
+          <Dialog
+            open={showDeleteImageModal}
+            aria-labelledby="alert-dialog-title"
+            aria-describedby="alert-dialog-description"
+          >
+            <DialogTitle id="alert-dialog-title">
+              {`Permanently delete ${showDeleteImageModal && deletableImgInfo.imgDescription}?`}
+            </DialogTitle>
+            <DialogActions>
+              <Button
+                id="cancel-delete-alert"
+                onClick={() => this.setState({
+                  showDeleteImageModal: false,
+                  deletableImgInfo: null,
+                })}
+              >
+                Cancel
+              </Button>
+              <Button id="resume-delete-alert" onClick={() => this.deletePic(deletableImgInfo)} autoFocus>
+                Delete
+              </Button>
+            </DialogActions>
+          </Dialog>
+        )}
+      </div>
     );
   }
 
 }
 
-const mapStateToProps = state => state;
+const mapStateToProps = (state) => state;
 
 export default connect(mapStateToProps)(Mypins);
 

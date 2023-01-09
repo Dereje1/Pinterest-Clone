@@ -27,7 +27,6 @@ jest.mock('react-redux', () => ({
 // Mock REST calls
 jest.mock('../../../../../client/src/crud');
 
-
 import { useSelector } from 'react-redux';
 import { useHistory } from 'react-router-dom';
 import RESTcall from '../../../../../client/src/crud';

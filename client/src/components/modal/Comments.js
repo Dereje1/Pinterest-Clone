@@ -12,14 +12,14 @@ import CommentForm from './CommentForm';
 import PinnersDialog from './PinnersDialog';
 import { formatDate } from '../../utils/utils';
 
-const Comments = ({
+function Comments({
   stylingProps,
   pinInformation,
   handleNewComment,
   authenticated,
   toggleComments,
   closePin,
-}) => {
+}) {
   const [openCommentForm, setOpenCommentForm] = React.useState(false);
   const [openPinnersDialog, setOpenPinnersDialog] = React.useState(false);
 
@@ -44,7 +44,7 @@ const Comments = ({
         <Fab
           color="primary"
           aria-label="add"
-          onMouseDown={e => e.preventDefault()}
+          onMouseDown={(e) => e.preventDefault()}
           onClick={handleOpenCommentForm}
           sx={{ position: 'absolute', bottom: 10, right: 10 }}
           disabled={!authenticated}
@@ -88,8 +88,7 @@ const Comments = ({
           </div>
           {pinInformation.savedBy.length
             ? <Button variant="text" onClick={() => setOpenPinnersDialog(true)}>Pinners</Button>
-            : null
-          }
+            : null}
           <IconButton onClick={closePin}>
             <CloseIcon />
           </IconButton>
@@ -113,8 +112,7 @@ const Comments = ({
               <Typography variant="h6" color="text.secondary" sx={{ margin: 'auto' }}>
                 {authenticated
                   ? `Be the first to write a comment on ${pinInformation.imgDescription}...`
-                  : `Login and be the first to write a comment on ${pinInformation.imgDescription}...`
-                }
+                  : `Login and be the first to write a comment on ${pinInformation.imgDescription}...`}
               </Typography>
             </CardContent>
           </Card>
@@ -153,12 +151,12 @@ const Comments = ({
       />
     </div>
   );
-};
+}
 
 export default Comments;
 
 Comments.propTypes = {
-  pinInformation: PropTypes.objectOf(PropTypes.any).isRequired,
+  pinInformation: PropTypes.objectOf(PropTypes.shape).isRequired,
   stylingProps: PropTypes.objectOf(PropTypes.number).isRequired,
   handleNewComment: PropTypes.func.isRequired,
   authenticated: PropTypes.bool.isRequired,

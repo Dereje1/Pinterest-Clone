@@ -119,7 +119,6 @@ export class PinZoom extends Component {
     this.setState({ commentsShowing: null, cancelBlur: false });
   };
 
-
   render() {
     const {
       zoomInfo, pinImage, deletePin, user: { authenticated }, handleNewComment,
@@ -151,7 +150,7 @@ export class PinZoom extends Component {
                 <StyledBadge badgeContent={pinInformation.comments.length} color="primary" showZero name="comments">
                   <IconButton
                     onClick={this.toggleComments}
-                    onMouseDown={e => e.preventDefault()}
+                    onMouseDown={(e) => e.preventDefault()}
                   >
                     {commentsShowing
                       ? <CommentIcon style={{ fontSize: '1.7em' }} />
@@ -175,7 +174,7 @@ export class PinZoom extends Component {
                   component={RouterLink}
                   underline="none"
                   to={`/profile/${pinInformation.owner.userId}-${pinInformation.owner.service}-${pinInformation.owner.name}`}
-                  onMouseDown={e => e.preventDefault()}
+                  onMouseDown={(e) => e.preventDefault()}
                 >
                   {pinInformation.owner.name}
                 </Link>
@@ -214,10 +213,9 @@ export class PinZoom extends Component {
                   handleNewComment={handleNewComment}
                   authenticated={authenticated}
                   toggleComments={this.toggleComments}
-                  closePin={e => this.close(e, true)}
+                  closePin={(e) => this.close(e, true)}
                 />
-              )
-            }
+              )}
           </CardContent>
 
         </Card>
@@ -229,7 +227,6 @@ export class PinZoom extends Component {
 
 export default PinZoom;
 
-
 PinZoom.defaultProps = {
   pinImage: null,
   deletePin: null,
@@ -237,12 +234,12 @@ PinZoom.defaultProps = {
 
 PinZoom.propTypes = {
   // [picobject, overlay button type, last scroll distance]
-  zoomInfo: PropTypes.arrayOf(PropTypes.any).isRequired,
+  zoomInfo: PropTypes.arrayOf(PropTypes.shape).isRequired,
   // callback to caller to turn modal off
   reset: PropTypes.func.isRequired,
   // what type of button to place on pic/thumbnail executed by caller
   pinImage: PropTypes.func,
   deletePin: PropTypes.func,
-  user: PropTypes.objectOf(PropTypes.any).isRequired,
+  user: PropTypes.objectOf(PropTypes.shape).isRequired,
   handleNewComment: PropTypes.func.isRequired,
 };

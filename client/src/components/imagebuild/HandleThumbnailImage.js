@@ -2,7 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import './imagebuild.scss';
 
-const HandleThumbnailImage = ({ element, pinImage, deletePin }) => {
+function HandleThumbnailImage({ element, pinImage, deletePin }) {
   /* For the logged in user's profile page */
   if (!pinImage) {
     return (
@@ -42,7 +42,7 @@ const HandleThumbnailImage = ({ element, pinImage, deletePin }) => {
       {' Save'}
     </button>
   );
-};
+}
 
 export default HandleThumbnailImage;
 
@@ -52,7 +52,7 @@ HandleThumbnailImage.defaultProps = {
 };
 
 HandleThumbnailImage.propTypes = {
-  element: PropTypes.objectOf(PropTypes.any).isRequired,
+  element: PropTypes.objectOf(PropTypes.shape).isRequired,
   // what type of button to place on pic/thumbnail executed by caller
   pinImage: PropTypes.func,
   deletePin: PropTypes.func,

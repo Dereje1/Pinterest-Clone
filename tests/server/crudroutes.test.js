@@ -65,8 +65,8 @@ describe('Retrieving pins', () => {
   });
 
   test('will retrieve pins for the profile page', async () => {
-    const profilePinsRaw = rawPinsStub.filter(p => p.owner.id === user.twitter.id
-            || p.savedBy.map(s => s.id).includes(user.twitter.id));
+    const profilePinsRaw = rawPinsStub.filter((p) => p.owner.id === user.twitter.id
+            || p.savedBy.map((s) => s.id).includes(user.twitter.id));
 
     setupMocks(profilePinsRaw);
     req.query.type = 'profile';
@@ -74,7 +74,7 @@ describe('Retrieving pins', () => {
     expect(pins.find).toHaveBeenCalledTimes(2);
     expect(pins.find).toHaveBeenCalledWith({ $or: [{ 'owner.id': user.twitter.id }, { 'savedBy.id': user.twitter.id }] });
     expect(res.json).toHaveBeenCalledWith({
-      profilePins: allPinsResponse.filter(p => p.owns || p.hasSaved),
+      profilePins: allPinsResponse.filter((p) => p.owns || p.hasSaved),
       allPinLinks: profilePinsRaw.reduce(
         (acc, { imgLink, originalImgLink }) => [
           ...acc,
@@ -96,7 +96,7 @@ describe('Retrieving pins', () => {
     expect(pins.find).toHaveBeenCalledTimes(1);
     expect(pins.find).toHaveBeenCalledWith({ isBroken: false });
     expect(res.json).toHaveBeenCalledWith({
-      profilePins: allPinsResponse.map(pin => ({ ...pin, owns: true })),
+      profilePins: allPinsResponse.map((pin) => ({ ...pin, owns: true })),
       allPinLinks: rawPinsStub.reduce(
         (acc, { imgLink, originalImgLink }) => [
           ...acc,
@@ -158,7 +158,6 @@ describe('Adding a pin', () => {
     nock('https://stub-4')
       .get('/')
       .reply(200, 'Processed Image data');
-
 
     setupMocks({ ...req.body });
     await addPin(req, res);
@@ -556,7 +555,6 @@ describe('Adding a comment', () => {
     });
     expect(res.end).toHaveBeenCalledTimes(0);
   });
-
 
   test('will respond with error if PUT is rejected', async () => {
     pins.findByIdAndUpdate = jest.fn().mockImplementation(

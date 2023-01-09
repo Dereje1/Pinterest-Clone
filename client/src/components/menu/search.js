@@ -9,13 +9,13 @@ import HighlightOffIcon from '@mui/icons-material/HighlightOff';
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 import IconButton from '@mui/material/IconButton';
 
-const Search = ({
+function Search({
   searchUpdate,
   pathname,
   isShowing,
   openSearch,
   closeSearch,
-}) => {
+}) {
   const [searchVal, updateSearchVal] = useState('');
 
   useEffect(() => {
@@ -110,7 +110,7 @@ const Search = ({
     </div>
 
   );
-};
+}
 
 export default Search;
 

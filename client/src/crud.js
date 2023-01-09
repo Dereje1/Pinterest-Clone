@@ -6,6 +6,7 @@ export default async ({ address, method = 'get', payload = null }) => {
     const { data } = await axios[method](address, payload);
     return data;
   } catch (error) {
+    console.log(`An error occured making a REST call${error}`);
     throw (error);
   }
 };

@@ -13,7 +13,7 @@ These instructions will get you a copy of the project up and running on your loc
 
 | Prerequisite                                | Version |
 | ------------------------------------------- | ------- |
-| [Node.js](http://nodejs.org) /  npm (comes with Node)  | `~ ^14.18.0` / `~^6.14.15` |
+| [Node.js](http://nodejs.org) /  npm (comes with Node)  | `~ ^18.3.0` / `~^8.19.3` |
 | [Git](https://git-scm.com/downloads) | `~ ^2` |
 | [Docker Desktop](https://www.docker.com/products/docker-desktop/) (optional) | `~ ^4.4.2` |
 

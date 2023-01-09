@@ -15,7 +15,7 @@ import error from '../mypins/error.png';
 
 const providerIcons = getProviderIcons({ fontSize: 25 });
 
-const Profile = () => {
+function Profile() {
   const [pinsOwned, setPinsOwned] = useState([]);
   const [pinsSaved, setPinsSaved] = useState([]);
   const [ready, setReady] = useState(false);
@@ -26,7 +26,7 @@ const Profile = () => {
   const { userInfo } = useParams();
   const { pathname } = useLocation();
   const history = useHistory();
-  const loggedInUser = useSelector(state => state.user);
+  const loggedInUser = useSelector((state) => state.user);
 
   const getProfileData = async () => {
     try {
@@ -159,5 +159,5 @@ const Profile = () => {
 
     </>
   );
-};
+}
 export default Profile;

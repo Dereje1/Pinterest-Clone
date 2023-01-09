@@ -1,3 +1,4 @@
+/* eslint-disable default-param-last */
 // sets user status into store state
 const userStatusReducer = (state = { }, action) => {
   switch (action.type) {

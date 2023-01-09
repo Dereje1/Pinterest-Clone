@@ -21,7 +21,7 @@ describe('Mongo db', () => {
   });
   test('will invoke connection processes', () => {
     let connectionProcesses = mongoose.connection.on.mock.calls;
-    connectionProcesses = connectionProcesses.map(c => c[0]);
+    connectionProcesses = connectionProcesses.map((c) => c[0]);
     expect(connectionProcesses).toEqual(['connected', 'error', 'disconnected']);
   });
 });

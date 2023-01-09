@@ -58,13 +58,14 @@ export const getNewImageWidth = ({
   };
 };
 
-export const getPinners = savedBy => (savedBy.length > 3
+export const getPinners = (savedBy) => (savedBy.length > 3
   ? `${savedBy.slice(0, 3).join(', ')} and ${savedBy.length - 3} others`
   : `${savedBy.join(', ')}`);
 
-export const getFormattedDescription = imgDescription => (imgDescription.length > 15 ? `${imgDescription.slice(0, 15)}...` : imgDescription);
+export const getFormattedDescription = (imgDescription) => (imgDescription.length > 15 ? `${imgDescription.slice(0, 15)}...` : imgDescription);
 
-export const delay = ms => new Promise(resolve => setTimeout(resolve, ms));
+// eslint-disable-next-line no-promise-executor-return
+export const delay = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
 
 export const validateURL = (string) => {
   try {
@@ -102,7 +103,7 @@ export const isDuplicateError = (allPinLinks, picPreview) => {
   return false;
 };
 
-export const encodeImageFileAsURL = imgFile => new Promise((resolve, reject) => {
+export const encodeImageFileAsURL = (imgFile) => new Promise((resolve, reject) => {
   const reader = new FileReader();
   reader.onloadend = () => {
     resolve(reader.result);
@@ -121,7 +122,7 @@ export const formatDate = (date) => {
 };
 
 export const updatePinList = (oldList, newPin) => {
-  const indexOfUpdate = oldList.findIndex(p => p._id === newPin._id);
+  const indexOfUpdate = oldList.findIndex((p) => p._id === newPin._id);
   return [
     ...oldList.slice(0, indexOfUpdate),
     newPin,

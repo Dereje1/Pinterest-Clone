@@ -8,7 +8,6 @@ import {
   Menu, mapStateToProps, ExpandedMenu, Brand, Login,
 } from '../../../../../client/src/components/menu/menu';
 
-
 describe('The Menu component', () => {
   let props;
   beforeEach(() => {

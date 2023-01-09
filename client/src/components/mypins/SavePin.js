@@ -5,9 +5,9 @@ import SaveAltIcon from '@mui/icons-material/SaveAlt';
 import Fab from '@mui/material/Fab';
 import FileDownloadOffIcon from '@mui/icons-material/FileDownloadOff';
 
-const SavePin = ({
+function SavePin({
   isImageError, isDescriptionError, isDuplicateError, savePic, isImageLoaded,
-}) => {
+}) {
   let validation;
   if (!isImageLoaded) {
     validation = {
@@ -65,7 +65,7 @@ const SavePin = ({
 
     </CardActions>
   );
-};
+}
 
 export default SavePin;
 

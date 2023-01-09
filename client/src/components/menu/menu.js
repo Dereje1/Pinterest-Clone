@@ -18,32 +18,38 @@ const actionCreators = {
   updateSearch,
 };
 
-export const Brand = () => (
-  <div className="brand">
-    <a href="/">
-      <i className="fa fa-pinterest" aria-hidden="true" />
-      {' Clone'}
-    </a>
-  </div>
-);
+export function Brand() {
+  return (
+    <div className="brand">
+      <a href="/">
+        <i className="fa fa-pinterest" aria-hidden="true" />
+        {' Clone'}
+      </a>
+    </div>
+  );
+}
 
-export const Login = ({ showSignIn }) => (
-  <div className="items login">
-    <i
-      className="fa fa-sign-in"
-      aria-hidden="true"
-      onClick={showSignIn}
-    />
-  </div>
-);
+export function Login({ showSignIn }) {
+  return (
+    <div className="items login">
+      <i
+        className="fa fa-sign-in"
+        aria-hidden="true"
+        onClick={showSignIn}
+      />
+    </div>
+  );
+}
 
-export const ExpandedMenu = () => (
-  <>
-    <NavLink exact to="/">Home</NavLink>
-    <NavLink exact to="/pins">My Pins</NavLink>
-    <NavLink to="/another" onClick={() => window.location.assign('/auth/logout')}>Logout</NavLink>
-  </>
-);
+export function ExpandedMenu() {
+  return (
+    <>
+      <NavLink exact to="/">Home</NavLink>
+      <NavLink exact to="/pins">My Pins</NavLink>
+      <NavLink to="/another" onClick={() => window.location.assign('/auth/logout')}>Logout</NavLink>
+    </>
+  );
+}
 
 export class Menu extends React.Component {
 
@@ -127,7 +133,6 @@ export class Menu extends React.Component {
   }
 
 }
-
 
 export default compose(
   withRouter,
