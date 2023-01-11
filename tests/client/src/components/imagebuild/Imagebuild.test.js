@@ -53,10 +53,14 @@ describe('The ImageBuild component', () => {
     const masonry = wrapper.find('MasonryPins');
     let pinZoom = wrapper.find('PinZoom');
     expect(pinZoom.isEmptyRender()).toBe(true);
-    masonry.props().pinEnlarge({ target: { className: 'any' } }, pinsStub[1]);
+    masonry.props().pinEnlarge({ target: { className: 'any', naturalWidth: 600, naturalHeight: 600 } }, pinsStub[1]);
     pinZoom = wrapper.find('PinZoom');
     expect(pinZoom.isEmptyRender()).toBe(false);
-    expect(pinZoom.props().zoomInfo).toEqual([pinsStub[1], 10]);
+    expect(pinZoom.props().zoomInfo).toEqual([
+      pinsStub[1],
+      10,
+      { naturalWidth: 600, naturalHeight: 600 },
+    ]);
   });
 
   test('will dismiss pinEnlarge for clicks on the action button', () => {
@@ -75,16 +79,24 @@ describe('The ImageBuild component', () => {
     let masonry = wrapper.find('MasonryPins');
     let pinZoom = wrapper.find('PinZoom');
     expect(pinZoom.isEmptyRender()).toBe(true);
-    masonry.props().pinEnlarge({ target: { className: 'any' } }, pinsStub[1]);
+    masonry.props().pinEnlarge({ target: { className: 'any', naturalWidth: 600, naturalHeight: 600 } }, pinsStub[1]);
     pinZoom = wrapper.find('PinZoom');
     expect(pinZoom.isEmptyRender()).toBe(false);
-    expect(pinZoom.props().zoomInfo).toEqual([pinsStub[1], 10]);
+    expect(pinZoom.props().zoomInfo).toEqual([
+      pinsStub[1],
+      10,
+      { naturalWidth: 600, naturalHeight: 600 },
+    ]);
     // re-fire again after pin is already zooomed
     masonry = wrapper.find('MasonryPins');
-    masonry.props().pinEnlarge({ target: { className: 'any' }, pageY: 20, clientY: 5 }, pinsStub[1]);
+    masonry.props().pinEnlarge({ target: { className: 'any', naturalWidth: 600, naturalHeight: 600 } }, pinsStub[1]);
     pinZoom = wrapper.find('PinZoom');
     // If not working second arg should have been 15
-    expect(pinZoom.props().zoomInfo).toEqual([pinsStub[1], 10]);
+    expect(pinZoom.props().zoomInfo).toEqual([
+      pinsStub[1],
+      10,
+      { naturalWidth: 600, naturalHeight: 600 },
+    ]);
   });
 
   test('will reset pinEnlarge', () => {
@@ -92,10 +104,14 @@ describe('The ImageBuild component', () => {
     const masonry = wrapper.find('MasonryPins');
     let pinZoom = wrapper.find('PinZoom');
     expect(pinZoom.isEmptyRender()).toBe(true);
-    masonry.props().pinEnlarge({ target: { className: 'any' } }, pinsStub[1]);
+    masonry.props().pinEnlarge({ target: { className: 'any', naturalWidth: 600, naturalHeight: 600 } }, pinsStub[1]);
     pinZoom = wrapper.find('PinZoom');
     expect(pinZoom.isEmptyRender()).toBe(false);
-    expect(pinZoom.props().zoomInfo).toEqual([pinsStub[1], 10]);
+    expect(pinZoom.props().zoomInfo).toEqual([
+      pinsStub[1],
+      10,
+      { naturalWidth: 600, naturalHeight: 600 },
+    ]);
     pinZoom.props().reset();
     pinZoom = wrapper.find('PinZoom');
     expect(pinZoom.isEmptyRender()).toBe(true);
@@ -142,10 +158,14 @@ describe('The ImageBuild component', () => {
     let pinZoom = wrapper.find('PinZoom');
     expect(pinZoom.isEmptyRender()).toBe(true);
     // zoom into pin and assert pin has correct info
-    masonry.props().pinEnlarge({ target: { className: 'any' } }, pinsStub[1]);
+    masonry.props().pinEnlarge({ target: { className: 'any', naturalWidth: 600, naturalHeight: 600 } }, pinsStub[1]);
     pinZoom = wrapper.find('PinZoom');
     expect(pinZoom.isEmptyRender()).toBe(false);
-    expect(pinZoom.props().zoomInfo).toEqual([pinsStub[1], 10]);
+    expect(pinZoom.props().zoomInfo).toEqual([
+      pinsStub[1],
+      10,
+      { naturalWidth: 600, naturalHeight: 600 },
+    ]);
     // trigger a new comment
     await pinZoom.props().handleNewComment('tester comment');
     expect(RESTcall).toHaveBeenCalledTimes(1);
@@ -168,10 +188,14 @@ describe('The ImageBuild component', () => {
     let pinZoom = wrapper.find('PinZoom');
     expect(pinZoom.isEmptyRender()).toBe(true);
     // zoom into pin and assert pin has correct info
-    masonry.props().pinEnlarge({ target: { className: 'any' } }, pinsStub[1]);
+    masonry.props().pinEnlarge({ target: { className: 'any', naturalWidth: 600, naturalHeight: 600 } }, pinsStub[1]);
     pinZoom = wrapper.find('PinZoom');
     expect(pinZoom.isEmptyRender()).toBe(false);
-    expect(pinZoom.props().zoomInfo).toEqual([pinsStub[1], 10]);
+    expect(pinZoom.props().zoomInfo).toEqual([
+      pinsStub[1],
+      10,
+      { naturalWidth: 600, naturalHeight: 600 },
+    ]);
     // update pins list and assert that zoomed pin is gone
     wrapper.setProps({ ...props, pinList: [pinsStub[0], pinsStub[2]] });
     pinZoom = wrapper.find('PinZoom');

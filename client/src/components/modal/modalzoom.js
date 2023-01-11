@@ -45,10 +45,13 @@ export class PinZoom extends Component {
   }
 
   componentDidMount() {
-    this.zoomedImage.current.focus();
     const { zoomInfo } = this.props;
+    if (!zoomInfo.length) return;
+    this.zoomedImage.current.focus();
     const { parentDivStyle } = this.state;
-    const [, browserTop] = zoomInfo;
+    const [, browserTop, imgDims] = zoomInfo;
+    const { naturalWidth, naturalHeight } = imgDims;
+    const newDivStyle = getNewImageWidth({ naturalWidth, naturalHeight });
     // set top and scroll to current position and disable scroll
     window.scrollTo(0, browserTop);
     document.body.style.overflow = 'hidden';
@@ -57,6 +60,7 @@ export class PinZoom extends Component {
       show: true,
       parentDivStyle: {
         ...parentDivStyle,
+        ...newDivStyle,
         top: browserTop,
       },
     }, async () => { await delay(1000); });
@@ -84,18 +88,6 @@ export class PinZoom extends Component {
       // delay to display closing keyframe
       await delay(500);
       reset();
-    });
-  };
-
-  handleImage = ({ target: { naturalWidth, naturalHeight } }) => {
-    const { parentDivStyle } = this.state;
-    const newDivStyle = getNewImageWidth({ naturalWidth, naturalHeight });
-    // const pcopy = JSON.parse(JSON.stringify(parentDivStyle));
-    this.setState({
-      parentDivStyle: {
-        ...parentDivStyle,
-        ...newDivStyle,
-      },
     });
   };
 
@@ -197,7 +189,6 @@ export class PinZoom extends Component {
               <CardMedia
                 component="img"
                 image={pinInformation.imgLink}
-                onLoad={this.handleImage}
                 id="pin-zoom"
                 sx={{
                   width: parentDivStyle.imgWidth,

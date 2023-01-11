@@ -11,7 +11,7 @@ exports[`The pin zoom modal will render 1`] = `
     sx={
       Object {
         "top": 10,
-        "width": undefined,
+        "width": 500,
       }
     }
     tabIndex={0}
@@ -113,7 +113,7 @@ exports[`The pin zoom modal will render 1`] = `
           <span
             style={
               Object {
-                "fontSize": undefined,
+                "fontSize": "0.45em",
                 "marginLeft": 0,
               }
             }
@@ -124,14 +124,14 @@ exports[`The pin zoom modal will render 1`] = `
       }
       subheaderTypographyProps={
         Object {
-          "fontSize": undefined,
+          "fontSize": "0.9em",
           "fontWeight": "bold",
         }
       }
       title="imgDescription ..."
       titleTypographyProps={
         Object {
-          "fontSize": undefined,
+          "fontSize": "1.2em",
           "fontWeight": "bold",
         }
       }
@@ -142,7 +142,7 @@ exports[`The pin zoom modal will render 1`] = `
           "&:last-child": Object {
             "pb": 0,
           },
-          "background": "",
+          "background": "black",
           "padding": 0,
         }
       }
@@ -151,12 +151,11 @@ exports[`The pin zoom modal will render 1`] = `
         component="img"
         id="pin-zoom"
         image="imgLink id-1"
-        onLoad={[Function]}
         sx={
           Object {
             "marginLeft": "auto",
             "marginRight": "auto",
-            "width": undefined,
+            "width": "448.50000000000006px",
           }
         }
       />

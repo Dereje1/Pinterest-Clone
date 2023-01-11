@@ -37,12 +37,20 @@ function ImageBuild({
   useEffect(() => {
     setActivePins(loadedPins.slice(0, batchSize));
     if (displayPinZoom) {
-      const [zoomedImg] = imageInfo;
+      const [zoomedImg, ...rest] = imageInfo;
       const [pin] = loadedPins.filter((p) => p._id === zoomedImg._id);
-      if (pin) setImageInfo([pin, document.body.scrollTop]);
-      else setDisplayPinZoom(false);
+      if (pin) setImageInfo([pin, ...rest]);
+      else setImageInfo([]);
     }
   }, [loadedPins, batchSize]);
+
+  useEffect(() => {
+    if (imageInfo.length) {
+      setDisplayPinZoom(true);
+    } else {
+      setDisplayPinZoom(false);
+    }
+  }, [imageInfo]);
 
   // Masonry callback executes this function
   const layoutComplete = () => {
@@ -82,30 +90,26 @@ function ImageBuild({
   };
 
   const togglePinImage = async ({ _id, hasSaved }) => {
-    try {
-      const { username } = user;
-      // can not do this unless logged in
-      if (username === 'Guest') {
-        setDisplayLogin(true);
-        return;
-      }
-      const updatedPin = await RESTcall({
-        address: `/api/${hasSaved ? 'unpin' : 'pin'}/${_id}`,
-        method: 'put',
-      });
-
-      setLoadedPins(updatePinList(loadedPins, updatedPin));
-    } catch (err) {
-      console.log(err);
+    const { username } = user;
+    // can not do this unless logged in
+    if (username === 'Guest') {
+      setDisplayLogin(true);
+      return;
     }
+    const updatedPin = await RESTcall({
+      address: `/api/${hasSaved ? 'unpin' : 'pin'}/${_id}`,
+      method: 'put',
+    });
+
+    setLoadedPins(updatePinList(loadedPins, updatedPin));
   };
 
   // Zoom modal takes event and pic info and executes
   const pinEnlarge = (e, currentImg) => {
+    const { target: { naturalWidth, naturalHeight } } = e;
     // disregard for save/delete calls or if already zoomed
     if (e.target.className.includes('actionbutton') || displayPinZoom) return;
-    setDisplayPinZoom(true);
-    setImageInfo([currentImg, document.body.scrollTop]);
+    setImageInfo([currentImg, document.body.scrollTop, { naturalWidth, naturalHeight }]);
   };
 
   const nextScroll = () => {
@@ -138,7 +142,7 @@ function ImageBuild({
         </InfiniteScroll>
         { displayPinZoom && (
           <PinZoom
-            reset={() => setDisplayPinZoom(false)}
+            reset={() => setImageInfo([])}
             zoomInfo={imageInfo}
             pinImage={pinImage && togglePinImage}
             deletePin={deletePin}

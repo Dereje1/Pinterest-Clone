@@ -26,7 +26,7 @@ describe('The pin zoom modal', () => {
     props = {
       displayPinZoom: false,
       // [picobject, overlay button type, last scroll distance]
-      zoomInfo: [pinsStub[0], 10],
+      zoomInfo: [pinsStub[0], 10, { naturalWidth: 600, naturalHeight: 800 }],
       reset: jest.fn(),
       pinImage: jest.fn(),
       deletePin: null,
@@ -57,7 +57,6 @@ describe('The pin zoom modal', () => {
     global.innerWidth = 1000;
     global.innerHeight = 1000;
     const wrapper = shallow(<PinZoom {...props} />);
-    wrapper.instance().handleImage({ target: { naturalWidth: 600, naturalHeight: 800 } });
     expect(wrapper.state().parentDivStyle).toEqual({
       top: 10,
       imgWidth: '622.5px',
@@ -74,8 +73,11 @@ describe('The pin zoom modal', () => {
   test('will adjust the width of image if greater than window\'s innerwidth', () => {
     global.innerWidth = 1000;
     global.innerHeight = 1000;
-    const wrapper = shallow(<PinZoom {...props} />);
-    wrapper.instance().handleImage({ target: { naturalWidth: 1200, naturalHeight: 800 } });
+    const updatedProps = {
+      ...props,
+      zoomInfo: [pinsStub[0], 10, { naturalWidth: 1200, naturalHeight: 800 }],
+    };
+    const wrapper = shallow(<PinZoom {...updatedProps} />);
     expect(wrapper.state().parentDivStyle).toEqual({
       top: 10,
       imgWidth: '980px',
@@ -92,8 +94,11 @@ describe('The pin zoom modal', () => {
   test('will adjust the width of image if height is greater than window\'s innerheight', () => {
     global.innerWidth = 1000;
     global.innerHeight = 1000;
-    const wrapper = shallow(<PinZoom {...props} />);
-    wrapper.instance().handleImage({ target: { naturalWidth: 600, naturalHeight: 1200 } });
+    const updatedProps = {
+      ...props,
+      zoomInfo: [pinsStub[0], 10, { naturalWidth: 600, naturalHeight: 1200 }],
+    };
+    const wrapper = shallow(<PinZoom {...updatedProps} />);
     expect(wrapper.state().parentDivStyle).toEqual({
       top: 10,
       imgWidth: '415px',
@@ -131,9 +136,11 @@ describe('The pin zoom modal', () => {
   });
 
   test('will toggle the comments window', () => {
-    const wrapper = shallow(<PinZoom {...props} />);
-    // set image props
-    wrapper.instance().handleImage({ target: { naturalWidth: 600, naturalHeight: 600 } });
+    const updatedProps = {
+      ...props,
+      zoomInfo: [pinsStub[0], 10, { naturalWidth: 600, naturalHeight: 600 }],
+    };
+    const wrapper = shallow(<PinZoom {...updatedProps} />);
     // toggle comment on
     const commentIcon = wrapper.find('ForwardRef(CardHeader)')
       .props()
@@ -155,8 +162,6 @@ describe('The pin zoom modal', () => {
 
   test('will force close the comments window', () => {
     const wrapper = shallow(<PinZoom {...props} />);
-    // set image props
-    wrapper.instance().handleImage({ target: { naturalWidth: 600, naturalHeight: 600 } });
     // toggle comment on
     const commentIcon = wrapper.find('ForwardRef(CardHeader)')
       .props()
@@ -175,8 +180,6 @@ describe('The pin zoom modal', () => {
 
   test('will not close the comments window if blur is not cancelled', () => {
     const wrapper = shallow(<PinZoom {...props} />);
-    // set image props
-    wrapper.instance().handleImage({ target: { naturalWidth: 600, naturalHeight: 600 } });
     // toggle comment on
     const commentIcon = wrapper.find('ForwardRef(CardHeader)')
       .props()
@@ -203,6 +206,7 @@ describe('The pin zoom modal', () => {
           savedBy: undefined,
         },
         10,
+        { naturalWidth: 600, naturalHeight: 800 },
       ],
     };
     const wrapper = shallow(<PinZoom {...updatedProps} />);
