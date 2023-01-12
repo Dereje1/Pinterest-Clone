@@ -1,6 +1,13 @@
 const nock = require('nock');
 const {
-  addPin, getPins, pinImage, unpin, deletePin, addComment, getProfilePins,
+  addPin,
+  getPins,
+  pinImage,
+  unpin,
+  deletePin,
+  addComment,
+  getProfilePins,
+  getUserPins,
 } = require('../../server/crudroutes');
 const pins = require('../../server/models/pins'); // schema for pins
 const users = require('../../server/models/user'); // schema for pins
@@ -38,7 +45,51 @@ const setupMocks = (response = rawPinsStub) => {
   );
 };
 
-describe('Retrieving pins', () => {
+describe('Retrieving pins for home page', () => {
+  let res;
+  const req = {
+    query: {
+      type: 'all',
+    },
+    user,
+  };
+  beforeEach(() => {
+    res = { json: jest.fn() };
+    process.env = {
+      ...process.env,
+      ADMIN_USER_ID: 'xxx',
+    };
+  });
+  afterEach(() => {
+    jest.restoreAllMocks();
+  });
+
+  test('will retrieve all pins for the home page', async () => {
+    setupMocks();
+    await getPins(req, res);
+    expect(pins.find).toHaveBeenCalledTimes(1);
+    expect(pins.find).toHaveBeenCalledWith({ isBroken: false });
+    expect(res.json).toHaveBeenCalledWith(allPinsResponse);
+  });
+
+  test('will respond with error if GET is rejected', async () => {
+    pins.find = jest.fn().mockImplementation(
+      () => ({
+        exec: jest.fn().mockRejectedValue(new Error('Mocked rejection')),
+      }),
+    );
+    const reqUpdate = {
+      query: {
+        type: 'profile',
+      },
+      user,
+    };
+    await getPins(reqUpdate, res);
+    expect(res.json).toHaveBeenCalledWith(Error('Mocked rejection'));
+  });
+});
+
+describe('Retrieving pins for user page', () => {
   let res;
   const req = {
     query: {
@@ -70,22 +121,13 @@ describe('Retrieving pins', () => {
     pinLinks.find.mockClear();
   });
 
-  test('will retrieve all pins for the home page', async () => {
-    setupMocks();
-    await getPins(req, res);
-    expect(pins.find).toHaveBeenCalledTimes(1);
-    expect(pins.find).toHaveBeenCalledWith({ isBroken: false });
-    expect(res.json).toHaveBeenCalledWith(allPinsResponse);
-  });
-
   test('will retrieve pins for the profile page', async () => {
     const profilePinsRaw = rawPinsStub.filter((p) => p.owner.id === user.twitter.id
             || p.savedBy.map((s) => s.id).includes(user.twitter.id));
 
     setupMocks(profilePinsRaw);
-    req.query.type = 'profile';
-    await getPins(req, res);
-    expect(pins.find).toHaveBeenCalledTimes(2);
+    await getUserPins(req, res);
+    expect(pins.find).toHaveBeenCalledTimes(1);
     expect(pins.find).toHaveBeenCalledWith({ $or: [{ 'owner.id': user.twitter.id }, { 'savedBy.id': user.twitter.id }] });
     expect(res.json).toHaveBeenCalledWith({
       profilePins: allPinsResponse.filter((p) => p.owns || p.hasSaved),
@@ -106,8 +148,7 @@ describe('Retrieving pins', () => {
       ADMIN_USER_ID: 'twitter test id',
     };
     setupMocks();
-    req.query.type = 'profile';
-    await getPins(req, res);
+    await getUserPins(req, res);
     expect(pins.find).toHaveBeenCalledTimes(1);
     expect(pins.find).toHaveBeenCalledWith({ isBroken: false });
     expect(res.json).toHaveBeenCalledWith({
@@ -135,7 +176,7 @@ describe('Retrieving pins', () => {
       },
       user,
     };
-    await getPins(reqUpdate, res);
+    await getUserPins(reqUpdate, res);
     expect(res.json).toHaveBeenCalledWith(Error('Mocked rejection'));
   });
 });

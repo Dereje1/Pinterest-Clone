@@ -59,7 +59,7 @@ export class Mypins extends Component {
   async componentDidMount() {
     // get all pins and filter by owned and saved and then concatenate and set state
     const { profilePins, allPinLinks } = await RESTcall({
-      address: '/api/?type=profile',
+      address: '/api/mypins',
       method: 'get',
     });
     this.setState({

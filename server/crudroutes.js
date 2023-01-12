@@ -43,17 +43,54 @@ const getPins = async (req, res) => {
   const { userId, isAdmin } = getUserProfile(req.user);
   try {
     const allPins = await pins.find({ isBroken: false }).exec();
-    if (req.query.type === 'profile') {
-      const allPinLinks = await pinLinks.find({}).exec();
-      if (isAdmin) {
-        res.json({ profilePins: filterPins({ rawPins: allPins, userId, isAdmin }), allPinLinks });
-        return;
-      }
-      const profilePins = await pins.find({ $or: [{ 'owner.id': userId }, { 'savedBy.id': userId }] }).exec();
-      res.json({ profilePins: filterPins({ rawPins: profilePins, userId, isAdmin }), allPinLinks });
-    } else {
-      res.json(filterPins({ rawPins: allPins, userId, isAdmin }));
+    res.json(filterPins({ rawPins: allPins, userId, isAdmin }));
+  } catch (error) {
+    res.json(error);
+  }
+};
+
+const getUserPins = async (req, res) => {
+  const { userId, isAdmin } = getUserProfile(req.user);
+  try {
+    const allPinLinks = await pinLinks.find({}).exec();
+    if (isAdmin) {
+      const allPins = await pins.find({ isBroken: false }).exec();
+      res.json({ profilePins: filterPins({ rawPins: allPins, userId, isAdmin }), allPinLinks });
+      return;
     }
+    const profilePins = await pins.find({ $or: [{ 'owner.id': userId }, { 'savedBy.id': userId }] }).exec();
+    res.json({ profilePins: filterPins({ rawPins: profilePins, userId, isAdmin }), allPinLinks });
+  } catch (error) {
+    res.json(error);
+  }
+};
+
+const getProfilePins = async (req, res) => {
+  const params = req.params.userid;
+  const { userId: loggedInUserid } = getUserProfile(req.user);
+  // displayNames can contain '-', therefore rejoin if accidentally split
+  const [userId, service, ...remainder] = params.split('-');
+  const displayName = remainder.join('-');
+  try {
+    const [user] = await users.find({
+      $and: [{ [`${service}.id`]: userId }, { [`${service}.displayName`]: displayName }],
+    }).exec();
+
+    if (!user) {
+      res.json({ redirect: '/' });
+      return;
+    }
+    if (loggedInUserid === userId) {
+      res.json({ redirect: '/pins' });
+      return;
+    }
+    const createdPins = await pins.find({ 'owner.id': userId }).exec();
+    const savedPins = await pins.find({ 'savedBy.id': userId }).exec();
+    res.json({
+      createdPins: filterPins({ rawPins: createdPins, userId: loggedInUserid, isAdmin: false }),
+      savedPins: filterPins({ rawPins: savedPins, userId: loggedInUserid, isAdmin: false }),
+      user: { userId: user[service].id, service, displayName: user[service].displayName },
+    });
   } catch (error) {
     res.json(error);
   }
@@ -130,37 +167,6 @@ const addComment = async (req, res) => {
   }
 };
 
-const getProfilePins = async (req, res) => {
-  const params = req.params.userid;
-  const { userId: loggedInUserid } = getUserProfile(req.user);
-  // displayNames can contain '-', therefore rejoin if accidentally split
-  const [userId, service, ...remainder] = params.split('-');
-  const displayName = remainder.join('-');
-  try {
-    const [user] = await users.find({
-      $and: [{ [`${service}.id`]: userId }, { [`${service}.displayName`]: displayName }],
-    }).exec();
-
-    if (!user) {
-      res.json({ redirect: '/' });
-      return;
-    }
-    if (loggedInUserid === userId) {
-      res.json({ redirect: '/pins' });
-      return;
-    }
-    const createdPins = await pins.find({ 'owner.id': userId }).exec();
-    const savedPins = await pins.find({ 'savedBy.id': userId }).exec();
-    res.json({
-      createdPins: filterPins({ rawPins: createdPins, userId: loggedInUserid, isAdmin: false }),
-      savedPins: filterPins({ rawPins: savedPins, userId: loggedInUserid, isAdmin: false }),
-      user: { userId: user[service].id, service, displayName: user[service].displayName },
-    });
-  } catch (error) {
-    res.json(error);
-  }
-};
-
 const deletePin = async (req, res) => {
   const { userId, displayName, isAdmin } = getUserProfile(req.user);
   const query = { _id: req.params._id };
@@ -183,8 +189,11 @@ const deletePin = async (req, res) => {
 // adds a new pin to the db
 router.post('/api/newpin', isLoggedIn, addPin);
 
-// gets pins: all or just logged in user's saved and owned pins,
+// gets all pins for home page
 router.get('/api/', getPins);
+
+// gets pins for mypins page
+router.get('/api/mypins', isLoggedIn, getUserPins);
 
 // gets pins for a single user
 router.get('/api/userProfile/:userid', isLoggedIn, getProfilePins);
@@ -202,5 +211,13 @@ router.put('/api/comment/:_id', isLoggedIn, addComment);
 router.delete('/api/:_id', isLoggedIn, deletePin);
 
 module.exports = {
-  router, addPin, getPins, pinImage, unpin, deletePin, addComment, getProfilePins,
+  router,
+  addPin,
+  getPins,
+  pinImage,
+  unpin,
+  deletePin,
+  addComment,
+  getProfilePins,
+  getUserPins,
 };
