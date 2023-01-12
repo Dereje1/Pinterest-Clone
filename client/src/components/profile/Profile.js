@@ -152,7 +152,7 @@ function Profile() {
           <img
             alt="no-pins-created"
             src={error}
-            style={{ width: 250, height: 250 }}
+            style={{ width: 200, height: 200 }}
           />
         </div>
       )}

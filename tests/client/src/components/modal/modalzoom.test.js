@@ -126,7 +126,7 @@ describe('The pin zoom modal', () => {
     expect(props.reset).toHaveBeenCalledTimes(1);
   });
 
-  test('will disable the scrol on mount and when user tries to scroll', () => {
+  test('will disable the scroll on mount and when user tries to scroll', () => {
     global.scrollTo = jest.fn();
     const wrapper = shallow(<PinZoom {...props} />);
     expect(global.scrollTo).toHaveBeenCalledWith(0, 10);
@@ -239,12 +239,17 @@ describe('The pin zoom modal', () => {
     expect(document.body.style.overflowY).toBe('scroll');
   });
 
-  test('will include a link to the profile of the owner in the subheader', () => {
+  test('will include a link to the profile of the owner in the subheader and close modal on click', async () => {
     const wrapper = shallow(<PinZoom {...props} />);
     const cardHeader = wrapper.find('ForwardRef(CardHeader)');
     const link = cardHeader.props().subheader.props.children[0].props;
     link.onMouseDown({ preventDefault: jest.fn() });
+    link.onClick();
+    jest.advanceTimersByTime(500);
+    await Promise.resolve();
     expect(link.to).toBe('/profile/1-google-owner id-1');
+    expect(wrapper.state().show).toBe(false);
+    expect(props.reset).toHaveBeenCalledTimes(1);
   });
 });
 

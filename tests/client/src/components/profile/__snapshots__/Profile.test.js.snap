@@ -338,8 +338,8 @@ exports[`The profile page Will render no image sign if user has not pinned or cr
       }
       style={
         Object {
-          "height": 250,
-          "width": 250,
+          "height": 200,
+          "width": 200,
         }
       }
     />

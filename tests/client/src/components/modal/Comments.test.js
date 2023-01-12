@@ -84,7 +84,7 @@ describe('The comments window', () => {
     pinnersDialog = wrapper.find('PinnersDialog');
     expect(pinnersDialog.props().open).toBe(true);
     // assert open -> closed
-    pinnersDialog.props().onClose();
+    pinnersDialog.props().onCloseDialog();
     pinnersDialog = wrapper.find('PinnersDialog');
     expect(pinnersDialog.props().open).toBe(false);
   });

@@ -12,17 +12,22 @@ import { getProviderIcons } from '../common/common';
 const providerIcons = getProviderIcons({ fontSize: 20 });
 
 function PinnersDialog({
-  onClose, open, pinnersList,
+  onCloseDialog, open, pinnersList, onClosePin,
 }) {
   return (
     <Dialog
-      onClose={onClose}
+      onClose={onCloseDialog}
       open={open}
       PaperProps={{ sx: { position: 'fixed', top: 0 } }}
     >
       <List sx={{ pt: 0 }}>
         {pinnersList.map((pinner) => (
-          <ListItem key={pinner.userId} component={Link} to={`/profile/${pinner.userId}-${pinner.service}-${pinner.name}`}>
+          <ListItem
+            onClick={() => { onCloseDialog(); onClosePin(); }}
+            key={pinner.userId}
+            component={Link}
+            to={`/profile/${pinner.userId}-${pinner.service}-${pinner.name}`}
+          >
             <ListItemAvatar>
               <Avatar sx={{ width: 26, height: 26, bgcolor: providerIcons[pinner.service].color }}>
                 {providerIcons[pinner.service].icon}
@@ -37,7 +42,8 @@ function PinnersDialog({
 }
 
 PinnersDialog.propTypes = {
-  onClose: PropTypes.func.isRequired,
+  onCloseDialog: PropTypes.func.isRequired,
+  onClosePin: PropTypes.func.isRequired,
   open: PropTypes.bool.isRequired,
   pinnersList: PropTypes.arrayOf(PropTypes.objectOf(PropTypes.string)).isRequired,
 };

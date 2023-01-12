@@ -22,7 +22,7 @@ function ImageBuild({
   user,
 }) {
   const [displayPinZoom, setDisplayPinZoom] = useState(false);
-  const [imageInfo, setImageInfo] = useState([]);
+  const [zoomedImageInfo, setZoomedImageInfo] = useState([]);
   const [imagesLoaded, setImagesLoaded] = useState(false);
   const [loadedPins, setLoadedPins] = useState([]);
   const [activePins, setActivePins] = useState([]);
@@ -37,20 +37,24 @@ function ImageBuild({
   useEffect(() => {
     setActivePins(loadedPins.slice(0, batchSize));
     if (displayPinZoom) {
-      const [zoomedImg, ...rest] = imageInfo;
+      const [zoomedImg, ...rest] = zoomedImageInfo;
       const [pin] = loadedPins.filter((p) => p._id === zoomedImg._id);
-      if (pin) setImageInfo([pin, ...rest]);
-      else setImageInfo([]);
+      if (pin) setZoomedImageInfo([pin, ...rest]);
+      else setZoomedImageInfo([]);
     }
+    // cleanup function to avoid memory leakage warning
+    return () => {
+      setZoomedImageInfo([]);
+    };
   }, [loadedPins, batchSize]);
 
   useEffect(() => {
-    if (imageInfo.length) {
+    if (zoomedImageInfo.length) {
       setDisplayPinZoom(true);
     } else {
       setDisplayPinZoom(false);
     }
-  }, [imageInfo]);
+  }, [zoomedImageInfo]);
 
   // Masonry callback executes this function
   const layoutComplete = () => {
@@ -78,7 +82,7 @@ function ImageBuild({
   };
 
   const handleNewComment = async (newComment) => {
-    const [pin] = imageInfo;
+    const [pin] = zoomedImageInfo;
 
     const updatedPin = await RESTcall({
       address: `/api/comment/${pin._id}`,
@@ -109,7 +113,7 @@ function ImageBuild({
     const { target: { naturalWidth, naturalHeight } } = e;
     // disregard for save/delete calls or if already zoomed
     if (e.target.className.includes('actionbutton') || displayPinZoom) return;
-    setImageInfo([currentImg, document.body.scrollTop, { naturalWidth, naturalHeight }]);
+    setZoomedImageInfo([currentImg, document.body.scrollTop, { naturalWidth, naturalHeight }]);
   };
 
   const nextScroll = () => {
@@ -142,8 +146,8 @@ function ImageBuild({
         </InfiniteScroll>
         { displayPinZoom && (
           <PinZoom
-            reset={() => setImageInfo([])}
-            zoomInfo={imageInfo}
+            reset={() => setZoomedImageInfo([])}
+            zoomInfo={zoomedImageInfo}
             pinImage={pinImage && togglePinImage}
             deletePin={deletePin}
             user={user}

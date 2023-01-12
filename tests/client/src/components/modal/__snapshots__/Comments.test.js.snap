@@ -142,7 +142,8 @@ exports[`The comments window will render with comments 1`] = `
     </ForwardRef(CardContent)>
   </ForwardRef(Card)>
   <PinnersDialog
-    onClose={[Function]}
+    onCloseDialog={[Function]}
+    onClosePin={[MockFunction]}
     open={false}
     pinnersList={
       Array [
@@ -274,7 +275,8 @@ exports[`The comments window will render with no comments for authenticated user
     </ForwardRef(CardContent)>
   </ForwardRef(Card)>
   <PinnersDialog
-    onClose={[Function]}
+    onCloseDialog={[Function]}
+    onClosePin={[MockFunction]}
     open={false}
     pinnersList={
       Array [
@@ -406,7 +408,8 @@ exports[`The comments window will render with no comments for unauthenticated us
     </ForwardRef(CardContent)>
   </ForwardRef(Card)>
   <PinnersDialog
-    onClose={[Function]}
+    onCloseDialog={[Function]}
+    onClosePin={[MockFunction]}
     open={false}
     pinnersList={
       Array [

@@ -121,7 +121,6 @@ export class PinZoom extends Component {
     if (!zoomInfo.length) return null;
     const [pinInformation] = zoomInfo;
     const totalPins = (pinInformation.savedBy) ? pinInformation.savedBy.length : 0;
-    // const pinnedBy = totalPins ? getPinners(pinInformation.savedBy) : '';
     const formattedDescription = getFormattedDescription(pinInformation.imgDescription);
     return (
       <>
@@ -167,6 +166,7 @@ export class PinZoom extends Component {
                   underline="none"
                   to={`/profile/${pinInformation.owner.userId}-${pinInformation.owner.service}-${pinInformation.owner.name}`}
                   onMouseDown={(e) => e.preventDefault()}
+                  onClick={(e) => this.close(e, true)}
                 >
                   {pinInformation.owner.name}
                 </Link>

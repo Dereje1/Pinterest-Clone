@@ -146,8 +146,9 @@ function Comments({
       }
       <PinnersDialog
         open={openPinnersDialog}
-        onClose={() => setOpenPinnersDialog(false)}
+        onCloseDialog={() => setOpenPinnersDialog(false)}
         pinnersList={pinInformation.savedBy}
+        onClosePin={closePin}
       />
     </div>
   );
