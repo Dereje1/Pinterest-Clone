@@ -10,6 +10,7 @@ import IconButton from '@mui/material/IconButton';
 import CloseIcon from '@mui/icons-material/Close';
 import CommentForm from './CommentForm';
 import PinnersDialog from './PinnersDialog';
+import Tags from './Tags';
 import { formatDate } from '../../utils/utils';
 
 function Comments({
@@ -94,6 +95,11 @@ function Comments({
           </IconButton>
         </div>
       </div>
+      <Tags
+        owns={pinInformation.owns}
+        stylingProps={stylingProps}
+        commentFormIsOpen={openCommentForm}
+      />
       {
         openCommentForm && (
           <CommentForm
