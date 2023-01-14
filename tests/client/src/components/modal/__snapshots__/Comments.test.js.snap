@@ -6,7 +6,7 @@ exports[`The comments window will render with comments 1`] = `
     Object {
       "height": 30,
       "overflowY": "auto",
-      "paddingBottom": 17,
+      "paddingBottom": 3,
       "width": 20,
     }
   }
@@ -207,6 +207,14 @@ exports[`The comments window will render with comments 1`] = `
       </ForwardRef(Typography)>
     </ForwardRef(CardContent)>
   </ForwardRef(Card)>
+  <div
+    style={
+      Object {
+        "height": 65,
+        "width": "100%",
+      }
+    }
+  />
   <PinnersDialog
     onCloseDialog={[Function]}
     onClosePin={[MockFunction]}
@@ -235,7 +243,7 @@ exports[`The comments window will render with no comments for authenticated user
     Object {
       "height": 30,
       "overflowY": "auto",
-      "paddingBottom": 17,
+      "paddingBottom": 3,
       "width": 20,
     }
   }
@@ -423,7 +431,7 @@ exports[`The comments window will render with no comments for unauthenticated us
     Object {
       "height": 30,
       "overflowY": "auto",
-      "paddingBottom": 17,
+      "paddingBottom": 3,
       "width": 20,
     }
   }

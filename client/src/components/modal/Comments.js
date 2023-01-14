@@ -40,7 +40,7 @@ function Comments({
   };
 
   return (
-    <div style={{ ...stylingProps, overflowY: 'auto', paddingBottom: 17 }}>
+    <div style={{ ...stylingProps, overflowY: 'auto', paddingBottom: 3 }}>
       <div style={{
         position: 'absolute',
         bottom: 10,
@@ -151,7 +151,7 @@ function Comments({
       {
         !openCommentForm && pinInformation.comments.map(({
           _id, comment, displayName, createdAt,
-        }) => (
+        }, idx) => (
           <React.Fragment key={_id}>
             <Card
               sx={{ margin: 1 }}
@@ -171,6 +171,7 @@ function Comments({
                 </Typography>
               </CardContent>
             </Card>
+            {idx === pinInformation.comments.length - 1 && <div style={{ width: '100%', height: 65 }} />}
           </React.Fragment>
         ))
       }
