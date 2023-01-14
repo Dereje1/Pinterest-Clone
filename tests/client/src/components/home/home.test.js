@@ -46,7 +46,7 @@ describe('The Home Component', () => {
     expect(RESTcall).toHaveBeenCalledWith({ address: '/api/home', method: 'get' });
   });
 
-  test('Will filter pins if matching search found', async () => {
+  test('Will filter pins if matching search found for description', async () => {
     const updatedProps = {
       ...props,
       search: 'id-3',
@@ -56,6 +56,18 @@ describe('The Home Component', () => {
     const imageBuild = wrapper.find('ImageBuild');
     const displayedPinList = imageBuild.props().pinList;
     expect(displayedPinList).toStrictEqual([pinsStub[2]]);
+  });
+
+  test('Will filter pins if matching search found for tags', async () => {
+    const updatedProps = {
+      ...props,
+      search: 'tag 2',
+    };
+    const wrapper = shallow(<Home {...updatedProps} />);
+    await Promise.resolve();
+    const imageBuild = wrapper.find('ImageBuild');
+    const displayedPinList = imageBuild.props().pinList;
+    expect(displayedPinList).toStrictEqual([pinsStub[0]]);
   });
 
   test('Shall map redux state to component props', () => {

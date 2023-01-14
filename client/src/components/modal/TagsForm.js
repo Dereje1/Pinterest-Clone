@@ -7,7 +7,7 @@ function TagsForm({ closeTagsForm, addTag }) {
   const [tag, setTag] = useState('');
 
   const handleTag = ({ target: { value } }) => {
-    if (value.trim().length < 21) {
+    if (value.trim().length < 16) {
       setTag(value);
     }
   };
@@ -20,7 +20,7 @@ function TagsForm({ closeTagsForm, addTag }) {
 
   return (
     <div style={{
-      width: 210,
+      width: 150,
       marginLeft: 'auto',
       marginRight: 'auto',
       display: 'flex',

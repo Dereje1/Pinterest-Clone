@@ -7,7 +7,7 @@ import IconButton from '@mui/material/IconButton';
 import TagIcon from '@mui/icons-material/Tag';
 import TagsForm from './TagsForm';
 
-const ListItem = styled('li')(({ theme }) => ({
+export const ListItem = styled('li')(({ theme }) => ({
   margin: theme.spacing(0.5),
 }));
 

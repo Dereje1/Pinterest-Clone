@@ -60,6 +60,11 @@ const restMock = jest.fn().mockImplementation((...args) => {
         userId: 'stubId', service: 'twitter', displayName: 'stubName',
       },
     });
+  } if (address.includes('/api/updateTags') && method === 'put') {
+    return Promise.resolve({
+      _id: 2,
+      tags: [{ _id: 6, tag: 'tester tag' }],
+    });
   }
   return Promise.reject(new Error(`Requested method:${method} and path: ${address} not mocked!!`));
 });

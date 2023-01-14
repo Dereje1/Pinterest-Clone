@@ -266,4 +266,24 @@ describe('The ImageBuild component', () => {
     signIn = wrapper.find('SignIn');
     expect(signIn.length).toBe(0);
   });
+
+  test('will send query to update tags while pin is zoomed', async () => {
+    const wrapper = shallow(<ImageBuild {...props} />);
+    const masonry = wrapper.find('MasonryPins');
+    let pinZoom = wrapper.find('PinZoom');
+    expect(pinZoom.isEmptyRender()).toBe(true);
+    // zoom into pin
+    masonry.props().pinEnlarge({ target: { className: 'any', naturalWidth: 600, naturalHeight: 600 } }, pinsStub[1]);
+    pinZoom = wrapper.find('PinZoom');
+    // trigger a tag update
+    await pinZoom.props().updateTags('tag_query');
+    expect(RESTcall).toHaveBeenCalledTimes(1);
+    expect(RESTcall).toHaveBeenCalledWith({
+      address: '/api/updateTags/tag_query',
+      method: 'put',
+    });
+    // assert that new comment is reflected in zoomed pin
+    pinZoom = wrapper.find('PinZoom');
+    expect(pinZoom.props().zoomInfo[0]).toEqual({ _id: 2, tags: [{ _id: 6, tag: 'tester tag' }] });
+  });
 });

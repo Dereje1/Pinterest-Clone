@@ -1,0 +1,38 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`The tags form component will render 1`] = `
+<div
+  style={
+    Object {
+      "alignItems": "flex-end",
+      "display": "flex",
+      "marginLeft": "auto",
+      "marginRight": "auto",
+      "width": 150,
+    }
+  }
+>
+  <ForwardRef(TextField)
+    autoFocus={true}
+    fullWidth={true}
+    id="Tags_form"
+    label="Add a Tag"
+    onBlur={[MockFunction]}
+    onChange={[Function]}
+    onKeyDown={[Function]}
+    type="text"
+    value=""
+    variant="standard"
+  />
+  <Memo(ForwardRef(DoneIcon))
+    color="success"
+    onClick={[Function]}
+    onMouseDown={[Function]}
+    style={
+      Object {
+        "cursor": "pointer",
+      }
+    }
+  />
+</div>
+`;

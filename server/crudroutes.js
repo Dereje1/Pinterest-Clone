@@ -174,7 +174,10 @@ const updateTags = async (req, res) => {
   const { pinID, tag, deleteId } = req.query;
   try {
     const pin = await pins.findById(pinID).exec();
-    if (pin.owner.id !== userId && !isAdmin) res.end();
+    if (pin.owner.id !== userId && !isAdmin) {
+      res.end();
+      return;
+    }
 
     let update;
     if (deleteId) {
@@ -248,4 +251,5 @@ module.exports = {
   addComment,
   getProfilePins,
   getUserPins,
+  updateTags,
 };
