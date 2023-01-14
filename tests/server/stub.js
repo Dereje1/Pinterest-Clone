@@ -19,6 +19,7 @@ const rawPinsStub = [{
     createdAt: 'today',
     comment: 'unit tests',
   }],
+  tags: [{ _id: 'tag_id_1', tag: 'tag 1' }, { _id: 'tag_id_2', tag: 'tag 2' }],
 }, {
   _id: '2',
   imgDescription: 'description-2',
@@ -32,6 +33,7 @@ const rawPinsStub = [{
     createdAt: 'today',
     comment: 'unit tests',
   }],
+  tags: [{ _id: 'tag_id_1', tag: 'tag 1' }],
 }, {
   _id: '3',
   imgDescription: 'description-3',
@@ -45,6 +47,7 @@ const rawPinsStub = [{
     createdAt: 'today',
     comment: 'unit tests',
   }],
+  tags: [],
 }];
 
 const allPinsResponse = [
@@ -62,6 +65,7 @@ const allPinsResponse = [
       createdAt: 'today',
       comment: 'unit tests',
     }],
+    tags: [{ _id: 'tag_id_1', tag: 'tag 1' }, { _id: 'tag_id_2', tag: 'tag 2' }],
   },
   {
     _id: '2',
@@ -77,6 +81,7 @@ const allPinsResponse = [
       createdAt: 'today',
       comment: 'unit tests',
     }],
+    tags: [{ _id: 'tag_id_1', tag: 'tag 1' }],
   },
   {
     _id: '3',
@@ -92,6 +97,7 @@ const allPinsResponse = [
       createdAt: 'today',
       comment: 'unit tests',
     }],
+    tags: [],
   },
 ];
 

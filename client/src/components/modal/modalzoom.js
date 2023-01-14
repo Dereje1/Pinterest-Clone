@@ -100,7 +100,7 @@ export class PinZoom extends Component {
       this.setState({
         commentsShowing: {
           width: parentDivStyle.parentWidth,
-          height: imageHeight + (window.innerHeight - cardHeight - 20),
+          height: imageHeight + (window.innerHeight - cardHeight - 25),
         },
         cancelBlur: true,
       });
@@ -113,7 +113,8 @@ export class PinZoom extends Component {
 
   render() {
     const {
-      zoomInfo, pinImage, deletePin, user: { authenticated }, handleNewComment,
+      zoomInfo, pinImage, deletePin,
+      user: { authenticated }, handleNewComment, updateTags,
     } = this.props;
     const {
       show, parentDivStyle, commentsShowing,
@@ -205,6 +206,7 @@ export class PinZoom extends Component {
                   authenticated={authenticated}
                   toggleComments={this.toggleComments}
                   closePin={(e) => this.close(e, true)}
+                  updateTags={updateTags}
                 />
               )}
           </CardContent>
@@ -233,4 +235,5 @@ PinZoom.propTypes = {
   deletePin: PropTypes.func,
   user: PropTypes.objectOf(PropTypes.shape).isRequired,
   handleNewComment: PropTypes.func.isRequired,
+  updateTags: PropTypes.func.isRequired,
 };

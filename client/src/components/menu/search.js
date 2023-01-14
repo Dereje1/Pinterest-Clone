@@ -40,7 +40,7 @@ function Search({
   if (!isShowing) {
     return (
       <div className="search">
-        <Tooltip title="Search by description or owner" placement="bottom">
+        <Tooltip title="Search by description, owner or tags" placement="bottom">
           <SearchIcon
             onClick={openSearch}
             sx={{ cursor: 'pointer', justifySelf: 'flex-end' }}

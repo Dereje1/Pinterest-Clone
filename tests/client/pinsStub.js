@@ -19,6 +19,7 @@ const pinsStub = [
         createdAt: '2021-07-28T16:30:48.572Z',
       },
     ],
+    tags: [{ _id: 'tag_id_1', tag: 'tag 1' }, { _id: 'tag_id_2', tag: 'tag 2' }],
   },
   {
     _id: 2,
@@ -33,6 +34,7 @@ const pinsStub = [
     hasSaved: true,
     createdAt: '2020-12-25T00:00:00.000+00:00',
     comments: [],
+    tags: [{ _id: 'tag_id_1', tag: 'tag 1' }],
   },
   {
     _id: 3,
@@ -47,6 +49,7 @@ const pinsStub = [
     hasSaved: false,
     createdAt: '2020-12-25T00:00:00.000+00:00',
     comments: [],
+    tags: [],
   },
 ];
 

@@ -108,6 +108,15 @@ function ImageBuild({
     setLoadedPins(updatePinList(loadedPins, updatedPin));
   };
 
+  const handleTags = async (query) => {
+    const updatedPin = await RESTcall({
+      address: `/api/updateTags/${query}`,
+      method: 'put',
+    });
+
+    setLoadedPins(updatePinList(loadedPins, updatedPin));
+  };
+
   // Zoom modal takes event and pic info and executes
   const pinEnlarge = (e, currentImg) => {
     const { target: { naturalWidth, naturalHeight } } = e;
@@ -152,6 +161,7 @@ function ImageBuild({
             deletePin={deletePin}
             user={user}
             handleNewComment={handleNewComment}
+            updateTags={handleTags}
           />
         )}
       </div>

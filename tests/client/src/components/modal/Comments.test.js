@@ -14,6 +14,7 @@ describe('The comments window', () => {
       authenticated: true,
       toggleComments: jest.fn(),
       closePin: jest.fn(),
+      updateTags: jest.fn(),
     };
   });
 
@@ -40,16 +41,15 @@ describe('The comments window', () => {
 
   test('will open and close the comment form', () => {
     const wrapper = shallow(<Comments {...props} />);
-    let fabButton = wrapper.find('ForwardRef(Fab)');
+    let fabButton = wrapper.find({ 'aria-label': 'add' });
     let commentForm = wrapper.find('CommentForm');
     // assert closed -> open
     expect(commentForm.isEmptyRender()).toBe(true);
     fabButton.props().onClick();
-    fabButton.props().onMouseDown({ preventDefault: jest.fn() });
     commentForm = wrapper.find('CommentForm');
-    fabButton = wrapper.find('ForwardRef(Fab)');
+    fabButton = wrapper.find({ 'aria-label': 'add' });
     expect(commentForm.isEmptyRender()).toBe(false);
-    expect(fabButton.isEmptyRender()).toBe(true);
+    expect(fabButton.props().disabled).toBe(true);
     // assert open -> closed
     commentForm.props().handleClose();
     commentForm = wrapper.find('CommentForm');
@@ -58,7 +58,7 @@ describe('The comments window', () => {
 
   test('will submit a comment', () => {
     const wrapper = shallow(<Comments {...props} />);
-    const fabButton = wrapper.find('ForwardRef(Fab)');
+    const fabButton = wrapper.find({ 'aria-label': 'add' });
     fabButton.props().onClick();
     const commentForm = wrapper.find('CommentForm');
     commentForm.props().handleSubmit('a new comment');
@@ -67,7 +67,7 @@ describe('The comments window', () => {
 
   test('will not submit a comment if empty', () => {
     const wrapper = shallow(<Comments {...props} />);
-    const fabButton = wrapper.find('ForwardRef(Fab)');
+    const fabButton = wrapper.find({ 'aria-label': 'add' });
     fabButton.props().onClick();
     const commentForm = wrapper.find('CommentForm');
     commentForm.props().handleSubmit('      ');
@@ -76,7 +76,7 @@ describe('The comments window', () => {
 
   test('will open and close the pinners dialog', () => {
     const wrapper = shallow(<Comments {...props} />);
-    const pinnersButton = wrapper.find('ForwardRef(Button)');
+    const pinnersButton = wrapper.find({ 'aria-label': 'pinners' });
     let pinnersDialog = wrapper.find('PinnersDialog');
     // assert closed -> open
     expect(pinnersDialog.props().open).toBe(false);

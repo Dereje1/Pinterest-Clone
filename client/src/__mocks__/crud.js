@@ -3,7 +3,7 @@ const { pinsStub } = require('../../../tests/client/pinsStub');
 const restMock = jest.fn().mockImplementation((...args) => {
   const [callInfo] = args;
   const { address, method = 'get', payload = null } = callInfo;
-  if (address.includes('/api/?type=All') && method === 'get' && !payload) {
+  if (address.includes('/api/home') && method === 'get' && !payload) {
     return Promise.resolve(pinsStub);
   } if (address.includes('/api/broken') && method === 'get' && !payload) {
     return Promise.resolve([]);
@@ -59,6 +59,11 @@ const restMock = jest.fn().mockImplementation((...args) => {
       user: {
         userId: 'stubId', service: 'twitter', displayName: 'stubName',
       },
+    });
+  } if (address.includes('/api/updateTags') && method === 'put') {
+    return Promise.resolve({
+      _id: 2,
+      tags: [{ _id: 6, tag: 'tester tag' }],
     });
   }
   return Promise.reject(new Error(`Requested method:${method} and path: ${address} not mocked!!`));

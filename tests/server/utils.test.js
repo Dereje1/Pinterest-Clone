@@ -19,6 +19,7 @@ describe('filtering pins before returning to client', () => {
       createdAt: 'today',
       comment: 'unit tests',
     }],
+    tags: [{ _id: 'tag_id_1', tag: 'tag 1' }, { _id: 'tag_id_2', tag: 'tag 2' }],
   };
 
   test('Will filter the pins for the owner', () => {
@@ -43,6 +44,7 @@ describe('filtering pins before returning to client', () => {
             createdAt: 'today',
             comment: 'unit tests',
           }],
+          tags: [{ _id: 'tag_id_1', tag: 'tag 1' }, { _id: 'tag_id_2', tag: 'tag 2' }],
         },
       ],
     );
@@ -70,6 +72,7 @@ describe('filtering pins before returning to client', () => {
             createdAt: 'today',
             comment: 'unit tests',
           }],
+          tags: [{ _id: 'tag_id_1', tag: 'tag 1' }, { _id: 'tag_id_2', tag: 'tag 2' }],
         },
       ],
     );
@@ -93,6 +96,7 @@ describe('filtering pins before returning to client', () => {
             createdAt: 'today',
             comment: 'unit tests',
           }],
+          tags: [{ _id: 'tag_id_1', tag: 'tag 1' }, { _id: 'tag_id_2', tag: 'tag 2' }],
         },
       ],
     );
@@ -120,6 +124,7 @@ describe('filtering pins before returning to client', () => {
             createdAt: 'today',
             comment: 'unit tests',
           }],
+          tags: [{ _id: 'tag_id_1', tag: 'tag 1' }, { _id: 'tag_id_2', tag: 'tag 2' }],
         },
       ],
     );

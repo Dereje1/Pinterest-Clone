@@ -8,6 +8,7 @@ const {
   addComment,
   getProfilePins,
   getUserPins,
+  updateTags,
 } = require('../../server/crudroutes');
 const pins = require('../../server/models/pins'); // schema for pins
 const users = require('../../server/models/user'); // schema for pins
@@ -622,6 +623,7 @@ describe('Adding a comment', () => {
           createdAt: 'today',
         },
       ],
+      tags: [],
     });
     expect(res.end).toHaveBeenCalledTimes(0);
   });
@@ -728,6 +730,124 @@ describe('Retrieving pins for a profile page', () => {
       }),
     );
     await getProfilePins(req, res);
+    expect(res.json).toHaveBeenCalledWith(Error('Mocked rejection'));
+  });
+});
+
+describe('Updating tags for a pin', () => {
+  let res;
+  beforeEach(() => {
+    res = { json: jest.fn(), end: jest.fn() };
+    process.env = {
+      ...process.env,
+      ADMIN_USER_ID: 'xxx',
+    };
+  });
+  afterEach(() => {
+    jest.restoreAllMocks();
+  });
+
+  test('will add a tag to a pin', async () => {
+    const req = {
+      user,
+      query: { pinID: 1, tag: 'a new tag' },
+    };
+    pins.findById = jest.fn().mockImplementation(
+      () => ({
+        exec: jest.fn().mockResolvedValue({ owner: { id: 'twitter test id' } }),
+      }),
+    );
+    pins.findByIdAndUpdate = jest.fn().mockImplementation(
+      () => ({
+        exec: jest.fn().mockResolvedValue({ ...rawPinsStub[1] }),
+      }),
+    );
+    await updateTags(req, res);
+    expect(pins.findById).toHaveBeenCalledTimes(1);
+    expect(pins.findById).toHaveBeenCalledWith(1);
+    expect(pins.findByIdAndUpdate).toHaveBeenCalledTimes(1);
+    expect(pins.findByIdAndUpdate).toHaveBeenCalledWith(
+      1,
+      {
+        $push:
+                {
+                  tags: { tag: 'a new tag' },
+                },
+      },
+      { new: true },
+    );
+    expect(res.json).toHaveBeenCalledWith({ ...allPinsResponse[1] });
+  });
+
+  test('will remove a tag from a pin', async () => {
+    const req = {
+      user,
+      query: { pinID: 1, deleteId: '12345' },
+    };
+    pins.findById = jest.fn().mockImplementation(
+      () => ({
+        exec: jest.fn().mockResolvedValue({
+          owner: { id: 'twitter test id' },
+          tags: [{ _id: 12345 }, { _id: 123456 }],
+        }),
+      }),
+    );
+    pins.findByIdAndUpdate = jest.fn().mockImplementation(
+      () => ({
+        exec: jest.fn().mockResolvedValue({ ...rawPinsStub[1] }),
+      }),
+    );
+    await updateTags(req, res);
+    expect(pins.findById).toHaveBeenCalledTimes(1);
+    expect(pins.findById).toHaveBeenCalledWith(1);
+    expect(pins.findByIdAndUpdate).toHaveBeenCalledTimes(1);
+    expect(pins.findByIdAndUpdate).toHaveBeenCalledWith(
+      1,
+      {
+        $set:
+                {
+                  tags: [{ _id: 123456 }],
+                },
+      },
+      { new: true },
+    );
+    expect(res.json).toHaveBeenCalledWith({ ...allPinsResponse[1] });
+  });
+
+  test('will end response if user is not owner of the pin', async () => {
+    const req = {
+      user,
+      query: { pinID: 1, tag: 'a new tag' },
+    };
+    pins.findById = jest.fn().mockImplementation(
+      () => ({
+        exec: jest.fn().mockResolvedValue({ owner: { id: 'another id' } }),
+      }),
+    );
+    pins.findByIdAndUpdate = jest.fn().mockImplementation(
+      () => ({
+        exec: jest.fn().mockResolvedValue({ ...rawPinsStub[1] }),
+      }),
+    );
+    await updateTags(req, res);
+    expect(pins.findById).toHaveBeenCalledTimes(1);
+    expect(pins.findById).toHaveBeenCalledWith(1);
+    expect(pins.findByIdAndUpdate).not.toHaveBeenCalled();
+    expect(res.json).not.toHaveBeenCalled();
+    expect(res.end).toHaveBeenCalled();
+  });
+
+  test('will respond with error if PUT is rejected', async () => {
+    const req = {
+      user,
+      query: { pinID: 1, tag: 'a new tag' },
+    };
+    pins.findById = jest.fn().mockImplementation(
+      () => ({
+        exec: jest.fn().mockRejectedValue(new Error('Mocked rejection')),
+      }),
+    );
+    await updateTags(req, res);
     expect(res.json).toHaveBeenCalledWith(Error('Mocked rejection'));
   });
 });

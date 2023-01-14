@@ -8,12 +8,22 @@ export const shuffleImages = (arr) => {
   return shuffled;
 };
 
+const searchInTags = (tags, search) => {
+  for (let i = 0; i < tags.length; i += 1) {
+    if (tags[i].tag.toLowerCase().includes(search)) {
+      return true;
+    }
+  }
+  return false;
+};
+
 export const getFilteredPins = (pinList, search) => {
   if (!search) return pinList;
-  const filteredPins = pinList.filter(({ owner, imgDescription }) => {
+  const filteredPins = pinList.filter(({ owner, imgDescription, tags }) => {
     const isFoundInDescription = imgDescription.toLowerCase().includes(search);
     const isFoundInOwnerName = owner.name.toLowerCase().includes(search);
-    return isFoundInDescription || isFoundInOwnerName;
+    const isFoundInTags = searchInTags(tags, search);
+    return isFoundInDescription || isFoundInOwnerName || isFoundInTags;
   });
   return filteredPins;
 };

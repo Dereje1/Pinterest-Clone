@@ -10,6 +10,10 @@ const commentSchema = new mongoose.Schema({
   timestamps: true, // timestamps options for subfields
 });
 
+const tagSchema = new mongoose.Schema({
+  tag: { type: String, required: true },
+});
+
 const pinSchema = mongoose.Schema({
   owner: {
     name: { type: String, required: true },
@@ -29,6 +33,10 @@ const pinSchema = mongoose.Schema({
   },
   comments: {
     type: [commentSchema],
+    default: [],
+  },
+  tags: {
+    type: [tagSchema],
     default: [],
   },
   isBroken: { type: Boolean },

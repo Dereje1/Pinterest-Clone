@@ -18,7 +18,7 @@ export class Home extends Component {
 
   async componentDidMount() {
     const pinsFromDB = await RESTcall({
-      address: '/api/?type=All',
+      address: '/api/home',
       method: 'get',
     });
     this.setState({
