@@ -5,8 +5,7 @@ import Typography from '@mui/material/Typography';
 import Fab from '@mui/material/Fab';
 import AddIcon from '@mui/icons-material/Add';
 import Card from '@mui/material/Card';
-import Button from '@mui/material/Button';
-import IconButton from '@mui/material/IconButton';
+import StarBorderIcon from '@mui/icons-material/StarBorder';
 import CloseIcon from '@mui/icons-material/Close';
 import CommentForm from './CommentForm';
 import PinnersDialog from './PinnersDialog';
@@ -41,24 +40,47 @@ function Comments({
   };
 
   return (
-    <div style={{ ...stylingProps, overflowY: 'auto', paddingBottom: 3 }}>
+    <div style={{ ...stylingProps, overflowY: 'auto', paddingBottom: 17 }}>
       { !openCommentForm && (
         <Fab
           color="primary"
           aria-label="add"
-          onMouseDown={(e) => e.preventDefault()}
           onClick={handleOpenCommentForm}
           sx={{ position: 'absolute', bottom: 10, right: 10 }}
           disabled={!authenticated}
         >
-          <AddIcon />
+          <AddIcon fontSize="large" />
         </Fab>
       )}
+      <Fab
+        color="error"
+        aria-label="add"
+        onClick={closePin}
+        sx={{
+          position: 'absolute', bottom: 10, left: 10,
+        }}
+      >
+        <CloseIcon fontSize="large" />
+      </Fab>
+
+      {pinInformation.savedBy.length
+        ? (
+          <Fab
+            color="success"
+            aria-label="add"
+            onClick={() => setOpenPinnersDialog(true)}
+            sx={{
+              position: 'absolute', bottom: 10, left: (stylingProps.width / 2) - 28,
+            }}
+          >
+            <StarBorderIcon fontSize="large" />
+          </Fab>
+        )
+        : null}
       <div style={{
         display: 'flex',
-        flexDirection: 'column',
-        justifyContent: 'center',
-        alignItems: 'space-around',
+        justifyContent: 'space-between',
+        alignItems: 'center',
         position: 'sticky',
         top: 0,
         background: 'white',
@@ -68,7 +90,7 @@ function Comments({
         <div
           style={{
             display: 'flex',
-            justifyContent: 'space-between',
+            justifyContent: 'flex-start',
             alignItems: 'center',
             width: '100%',
             paddingLeft: 10,
@@ -89,19 +111,13 @@ function Comments({
               style={{ objectFit: 'scale-down', width: 56, height: 56 }}
             />
           </div>
-          {pinInformation.savedBy.length
-            ? <Button variant="text" onClick={() => setOpenPinnersDialog(true)}>Pinners</Button>
-            : null}
-          <IconButton onClick={closePin}>
-            <CloseIcon />
-          </IconButton>
+
+          <Tags
+            commentFormIsOpen={openCommentForm}
+            updateTags={updateTags}
+            pinInformation={pinInformation}
+          />
         </div>
-        <Tags
-          stylingProps={stylingProps}
-          commentFormIsOpen={openCommentForm}
-          updateTags={updateTags}
-          pinInformation={pinInformation}
-        />
       </div>
       {
         openCommentForm && (

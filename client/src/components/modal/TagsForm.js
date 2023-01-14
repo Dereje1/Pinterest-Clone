@@ -1,15 +1,26 @@
 import React, { useState } from 'react';
 import PropTypes from 'prop-types';
-import IconButton from '@mui/material/IconButton';
 import DoneIcon from '@mui/icons-material/Done';
-import ClearIcon from '@mui/icons-material/Clear';
 import TextField from '@mui/material/TextField';
 
-function TagsForm({ closeTagsForm, addTag, stylingProps }) {
+function TagsForm({ closeTagsForm, addTag }) {
   const [tag, setTag] = useState('');
+
+  const handleTag = ({ target: { value } }) => {
+    if (value.trim().length < 21) {
+      setTag(value);
+    }
+  };
+
+  const handleEnterKey = ({ key }) => {
+    if (key === 'Enter' && tag.trim().length) {
+      addTag(tag.trim());
+    }
+  };
+
   return (
     <div style={{
-      width: stylingProps.width / 1.5,
+      width: 210,
       marginLeft: 'auto',
       marginRight: 'auto',
       display: 'flex',
@@ -21,18 +32,20 @@ function TagsForm({ closeTagsForm, addTag, stylingProps }) {
         id="Tags_form"
         label="Add a Tag"
         type="text"
-        variant="filled"
+        variant="standard"
         fullWidth
         value={tag}
-        onChange={(e) => setTag(e.target.value)}
+        onChange={handleTag}
         onBlur={closeTagsForm}
+        onKeyDown={handleEnterKey}
       />
-      {/* <IconButton onClick={closeTagsForm}>
-        <ClearIcon color="error" />
-      </IconButton> */}
-      <IconButton onClick={() => addTag(tag)} onMouseDown={(e) => e.preventDefault()}>
-        <DoneIcon color="success" />
-      </IconButton>
+
+      <DoneIcon
+        color="success"
+        onClick={() => tag.trim().length && addTag(tag.trim())}
+        onMouseDown={(e) => e.preventDefault()}
+        style={{ cursor: 'pointer' }}
+      />
     </div>
   );
 }
@@ -42,5 +55,4 @@ export default TagsForm;
 TagsForm.propTypes = {
   closeTagsForm: PropTypes.func.isRequired,
   addTag: PropTypes.func.isRequired,
-  stylingProps: PropTypes.objectOf(PropTypes.shape).isRequired,
 };

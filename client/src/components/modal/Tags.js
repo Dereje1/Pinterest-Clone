@@ -13,7 +13,6 @@ const ListItem = styled('li')(({ theme }) => ({
 
 function TagsArray({
   pinInformation,
-  stylingProps,
   commentFormIsOpen,
   updateTags,
 }) {
@@ -38,7 +37,6 @@ function TagsArray({
     return (
       <TagsForm
         closeTagsForm={() => setOpenTagsForm(false)}
-        stylingProps={stylingProps}
         addTag={handleAdd}
       />
     );
@@ -56,12 +54,12 @@ function TagsArray({
           m: 1,
         }}
         component="ul"
-        elevation={3}
+        elevation={0}
       >
         {tagData.map((data) => (
           <ListItem key={data._id}>
             <Chip
-              color="info"
+              color="warning"
               label={data.tag.toUpperCase()}
               onDelete={owns ? handleDelete(data) : undefined}
               variant="outlined"
@@ -86,7 +84,6 @@ function TagsArray({
 export default TagsArray;
 
 TagsArray.propTypes = {
-  stylingProps: PropTypes.objectOf(PropTypes.shape).isRequired,
   commentFormIsOpen: PropTypes.bool.isRequired,
   updateTags: PropTypes.func.isRequired,
   pinInformation: PropTypes.objectOf(PropTypes.shape).isRequired,

@@ -100,7 +100,7 @@ export class PinZoom extends Component {
       this.setState({
         commentsShowing: {
           width: parentDivStyle.parentWidth,
-          height: imageHeight + (window.innerHeight - cardHeight - 20),
+          height: imageHeight + (window.innerHeight - cardHeight - 25),
         },
         cancelBlur: true,
       });
