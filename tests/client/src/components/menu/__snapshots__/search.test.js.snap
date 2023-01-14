@@ -6,7 +6,7 @@ exports[`The search component Will render only search Icon if not selected by th
 >
   <ForwardRef(Tooltip)
     placement="bottom"
-    title="Search by description or owner"
+    title="Search by description, owner or tags"
   >
     <Memo(ForwardRef(SearchIcon))
       fontSize="large"

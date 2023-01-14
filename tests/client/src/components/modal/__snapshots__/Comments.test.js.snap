@@ -139,6 +139,16 @@ exports[`The comments window will render with comments 1`] = `
                 "userId": "1",
               },
             ],
+            "tags": Array [
+              Object {
+                "_id": "tag_id_1",
+                "tag": "tag 1",
+              },
+              Object {
+                "_id": "tag_id_2",
+                "tag": "tag 2",
+              },
+            ],
           }
         }
         updateTags={[MockFunction]}
@@ -351,6 +361,12 @@ exports[`The comments window will render with no comments for authenticated user
                 "userId": "2",
               },
             ],
+            "tags": Array [
+              Object {
+                "_id": "tag_id_1",
+                "tag": "tag 1",
+              },
+            ],
           }
         }
         updateTags={[MockFunction]}
@@ -531,6 +547,12 @@ exports[`The comments window will render with no comments for unauthenticated us
                 "name": "savedBy - id-2git",
                 "service": "github",
                 "userId": "2",
+              },
+            ],
+            "tags": Array [
+              Object {
+                "_id": "tag_id_1",
+                "tag": "tag 1",
               },
             ],
           }

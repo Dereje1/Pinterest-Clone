@@ -79,6 +79,16 @@ exports[`The pin zoom modal will render 1`] = `
                       "userId": "1",
                     },
                   ],
+                  "tags": Array [
+                    Object {
+                      "_id": "tag_id_1",
+                      "tag": "tag 1",
+                    },
+                    Object {
+                      "_id": "tag_id_2",
+                      "tag": "tag 2",
+                    },
+                  ],
                 }
               }
               pinImage={[MockFunction]}
