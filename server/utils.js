@@ -98,7 +98,14 @@ returns
 */
 const filterPins = ({ rawPins, userId, isAdmin }) => rawPins.map((pin) => {
   const {
-    _id: pinId, imgDescription, imgLink, owner, savedBy, createdAt: pinCreatedAt, comments,
+    _id: pinId,
+    imgDescription,
+    imgLink,
+    owner,
+    savedBy,
+    createdAt: pinCreatedAt,
+    comments,
+    tags,
   } = pin;
   const savedIds = savedBy.map((s) => s.id);
   const savedNames = savedBy.map(({ name, id, service }) => ({ name, userId: id, service }));
@@ -119,6 +126,7 @@ const filterPins = ({ rawPins, userId, isAdmin }) => rawPins.map((pin) => {
     hasSaved: Boolean(userId && savedIds.includes(userId)),
     comments: modifiedComments,
     createdAt: pinCreatedAt,
+    tags,
   };
 });
 

@@ -21,15 +21,16 @@ function TagsForm({ closeTagsForm, addTag, stylingProps }) {
         id="Tags_form"
         label="Add a Tag"
         type="text"
-        variant="standard"
+        variant="filled"
         fullWidth
         value={tag}
         onChange={(e) => setTag(e.target.value)}
+        onBlur={closeTagsForm}
       />
-      <IconButton onClick={closeTagsForm}>
+      {/* <IconButton onClick={closeTagsForm}>
         <ClearIcon color="error" />
-      </IconButton>
-      <IconButton onClick={() => addTag(tag)}>
+      </IconButton> */}
+      <IconButton onClick={() => addTag(tag)} onMouseDown={(e) => e.preventDefault()}>
         <DoneIcon color="success" />
       </IconButton>
     </div>

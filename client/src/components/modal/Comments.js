@@ -20,6 +20,7 @@ function Comments({
   authenticated,
   toggleComments,
   closePin,
+  updateTags,
 }) {
   const [openCommentForm, setOpenCommentForm] = React.useState(false);
   const [openPinnersDialog, setOpenPinnersDialog] = React.useState(false);
@@ -55,8 +56,9 @@ function Comments({
       )}
       <div style={{
         display: 'flex',
-        justifyContent: 'space-between',
-        alignItems: 'center',
+        flexDirection: 'column',
+        justifyContent: 'center',
+        alignItems: 'space-around',
         position: 'sticky',
         top: 0,
         background: 'white',
@@ -94,12 +96,13 @@ function Comments({
             <CloseIcon />
           </IconButton>
         </div>
+        <Tags
+          stylingProps={stylingProps}
+          commentFormIsOpen={openCommentForm}
+          updateTags={updateTags}
+          pinInformation={pinInformation}
+        />
       </div>
-      <Tags
-        owns={pinInformation.owns}
-        stylingProps={stylingProps}
-        commentFormIsOpen={openCommentForm}
-      />
       {
         openCommentForm && (
           <CommentForm
@@ -169,4 +172,5 @@ Comments.propTypes = {
   authenticated: PropTypes.bool.isRequired,
   toggleComments: PropTypes.func.isRequired,
   closePin: PropTypes.func.isRequired,
+  updateTags: PropTypes.func.isRequired,
 };

@@ -167,6 +167,31 @@ const addComment = async (req, res) => {
   }
 };
 
+const updateTags = async (req, res) => {
+  const {
+    userId, displayName, isAdmin,
+  } = getUserProfile(req.user);
+  const { pinID, tag, deleteId } = req.query;
+  try {
+    const pin = await pins.findById(pinID).exec();
+    if (pin.owner.id !== userId && !isAdmin) res.end();
+
+    let update;
+    if (deleteId) {
+      const pinToUpdate = pin.tags.filter((t) => t._id.toString() !== deleteId);
+      update = { $set: { tags: pinToUpdate } };
+    } else {
+      update = { $push: { tags: { tag } } };
+    }
+    const updatedPin = await pins.findByIdAndUpdate(pinID, update, { new: true }).exec();
+    const [filteredAndUpdatedPin] = filterPins({ rawPins: [updatedPin], userId, isAdmin });
+    console.log(`${displayName} ${deleteId ? 'deleted' : 'added'} tag on ${updatedPin.imgDescription}`);
+    res.json(filteredAndUpdatedPin);
+  } catch (error) {
+    res.json(error);
+  }
+};
+
 const deletePin = async (req, res) => {
   const { userId, displayName, isAdmin } = getUserProfile(req.user);
   const query = { _id: req.params._id };
@@ -206,6 +231,9 @@ router.put('/api/unpin/:_id', isLoggedIn, unpin);
 
 // Adds a comment to a pin
 router.put('/api/comment/:_id', isLoggedIn, addComment);
+
+// Adds/removes a tag from a pin
+router.put('/api/updateTags/', isLoggedIn, updateTags);
 
 // deletes a pin if owned by user
 router.delete('/api/:_id', isLoggedIn, deletePin);
