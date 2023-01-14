@@ -215,7 +215,7 @@ const deletePin = async (req, res) => {
 router.post('/api/newpin', isLoggedIn, addPin);
 
 // gets all pins for home page
-router.get('/api/', getPins);
+router.get('/api/home', getPins);
 
 // gets pins for mypins page
 router.get('/api/mypins', isLoggedIn, getUserPins);

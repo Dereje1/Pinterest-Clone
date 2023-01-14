@@ -3,7 +3,7 @@ const { pinsStub } = require('../../../tests/client/pinsStub');
 const restMock = jest.fn().mockImplementation((...args) => {
   const [callInfo] = args;
   const { address, method = 'get', payload = null } = callInfo;
-  if (address.includes('/api/?type=All') && method === 'get' && !payload) {
+  if (address.includes('/api/home') && method === 'get' && !payload) {
     return Promise.resolve(pinsStub);
   } if (address.includes('/api/broken') && method === 'get' && !payload) {
     return Promise.resolve([]);

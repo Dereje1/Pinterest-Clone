@@ -43,7 +43,7 @@ describe('The Home Component', () => {
     displayedPinList.sort((a, b) => a._id - b._id);
     expect(displayedPinList).toStrictEqual(pinsStub);
     expect(RESTcall).toHaveBeenCalledTimes(1);
-    expect(RESTcall).toHaveBeenCalledWith({ address: '/api/?type=All', method: 'get' });
+    expect(RESTcall).toHaveBeenCalledWith({ address: '/api/home', method: 'get' });
   });
 
   test('Will filter pins if matching search found', async () => {

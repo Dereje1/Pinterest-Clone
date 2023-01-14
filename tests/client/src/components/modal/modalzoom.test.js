@@ -32,6 +32,7 @@ describe('The pin zoom modal', () => {
       deletePin: null,
       handleNewComment: jest.fn(),
       user: { authenticated: true },
+      updateTags: jest.fn(),
     };
   });
 
@@ -152,7 +153,7 @@ describe('The pin zoom modal', () => {
       .props;
     commentIcon.onClick();
     commentIcon.onMouseDown({ preventDefault: jest.fn() });
-    expect(wrapper.state().commentsShowing).toEqual({ height: 955, width: 830 });
+    expect(wrapper.state().commentsShowing).toEqual({ height: 950, width: 830 });
     expect(wrapper.state().cancelBlur).toEqual(true);
     // toggle comment off
     commentIcon.onClick();

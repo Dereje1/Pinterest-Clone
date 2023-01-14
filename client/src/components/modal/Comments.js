@@ -41,42 +41,47 @@ function Comments({
 
   return (
     <div style={{ ...stylingProps, overflowY: 'auto', paddingBottom: 17 }}>
-      { !openCommentForm && (
+      <div style={{
+        position: 'absolute',
+        bottom: 10,
+        left: 0,
+        right: 0,
+        width: 300,
+        display: 'flex',
+        justifyContent: 'space-evenly',
+        marginLeft: 'auto',
+        marginRight: 'auto',
+      }}
+      >
+        <Fab
+          color="error"
+          aria-label="close"
+          onClick={closePin}
+        >
+          <CloseIcon fontSize="large" />
+        </Fab>
+
+        {pinInformation.savedBy.length
+          ? (
+            <Fab
+              color="success"
+              aria-label="pinners"
+              onClick={() => setOpenPinnersDialog(true)}
+            >
+              <StarBorderIcon fontSize="large" />
+            </Fab>
+          )
+          : null}
         <Fab
           color="primary"
           aria-label="add"
           onClick={handleOpenCommentForm}
-          sx={{ position: 'absolute', bottom: 10, right: 10 }}
-          disabled={!authenticated}
+          disabled={!authenticated || openCommentForm}
         >
           <AddIcon fontSize="large" />
         </Fab>
-      )}
-      <Fab
-        color="error"
-        aria-label="add"
-        onClick={closePin}
-        sx={{
-          position: 'absolute', bottom: 10, left: 10,
-        }}
-      >
-        <CloseIcon fontSize="large" />
-      </Fab>
+      </div>
 
-      {pinInformation.savedBy.length
-        ? (
-          <Fab
-            color="success"
-            aria-label="add"
-            onClick={() => setOpenPinnersDialog(true)}
-            sx={{
-              position: 'absolute', bottom: 10, left: (stylingProps.width / 2) - 28,
-            }}
-          >
-            <StarBorderIcon fontSize="large" />
-          </Fab>
-        )
-        : null}
       <div style={{
         display: 'flex',
         justifyContent: 'space-between',

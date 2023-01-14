@@ -6,27 +6,55 @@ exports[`The comments window will render with comments 1`] = `
     Object {
       "height": 30,
       "overflowY": "auto",
-      "paddingBottom": 3,
+      "paddingBottom": 17,
       "width": 20,
     }
   }
 >
-  <ForwardRef(Fab)
-    aria-label="add"
-    color="primary"
-    disabled={false}
-    onClick={[Function]}
-    onMouseDown={[Function]}
-    sx={
+  <div
+    style={
       Object {
         "bottom": 10,
+        "display": "flex",
+        "justifyContent": "space-evenly",
+        "left": 0,
+        "marginLeft": "auto",
+        "marginRight": "auto",
         "position": "absolute",
-        "right": 10,
+        "right": 0,
+        "width": 300,
       }
     }
   >
-    <Memo(ForwardRef(AddIcon)) />
-  </ForwardRef(Fab)>
+    <ForwardRef(Fab)
+      aria-label="close"
+      color="error"
+      onClick={[MockFunction]}
+    >
+      <Memo(ForwardRef(CloseIcon))
+        fontSize="large"
+      />
+    </ForwardRef(Fab)>
+    <ForwardRef(Fab)
+      aria-label="pinners"
+      color="success"
+      onClick={[Function]}
+    >
+      <Memo(ForwardRef(StarBorderIcon))
+        fontSize="large"
+      />
+    </ForwardRef(Fab)>
+    <ForwardRef(Fab)
+      aria-label="add"
+      color="primary"
+      disabled={false}
+      onClick={[Function]}
+    >
+      <Memo(ForwardRef(AddIcon))
+        fontSize="large"
+      />
+    </ForwardRef(Fab)>
+  </div>
   <div
     style={
       Object {
@@ -45,7 +73,7 @@ exports[`The comments window will render with comments 1`] = `
         Object {
           "alignItems": "center",
           "display": "flex",
-          "justifyContent": "space-between",
+          "justifyContent": "flex-start",
           "paddingLeft": 10,
           "paddingRight": 10,
           "width": "100%",
@@ -76,17 +104,45 @@ exports[`The comments window will render with comments 1`] = `
           }
         />
       </div>
-      <ForwardRef(Button)
-        onClick={[Function]}
-        variant="text"
-      >
-        Pinners
-      </ForwardRef(Button)>
-      <ForwardRef(IconButton)
-        onClick={[MockFunction]}
-      >
-        <Memo(ForwardRef(CloseIcon)) />
-      </ForwardRef(IconButton)>
+      <TagsArray
+        commentFormIsOpen={false}
+        pinInformation={
+          Object {
+            "_id": 1,
+            "comments": Array [
+              Object {
+                "_id": "Comment_id_1",
+                "comment": "Test comment",
+                "createdAt": "2021-07-28T16:30:48.572Z",
+                "displayName": "tester-displayName",
+              },
+            ],
+            "createdAt": "2020-12-25T00:00:00.000+00:00",
+            "hasSaved": false,
+            "imgDescription": "imgDescription id-1",
+            "imgLink": "imgLink id-1",
+            "owner": Object {
+              "name": "owner id-1",
+              "service": "google",
+              "userId": "1",
+            },
+            "owns": false,
+            "savedBy": Array [
+              Object {
+                "name": "savedBy - id-1",
+                "service": "google",
+                "userId": "1",
+              },
+              Object {
+                "name": "savedBy - id-1",
+                "service": "github",
+                "userId": "1",
+              },
+            ],
+          }
+        }
+        updateTags={[MockFunction]}
+      />
     </div>
   </div>
   <ForwardRef(Card)
@@ -169,27 +225,55 @@ exports[`The comments window will render with no comments for authenticated user
     Object {
       "height": 30,
       "overflowY": "auto",
-      "paddingBottom": 3,
+      "paddingBottom": 17,
       "width": 20,
     }
   }
 >
-  <ForwardRef(Fab)
-    aria-label="add"
-    color="primary"
-    disabled={false}
-    onClick={[Function]}
-    onMouseDown={[Function]}
-    sx={
+  <div
+    style={
       Object {
         "bottom": 10,
+        "display": "flex",
+        "justifyContent": "space-evenly",
+        "left": 0,
+        "marginLeft": "auto",
+        "marginRight": "auto",
         "position": "absolute",
-        "right": 10,
+        "right": 0,
+        "width": 300,
       }
     }
   >
-    <Memo(ForwardRef(AddIcon)) />
-  </ForwardRef(Fab)>
+    <ForwardRef(Fab)
+      aria-label="close"
+      color="error"
+      onClick={[MockFunction]}
+    >
+      <Memo(ForwardRef(CloseIcon))
+        fontSize="large"
+      />
+    </ForwardRef(Fab)>
+    <ForwardRef(Fab)
+      aria-label="pinners"
+      color="success"
+      onClick={[Function]}
+    >
+      <Memo(ForwardRef(StarBorderIcon))
+        fontSize="large"
+      />
+    </ForwardRef(Fab)>
+    <ForwardRef(Fab)
+      aria-label="add"
+      color="primary"
+      disabled={false}
+      onClick={[Function]}
+    >
+      <Memo(ForwardRef(AddIcon))
+        fontSize="large"
+      />
+    </ForwardRef(Fab)>
+  </div>
   <div
     style={
       Object {
@@ -208,7 +292,7 @@ exports[`The comments window will render with no comments for authenticated user
         Object {
           "alignItems": "center",
           "display": "flex",
-          "justifyContent": "space-between",
+          "justifyContent": "flex-start",
           "paddingLeft": 10,
           "paddingRight": 10,
           "width": "100%",
@@ -239,17 +323,38 @@ exports[`The comments window will render with no comments for authenticated user
           }
         />
       </div>
-      <ForwardRef(Button)
-        onClick={[Function]}
-        variant="text"
-      >
-        Pinners
-      </ForwardRef(Button)>
-      <ForwardRef(IconButton)
-        onClick={[MockFunction]}
-      >
-        <Memo(ForwardRef(CloseIcon)) />
-      </ForwardRef(IconButton)>
+      <TagsArray
+        commentFormIsOpen={false}
+        pinInformation={
+          Object {
+            "_id": 2,
+            "comments": Array [],
+            "createdAt": "2020-12-25T00:00:00.000+00:00",
+            "hasSaved": true,
+            "imgDescription": "imgDescription id-2",
+            "imgLink": "imgLink id-2",
+            "owner": Object {
+              "name": "owner id-2",
+              "service": "twitter",
+              "userId": "2",
+            },
+            "owns": false,
+            "savedBy": Array [
+              Object {
+                "name": "savedBy - id-2",
+                "service": "google",
+                "userId": "2",
+              },
+              Object {
+                "name": "savedBy - id-2git",
+                "service": "github",
+                "userId": "2",
+              },
+            ],
+          }
+        }
+        updateTags={[MockFunction]}
+      />
     </div>
   </div>
   <ForwardRef(Card)
@@ -302,27 +407,55 @@ exports[`The comments window will render with no comments for unauthenticated us
     Object {
       "height": 30,
       "overflowY": "auto",
-      "paddingBottom": 3,
+      "paddingBottom": 17,
       "width": 20,
     }
   }
 >
-  <ForwardRef(Fab)
-    aria-label="add"
-    color="primary"
-    disabled={true}
-    onClick={[Function]}
-    onMouseDown={[Function]}
-    sx={
+  <div
+    style={
       Object {
         "bottom": 10,
+        "display": "flex",
+        "justifyContent": "space-evenly",
+        "left": 0,
+        "marginLeft": "auto",
+        "marginRight": "auto",
         "position": "absolute",
-        "right": 10,
+        "right": 0,
+        "width": 300,
       }
     }
   >
-    <Memo(ForwardRef(AddIcon)) />
-  </ForwardRef(Fab)>
+    <ForwardRef(Fab)
+      aria-label="close"
+      color="error"
+      onClick={[MockFunction]}
+    >
+      <Memo(ForwardRef(CloseIcon))
+        fontSize="large"
+      />
+    </ForwardRef(Fab)>
+    <ForwardRef(Fab)
+      aria-label="pinners"
+      color="success"
+      onClick={[Function]}
+    >
+      <Memo(ForwardRef(StarBorderIcon))
+        fontSize="large"
+      />
+    </ForwardRef(Fab)>
+    <ForwardRef(Fab)
+      aria-label="add"
+      color="primary"
+      disabled={true}
+      onClick={[Function]}
+    >
+      <Memo(ForwardRef(AddIcon))
+        fontSize="large"
+      />
+    </ForwardRef(Fab)>
+  </div>
   <div
     style={
       Object {
@@ -341,7 +474,7 @@ exports[`The comments window will render with no comments for unauthenticated us
         Object {
           "alignItems": "center",
           "display": "flex",
-          "justifyContent": "space-between",
+          "justifyContent": "flex-start",
           "paddingLeft": 10,
           "paddingRight": 10,
           "width": "100%",
@@ -372,17 +505,38 @@ exports[`The comments window will render with no comments for unauthenticated us
           }
         />
       </div>
-      <ForwardRef(Button)
-        onClick={[Function]}
-        variant="text"
-      >
-        Pinners
-      </ForwardRef(Button)>
-      <ForwardRef(IconButton)
-        onClick={[MockFunction]}
-      >
-        <Memo(ForwardRef(CloseIcon)) />
-      </ForwardRef(IconButton)>
+      <TagsArray
+        commentFormIsOpen={false}
+        pinInformation={
+          Object {
+            "_id": 2,
+            "comments": Array [],
+            "createdAt": "2020-12-25T00:00:00.000+00:00",
+            "hasSaved": true,
+            "imgDescription": "imgDescription id-2",
+            "imgLink": "imgLink id-2",
+            "owner": Object {
+              "name": "owner id-2",
+              "service": "twitter",
+              "userId": "2",
+            },
+            "owns": false,
+            "savedBy": Array [
+              Object {
+                "name": "savedBy - id-2",
+                "service": "google",
+                "userId": "2",
+              },
+              Object {
+                "name": "savedBy - id-2git",
+                "service": "github",
+                "userId": "2",
+              },
+            ],
+          }
+        }
+        updateTags={[MockFunction]}
+      />
     </div>
   </div>
   <ForwardRef(Card)
