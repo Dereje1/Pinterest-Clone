@@ -1,14 +1,21 @@
 import React from 'react';
 import { shallow } from 'enzyme';
-import { useDispatch } from 'react-redux';
 import toJson from 'enzyme-to-json';
+import { useHistory } from 'react-router-dom';
 import Tags, { ListItem } from '../../../../../client/src/components/modal/Tags';
 import { pinsStub } from '../../../pinsStub';
+
+const mockdispatch = jest.fn();
+// Mock router hooks
+jest.mock('react-router-dom', () => ({
+  ...jest.requireActual('react-router-dom'), // use actual for all non-hook parts
+  useHistory: jest.fn(),
+}));
 
 // Mock redux hooks
 jest.mock('react-redux', () => ({
   ...jest.requireActual('react-redux'), // use actual for all non-hook parts
-  useDispatch: jest.fn(),
+  useDispatch: jest.fn(() => mockdispatch),
 }));
 
 describe('The tags component', () => {
@@ -20,12 +27,10 @@ describe('The tags component', () => {
       updateTags: jest.fn(),
       closePin: jest.fn(),
     };
-    useDispatch.mockImplementationOnce(() => jest.fn());
   });
 
   afterEach(() => {
     props = null;
-    useDispatch.mockClear();
   });
 
   test('will render with tags for owner', () => {
@@ -78,5 +83,23 @@ describe('The tags component', () => {
     // trigger delete tag
     chip.props().onDelete();
     expect(props.updateTags).toHaveBeenCalledWith('?pinID=1&deleteId=tag_id_1');
+  });
+
+  test('will search on tag click', () => {
+    const push = jest.fn();
+    useHistory.mockImplementation(() => ({ push }));
+
+    const wrapper = shallow(<Tags {...props} />);
+    const chip = wrapper.find({ label: 'TAG 1' });
+    chip.props().onClick();
+    expect(mockdispatch).toHaveBeenCalledWith({
+      type: 'UPDATE_SEARCH',
+      payload: {
+        tagSearch: true,
+        term: 'tag 1',
+      },
+    });
+    expect(props.closePin).toHaveBeenCalled();
+    expect(push).toHaveBeenCalledWith('/');
   });
 });

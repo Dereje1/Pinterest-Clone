@@ -7,7 +7,7 @@ import Search from '../../../../../client/src/components/menu/search';
 // Mock redux hooks
 jest.mock('react-redux', () => ({
   ...jest.requireActual('react-redux'), // use actual for all non-hook parts
-  useSelector: jest.fn((() => ({ authenticated: true }))),
+  useSelector: jest.fn((() => ({ term: null, tagSearch: false }))),
 }));
 
 jest.useFakeTimers();
@@ -21,12 +21,10 @@ describe('The search component', () => {
       openSearch: jest.fn(),
       closeSearch: jest.fn(),
     };
-    useSelector.mockImplementationOnce(() => ({ authenticated: false }));
   });
 
   afterEach(() => {
     props = null;
-    useSelector.mockClear();
   });
 
   test('Will not render anything if at /pins path', () => {
@@ -110,5 +108,15 @@ describe('The search component', () => {
     searchInput = wrapper.find('ForwardRef(InputBase)');
     expect(props.openSearch).toHaveBeenCalled();
     expect(searchInput.props().value).toBe('abc');
+  });
+
+  test('will use the tag terms to search if change in redux store', () => {
+    useSelector.mockImplementationOnce(() => ({ term: 'tag search', tagSearch: true }));
+    const wrapper = shallow(<Search {...props} isShowing />);
+    jest.advanceTimersByTime(1000);
+    const searchInput = wrapper.find('ForwardRef(InputBase)');
+    expect(props.searchUpdate).toHaveBeenCalledWith('tag search');
+    expect(props.openSearch).toHaveBeenCalled();
+    expect(searchInput.props().value).toBe('tag search');
   });
 });

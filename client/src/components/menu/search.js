@@ -18,7 +18,7 @@ function Search({
   closeSearch,
 }) {
   const [searchVal, updateSearchVal] = useState('');
-  const { term, tagSearch } = useSelector((state) => state.search);
+  const { term, tagSearch } = useSelector(({ search }) => search);
 
   const onDebounceSearch = _.debounce((val, reduxUpdate) => reduxUpdate(val), 500);
 
