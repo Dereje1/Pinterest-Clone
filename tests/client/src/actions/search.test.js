@@ -5,14 +5,20 @@ describe('Action to update search terms in redux', () => {
     const action = updateSearch('ABC');
     expect(action).toEqual({
       type: 'UPDATE_SEARCH',
-      payload: 'abc',
+      payload: {
+        term: 'abc',
+        tagSearch: false,
+      },
     });
   });
   test('will send null for an empty search term', () => {
     const action = updateSearch('    ');
     expect(action).toEqual({
       type: 'UPDATE_SEARCH',
-      payload: null,
+      payload: {
+        term: null,
+        tagSearch: false,
+      },
     });
   });
 });

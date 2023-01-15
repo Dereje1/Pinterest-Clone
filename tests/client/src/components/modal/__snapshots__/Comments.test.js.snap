@@ -105,6 +105,7 @@ exports[`The comments window will render with comments 1`] = `
         />
       </div>
       <TagsArray
+        closePin={[MockFunction]}
         commentFormIsOpen={false}
         pinInformation={
           Object {
@@ -342,6 +343,7 @@ exports[`The comments window will render with no comments for authenticated user
         />
       </div>
       <TagsArray
+        closePin={[MockFunction]}
         commentFormIsOpen={false}
         pinInformation={
           Object {
@@ -530,6 +532,7 @@ exports[`The comments window will render with no comments for unauthenticated us
         />
       </div>
       <TagsArray
+        closePin={[MockFunction]}
         commentFormIsOpen={false}
         pinInformation={
           Object {

@@ -1,7 +1,14 @@
 import React from 'react';
 import { shallow } from 'enzyme';
 import toJson from 'enzyme-to-json';
+import { useSelector } from 'react-redux';
 import Search from '../../../../../client/src/components/menu/search';
+
+// Mock redux hooks
+jest.mock('react-redux', () => ({
+  ...jest.requireActual('react-redux'), // use actual for all non-hook parts
+  useSelector: jest.fn((() => ({ authenticated: true }))),
+}));
 
 jest.useFakeTimers();
 describe('The search component', () => {
@@ -14,10 +21,12 @@ describe('The search component', () => {
       openSearch: jest.fn(),
       closeSearch: jest.fn(),
     };
+    useSelector.mockImplementationOnce(() => ({ authenticated: false }));
   });
 
   afterEach(() => {
     props = null;
+    useSelector.mockClear();
   });
 
   test('Will not render anything if at /pins path', () => {

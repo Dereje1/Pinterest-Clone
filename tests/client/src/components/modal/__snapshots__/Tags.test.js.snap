@@ -93,6 +93,7 @@ exports[`The tags component will render with tags for non-owner 1`] = `
       <ForwardRef(Chip)
         color="warning"
         label="TAG 1"
+        onClick={[Function]}
         size="small"
         variant="outlined"
       />
@@ -103,6 +104,7 @@ exports[`The tags component will render with tags for non-owner 1`] = `
       <ForwardRef(Chip)
         color="warning"
         label="TAG 2"
+        onClick={[Function]}
         size="small"
         variant="outlined"
       />
@@ -148,6 +150,7 @@ exports[`The tags component will render with tags for owner 1`] = `
       <ForwardRef(Chip)
         color="warning"
         label="TAG 1"
+        onClick={[Function]}
         onDelete={[Function]}
         size="small"
         variant="outlined"
@@ -159,6 +162,7 @@ exports[`The tags component will render with tags for owner 1`] = `
       <ForwardRef(Chip)
         color="warning"
         label="TAG 2"
+        onClick={[Function]}
         onDelete={[Function]}
         size="small"
         variant="outlined"

@@ -17,7 +17,7 @@ describe('The Home Component', () => {
         service: 'tester service',
         userId: 'tester user Id',
       },
-      search: null,
+      search: { term: null },
     };
   });
   afterEach(() => {
@@ -49,7 +49,7 @@ describe('The Home Component', () => {
   test('Will filter pins if matching search found for description', async () => {
     const updatedProps = {
       ...props,
-      search: 'id-3',
+      search: { term: 'id-3' },
     };
     const wrapper = shallow(<Home {...updatedProps} />);
     await Promise.resolve();
@@ -61,7 +61,7 @@ describe('The Home Component', () => {
   test('Will filter pins if matching search found for tags', async () => {
     const updatedProps = {
       ...props,
-      search: 'tag 2',
+      search: { term: 'tag 2' },
     };
     const wrapper = shallow(<Home {...updatedProps} />);
     await Promise.resolve();

@@ -1,8 +1,15 @@
 import React from 'react';
 import { shallow } from 'enzyme';
+import { useDispatch } from 'react-redux';
 import toJson from 'enzyme-to-json';
 import Tags, { ListItem } from '../../../../../client/src/components/modal/Tags';
 import { pinsStub } from '../../../pinsStub';
+
+// Mock redux hooks
+jest.mock('react-redux', () => ({
+  ...jest.requireActual('react-redux'), // use actual for all non-hook parts
+  useDispatch: jest.fn(),
+}));
 
 describe('The tags component', () => {
   let props;
@@ -11,11 +18,14 @@ describe('The tags component', () => {
       pinInformation: { ...pinsStub[0], owns: true },
       commentFormIsOpen: false,
       updateTags: jest.fn(),
+      closePin: jest.fn(),
     };
+    useDispatch.mockImplementationOnce(() => jest.fn());
   });
 
   afterEach(() => {
     props = null;
+    useDispatch.mockClear();
   });
 
   test('will render with tags for owner', () => {
