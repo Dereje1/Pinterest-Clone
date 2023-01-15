@@ -1,6 +1,9 @@
-const updateSearch = (val) => ({
+const updateSearch = (val, tagSearch = false) => ({
   type: 'UPDATE_SEARCH',
-  payload: val.trim().length ? val.trim().toLowerCase() : null,
+  payload: {
+    term: val.trim().length ? val.trim().toLowerCase() : null,
+    tagSearch,
+  },
 });
 
 export default updateSearch;

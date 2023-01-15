@@ -121,6 +121,7 @@ function Comments({
             commentFormIsOpen={openCommentForm}
             updateTags={updateTags}
             pinInformation={pinInformation}
+            closePin={closePin}
           />
         </div>
       </div>

@@ -28,9 +28,9 @@ export class Home extends Component {
   }
 
   render() {
-    const { user, user: { username }, search } = this.props;
+    const { user, user: { username }, search: { term: searchTerm } } = this.props;
     const { pinList, ready } = this.state;
-    const filteredPins = getFilteredPins(pinList, search);
+    const filteredPins = getFilteredPins(pinList, searchTerm);
     if (username !== null) {
       return (
         <ImageBuild
@@ -53,11 +53,11 @@ export default connect(mapStateToProps)(Home);
 
 Home.defaultProps = {
   user: {},
-  search: null,
+  search: {},
 };
 
 Home.propTypes = {
   // authentication info from redux
   user: PropTypes.shape(PropTypes.shape),
-  search: PropTypes.string,
+  search: PropTypes.shape(PropTypes.shape),
 };

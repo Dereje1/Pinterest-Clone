@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import PropTypes from 'prop-types';
 import _ from 'lodash';
+import { useSelector } from 'react-redux';
 import Paper from '@mui/material/Paper';
 import InputBase from '@mui/material/InputBase';
 import SearchIcon from '@mui/icons-material/Search';
@@ -17,16 +18,7 @@ function Search({
   closeSearch,
 }) {
   const [searchVal, updateSearchVal] = useState('');
-
-  useEffect(() => {
-    if (pathname !== '/') closeSearch();
-    if (pathname === '/' && Boolean(searchVal)) openSearch();
-  }, [pathname]);
-
-  const clearSearch = () => {
-    updateSearchVal('');
-    searchUpdate('');
-  };
+  const { term, tagSearch } = useSelector((state) => state.search);
 
   const onDebounceSearch = _.debounce((val, reduxUpdate) => reduxUpdate(val), 500);
 
@@ -34,6 +26,23 @@ function Search({
     updateSearchVal(value);
     onDebounceSearch(value, searchUpdate);
   };
+
+  const clearSearch = () => {
+    updateSearchVal('');
+    searchUpdate('');
+  };
+
+  useEffect(() => {
+    if (tagSearch) {
+      openSearch();
+      handleSearch({ target: { value: term } });
+    }
+  }, [tagSearch]);
+
+  useEffect(() => {
+    if (pathname !== '/') closeSearch();
+    if (pathname === '/' && Boolean(searchVal)) openSearch();
+  }, [pathname]);
 
   if (pathname !== '/') return null;
 
