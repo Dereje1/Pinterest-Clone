@@ -39,14 +39,9 @@ export const getNewImageWidth = ({
   innerHeight = innerHeight < 500 ? innerHeight - 120 : innerHeight - 170;
   // minor x direction adjustment for padding too
   innerWidth -= (innerWidth * 0.02);
-  let newWidth = innerWidth;
   let isNoFit = false;
-  const imageResolultion = imageWidth / imageHeight;
-  const screenResolution = innerWidth / innerHeight;
-  if (screenResolution > imageResolultion) {
-    newWidth = imageWidth * (innerHeight / imageHeight);
-  }
-
+  const ratio = Math.min(innerWidth / imageWidth, innerHeight / imageHeight);
+  const newWidth = imageWidth * ratio;
   let parentWidth = newWidth;
   if (newWidth < 500) {
     if (innerWidth < 500) {
@@ -56,7 +51,6 @@ export const getNewImageWidth = ({
     }
     isNoFit = true;
   }
-
   return {
     imgWidth: `${newWidth}px`,
     parentWidth,

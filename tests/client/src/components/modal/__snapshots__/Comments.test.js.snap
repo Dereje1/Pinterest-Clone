@@ -16,7 +16,7 @@ exports[`The comments window will render with comments 1`] = `
       Object {
         "bottom": 10,
         "display": "flex",
-        "justifyContent": "space-evenly",
+        "justifyContent": "space-around",
         "left": 0,
         "marginLeft": "auto",
         "marginRight": "auto",
@@ -38,6 +38,7 @@ exports[`The comments window will render with comments 1`] = `
     <ForwardRef(Fab)
       aria-label="pinners"
       color="success"
+      disabled={false}
       onClick={[Function]}
     >
       <Memo(ForwardRef(StarBorderIcon))
@@ -254,7 +255,7 @@ exports[`The comments window will render with no comments for authenticated user
       Object {
         "bottom": 10,
         "display": "flex",
-        "justifyContent": "space-evenly",
+        "justifyContent": "space-around",
         "left": 0,
         "marginLeft": "auto",
         "marginRight": "auto",
@@ -276,6 +277,7 @@ exports[`The comments window will render with no comments for authenticated user
     <ForwardRef(Fab)
       aria-label="pinners"
       color="success"
+      disabled={false}
       onClick={[Function]}
     >
       <Memo(ForwardRef(StarBorderIcon))
@@ -443,7 +445,7 @@ exports[`The comments window will render with no comments for unauthenticated us
       Object {
         "bottom": 10,
         "display": "flex",
-        "justifyContent": "space-evenly",
+        "justifyContent": "space-around",
         "left": 0,
         "marginLeft": "auto",
         "marginRight": "auto",
@@ -465,6 +467,7 @@ exports[`The comments window will render with no comments for unauthenticated us
     <ForwardRef(Fab)
       aria-label="pinners"
       color="success"
+      disabled={false}
       onClick={[Function]}
     >
       <Memo(ForwardRef(StarBorderIcon))

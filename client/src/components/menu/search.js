@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useLayoutEffect } from 'react';
 import PropTypes from 'prop-types';
 import _ from 'lodash';
 import { useSelector } from 'react-redux';
@@ -18,6 +18,8 @@ function Search({
   closeSearch,
 }) {
   const [searchVal, updateSearchVal] = useState('');
+  const [scrollUp, setScrollUp] = useState(false);
+
   const { term, tagSearch } = useSelector(({ search }) => search);
 
   const onDebounceSearch = _.debounce((val, reduxUpdate) => reduxUpdate(val), 500);
@@ -34,15 +36,26 @@ function Search({
 
   useEffect(() => {
     if (tagSearch) {
+      setScrollUp(true);
       openSearch();
       handleSearch({ target: { value: term } });
     }
+    return () => {
+      setScrollUp(false);
+    };
   }, [tagSearch]);
 
   useEffect(() => {
     if (pathname !== '/') closeSearch();
     if (pathname === '/' && Boolean(searchVal)) openSearch();
   }, [pathname]);
+
+  useLayoutEffect(() => {
+    if (scrollUp) {
+      document.body.style.overflowY = 'scroll';
+      window.scrollTo(0, 0);
+    }
+  });
 
   if (pathname !== '/') return null;
 
@@ -100,7 +113,7 @@ function Search({
           inputProps={{ 'aria-label': 'search' }}
           onChange={handleSearch}
           value={searchVal}
-          autoFocus
+          autoFocus={!tagSearch}
         />
         <IconButton
           type="button"

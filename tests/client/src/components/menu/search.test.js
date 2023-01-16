@@ -1,3 +1,6 @@
+/**
+ * @jest-environment jsdom
+ */
 import React from 'react';
 import { shallow } from 'enzyme';
 import toJson from 'enzyme-to-json';
@@ -21,6 +24,7 @@ describe('The search component', () => {
       openSearch: jest.fn(),
       closeSearch: jest.fn(),
     };
+    global.scrollTo = jest.fn();
   });
 
   afterEach(() => {
@@ -118,5 +122,6 @@ describe('The search component', () => {
     expect(props.searchUpdate).toHaveBeenCalledWith('tag search');
     expect(props.openSearch).toHaveBeenCalled();
     expect(searchInput.props().value).toBe('tag search');
+    expect(global.scrollTo).toHaveBeenCalled();
   });
 });

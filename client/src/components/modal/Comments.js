@@ -48,7 +48,7 @@ function Comments({
         right: 0,
         width: 300,
         display: 'flex',
-        justifyContent: 'space-evenly',
+        justifyContent: 'space-around',
         marginLeft: 'auto',
         marginRight: 'auto',
       }}
@@ -61,17 +61,15 @@ function Comments({
           <CloseIcon fontSize="large" />
         </Fab>
 
-        {pinInformation.savedBy.length
-          ? (
-            <Fab
-              color="success"
-              aria-label="pinners"
-              onClick={() => setOpenPinnersDialog(true)}
-            >
-              <StarBorderIcon fontSize="large" />
-            </Fab>
-          )
-          : null}
+        <Fab
+          color="success"
+          aria-label="pinners"
+          onClick={() => setOpenPinnersDialog(true)}
+          disabled={!pinInformation.savedBy.length}
+        >
+          <StarBorderIcon fontSize="large" />
+        </Fab>
+
         <Fab
           color="primary"
           aria-label="add"
