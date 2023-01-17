@@ -13,6 +13,7 @@ const {
 const pins = require('../../server/models/pins'); // schema for pins
 const users = require('../../server/models/user'); // schema for pins
 const pinLinks = require('../../server/models/pinlinks'); // schema for pins
+const savedTags = require('../../server/models/tags');
 const {
   user, rawPinsStub, allPinsResponse,
 } = require('./stub');
@@ -762,6 +763,7 @@ describe('Updating tags for a pin', () => {
         exec: jest.fn().mockResolvedValue({ ...rawPinsStub[1] }),
       }),
     );
+    savedTags.create = jest.fn().mockResolvedValue([]);
     await updateTags(req, res);
     expect(pins.findById).toHaveBeenCalledTimes(1);
     expect(pins.findById).toHaveBeenCalledWith(1);

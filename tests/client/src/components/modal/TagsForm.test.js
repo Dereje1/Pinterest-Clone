@@ -9,6 +9,8 @@ describe('The tags form component', () => {
     props = {
       addTag: jest.fn(),
       closeTagsForm: jest.fn(),
+      suggestedTags: ['suggested tag 1', 'suggested tag 2'],
+      exisitingTags: ['existing tag 1', 'existing tag 2'],
     };
   });
 
@@ -23,52 +25,52 @@ describe('The tags form component', () => {
 
   test('will update the value for characters <= 15', () => {
     const wrapper = shallow(<TagsForm {...props} />);
-    let textField = wrapper.find('ForwardRef(TextField)');
-    expect(textField.props().value).toBe('');
+    let autoComplete = wrapper.find('ForwardRef(Autocomplete)');
+    expect(autoComplete.props().value).toBe('');
     // trigger value change
-    textField.props().onChange({ target: { value: '15 characters..' } });
-    textField = wrapper.find('ForwardRef(TextField)');
-    expect(textField.props().value).toBe('15 characters..');
+    autoComplete.props().onInputChange('', '15 characters..');
+    autoComplete = wrapper.find('ForwardRef(Autocomplete)');
+    expect(autoComplete.props().value).toBe('15 characters..');
   });
 
   test('will not update the value for characters > 15', () => {
     const wrapper = shallow(<TagsForm {...props} />);
-    let textField = wrapper.find('ForwardRef(TextField)');
-    expect(textField.props().value).toBe('');
+    let autoComplete = wrapper.find('ForwardRef(Autocomplete)');
+    expect(autoComplete.props().value).toBe('');
     // trigger value change
-    textField.props().onChange({ target: { value: '16 characters..and more' } });
-    textField = wrapper.find('ForwardRef(TextField)');
-    expect(textField.props().value).toBe('');
+    autoComplete.props().onInputChange('', '16 characters..and more');
+    autoComplete = wrapper.find('ForwardRef(Autocomplete)');
+    expect(autoComplete.props().value).toBe('');
   });
 
   test('will submit on done if value is present', () => {
     const wrapper = shallow(<TagsForm {...props} />);
-    const textField = wrapper.find('ForwardRef(TextField)');
+    const autoComplete = wrapper.find('ForwardRef(Autocomplete)');
     // // trigger value change
-    textField.props().onChange({ target: { value: '15 characters..' } });
+    autoComplete.props().onInputChange('', '15 characters..');
     const done = wrapper.find('Memo(ForwardRef(DoneIcon))');
     // trigger submit
     done.props().onMouseDown({ preventDefault: jest.fn() });
     done.props().onClick();
-    expect(props.addTag).toHaveBeenCalledWith('15 characters..');
+    expect(props.addTag).toHaveBeenCalledWith('15 CHARACTERS..');
   });
 
   test('will submit on enter key if value is present', () => {
     const wrapper = shallow(<TagsForm {...props} />);
-    let textField = wrapper.find('ForwardRef(TextField)');
+    let autoComplete = wrapper.find('ForwardRef(Autocomplete)');
     // // trigger value change
-    textField.props().onChange({ target: { value: '15 characters..' } });
+    autoComplete.props().onInputChange('', '15 characters..');
     // trigger enter
-    textField = wrapper.find('ForwardRef(TextField)');
-    textField.props().onKeyDown({ key: 'Enter' });
-    expect(props.addTag).toHaveBeenCalledWith('15 characters..');
+    autoComplete = wrapper.find('ForwardRef(Autocomplete)');
+    autoComplete.props().onKeyDown({ key: 'Enter' });
+    expect(props.addTag).toHaveBeenCalledWith('15 CHARACTERS..');
   });
 
   test('will not submit on done if value is empty', () => {
     const wrapper = shallow(<TagsForm {...props} />);
-    const textField = wrapper.find('ForwardRef(TextField)');
+    const autoComplete = wrapper.find('ForwardRef(Autocomplete)');
     // // trigger value change
-    textField.props().onChange({ target: { value: '   ' } });
+    autoComplete.props().onInputChange('', '   ');
     const done = wrapper.find('Memo(ForwardRef(DoneIcon))');
     // trigger submit
     done.props().onMouseDown({ preventDefault: jest.fn() });
@@ -78,12 +80,12 @@ describe('The tags form component', () => {
 
   test('will not submit on any other key even if value is present', () => {
     const wrapper = shallow(<TagsForm {...props} />);
-    let textField = wrapper.find('ForwardRef(TextField)');
+    let autoComplete = wrapper.find('ForwardRef(Autocomplete)');
     // // trigger value change
-    textField.props().onChange({ target: { value: '15 characters..' } });
+    autoComplete.props().onInputChange('', '15 characters..');
     // trigger enter
-    textField = wrapper.find('ForwardRef(TextField)');
-    textField.props().onKeyDown({ key: 'other key' });
+    autoComplete = wrapper.find('ForwardRef(Autocomplete)');
+    autoComplete.props().onKeyDown({ key: 'other key' });
     expect(props.addTag).not.toHaveBeenCalled();
   });
 });

@@ -8,21 +8,28 @@ exports[`The tags form component will render 1`] = `
       "display": "flex",
       "marginLeft": "auto",
       "marginRight": "auto",
-      "width": 150,
+      "width": 300,
     }
   }
 >
-  <ForwardRef(TextField)
-    autoFocus={true}
+  <ForwardRef(Autocomplete)
+    autoComplete={true}
+    disableClearable={true}
+    filterOptions={[Function]}
+    freeSolo={true}
     fullWidth={true}
-    id="Tags_form"
-    label="Add a Tag"
+    id="free-solo-tags"
     onBlur={[MockFunction]}
-    onChange={[Function]}
+    onInputChange={[Function]}
     onKeyDown={[Function]}
-    type="text"
+    options={
+      Array [
+        "SUGGESTED TAG 1",
+        "SUGGESTED TAG 2",
+      ]
+    }
+    renderInput={[Function]}
     value=""
-    variant="standard"
   />
   <Memo(ForwardRef(DoneIcon))
     color="success"
