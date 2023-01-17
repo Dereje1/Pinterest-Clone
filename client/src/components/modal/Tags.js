@@ -9,6 +9,7 @@ import IconButton from '@mui/material/IconButton';
 import TagIcon from '@mui/icons-material/Tag';
 import updateSearch from '../../actions/search';
 import TagsForm from './TagsForm';
+import RESTcall from '../../crud';
 
 export const ListItem = styled('li')(({ theme }) => ({
   margin: theme.spacing(0.5),
@@ -23,13 +24,29 @@ function TagsArray({
   const { tags, owns, _id } = pinInformation;
   const [tagData, setTagData] = React.useState([]);
   const [openTagsForm, setOpenTagsForm] = React.useState(false);
+  const [suggestedTags, setSuggestedTags] = React.useState([]);
 
   const dispatch = useDispatch();
   const history = useHistory();
 
+  const fetchSuggestedTags = async () => {
+    try {
+      const retreivedTags = await RESTcall({ address: '/api/getTags' });
+      setSuggestedTags(retreivedTags);
+    } catch (error) {
+      setSuggestedTags([]);
+    }
+  };
+
   React.useEffect(() => {
     setTagData(tags);
   }, [tags]);
+
+  React.useEffect(() => {
+    if (openTagsForm) {
+      fetchSuggestedTags();
+    }
+  }, [openTagsForm]);
 
   const handleAdd = (val) => {
     updateTags(`?pinID=${_id}&tag=${val}`);
@@ -51,6 +68,8 @@ function TagsArray({
       <TagsForm
         closeTagsForm={() => setOpenTagsForm(false)}
         addTag={handleAdd}
+        suggestedTags={suggestedTags}
+        exisitingTags={tagData.map((t) => t.tag.toUpperCase())}
       />
     );
   }

@@ -2,6 +2,7 @@ const router = require('express').Router();
 const pins = require('./models/pins'); // schema for pins
 const users = require('./models/user');
 const pinLinks = require('./models/pinlinks');
+const savedTags = require('./models/tags');
 const isLoggedIn = require('./auth/isloggedin');
 const {
   getUserProfile, filterPins, uploadImageToS3,
@@ -96,6 +97,15 @@ const getProfilePins = async (req, res) => {
   }
 };
 
+const getTags = async (req, res) => {
+  try {
+    const tags = await savedTags.find().distinct('tag').exec();
+    res.json(tags);
+  } catch (error) {
+    res.json(error);
+  }
+};
+
 const pinImage = async (req, res) => {
   const pinID = req.params._id;
   const {
@@ -185,6 +195,7 @@ const updateTags = async (req, res) => {
       update = { $set: { tags: pinToUpdate } };
     } else {
       update = { $push: { tags: { tag } } };
+      await savedTags.create({ tag });
     }
     const updatedPin = await pins.findByIdAndUpdate(pinID, update, { new: true }).exec();
     const [filteredAndUpdatedPin] = filterPins({ rawPins: [updatedPin], userId, isAdmin });
@@ -225,6 +236,9 @@ router.get('/api/mypins', isLoggedIn, getUserPins);
 
 // gets pins for a single user
 router.get('/api/userProfile/:userid', isLoggedIn, getProfilePins);
+
+// gets all used tags
+router.get('/api/getTags', isLoggedIn, getTags);
 
 // Adds a user to a pin's savedby list
 router.put('/api/pin/:_id', isLoggedIn, pinImage);
