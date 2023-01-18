@@ -1,4 +1,3 @@
-
 module.exports = {
   get: (...args) => {
     const route = args[0];

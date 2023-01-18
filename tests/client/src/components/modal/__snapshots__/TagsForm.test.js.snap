@@ -8,7 +8,7 @@ exports[`The tags form component will render 1`] = `
       "display": "flex",
       "marginLeft": "auto",
       "marginRight": "auto",
-      "width": 300,
+      "width": 200,
     }
   }
 >
@@ -19,6 +19,7 @@ exports[`The tags form component will render 1`] = `
     freeSolo={true}
     fullWidth={true}
     id="free-solo-tags"
+    inputValue=""
     onBlur={[MockFunction]}
     onInputChange={[Function]}
     onKeyDown={[Function]}
@@ -29,7 +30,6 @@ exports[`The tags form component will render 1`] = `
       ]
     }
     renderInput={[Function]}
-    value=""
   />
   <Memo(ForwardRef(DoneIcon))
     color="success"

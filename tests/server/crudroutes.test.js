@@ -9,6 +9,7 @@ const {
   getProfilePins,
   getUserPins,
   updateTags,
+  getTags,
 } = require('../../server/crudroutes');
 const pins = require('../../server/models/pins'); // schema for pins
 const users = require('../../server/models/user'); // schema for pins
@@ -850,6 +851,48 @@ describe('Updating tags for a pin', () => {
       }),
     );
     await updateTags(req, res);
+    expect(res.json).toHaveBeenCalledWith(Error('Mocked rejection'));
+  });
+});
+
+describe('Getting saved tags list', () => {
+  let res;
+  beforeEach(() => {
+    res = { json: jest.fn() };
+    process.env = {
+      ...process.env,
+      ADMIN_USER_ID: 'xxx',
+    };
+  });
+  afterEach(() => {
+    jest.restoreAllMocks();
+  });
+
+  test('will get tags', async () => {
+    const distinct = jest.fn();
+    savedTags.find = jest.fn().mockImplementation(
+      () => ({
+        distinct: distinct.mockImplementation(() => ({
+          exec: jest.fn().mockResolvedValue(['saved tags']),
+        })),
+      }),
+    );
+    await getTags({}, res);
+    expect(savedTags.find).toHaveBeenCalledTimes(1);
+    expect(distinct).toHaveBeenCalledWith('tag');
+    expect(res.json).toHaveBeenCalledWith(['saved tags']);
+  });
+
+  xtest('will respond with error if get is rejected', async () => {
+    const req = {};
+    savedTags.find = jest.fn().mockImplementation(
+      () => ({
+        distinct: jest.fn().mockImplementation(() => ({
+          exec: jest.fn().mockRejectedValue(new Error('Mocked rejection')),
+        })),
+      }),
+    );
+    await getTags(req, res);
     expect(res.json).toHaveBeenCalledWith(Error('Mocked rejection'));
   });
 });

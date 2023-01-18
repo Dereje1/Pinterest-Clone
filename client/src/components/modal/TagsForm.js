@@ -36,7 +36,7 @@ function TagsForm({
 
   return (
     <div style={{
-      width: 300,
+      width: 200,
       marginLeft: 'auto',
       marginRight: 'auto',
       display: 'flex',
@@ -49,7 +49,7 @@ function TagsForm({
         options={suggestedTags.map((option) => option.toUpperCase())}
         fullWidth
         disableClearable
-        value={tag}
+        inputValue={tag}
         autoComplete
         onInputChange={handleTag}
         onBlur={closeTagsForm}

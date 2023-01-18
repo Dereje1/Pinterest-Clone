@@ -9,8 +9,8 @@ describe('The tags form component', () => {
     props = {
       addTag: jest.fn(),
       closeTagsForm: jest.fn(),
-      suggestedTags: ['suggested tag 1', 'suggested tag 2'],
-      exisitingTags: ['existing tag 1', 'existing tag 2'],
+      suggestedTags: ['SUGGESTED TAG 1', 'SUGGESTED TAG 2'],
+      exisitingTags: ['EXISTING TAG 1', 'EXISTING TAG 2'],
     };
   });
 
@@ -26,21 +26,21 @@ describe('The tags form component', () => {
   test('will update the value for characters <= 15', () => {
     const wrapper = shallow(<TagsForm {...props} />);
     let autoComplete = wrapper.find('ForwardRef(Autocomplete)');
-    expect(autoComplete.props().value).toBe('');
+    expect(autoComplete.props().inputValue).toBe('');
     // trigger value change
     autoComplete.props().onInputChange('', '15 characters..');
     autoComplete = wrapper.find('ForwardRef(Autocomplete)');
-    expect(autoComplete.props().value).toBe('15 characters..');
+    expect(autoComplete.props().inputValue).toBe('15 characters..');
   });
 
   test('will not update the value for characters > 15', () => {
     const wrapper = shallow(<TagsForm {...props} />);
     let autoComplete = wrapper.find('ForwardRef(Autocomplete)');
-    expect(autoComplete.props().value).toBe('');
+    expect(autoComplete.props().inputValue).toBe('');
     // trigger value change
     autoComplete.props().onInputChange('', '16 characters..and more');
     autoComplete = wrapper.find('ForwardRef(Autocomplete)');
-    expect(autoComplete.props().value).toBe('');
+    expect(autoComplete.props().inputValue).toBe('');
   });
 
   test('will submit on done if value is present', () => {
@@ -87,5 +87,27 @@ describe('The tags form component', () => {
     autoComplete = wrapper.find('ForwardRef(Autocomplete)');
     autoComplete.props().onKeyDown({ key: 'other key' });
     expect(props.addTag).not.toHaveBeenCalled();
+  });
+
+  test('autocomplete will filter the options present for auto complete', () => {
+    const wrapper = shallow(<TagsForm {...props} />);
+    let autoComplete = wrapper.find('ForwardRef(Autocomplete)');
+    autoComplete.props().onInputChange('', 'sug');
+    autoComplete = wrapper.find('ForwardRef(Autocomplete)');
+    const filtered = autoComplete.props().filterOptions(['SUGGESTED TAG 1', 'EXISTING TAG 2']);
+    expect(filtered).toEqual(['SUGGESTED TAG 1']);
+  });
+
+  test('autocomplete will render the text field as input', () => {
+    const wrapper = shallow(<TagsForm {...props} />);
+    const autoComplete = wrapper.find('ForwardRef(Autocomplete)');
+    const textfield = autoComplete.props().renderInput({});
+    expect(textfield.props).toEqual({
+      autoFocus: true,
+      id: 'Tags_form',
+      label: 'Add a Tag',
+      type: 'text',
+      variant: 'standard',
+    });
   });
 });

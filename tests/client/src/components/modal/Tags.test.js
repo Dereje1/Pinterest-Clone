@@ -4,6 +4,9 @@ import toJson from 'enzyme-to-json';
 import { useHistory } from 'react-router-dom';
 import Tags, { ListItem } from '../../../../../client/src/components/modal/Tags';
 import { pinsStub } from '../../../pinsStub';
+import RESTcall from '../../../../../client/src/crud';
+
+jest.mock('../../../../../client/src/crud');
 
 const mockdispatch = jest.fn();
 // Mock router hooks
@@ -52,19 +55,37 @@ describe('The tags component', () => {
     expect(toJson(wrapper)).toMatchSnapshot();
   });
 
-  test('will open and close the form to add tags', () => {
+  test('will open and close the form to add tags', async () => {
     const wrapper = shallow(<Tags {...props} />);
     const addTags = wrapper.find('ForwardRef(IconButton)');
     let tagsForm = wrapper.find('TagsForm');
     expect(tagsForm.isEmptyRender()).toBe(true);
-    // trigger form show
-    addTags.props().onClick();
+    // trigger form show and test tags fetch
+    await addTags.props().onClick();
     tagsForm = wrapper.find('TagsForm');
     expect(tagsForm.isEmptyRender()).toBe(false);
+    expect(RESTcall).toHaveBeenCalledWith({
+      address: '/api/getTags',
+    });
+    expect(tagsForm.props().suggestedTags).toEqual(['TAG 3', 'TAG 4']);
     // trigger form close
     tagsForm.props().closeTagsForm();
     tagsForm = wrapper.find('TagsForm');
     expect(tagsForm.isEmptyRender()).toBe(true);
+  });
+
+  test('will add no suggested tags if rest call is rejected', async () => {
+    RESTcall.mockImplementationOnce(() => Promise.reject());
+    const wrapper = shallow(<Tags {...props} />);
+    const addTags = wrapper.find('ForwardRef(IconButton)');
+    // trigger form show and add tag
+    await addTags.props().onClick();
+    const tagsForm = wrapper.find('TagsForm');
+    expect(tagsForm.isEmptyRender()).toBe(false);
+    expect(RESTcall).toHaveBeenCalledWith({
+      address: '/api/getTags',
+    });
+    expect(tagsForm.props().suggestedTags).toEqual([]);
   });
 
   test('will add a tag', () => {

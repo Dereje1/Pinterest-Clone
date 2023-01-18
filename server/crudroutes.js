@@ -199,7 +199,7 @@ const updateTags = async (req, res) => {
     }
     const updatedPin = await pins.findByIdAndUpdate(pinID, update, { new: true }).exec();
     const [filteredAndUpdatedPin] = filterPins({ rawPins: [updatedPin], userId, isAdmin });
-    console.log(`${displayName} ${deleteId ? 'deleted' : 'added'} tag on ${updatedPin.imgDescription}`);
+    console.log(`${displayName} ${deleteId ? 'deleted' : `added ${tag}`} tag on ${updatedPin.imgDescription}`);
     res.json(filteredAndUpdatedPin);
   } catch (error) {
     res.json(error);
@@ -266,4 +266,5 @@ module.exports = {
   getProfilePins,
   getUserPins,
   updateTags,
+  getTags,
 };
