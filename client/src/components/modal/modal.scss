@@ -19,7 +19,6 @@
     display: block;
     @include animation('zoom-pin');
     animation-duration: 1s;
-    animation-timing-function: cubic-bezier(0.075, 0.82, 0.165, 1);
     animation-iteration-count: 1;
     animation-fill-mode: forwards;
   }
@@ -27,7 +26,6 @@
     display: block;
     @include animation('restore-pin');
     animation-duration: 0.5s;
-    animation-timing-function: cubic-bezier(0.075, 0.82, 0.165, 1);
     animation-iteration-count: 1;
     animation-fill-mode: forwards;
   }
@@ -36,7 +34,7 @@
 
 @include keyframes(zoom-pin) {
   0%{
-    transform: scale(0);
+    transform: scale(0.6);
   }
   100%{
     transform: scale(1);

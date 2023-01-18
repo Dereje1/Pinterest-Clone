@@ -28,7 +28,7 @@ export const getFilteredPins = (pinList, search) => {
   return filteredPins;
 };
 
-export const getNewImageWidth = ({
+export const getZoomedImageStyle = ({
   naturalWidth: imageWidth,
   naturalHeight: imageHeight,
 }) => {

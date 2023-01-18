@@ -6,7 +6,11 @@ import PinZoom from '../modal/modalzoom';
 import Loading from './Loading';
 import SignIn from '../signin/signin';
 import RESTcall from '../../crud';
-import { initialDisplayPerScroll, updatePinList } from '../../utils/utils';
+import {
+  initialDisplayPerScroll,
+  updatePinList,
+  getZoomedImageStyle,
+} from '../../utils/utils';
 import './imagebuild.scss';
 import error from '../mypins/error.png';
 
@@ -21,7 +25,6 @@ function ImageBuild({
   ready,
   user,
 }) {
-  const [displayPinZoom, setDisplayPinZoom] = useState(false);
   const [zoomedImageInfo, setZoomedImageInfo] = useState([]);
   const [imagesLoaded, setImagesLoaded] = useState(false);
   const [loadedPins, setLoadedPins] = useState([]);
@@ -36,7 +39,7 @@ function ImageBuild({
 
   useEffect(() => {
     setActivePins(loadedPins.slice(0, batchSize));
-    if (displayPinZoom) {
+    if (zoomedImageInfo.length) {
       const [zoomedImg, ...rest] = zoomedImageInfo;
       const [pin] = loadedPins.filter((p) => p._id === zoomedImg._id);
       if (pin) setZoomedImageInfo([pin, ...rest]);
@@ -49,10 +52,10 @@ function ImageBuild({
   }, [loadedPins, batchSize]);
 
   useEffect(() => {
-    if (zoomedImageInfo.length) {
-      setDisplayPinZoom(true);
+    if (!zoomedImageInfo.length) {
+      document.body.style.overflowY = 'scroll';
     } else {
-      setDisplayPinZoom(false);
+      document.body.style.overflow = 'hidden';
     }
   }, [zoomedImageInfo]);
 
@@ -119,10 +122,20 @@ function ImageBuild({
 
   // Zoom modal takes event and pic info and executes
   const pinEnlarge = (e, currentImg) => {
-    const { target: { naturalWidth, naturalHeight } } = e;
+    const { target: { naturalWidth, naturalHeight, className } } = e;
     // disregard for save/delete calls or if already zoomed
-    if (e.target.className.includes('actionbutton') || displayPinZoom) return;
-    setZoomedImageInfo([currentImg, document.body.scrollTop, { naturalWidth, naturalHeight }]);
+    if (className.includes('actionbutton') || zoomedImageInfo.length) return;
+
+    const parentDivStyle = {
+      ...getZoomedImageStyle({ naturalWidth, naturalHeight }),
+      top: document.body.scrollTop,
+      width: '90%',
+    };
+    setZoomedImageInfo([
+      currentImg,
+      document.body.scrollTop,
+      parentDivStyle,
+    ]);
   };
 
   const nextScroll = () => {
@@ -153,7 +166,7 @@ function ImageBuild({
             pins={activePins}
           />
         </InfiniteScroll>
-        { displayPinZoom && (
+        { Boolean(zoomedImageInfo.length) && (
           <PinZoom
             reset={() => setZoomedImageInfo([])}
             zoomInfo={zoomedImageInfo}

@@ -17,7 +17,7 @@ import { styled } from '@mui/styles';
 import ModalActions from './ModalActions';
 import Comments from './Comments';
 import {
-  delay, getNewImageWidth, getFormattedDescription, formatDate,
+  delay, getFormattedDescription, formatDate,
 } from '../../utils/utils';
 import './modal.scss';
 
@@ -34,10 +34,7 @@ export class PinZoom extends Component {
 
   constructor(props) {
     super(props);
-    // initialize modal show state to false
     this.state = {
-      show: false,
-      parentDivStyle: { top: 0, width: '90%' },
       commentsShowing: null,
       cancelBlur: false,
     };
@@ -45,29 +42,14 @@ export class PinZoom extends Component {
   }
 
   componentDidMount() {
-    const { zoomInfo } = this.props;
-    if (!zoomInfo.length) return;
     this.zoomedImage.current.focus();
-    const { parentDivStyle } = this.state;
-    const [, browserTop, imgDims] = zoomInfo;
-    const { naturalWidth, naturalHeight } = imgDims;
-    const newDivStyle = getNewImageWidth({ naturalWidth, naturalHeight });
-    // set top and scroll to current position and disable scroll
-    window.scrollTo(0, browserTop);
-    document.body.style.overflow = 'hidden';
     window.addEventListener('scroll', this.disableScroll);
     this.setState({
-      show: true,
-      parentDivStyle: {
-        ...parentDivStyle,
-        ...newDivStyle,
-        top: browserTop,
-      },
-    }, async () => { await delay(1000); });
+      zoomClass: 'zoom cshow',
+    });
   }
 
   componentWillUnmount() {
-    document.body.style.overflowY = 'scroll';
     window.removeEventListener('scroll', this.disableScroll);
   }
 
@@ -83,7 +65,7 @@ export class PinZoom extends Component {
     if (cancelBlur && !forceClose) return;
     const { reset } = this.props;
     this.setState({
-      show: false,
+      zoomClass: 'zoom chide',
     }, async () => {
       // delay to display closing keyframe
       await delay(500);
@@ -92,7 +74,8 @@ export class PinZoom extends Component {
   };
 
   toggleComments = () => {
-    const { commentsShowing, parentDivStyle } = this.state;
+    const { commentsShowing } = this.state;
+    const { zoomInfo: [,, parentDivStyle] } = this.props;
     if (!commentsShowing) {
       const { current: { clientHeight: cardHeight, children } } = this.zoomedImage;
       const [, image] = children;
@@ -113,14 +96,16 @@ export class PinZoom extends Component {
 
   render() {
     const {
-      zoomInfo, pinImage, deletePin,
-      user: { authenticated }, handleNewComment, updateTags,
+      zoomInfo: [pinInformation,, parentDivStyle],
+      pinImage,
+      deletePin,
+      user: { authenticated },
+      handleNewComment,
+      updateTags,
     } = this.props;
     const {
-      show, parentDivStyle, commentsShowing,
+      commentsShowing, zoomClass,
     } = this.state;
-    if (!zoomInfo.length) return null;
-    const [pinInformation] = zoomInfo;
     const totalPins = (pinInformation.savedBy) ? pinInformation.savedBy.length : 0;
     const formattedDescription = getFormattedDescription(pinInformation.imgDescription);
     return (
@@ -131,7 +116,7 @@ export class PinZoom extends Component {
             width: parentDivStyle.parentWidth,
             top: parentDivStyle.top,
           }}
-          className={show ? 'zoom cshow' : 'zoom chide'}
+          className={zoomClass}
           onBlur={this.close}
           ref={this.zoomedImage}
           tabIndex={0}
