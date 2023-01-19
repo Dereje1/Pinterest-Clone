@@ -11,7 +11,8 @@ import { pinsStub } from '../../../pinsStub';
 jest.mock('../../../../../client/src/crud');
 
 describe('The ImageBuild component', () => {
-  let props;
+  let props; let
+    parentDivStyleStub;
   beforeEach(() => {
     props = {
       pinImage: true,
@@ -21,10 +22,25 @@ describe('The ImageBuild component', () => {
       ready: true,
       user: {},
     };
+    parentDivStyleStub = {
+      top: 10,
+      imgWidth: '598px',
+      parentWidth: 598,
+      pinnersSize: '2em',
+      subTitleSize: '1.2em',
+      titleSize: '2em',
+      dateSize: '0.6em',
+      width: '90%',
+      isNoFit: false,
+    };
+    global.scrollTo = jest.fn();
   });
 
   afterEach(() => {
     RESTcall.mockClear();
+    global.scrollTo = null;
+    parentDivStyleStub = null;
+    props = null;
   });
 
   test('will render....', () => {
@@ -58,8 +74,17 @@ describe('The ImageBuild component', () => {
     expect(pinZoom.isEmptyRender()).toBe(false);
     expect(pinZoom.props().zoomInfo).toEqual([
       pinsStub[1],
-      10,
-      { naturalWidth: 600, naturalHeight: 600 },
+      {
+        top: 10,
+        imgWidth: '598px',
+        parentWidth: 598,
+        pinnersSize: '2em',
+        subTitleSize: '1.2em',
+        titleSize: '2em',
+        dateSize: '0.6em',
+        width: '90%',
+        isNoFit: false,
+      },
     ]);
   });
 
@@ -84,8 +109,7 @@ describe('The ImageBuild component', () => {
     expect(pinZoom.isEmptyRender()).toBe(false);
     expect(pinZoom.props().zoomInfo).toEqual([
       pinsStub[1],
-      10,
-      { naturalWidth: 600, naturalHeight: 600 },
+      { ...parentDivStyleStub },
     ]);
     // re-fire again after pin is already zooomed
     masonry = wrapper.find('MasonryPins');
@@ -94,8 +118,7 @@ describe('The ImageBuild component', () => {
     // If not working second arg should have been 15
     expect(pinZoom.props().zoomInfo).toEqual([
       pinsStub[1],
-      10,
-      { naturalWidth: 600, naturalHeight: 600 },
+      { ...parentDivStyleStub },
     ]);
   });
 
@@ -109,8 +132,7 @@ describe('The ImageBuild component', () => {
     expect(pinZoom.isEmptyRender()).toBe(false);
     expect(pinZoom.props().zoomInfo).toEqual([
       pinsStub[1],
-      10,
-      { naturalWidth: 600, naturalHeight: 600 },
+      { ...parentDivStyleStub },
     ]);
     pinZoom.props().reset();
     pinZoom = wrapper.find('PinZoom');
@@ -163,8 +185,7 @@ describe('The ImageBuild component', () => {
     expect(pinZoom.isEmptyRender()).toBe(false);
     expect(pinZoom.props().zoomInfo).toEqual([
       pinsStub[1],
-      10,
-      { naturalWidth: 600, naturalHeight: 600 },
+      { ...parentDivStyleStub },
     ]);
     // trigger a new comment
     await pinZoom.props().handleNewComment('tester comment');
@@ -193,8 +214,7 @@ describe('The ImageBuild component', () => {
     expect(pinZoom.isEmptyRender()).toBe(false);
     expect(pinZoom.props().zoomInfo).toEqual([
       pinsStub[1],
-      10,
-      { naturalWidth: 600, naturalHeight: 600 },
+      { ...parentDivStyleStub },
     ]);
     // update pins list and assert that zoomed pin is gone
     wrapper.setProps({ ...props, pinList: [pinsStub[0], pinsStub[2]] });

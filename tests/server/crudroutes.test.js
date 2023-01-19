@@ -883,7 +883,7 @@ describe('Getting saved tags list', () => {
     expect(res.json).toHaveBeenCalledWith(['saved tags']);
   });
 
-  xtest('will respond with error if get is rejected', async () => {
+  test('will respond with error if get is rejected', async () => {
     const req = {};
     savedTags.find = jest.fn().mockImplementation(
       () => ({

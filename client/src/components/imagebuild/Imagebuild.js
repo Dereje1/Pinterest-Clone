@@ -133,7 +133,6 @@ function ImageBuild({
     };
     setZoomedImageInfo([
       currentImg,
-      document.body.scrollTop,
       parentDivStyle,
     ]);
   };

@@ -62,10 +62,6 @@ export const getZoomedImageStyle = ({
   };
 };
 
-export const getPinners = (savedBy) => (savedBy.length > 3
-  ? `${savedBy.slice(0, 3).join(', ')} and ${savedBy.length - 3} others`
-  : `${savedBy.join(', ')}`);
-
 export const getFormattedDescription = (imgDescription) => (imgDescription.length > 15 ? `${imgDescription.slice(0, 15)}...` : imgDescription);
 
 // eslint-disable-next-line no-promise-executor-return

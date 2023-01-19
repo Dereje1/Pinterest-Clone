@@ -54,9 +54,8 @@ export class PinZoom extends Component {
   }
 
   disableScroll = () => {
-    const { zoomInfo } = this.props;
-    const [, browserTop] = zoomInfo;
-    window.scrollTo(0, browserTop);
+    const { zoomInfo: [, parentDivStyle] } = this.props;
+    window.scrollTo(0, parentDivStyle.top);
   };
 
   close = (_, forceClose = false) => {
@@ -75,7 +74,7 @@ export class PinZoom extends Component {
 
   toggleComments = () => {
     const { commentsShowing } = this.state;
-    const { zoomInfo: [,, parentDivStyle] } = this.props;
+    const { zoomInfo: [, parentDivStyle] } = this.props;
     if (!commentsShowing) {
       const { current: { clientHeight: cardHeight, children } } = this.zoomedImage;
       const [, image] = children;
@@ -96,7 +95,7 @@ export class PinZoom extends Component {
 
   render() {
     const {
-      zoomInfo: [pinInformation,, parentDivStyle],
+      zoomInfo: [pinInformation, parentDivStyle],
       pinImage,
       deletePin,
       user: { authenticated },
