@@ -54,15 +54,9 @@ function TagsForm({
         onInputChange={handleTag}
         onBlur={closeTagsForm}
         onKeyDown={handleEnterKey}
-        filterOptions={(options) => {
-          const filtered = [];
-          options.forEach((o) => {
-            if (!exisitingTags.includes(o) && o.startsWith(tag.toUpperCase())) {
-              filtered.push(o);
-            }
-          });
-          return filtered;
-        }}
+        filterOptions={(options) => options.filter(
+          (option) => !exisitingTags.includes(option) && option.startsWith(tag.toUpperCase()),
+        )}
         renderInput={(params) => (
           <TextField
             {...params}

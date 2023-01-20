@@ -30,7 +30,13 @@ const processLogin = async (token, tokenSecret, profile, done) => {
 };
 
 const passportConfig = (passport) => {
-  const { keys: { twitterApiKeys, googleApiKeys, githubApiKeys } } = getApiKeys();
+  const strategyMap = {
+    twitter: TwitterStrategy,
+    google: GoogleStrategy,
+    github: GitHubStrategy,
+  };
+  const { keys } = getApiKeys();
+
   // used to serialize the user for the session
   passport.serializeUser((user, done) => {
     done(null, user.id);
@@ -43,16 +49,11 @@ const passportConfig = (passport) => {
     });
   });
 
-  if (twitterApiKeys) {
-    passport.use(new TwitterStrategy(twitterApiKeys, processLogin));
-  }
-
-  if (googleApiKeys) {
-    passport.use(new GoogleStrategy(googleApiKeys, processLogin));
-  }
-
-  if (githubApiKeys) {
-    passport.use(new GitHubStrategy(githubApiKeys, processLogin));
-  }
+  Object.keys(strategyMap).forEach((service) => {
+    const apiKeys = keys[`${service}ApiKeys`];
+    if (apiKeys) {
+      passport.use(new strategyMap[service](apiKeys, processLogin));
+    }
+  });
 };
 module.exports = { passportConfig, processLogin };
