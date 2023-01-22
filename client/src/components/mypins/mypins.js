@@ -13,7 +13,7 @@ import Box from '@mui/material/Box';
 import PinCreate from './pincreatemodal';
 import ImageBuild from '../imagebuild/Imagebuild';
 import RESTcall from '../../crud'; // pin CRUD
-import { getProviderIcons, Loading } from '../common/common';
+import { getProviderIcons, Loading, UserPinsSelector } from '../common/common';
 import './mypins.scss';
 
 const providerIcons = getProviderIcons({ fontSize: 25 });
@@ -52,6 +52,7 @@ export class Mypins extends Component {
       showDeleteImageModal: false,
       deletableImgInfo: null,
       ready: false,
+      displaySetting: 'created',
     };
   }
 
@@ -118,11 +119,12 @@ export class Mypins extends Component {
     const {
       displayPinCreate, showDeleteImageModal,
       deletableImgInfo, allPinLinks, pinList,
-      ready,
+      ready, displaySetting,
     } = this.state;
     if (!authenticated) return null;
     if (!ready) return <div style={{ marginTop: 100 }}><Loading /></div>;
 
+    const pins = pinList.filter((pin) => (displaySetting === 'created' ? Boolean(pin.owns) : Boolean(pin.hasSaved)));
     return (
       <div>
         <div id="mypinframe">
@@ -143,23 +145,33 @@ export class Mypins extends Component {
         {
           pinList.length
             ? (
-              <ImageBuild
-                pinImage={null}
-                deletePin={(e) => {
-                  if (e.owns) {
-                    this.setState({
-                      showDeleteImageModal: true,
-                      deletableImgInfo: e,
-                    });
-                  } else {
-                    this.deletePic(e);
-                  }
-                }}
-                pinList={pinList}
-                ready={ready}
-                displayBrokenImage
-                user={user}
-              />
+              <>
+                <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
+                  <UserPinsSelector
+                    displaySetting={displaySetting}
+                    setDisplaySetting={(val) => this.setState({ displaySetting: val })}
+                  />
+                </div>
+                { Boolean(pins.length) && (
+                  <ImageBuild
+                    pinImage={null}
+                    deletePin={(e) => {
+                      if (e.owns) {
+                        this.setState({
+                          showDeleteImageModal: true,
+                          deletableImgInfo: e,
+                        });
+                      } else {
+                        this.deletePic(e);
+                      }
+                    }}
+                    pinList={pins}
+                    ready={ready}
+                    displayBrokenImage
+                    user={user}
+                  />
+                )}
+              </>
             )
             : (
               <Box
@@ -224,7 +236,7 @@ export class Mypins extends Component {
 
 }
 
-const mapStateToProps = (state) => state;
+export const mapStateToProps = ({ user }) => ({ user });
 
 export default connect(mapStateToProps)(Mypins);
 

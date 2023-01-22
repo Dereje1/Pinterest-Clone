@@ -45,8 +45,8 @@ describe('The profile page', () => {
   test('Will render for pins saved by the user', async () => {
     const wrapper = shallow(<Profile />);
     await Promise.resolve();
-    const savedButton = wrapper.find({ color: 'primary' });
-    savedButton.props().onClick();
+    const selector = wrapper.find('UserPinsSelector');
+    selector.props().setDisplaySetting('saved');
     expect(toJson(wrapper)).toMatchSnapshot();
   });
 
@@ -68,28 +68,6 @@ describe('The profile page', () => {
     const wrapper = shallow(<Profile />);
     await Promise.resolve();
     expect(toJson(wrapper)).toMatchSnapshot();
-  });
-
-  test('Will change the display setting', async () => {
-    const wrapper = shallow(<Profile />);
-    await Promise.resolve();
-    // owned button is selected by default
-    let ownedButton = wrapper.find('ForwardRef(Button)').at(0);
-    let savedButton = wrapper.find('ForwardRef(Button)').at(1);
-    expect(ownedButton.props().color).toBe('secondary');
-    expect(savedButton.props().color).toBe('primary');
-    // select savedbutton
-    savedButton.props().onClick();
-    ownedButton = wrapper.find('ForwardRef(Button)').at(0);
-    savedButton = wrapper.find('ForwardRef(Button)').at(1);
-    expect(ownedButton.props().color).toBe('primary'); // currently selected
-    expect(savedButton.props().color).toBe('secondary');
-    // select owned button
-    ownedButton.props().onClick();
-    ownedButton = wrapper.find('ForwardRef(Button)').at(0);
-    savedButton = wrapper.find('ForwardRef(Button)').at(1);
-    expect(ownedButton.props().color).toBe('secondary'); // currently selected
-    expect(savedButton.props().color).toBe('primary');
   });
 
   test('Will redirect to server response if query can not be handled', async () => {

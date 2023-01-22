@@ -92,44 +92,26 @@ exports[`The Mypins Component Mypins landing page will render pins if found 1`] 
       </h3>
     </div>
   </div>
+  <div
+    style={
+      Object {
+        "alignItems": "center",
+        "display": "flex",
+        "flexDirection": "column",
+      }
+    }
+  >
+    <UserPinsSelector
+      displaySetting="created"
+      setDisplaySetting={[Function]}
+    />
+  </div>
   <ImageBuild
     deletePin={[Function]}
     displayBrokenImage={true}
     pinImage={null}
     pinList={
       Array [
-        Object {
-          "_id": 2,
-          "comments": Array [],
-          "createdAt": "2020-12-25T00:00:00.000+00:00",
-          "hasSaved": true,
-          "imgDescription": "imgDescription id-2",
-          "imgLink": "imgLink id-2",
-          "owner": Object {
-            "name": "owner id-2",
-            "service": "twitter",
-            "userId": "2",
-          },
-          "owns": false,
-          "savedBy": Array [
-            Object {
-              "name": "savedBy - id-2",
-              "service": "google",
-              "userId": "2",
-            },
-            Object {
-              "name": "savedBy - id-2git",
-              "service": "github",
-              "userId": "2",
-            },
-          ],
-          "tags": Array [
-            Object {
-              "_id": "tag_id_1",
-              "tag": "tag 1",
-            },
-          ],
-        },
         Object {
           "_id": 3,
           "comments": Array [],

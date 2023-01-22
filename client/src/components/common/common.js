@@ -4,6 +4,8 @@ import TwitterIcon from '@mui/icons-material/Twitter';
 import GoogleIcon from '@mui/icons-material/Google';
 import GitHubIcon from '@mui/icons-material/GitHub';
 import DownloadDoneIcon from '@mui/icons-material/DownloadDone';
+import Button from '@mui/material/Button';
+import ButtonGroup from '@mui/material/ButtonGroup';
 import './common.scss';
 
 export const getProviderIcons = ({ fontSize }) => (
@@ -39,4 +41,28 @@ Loading.defaultProps = {
 Loading.propTypes = {
   imagesLoaded: PropTypes.bool,
   ready: PropTypes.bool,
+};
+
+export function UserPinsSelector({ displaySetting, setDisplaySetting }) {
+  return (
+    <ButtonGroup variant="text" aria-label="text button group" sx={{ mt: 3 }}>
+      <Button
+        color={displaySetting === 'created' ? 'secondary' : 'primary'}
+        onClick={() => setDisplaySetting('created')}
+      >
+        Pins created
+      </Button>
+      <Button
+        color={displaySetting === 'saved' ? 'secondary' : 'primary'}
+        onClick={() => setDisplaySetting('saved')}
+      >
+        Pins saved
+      </Button>
+    </ButtonGroup>
+  );
+}
+
+UserPinsSelector.propTypes = {
+  displaySetting: PropTypes.string.isRequired,
+  setDisplaySetting: PropTypes.func.isRequired,
 };

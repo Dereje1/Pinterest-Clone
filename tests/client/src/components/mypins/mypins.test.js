@@ -4,7 +4,7 @@
 import React from 'react';
 import { shallow } from 'enzyme';
 import toJson from 'enzyme-to-json';
-import { Mypins } from '../../../../../client/src/components/mypins/mypins';
+import { Mypins, mapStateToProps } from '../../../../../client/src/components/mypins/mypins';
 import RESTcall from '../../../../../client/src/crud';
 import { pinsStub } from '../../../pinsStub';
 
@@ -55,13 +55,24 @@ describe('The Mypins Component', () => {
     expect(toJson(wrapper)).toMatchSnapshot();
   });
 
-  test('ImageBuild sub-component shall recieve the pins on CDM as props', async () => {
+  test('ImageBuild sub-component shall recieve the pins owned as props', async () => {
     const wrapper = shallow(<Mypins {...props} />);
     await Promise.resolve();
     const imageBuild = wrapper.find('ImageBuild');
     const displayedPinList = imageBuild.props().pinList;
-    displayedPinList.sort((a, b) => a._id - b._id);
-    expect(displayedPinList).toStrictEqual([pinsStub[1], pinsStub[2]]);
+    expect(displayedPinList).toStrictEqual([pinsStub[2]]);
+    expect(RESTcall).toHaveBeenCalledTimes(1);
+    expect(RESTcall).toHaveBeenCalledWith({ address: '/api/mypins', method: 'get' });
+  });
+
+  test('ImageBuild sub-component shall recieve the pins saved as props', async () => {
+    const wrapper = shallow(<Mypins {...props} />);
+    await Promise.resolve();
+    const selector = wrapper.find('UserPinsSelector');
+    selector.props().setDisplaySetting('saved');
+    const imageBuild = wrapper.find('ImageBuild');
+    const displayedPinList = imageBuild.props().pinList;
+    expect(displayedPinList).toStrictEqual([pinsStub[1]]);
     expect(RESTcall).toHaveBeenCalledTimes(1);
     expect(RESTcall).toHaveBeenCalledWith({ address: '/api/mypins', method: 'get' });
   });
@@ -129,6 +140,7 @@ describe('The Mypins Component', () => {
     expect(wrapper.state().displayPinCreate).toBe(false);
     const form = wrapper.find({ id: 'creatpinwrapper' });
     form.props().onClick();
+    form.props().onKeyDown();
     expect(wrapper.state().displayPinCreate).toBe(true);
   });
 
@@ -204,5 +216,10 @@ describe('The Mypins Component', () => {
         },
       ],
     ]);
+  });
+
+  test('will map redux state to the component props', () => {
+    const compProps = mapStateToProps({ user: 'user props' });
+    expect(compProps).toEqual({ user: 'user props' });
   });
 });

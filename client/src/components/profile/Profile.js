@@ -3,11 +3,9 @@ import { useParams, useLocation, useHistory } from 'react-router-dom';
 import { useSelector } from 'react-redux';
 import Typography from '@mui/material/Typography';
 import Avatar from '@mui/material/Avatar';
-import Button from '@mui/material/Button';
-import ButtonGroup from '@mui/material/ButtonGroup';
 import Box from '@mui/material/Box';
 import ImageBuild from '../imagebuild/Imagebuild';
-import { Loading, getProviderIcons } from '../common/common';
+import { Loading, getProviderIcons, UserPinsSelector } from '../common/common';
 import SignIn from '../signin/signin';
 import RESTcall from '../../crud';
 import error from '../mypins/error.png';
@@ -100,20 +98,10 @@ function Profile() {
           {providerIcons[retrievedUser.service].icon}
         </Avatar>
         <Typography variant="h6" sx={{ mt: 3 }}>{retrievedUser.displayName}</Typography>
-        <ButtonGroup variant="text" aria-label="text button group" sx={{ mt: 3 }}>
-          <Button
-            color={displaySetting === 'created' ? 'secondary' : 'primary'}
-            onClick={() => setDisplaySetting('created')}
-          >
-            Pins created
-          </Button>
-          <Button
-            color={displaySetting === 'saved' ? 'secondary' : 'primary'}
-            onClick={() => setDisplaySetting('saved')}
-          >
-            Pins saved
-          </Button>
-        </ButtonGroup>
+        <UserPinsSelector
+          displaySetting={displaySetting}
+          setDisplaySetting={(val) => setDisplaySetting(val)}
+        />
       </div>
 
       { pins.length ? (
