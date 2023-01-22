@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import InfiniteScroll from 'react-infinite-scroll-component';
 import MasonryPins from './MasonryPins';
 import PinZoom from '../modal/modalzoom';
-import Loading from './Loading';
+import { Loading } from '../common/common';
 import SignIn from '../signin/signin';
 import RESTcall from '../../crud';
 import {
@@ -25,7 +25,7 @@ function ImageBuild({
   ready,
   user,
 }) {
-  const [zoomedImageInfo, setZoomedImageInfo] = useState([]);
+  const [zoomedImageInfo, setZoomedImageInfo] = useState(null);
   const [imagesLoaded, setImagesLoaded] = useState(false);
   const [loadedPins, setLoadedPins] = useState([]);
   const [activePins, setActivePins] = useState([]);
@@ -39,20 +39,20 @@ function ImageBuild({
 
   useEffect(() => {
     setActivePins(loadedPins.slice(0, batchSize));
-    if (zoomedImageInfo.length) {
+    if (zoomedImageInfo) {
       const [zoomedImg, ...rest] = zoomedImageInfo;
       const [pin] = loadedPins.filter((p) => p._id === zoomedImg._id);
       if (pin) setZoomedImageInfo([pin, ...rest]);
-      else setZoomedImageInfo([]);
+      else setZoomedImageInfo(null);
     }
     // cleanup function to avoid memory leakage warning
     return () => {
-      setZoomedImageInfo([]);
+      setZoomedImageInfo(null);
     };
   }, [loadedPins, batchSize]);
 
   useEffect(() => {
-    if (!zoomedImageInfo.length) {
+    if (!zoomedImageInfo) {
       document.body.style.overflowY = 'scroll';
     } else {
       document.body.style.overflow = 'hidden';
@@ -69,19 +69,26 @@ function ImageBuild({
 
   // img onError callback executes this function
   const onBrokenImage = (id) => {
-    let pinListCopy = JSON.parse(JSON.stringify(loadedPins));
-    const indexOfBroken = pinListCopy.findIndex((p) => p._id === id);
-    const msg = `Broken Img - ${pinListCopy[indexOfBroken].imgDescription}`;
+    const indexOfBroken = loadedPins.findIndex((p) => p._id === id);
+    const msg = `Broken Img - ${loadedPins[indexOfBroken].imgDescription}`;
     console.log(msg);
-    // update copy -->no mutation but do not delete from db
+    // show error img on profile page but remove from home
     if (displayBrokenImage) {
-      pinListCopy[indexOfBroken].imgLink = error;
-      pinListCopy[indexOfBroken].imgDescription = msg;
+      setLoadedPins(
+        updatePinList(
+          loadedPins,
+          {
+            ...loadedPins[indexOfBroken],
+            imgLink: error,
+            imgDescription: msg,
+          },
+        ),
+      );
     } else {
-      pinListCopy = [...pinListCopy.slice(0, indexOfBroken),
-        ...pinListCopy.slice(indexOfBroken + 1)];
+      setLoadedPins([
+        ...loadedPins.slice(0, indexOfBroken),
+        ...loadedPins.slice(indexOfBroken + 1)]);
     }
-    setLoadedPins(pinListCopy);
   };
 
   const handleNewComment = async (newComment) => {
@@ -124,7 +131,7 @@ function ImageBuild({
   const pinEnlarge = (e, currentImg) => {
     const { target: { naturalWidth, naturalHeight, className } } = e;
     // disregard for save/delete calls or if already zoomed
-    if (className.includes('actionbutton') || zoomedImageInfo.length) return;
+    if (className.includes('actionbutton') || zoomedImageInfo) return;
 
     const parentDivStyle = {
       ...getZoomedImageStyle({ naturalWidth, naturalHeight }),
@@ -165,9 +172,9 @@ function ImageBuild({
             pins={activePins}
           />
         </InfiniteScroll>
-        { Boolean(zoomedImageInfo.length) && (
+        { zoomedImageInfo && (
           <PinZoom
-            reset={() => setZoomedImageInfo([])}
+            reset={() => setZoomedImageInfo(null)}
             zoomInfo={zoomedImageInfo}
             pinImage={pinImage && togglePinImage}
             deletePin={deletePin}

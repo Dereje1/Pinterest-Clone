@@ -7,10 +7,9 @@ import Button from '@mui/material/Button';
 import ButtonGroup from '@mui/material/ButtonGroup';
 import Box from '@mui/material/Box';
 import ImageBuild from '../imagebuild/Imagebuild';
-import Loading from '../imagebuild/Loading';
+import { Loading, getProviderIcons } from '../common/common';
 import SignIn from '../signin/signin';
 import RESTcall from '../../crud';
-import { getProviderIcons } from '../common/common';
 import error from '../mypins/error.png';
 
 const providerIcons = getProviderIcons({ fontSize: 25 });

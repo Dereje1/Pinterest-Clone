@@ -12,9 +12,8 @@ import DialogTitle from '@mui/material/DialogTitle';
 import Box from '@mui/material/Box';
 import PinCreate from './pincreatemodal';
 import ImageBuild from '../imagebuild/Imagebuild';
-import Loading from '../imagebuild/Loading';
 import RESTcall from '../../crud'; // pin CRUD
-import { getProviderIcons } from '../common/common';
+import { getProviderIcons, Loading } from '../common/common';
 import './mypins.scss';
 
 const providerIcons = getProviderIcons({ fontSize: 25 });

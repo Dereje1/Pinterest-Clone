@@ -29,9 +29,9 @@ export class Home extends Component {
 
   render() {
     const { user, user: { username }, search: { term: searchTerm } } = this.props;
-    const { pinList, ready } = this.state;
-    const filteredPins = getFilteredPins(pinList, searchTerm);
-    if (username !== null) {
+    if (username) {
+      const { pinList, ready } = this.state;
+      const filteredPins = getFilteredPins(pinList, searchTerm);
       return (
         <ImageBuild
           pinImage

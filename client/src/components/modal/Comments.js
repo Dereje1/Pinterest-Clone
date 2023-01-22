@@ -7,6 +7,7 @@ import AddIcon from '@mui/icons-material/Add';
 import Card from '@mui/material/Card';
 import StarBorderIcon from '@mui/icons-material/StarBorder';
 import CloseIcon from '@mui/icons-material/Close';
+import Avatar from '@mui/material/Avatar';
 import CommentForm from './CommentForm';
 import PinnersDialog from './PinnersDialog';
 import Tags from './Tags';
@@ -100,20 +101,14 @@ function Comments({
             paddingRight: 10,
           }}
         >
-          <div
+
+          <Avatar
             id="thumbnail"
+            alt={pinInformation.imgDescription}
+            src={pinInformation.imgLink}
+            style={{ width: 56, height: 56, cursor: 'pointer' }}
             onClick={toggleComments}
-            onKeyDown={() => {}}
-            role="button"
-            tabIndex="0"
-            style={{ cursor: 'pointer' }}
-          >
-            <img
-              alt={pinInformation.imgDescription}
-              src={pinInformation.imgLink}
-              style={{ objectFit: 'scale-down', width: 56, height: 56 }}
-            />
-          </div>
+          />
 
           <Tags
             commentFormIsOpen={openCommentForm}

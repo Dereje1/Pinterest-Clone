@@ -21,6 +21,7 @@ function CommentForm({ handleClose, handleSubmit }) {
         fullWidth
         value={comment}
         onChange={(e) => setComment(e.target.value)}
+        sx={{ caretColor: 'black' }}
       />
       <div style={{ marginTop: 1 }}>
         <Button onClick={handleClose}>Cancel</Button>

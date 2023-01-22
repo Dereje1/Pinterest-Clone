@@ -1,6 +1,6 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`Will not render the loading bubbles 1`] = `
+exports[`Loading... Will not render the loading bubbles 1`] = `
 <div
   id="loadingcontainer"
 >
@@ -8,7 +8,7 @@ exports[`Will not render the loading bubbles 1`] = `
 </div>
 `;
 
-exports[`Will render the loading bubbles 1`] = `
+exports[`Loading... Will render the loading bubbles 1`] = `
 <div
   id="loadingcontainer"
 >

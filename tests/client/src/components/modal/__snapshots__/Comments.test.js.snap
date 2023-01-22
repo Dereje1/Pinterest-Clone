@@ -81,30 +81,19 @@ exports[`The comments window will render with comments 1`] = `
         }
       }
     >
-      <div
+      <ForwardRef(Avatar)
+        alt="imgDescription id-1"
         id="thumbnail"
         onClick={[MockFunction]}
-        onKeyDown={[Function]}
-        role="button"
+        src="imgLink id-1"
         style={
           Object {
             "cursor": "pointer",
+            "height": 56,
+            "width": 56,
           }
         }
-        tabIndex="0"
-      >
-        <img
-          alt="imgDescription id-1"
-          src="imgLink id-1"
-          style={
-            Object {
-              "height": 56,
-              "objectFit": "scale-down",
-              "width": 56,
-            }
-          }
-        />
-      </div>
+      />
       <TagsArray
         closePin={[MockFunction]}
         commentFormIsOpen={false}
@@ -320,30 +309,19 @@ exports[`The comments window will render with no comments for authenticated user
         }
       }
     >
-      <div
+      <ForwardRef(Avatar)
+        alt="imgDescription id-2"
         id="thumbnail"
         onClick={[MockFunction]}
-        onKeyDown={[Function]}
-        role="button"
+        src="imgLink id-2"
         style={
           Object {
             "cursor": "pointer",
+            "height": 56,
+            "width": 56,
           }
         }
-        tabIndex="0"
-      >
-        <img
-          alt="imgDescription id-2"
-          src="imgLink id-2"
-          style={
-            Object {
-              "height": 56,
-              "objectFit": "scale-down",
-              "width": 56,
-            }
-          }
-        />
-      </div>
+      />
       <TagsArray
         closePin={[MockFunction]}
         commentFormIsOpen={false}
@@ -510,30 +488,19 @@ exports[`The comments window will render with no comments for unauthenticated us
         }
       }
     >
-      <div
+      <ForwardRef(Avatar)
+        alt="imgDescription id-2"
         id="thumbnail"
         onClick={[MockFunction]}
-        onKeyDown={[Function]}
-        role="button"
+        src="imgLink id-2"
         style={
           Object {
             "cursor": "pointer",
+            "height": 56,
+            "width": 56,
           }
         }
-        tabIndex="0"
-      >
-        <img
-          alt="imgDescription id-2"
-          src="imgLink id-2"
-          style={
-            Object {
-              "height": 56,
-              "objectFit": "scale-down",
-              "width": 56,
-            }
-          }
-        />
-      </div>
+      />
       <TagsArray
         closePin={[MockFunction]}
         commentFormIsOpen={false}

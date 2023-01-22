@@ -37,6 +37,7 @@ export class PinZoom extends Component {
     this.state = {
       commentsShowing: null,
       cancelBlur: false,
+      zoomClass: 'zoom cshow',
     };
     this.zoomedImage = React.createRef();
   }
@@ -44,9 +45,6 @@ export class PinZoom extends Component {
   componentDidMount() {
     this.zoomedImage.current.focus();
     window.addEventListener('scroll', this.disableScroll);
-    this.setState({
-      zoomClass: 'zoom cshow',
-    });
   }
 
   componentWillUnmount() {

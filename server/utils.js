@@ -88,12 +88,12 @@ returns
     _id, // send full
     imgDescription, // send full
     imgLink, // send full
-    owner: name, // send only display name
-    savedBy: modifiedSavedBy, // send only display names of pinners
-    owns: // need for displaying action button on pin
-    hasSaved: // need for displaying action button on pin
-    comments: modifiedComments, // send only display names, comment and date of commenters
-    createdDate: send full
+    owner: // send display name, userId and service
+    savedBy: // send display name, userId and service
+    owns: // boolean
+    hasSaved: // boolean
+    comments: // send comment id, display comment, and creation date
+    createdDate: send full pin creation time stamp
 };
 */
 const filterPins = ({ rawPins, userId, isAdmin }) => rawPins.map((pin) => {

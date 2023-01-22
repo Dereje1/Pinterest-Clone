@@ -16,19 +16,10 @@ mongoose.connect(
 );
 
 // CONNECTION EVENTS
-// When successfully connected
-mongoose.connection.on('connected', () => {
-  console.log(`Mongoose default connection open to ${dbURI}`);
-});
-
-// If the connection throws an error
-mongoose.connection.on('error', (err) => {
-  console.log(`Mongoose default connection error:  ${err}`);
-});
-
-// When the connection is disconnected
-mongoose.connection.on('disconnected', () => {
-  console.log(`Mongoose default connection to ${dbURI} disconnected`);
+['connected', 'error', 'disconnected'].forEach((status) => {
+  mongoose.connection.on(status, (val) => {
+    console.log(`Mongoose default connection to ${dbURI} -> ${status} ${val || ''}`);
+  });
 });
 
 // If the Node process ends, close the Mongoose connection

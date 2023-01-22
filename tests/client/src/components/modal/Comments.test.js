@@ -106,7 +106,6 @@ describe('The comments window', () => {
     const wrapper = shallow(<Comments {...props} />);
     const thumbnailDiv = wrapper.find({ id: 'thumbnail' });
     thumbnailDiv.props().onClick();
-    thumbnailDiv.props().onKeyDown();
     expect(props.toggleComments).toHaveBeenCalled();
   });
 });

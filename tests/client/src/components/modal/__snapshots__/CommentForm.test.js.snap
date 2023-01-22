@@ -19,6 +19,11 @@ exports[`will render the form to add comments 1`] = `
     multiline={true}
     onChange={[Function]}
     rows={3}
+    sx={
+      Object {
+        "caretColor": "black",
+      }
+    }
     type="text"
     value=""
   />

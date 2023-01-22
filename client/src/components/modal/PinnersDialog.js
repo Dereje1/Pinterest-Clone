@@ -7,6 +7,7 @@ import ListItem from '@mui/material/ListItem';
 import ListItemAvatar from '@mui/material/ListItemAvatar';
 import ListItemText from '@mui/material/ListItemText';
 import Dialog from '@mui/material/Dialog';
+import ListSubheader from '@mui/material/ListSubheader';
 import { getProviderIcons } from '../common/common';
 
 const providerIcons = getProviderIcons({ fontSize: 20 });
@@ -20,7 +21,10 @@ function PinnersDialog({
       open={open}
       PaperProps={{ sx: { position: 'fixed', top: 0 } }}
     >
-      <List sx={{ pt: 0 }}>
+      <List
+        sx={{ pt: 0 }}
+        subheader={<ListSubheader sx={{ textAlign: 'center' }}>Pinners</ListSubheader>}
+      >
         {pinnersList.map((pinner) => (
           <ListItem
             onClick={() => { onCloseDialog(); onClosePin(); }}

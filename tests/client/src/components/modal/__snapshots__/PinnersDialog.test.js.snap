@@ -14,6 +14,17 @@ exports[`The pinners dialog will render 1`] = `
   open={true}
 >
   <ForwardRef(List)
+    subheader={
+      <ForwardRef(ListSubheader)
+        sx={
+          Object {
+            "textAlign": "center",
+          }
+        }
+      >
+        Pinners
+      </ForwardRef(ListSubheader)>
+    }
     sx={
       Object {
         "pt": 0,
