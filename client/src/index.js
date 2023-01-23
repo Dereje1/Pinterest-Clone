@@ -10,6 +10,7 @@ import React from 'react';
 import { render } from 'react-dom';
 import { Provider } from 'react-redux';
 import { BrowserRouter, Route, Switch } from 'react-router-dom';
+import { ThemeProvider, createTheme } from '@mui/material/styles';
 
 // Import all Created react components that are associated with the router
 // standard menu (non-authenticated) components
@@ -26,16 +27,30 @@ import './index.scss';
 const middleware = applyMiddleware(thunk);
 const store = createStore(reducers, middleware);
 
+const theme = createTheme({
+  typography: {
+    fontFamily: [
+      'Nunito',
+      'Roboto',
+      '"Helvetica Neue"',
+      'Arial',
+      'sans-serif',
+    ].join(','),
+  },
+});
 // decalre all routes of application below
 const Routes = (
+
   <Provider store={store}>
     <BrowserRouter>
-      <Menu />
-      <Switch>
-        <Route path="/" exact component={Home} />
-        <Route path="/pins" component={Mypins} />
-        <Route path="/profile/:userInfo" component={Profile} />
-      </Switch>
+      <ThemeProvider theme={theme}>
+        <Menu />
+        <Switch>
+          <Route path="/" exact component={Home} />
+          <Route path="/pins" component={Mypins} />
+          <Route path="/profile/:userInfo" component={Profile} />
+        </Switch>
+      </ThemeProvider>
     </BrowserRouter>
   </Provider>
 );
