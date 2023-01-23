@@ -26,10 +26,6 @@ describe('The ImageBuild component', () => {
       top: 10,
       imgWidth: '598px',
       parentWidth: 598,
-      pinnersSize: '2em',
-      subTitleSize: '1.2em',
-      titleSize: '2em',
-      dateSize: '0.6em',
       width: '90%',
       isNoFit: false,
     };
@@ -74,17 +70,7 @@ describe('The ImageBuild component', () => {
     expect(pinZoom.isEmptyRender()).toBe(false);
     expect(pinZoom.props().zoomInfo).toEqual([
       pinsStub[1],
-      {
-        top: 10,
-        imgWidth: '598px',
-        parentWidth: 598,
-        pinnersSize: '2em',
-        subTitleSize: '1.2em',
-        titleSize: '2em',
-        dateSize: '0.6em',
-        width: '90%',
-        isNoFit: false,
-      },
+      { ...parentDivStyleStub },
     ]);
   });
 

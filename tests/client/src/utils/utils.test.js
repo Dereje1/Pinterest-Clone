@@ -24,10 +24,6 @@ describe('getting the zoomed image styling properties', () => {
     expect(ans).toEqual({
       imgWidth: '367.5px',
       parentWidth: 367.5,
-      titleSize: '1.2em',
-      subTitleSize: '0.9em',
-      dateSize: '0.45em',
-      pinnersSize: '2em',
       isNoFit: true,
     });
   });
@@ -39,10 +35,6 @@ describe('getting the zoomed image styling properties', () => {
     expect(ans).toEqual({
       imgWidth: '1064px',
       parentWidth: 1064,
-      titleSize: '2em',
-      subTitleSize: '1.2em',
-      dateSize: '0.6em',
-      pinnersSize: '2em',
       isNoFit: false,
     });
   });
@@ -54,10 +46,6 @@ describe('getting the zoomed image styling properties', () => {
     expect(ans).toEqual({
       imgWidth: '465.5px',
       parentWidth: 500,
-      titleSize: '1.2em',
-      subTitleSize: '0.9em',
-      dateSize: '0.45em',
-      pinnersSize: '2em',
       isNoFit: true,
     });
   });
@@ -69,10 +57,6 @@ describe('getting the zoomed image styling properties', () => {
     expect(ans).toEqual({
       imgWidth: '144.375px',
       parentWidth: 500,
-      titleSize: '1.2em',
-      subTitleSize: '0.9em',
-      dateSize: '0.45em',
-      pinnersSize: '2em',
       isNoFit: true,
     });
   });

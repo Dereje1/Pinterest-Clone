@@ -154,13 +154,13 @@ export class PinZoom extends Component {
                   {pinInformation.owner.name}
                 </Link>
                 <br />
-                <span style={{ fontSize: parentDivStyle.dateSize, marginLeft: 0 }}>
+                <span style={{ marginLeft: 0 }}>
                   {formatDate(pinInformation.createdAt)}
                 </span>
               </>
             )}
-            titleTypographyProps={{ fontSize: parentDivStyle.titleSize, fontWeight: 'bold' }}
-            subheaderTypographyProps={{ fontSize: parentDivStyle.subTitleSize, fontWeight: 'bold' }}
+            titleTypographyProps={{ fontWeight: 'bold' }}
+            subheaderTypographyProps={{ fontWeight: 'bold' }}
           />
           <CardContent sx={{
             background: parentDivStyle.isNoFit && !commentsShowing ? 'black' : '',
