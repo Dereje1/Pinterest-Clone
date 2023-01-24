@@ -1,12 +1,47 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`The pin creation modal will render for links to images 1`] = `
-<Fragment>
-  <div
-    className="pin-create-modal-overlay"
-  />
+<ForwardRef(Dialog)
+  open={true}
+  sx={
+    Object {
+      "& .MuiDialog-container": Object {
+        "& .MuiPaper-root": Object {
+          "maxWidth": 341.3333333333333,
+          "width": "100%",
+        },
+      },
+    }
+  }
+>
+  <ForwardRef(DialogTitle)
+    id="pin-create-dialog-title"
+  >
+    Create pin from link
+    <ForwardRef(IconButton)
+      aria-label="settings"
+      id="close-pin-create-modal"
+      onClick={[Function]}
+      sx={
+        Object {
+          "color": [Function],
+          "position": "absolute",
+          "right": 8,
+          "top": 8,
+        }
+      }
+    >
+      <Memo(ForwardRef(CancelIcon))
+        style={
+          Object {
+            "color": "#3a1c1cde",
+            "fontSize": "1.5em",
+          }
+        }
+      />
+    </ForwardRef(IconButton)>
+  </ForwardRef(DialogTitle)>
   <ForwardRef(Card)
-    className="pincreate cshow"
     sx={
       Object {
         "width": 341.3333333333333,
@@ -15,43 +50,21 @@ exports[`The pin creation modal will render for links to images 1`] = `
   >
     <ForwardRef(CardHeader)
       action={
-        <React.Fragment>
-          <ForwardRef(FormControlLabel)
-            control={
-              <ForwardRef(Switch)
-                checked={false}
-                onChange={[Function]}
-              />
-            }
-            label={<Memo />}
-            sx={
-              Object {
-                "color": "900",
-                "marginRight": 8,
-              }
-            }
-          />
-          <ForwardRef(IconButton)
-            aria-label="settings"
-            onClick={[Function]}
-          >
-            <Memo
-              style={
-                Object {
-                  "color": "#3a1c1cde",
-                  "fontSize": "1.5em",
-                }
-              }
+        <ForwardRef(FormControlLabel)
+          control={
+            <ForwardRef(Switch)
+              checked={false}
+              onChange={[Function]}
             />
-          </ForwardRef(IconButton)>
-        </React.Fragment>
-      }
-      title="Create pin from link"
-      titleTypographyProps={
-        Object {
-          "fontSize": "1em",
-          "fontWeight": "bold",
-        }
+          }
+          label={<Memo />}
+          sx={
+            Object {
+              "color": "900",
+              "marginRight": 80,
+            }
+          }
+        />
       }
     />
     <ForwardRef(CardMedia)
@@ -62,7 +75,7 @@ exports[`The pin creation modal will render for links to images 1`] = `
       onLoad={[Function]}
       sx={
         Object {
-          "height": 250,
+          "height": 240,
           "objectFit": "contain",
         }
       }
@@ -120,16 +133,51 @@ exports[`The pin creation modal will render for links to images 1`] = `
       </div>
     </ForwardRef(CardActions)>
   </ForwardRef(Card)>
-</Fragment>
+</ForwardRef(Dialog)>
 `;
 
 exports[`The pin creation modal will render for uploading images 1`] = `
-<Fragment>
-  <div
-    className="pin-create-modal-overlay"
-  />
+<ForwardRef(Dialog)
+  open={true}
+  sx={
+    Object {
+      "& .MuiDialog-container": Object {
+        "& .MuiPaper-root": Object {
+          "maxWidth": 341.3333333333333,
+          "width": "100%",
+        },
+      },
+    }
+  }
+>
+  <ForwardRef(DialogTitle)
+    id="pin-create-dialog-title"
+  >
+    Create pin from file
+    <ForwardRef(IconButton)
+      aria-label="settings"
+      id="close-pin-create-modal"
+      onClick={[Function]}
+      sx={
+        Object {
+          "color": [Function],
+          "position": "absolute",
+          "right": 8,
+          "top": 8,
+        }
+      }
+    >
+      <Memo(ForwardRef(CancelIcon))
+        style={
+          Object {
+            "color": "#3a1c1cde",
+            "fontSize": "1.5em",
+          }
+        }
+      />
+    </ForwardRef(IconButton)>
+  </ForwardRef(DialogTitle)>
   <ForwardRef(Card)
-    className="pincreate cshow"
     sx={
       Object {
         "width": 341.3333333333333,
@@ -138,43 +186,21 @@ exports[`The pin creation modal will render for uploading images 1`] = `
   >
     <ForwardRef(CardHeader)
       action={
-        <React.Fragment>
-          <ForwardRef(FormControlLabel)
-            control={
-              <ForwardRef(Switch)
-                checked={true}
-                onChange={[Function]}
-              />
-            }
-            label={<Memo />}
-            sx={
-              Object {
-                "color": "900",
-                "marginRight": 8,
-              }
-            }
-          />
-          <ForwardRef(IconButton)
-            aria-label="settings"
-            onClick={[Function]}
-          >
-            <Memo
-              style={
-                Object {
-                  "color": "#3a1c1cde",
-                  "fontSize": "1.5em",
-                }
-              }
+        <ForwardRef(FormControlLabel)
+          control={
+            <ForwardRef(Switch)
+              checked={true}
+              onChange={[Function]}
             />
-          </ForwardRef(IconButton)>
-        </React.Fragment>
-      }
-      title="Create pin from file"
-      titleTypographyProps={
-        Object {
-          "fontSize": "1em",
-          "fontWeight": "bold",
-        }
+          }
+          label={<Memo />}
+          sx={
+            Object {
+              "color": "900",
+              "marginRight": 80,
+            }
+          }
+        />
       }
     />
     <ForwardRef(CardMedia)
@@ -185,7 +211,7 @@ exports[`The pin creation modal will render for uploading images 1`] = `
       onLoad={[Function]}
       sx={
         Object {
-          "height": 250,
+          "height": 240,
           "objectFit": "contain",
         }
       }
@@ -247,5 +273,5 @@ exports[`The pin creation modal will render for uploading images 1`] = `
       </div>
     </ForwardRef(CardActions)>
   </ForwardRef(Card)>
-</Fragment>
+</ForwardRef(Dialog)>
 `;

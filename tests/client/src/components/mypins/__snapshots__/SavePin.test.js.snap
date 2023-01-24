@@ -1,193 +1,175 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`The save pin action button will render with both errors 1`] = `
-<ForwardRef(CardActions)
-  disableSpacing={true}
+<ForwardRef(Fab)
+  aria-label="Pin Image"
+  color="#f79f9fd9"
+  disabled={true}
+  onClick={[MockFunction]}
+  sx={
+    Object {
+      "&:disabled": Object {
+        "backgroundColor": "#f79f9fd9",
+        "color": "white",
+        "mb": 1,
+      },
+    }
+  }
+  variant="extended"
 >
-  <ForwardRef(Fab)
-    aria-label="Pin Image"
-    color="#f79f9fd9"
-    disabled={true}
-    onClick={[MockFunction]}
+  <Memo(ForwardRef(FileDownloadOffIcon))
     sx={
       Object {
-        "&:disabled": Object {
-          "backgroundColor": "#f79f9fd9",
-          "color": "white",
-        },
+        "fontSize": "1.5em",
+        "mr": 1,
       }
     }
-    variant="extended"
-  >
-    <Memo(ForwardRef(FileDownloadOffIcon))
-      sx={
-        Object {
-          "fontSize": "1.5em",
-          "mr": 1,
-        }
-      }
-    />
-    Invalid image and description
-  </ForwardRef(Fab)>
-</ForwardRef(CardActions)>
+  />
+  Invalid image and description
+</ForwardRef(Fab)>
 `;
 
 exports[`The save pin action button will render with description error only 1`] = `
-<ForwardRef(CardActions)
-  disableSpacing={true}
+<ForwardRef(Fab)
+  aria-label="Pin Image"
+  color="#f79f9fd9"
+  disabled={true}
+  onClick={[MockFunction]}
+  sx={
+    Object {
+      "&:disabled": Object {
+        "backgroundColor": "#f79f9fd9",
+        "color": "white",
+        "mb": 1,
+      },
+    }
+  }
+  variant="extended"
 >
-  <ForwardRef(Fab)
-    aria-label="Pin Image"
-    color="#f79f9fd9"
-    disabled={true}
-    onClick={[MockFunction]}
+  <Memo(ForwardRef(FileDownloadOffIcon))
     sx={
       Object {
-        "&:disabled": Object {
-          "backgroundColor": "#f79f9fd9",
-          "color": "white",
-        },
+        "fontSize": "1.5em",
+        "mr": 1,
       }
     }
-    variant="extended"
-  >
-    <Memo(ForwardRef(FileDownloadOffIcon))
-      sx={
-        Object {
-          "fontSize": "1.5em",
-          "mr": 1,
-        }
-      }
-    />
-    Invalid description
-  </ForwardRef(Fab)>
-</ForwardRef(CardActions)>
+  />
+  Invalid description
+</ForwardRef(Fab)>
 `;
 
 exports[`The save pin action button will render with duplicate error only 1`] = `
-<ForwardRef(CardActions)
-  disableSpacing={true}
+<ForwardRef(Fab)
+  aria-label="Pin Image"
+  color="#f79f9fd9"
+  disabled={true}
+  onClick={[MockFunction]}
+  sx={
+    Object {
+      "&:disabled": Object {
+        "backgroundColor": "#f79f9fd9",
+        "color": "white",
+        "mb": 1,
+      },
+    }
+  }
+  variant="extended"
 >
-  <ForwardRef(Fab)
-    aria-label="Pin Image"
-    color="#f79f9fd9"
-    disabled={true}
-    onClick={[MockFunction]}
+  <Memo(ForwardRef(FileDownloadOffIcon))
     sx={
       Object {
-        "&:disabled": Object {
-          "backgroundColor": "#f79f9fd9",
-          "color": "white",
-        },
+        "fontSize": "1.5em",
+        "mr": 1,
       }
     }
-    variant="extended"
-  >
-    <Memo(ForwardRef(FileDownloadOffIcon))
-      sx={
-        Object {
-          "fontSize": "1.5em",
-          "mr": 1,
-        }
-      }
-    />
-    Image URL already exists
-  </ForwardRef(Fab)>
-</ForwardRef(CardActions)>
+  />
+  Image URL already exists
+</ForwardRef(Fab)>
 `;
 
 exports[`The save pin action button will render with image error only 1`] = `
-<ForwardRef(CardActions)
-  disableSpacing={true}
+<ForwardRef(Fab)
+  aria-label="Pin Image"
+  color="#f79f9fd9"
+  disabled={true}
+  onClick={[MockFunction]}
+  sx={
+    Object {
+      "&:disabled": Object {
+        "backgroundColor": "#f79f9fd9",
+        "color": "white",
+        "mb": 1,
+      },
+    }
+  }
+  variant="extended"
 >
-  <ForwardRef(Fab)
-    aria-label="Pin Image"
-    color="#f79f9fd9"
-    disabled={true}
-    onClick={[MockFunction]}
+  <Memo(ForwardRef(FileDownloadOffIcon))
     sx={
       Object {
-        "&:disabled": Object {
-          "backgroundColor": "#f79f9fd9",
-          "color": "white",
-        },
+        "fontSize": "1.5em",
+        "mr": 1,
       }
     }
-    variant="extended"
-  >
-    <Memo(ForwardRef(FileDownloadOffIcon))
-      sx={
-        Object {
-          "fontSize": "1.5em",
-          "mr": 1,
-        }
-      }
-    />
-    Invalid image
-  </ForwardRef(Fab)>
-</ForwardRef(CardActions)>
+  />
+  Invalid image
+</ForwardRef(Fab)>
 `;
 
 exports[`The save pin action button will render with no errors 1`] = `
-<ForwardRef(CardActions)
-  disableSpacing={true}
+<ForwardRef(Fab)
+  aria-label="Pin Image"
+  color="success"
+  disabled={false}
+  onClick={[MockFunction]}
+  sx={
+    Object {
+      "&:disabled": Object {
+        "backgroundColor": "success",
+        "color": "white",
+        "mb": 1,
+      },
+    }
+  }
+  variant="extended"
 >
-  <ForwardRef(Fab)
-    aria-label="Pin Image"
-    color="success"
-    disabled={false}
-    onClick={[MockFunction]}
+  <Memo(ForwardRef(SaveAltIcon))
     sx={
       Object {
-        "&:disabled": Object {
-          "backgroundColor": "success",
-          "color": "white",
-        },
+        "fontSize": "1.5em",
+        "mr": 1,
       }
     }
-    variant="extended"
-  >
-    <Memo(ForwardRef(SaveAltIcon))
-      sx={
-        Object {
-          "fontSize": "1.5em",
-          "mr": 1,
-        }
-      }
-    />
-    Save pin
-  </ForwardRef(Fab)>
-</ForwardRef(CardActions)>
+  />
+  Save pin
+</ForwardRef(Fab)>
 `;
 
 exports[`The save pin action button will render with not yet loaded error only 1`] = `
-<ForwardRef(CardActions)
-  disableSpacing={true}
+<ForwardRef(Fab)
+  aria-label="Pin Image"
+  color="#aa9c9cd9"
+  disabled={true}
+  onClick={[MockFunction]}
+  sx={
+    Object {
+      "&:disabled": Object {
+        "backgroundColor": "#aa9c9cd9",
+        "color": "white",
+        "mb": 1,
+      },
+    }
+  }
+  variant="extended"
 >
-  <ForwardRef(Fab)
-    aria-label="Pin Image"
-    color="#aa9c9cd9"
-    disabled={true}
-    onClick={[MockFunction]}
+  <Memo(ForwardRef(FileDownloadOffIcon))
     sx={
       Object {
-        "&:disabled": Object {
-          "backgroundColor": "#aa9c9cd9",
-          "color": "white",
-        },
+        "fontSize": "1.5em",
+        "mr": 1,
       }
     }
-    variant="extended"
-  >
-    <Memo(ForwardRef(FileDownloadOffIcon))
-      sx={
-        Object {
-          "fontSize": "1.5em",
-          "mr": 1,
-        }
-      }
-    />
-    Image loading...
-  </ForwardRef(Fab)>
-</ForwardRef(CardActions)>
+  />
+  Image loading...
+</ForwardRef(Fab)>
 `;

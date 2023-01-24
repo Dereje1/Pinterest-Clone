@@ -41,12 +41,13 @@ describe('The pin creation modal', () => {
 
   test('will render for uploading images', () => {
     const wrapper = shallow(<PinCreate {...props} />);
-    let cardHeader = wrapper.find('ForwardRef(CardHeader)');
-    expect(cardHeader.props().title).toBe('Create pin from link');
-    const uploadSwitch = cardHeader.props().action.props.children[0].props.control.props;
+    const cardHeader = wrapper.find('ForwardRef(CardHeader)');
+    let dialogTitle = wrapper.find('ForwardRef(DialogTitle)');
+    expect(dialogTitle.text()).toBe('Create pin from link');
+    const uploadSwitch = cardHeader.props().action.props.control.props;
     uploadSwitch.onChange();
-    cardHeader = wrapper.find('ForwardRef(CardHeader)');
-    expect(cardHeader.props().title).toBe('Create pin from file');
+    dialogTitle = wrapper.find('ForwardRef(DialogTitle)');
+    expect(dialogTitle.text()).toBe('Create pin from file');
     expect(toJson(wrapper)).toMatchSnapshot();
   });
 
@@ -130,7 +131,7 @@ describe('The pin creation modal', () => {
     const wrapper = shallow(<PinCreate {...props} />);
     // turn upload switch on
     const cardHeader = wrapper.find('ForwardRef(CardHeader)');
-    const uploadSwitch = cardHeader.props().action.props.children[0].props.control.props;
+    const uploadSwitch = cardHeader.props().action.props.control.props;
 
     wrapper.setState({ isLoaded: true, isError: true });
     uploadSwitch.onChange();
@@ -171,5 +172,14 @@ describe('The pin creation modal', () => {
       description: '',
     });
     expect(props.reset).toHaveBeenCalledTimes(1);
+  });
+
+  test('will close the dialog', () => {
+    const wrapper = shallow(<PinCreate {...props} />);
+    const closeButton = wrapper.find({ id: 'close-pin-create-modal' });
+    closeButton.props().onClick();
+    const color = closeButton.props().sx.color({ palette: { grey: { 50: 'palette color' } } });
+    expect(props.reset).toHaveBeenCalledTimes(1);
+    expect(color).toBe('palette color');
   });
 });

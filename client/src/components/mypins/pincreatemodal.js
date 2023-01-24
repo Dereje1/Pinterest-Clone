@@ -13,17 +13,17 @@ import Switch from '@mui/material/Switch';
 import IconButton from '@mui/material/IconButton';
 import Button from '@mui/material/Button';
 import DriveFolderUploadIcon from '@mui/icons-material/DriveFolderUpload';
+import Dialog from '@mui/material/Dialog';
+import DialogTitle from '@mui/material/DialogTitle';
 import SavePin from './SavePin';
 import error from './error.png';
 
 import {
-  delay,
   validateURL,
   getModalWidth,
   isDuplicateError,
   encodeImageFileAsURL,
 } from '../../utils/utils';
-import './pincreate.scss';
 
 class PinCreate extends Component {
 
@@ -38,16 +38,6 @@ class PinCreate extends Component {
       upload: false,
     };
   }
-
-  componentDidMount() {
-    window.scrollTo(0, 0);
-    this.setState({
-      description: '',
-      picPreview: '',
-    }, async () => { await delay(1000); });
-  }
-
-  // disableScroll = () => window.scrollTo(0, 0);
 
   close = () => {
     const { reset } = this.props;
@@ -123,37 +113,55 @@ class PinCreate extends Component {
     const isDescriptionError = description.trim().length < 5;
     const duplicateError = isDuplicateError(allPinLinks, picPreview);
     return (
-      <>
-        <div className="pin-create-modal-overlay" />
-        <Card sx={{ width: modalWidth }} className="pincreate cshow">
+      <Dialog
+        open
+        sx={{
+          '& .MuiDialog-container': {
+            '& .MuiPaper-root': {
+              width: '100%',
+              maxWidth: modalWidth,
+            },
+          },
+        }}
+      >
+        <DialogTitle id="pin-create-dialog-title">
+          {`Create pin from ${upload ? 'file' : 'link'}`}
+          <IconButton
+            id="close-pin-create-modal"
+            aria-label="settings"
+            onClick={this.close}
+            sx={{
+              position: 'absolute',
+              right: 8,
+              top: 8,
+              color: (theme) => theme.palette.grey[50],
+            }}
+          >
+            <CancelIcon style={{ fontSize: '1.5em', color: '#3a1c1cde' }} />
+          </IconButton>
+        </DialogTitle>
+        <Card sx={{ width: modalWidth }}>
 
           <CardHeader
             action={(
-              <>
-                <FormControlLabel
-                  control={(
-                    <Switch
-                      checked={upload}
-                      onChange={() => this.setState({ upload: !upload, picPreview: '' })}
-                    />
-                  )}
-                  label={<DriveFolderUploadIcon />}
-                  sx={{ marginRight: 8, color: '900' }}
-                />
-                <IconButton aria-label="settings" onClick={this.close}>
-                  <CancelIcon style={{ fontSize: '1.5em', color: '#3a1c1cde' }} />
-                </IconButton>
-              </>
+              <FormControlLabel
+                control={(
+                  <Switch
+                    checked={upload}
+                    onChange={() => this.setState({ upload: !upload, picPreview: '' })}
+                  />
+                )}
+                label={<DriveFolderUploadIcon />}
+                sx={{ marginRight: 80, color: '900' }}
+              />
             )}
-            title={`Create pin from ${upload ? 'file' : 'link'}`}
-            titleTypographyProps={{ fontSize: '1em', fontWeight: 'bold' }}
           />
           <CardMedia
             component="img"
             image={picPreview === '' ? error : picPreview}
             onError={this.onError}
             onLoad={this.onLoad}
-            sx={{ objectFit: 'contain', height: 250 }}
+            sx={{ objectFit: 'contain', height: 240 }}
             id="new-pin-image"
           />
           <CardActions>
@@ -172,7 +180,7 @@ class PinCreate extends Component {
                 maxLength="28"
                 color="success"
                 onChange={({ target: { value } }) => value.trim().length <= 20
-             && this.setState({ description: value })}
+     && this.setState({ description: value })}
                 value={description}
                 error={!description || isDescriptionError}
                 style={{ margin: '1.5vh', width: '100%' }}
@@ -215,7 +223,8 @@ class PinCreate extends Component {
           </CardActions>
 
         </Card>
-      </>
+      </Dialog>
+
     );
   }
 
