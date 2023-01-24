@@ -48,10 +48,17 @@ describe('The Mypins Component', () => {
     expect(toJson(wrapper)).toMatchSnapshot();
   });
 
-  test('Mypins landing page will render welcome message if no pins found', async () => {
+  test('Mypins landing page will render message if no pins created found', async () => {
     const wrapper = shallow(<Mypins {...props} />);
     await Promise.resolve();
     wrapper.setState({ pinList: [] });
+    expect(toJson(wrapper)).toMatchSnapshot();
+  });
+
+  test('Mypins landing page will render message if no pins saved found', async () => {
+    const wrapper = shallow(<Mypins {...props} />);
+    await Promise.resolve();
+    wrapper.setState({ pinList: [], displaySetting: 'saved' });
     expect(toJson(wrapper)).toMatchSnapshot();
   });
 
@@ -138,9 +145,8 @@ describe('The Mypins Component', () => {
     const wrapper = shallow(<Mypins {...props} />);
     await Promise.resolve();
     expect(wrapper.state().displayPinCreate).toBe(false);
-    const form = wrapper.find({ id: 'creatpinwrapper' });
+    const form = wrapper.find({ id: 'createpin' });
     form.props().onClick();
-    form.props().onKeyDown();
     expect(wrapper.state().displayPinCreate).toBe(true);
   });
 

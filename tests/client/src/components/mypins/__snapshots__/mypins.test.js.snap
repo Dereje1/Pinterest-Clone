@@ -12,10 +12,21 @@ exports[`The Mypins Component Mypins landing page will render bubbles until read
 </div>
 `;
 
-exports[`The Mypins Component Mypins landing page will render pins if found 1`] = `
-<div>
+exports[`The Mypins Component Mypins landing page will render message if no pins created found 1`] = `
+<Fragment>
   <div
-    id="mypinframe"
+    style={
+      Object {
+        "alignItems": "center",
+        "display": "flex",
+        "flexDirection": "column",
+        "justifyContent": "space-between",
+        "marginLeft": "auto",
+        "marginRight": "auto",
+        "marginTop": 80,
+        "width": 300,
+      }
+    }
   >
     <div
       style={
@@ -24,87 +35,306 @@ exports[`The Mypins Component Mypins landing page will render pins if found 1`] 
           "display": "flex",
           "flexDirection": "column",
           "justifyContent": "center",
-          "marginTop": 80,
         }
       }
     >
+      <ForwardRef(Avatar)
+        sx={
+          Object {
+            "bgcolor": "#1DA1F2",
+            "height": 52,
+            "mb": 2,
+            "width": 52,
+          }
+        }
+      >
+        <Memo(ForwardRef(TwitterIcon))
+          style={
+            Object {
+              "fontSize": 45,
+            }
+          }
+        />
+      </ForwardRef(Avatar)>
       <ForwardRef(Typography)
         variant="h4"
       >
         tester displayName
       </ForwardRef(Typography)>
-      <div
+      <ForwardRef(Typography)
         style={
           Object {
-            "alignItems": "center",
-            "display": "flex",
-            "justifyContent": "center",
+            "marginLeft": 15,
           }
         }
       >
-        <ForwardRef(Avatar)
-          sx={
-            Object {
-              "bgcolor": "#1DA1F2",
-              "height": 32,
-              "width": 32,
-            }
-          }
-        >
-          <Memo(ForwardRef(TwitterIcon))
-            style={
-              Object {
-                "fontSize": 25,
-              }
-            }
-          />
-        </ForwardRef(Avatar)>
-        <ForwardRef(Typography)
-          style={
-            Object {
-              "marginLeft": 15,
-            }
-          }
-        >
-          @tester username
-        </ForwardRef(Typography)>
-      </div>
+        @tester username
+      </ForwardRef(Typography)>
     </div>
     <div
-      id="creatpinwrapper"
-      onClick={[Function]}
-      onKeyDown={[Function]}
-      role="button"
-      tabIndex={0}
+      style={
+        Object {
+          "marginRight": 18,
+        }
+      }
     >
-      <div
-        id="createpin"
-      >
-        <i
-          aria-hidden="true"
-          className="fa fa-plus-circle"
-        />
-      </div>
-      <h3
-        id="createpintext"
-      >
-        Create Pin
-      </h3>
+      <UserPinsSelector
+        displaySetting="created"
+        setDisplaySetting={[Function]}
+      />
     </div>
+    <ForwardRef(Fab)
+      aria-label="add"
+      color="default"
+      id="createpin"
+      onClick={[Function]}
+      sx={
+        Object {
+          "marginTop": 1,
+          "zIndex": 1,
+        }
+      }
+    >
+      <Memo(ForwardRef(AddIcon))
+        fontSize="large"
+      />
+    </ForwardRef(Fab)>
   </div>
+  <ForwardRef(Box)
+    sx={
+      Object {
+        "backgroundColor": "#eeeeee",
+        "marginLeft": "auto",
+        "marginRight": "auto",
+        "marginTop": 10,
+        "padding": 2,
+      }
+    }
+  >
+    <ForwardRef(Typography)
+      style={
+        Object {
+          "textAlign": "center",
+        }
+      }
+      variant="h4"
+    >
+      Welcome!
+    </ForwardRef(Typography)>
+    <ForwardRef(Typography)
+      textAlign="center"
+      variant="h6"
+    >
+      You have not created any pins, you can create some by clicking on the button above
+    </ForwardRef(Typography)>
+  </ForwardRef(Box)>
+</Fragment>
+`;
+
+exports[`The Mypins Component Mypins landing page will render message if no pins saved found 1`] = `
+<Fragment>
   <div
     style={
       Object {
         "alignItems": "center",
         "display": "flex",
         "flexDirection": "column",
+        "justifyContent": "space-between",
+        "marginLeft": "auto",
+        "marginRight": "auto",
+        "marginTop": 80,
+        "width": 300,
       }
     }
   >
-    <UserPinsSelector
-      displaySetting="created"
-      setDisplaySetting={[Function]}
-    />
+    <div
+      style={
+        Object {
+          "alignItems": "center",
+          "display": "flex",
+          "flexDirection": "column",
+          "justifyContent": "center",
+        }
+      }
+    >
+      <ForwardRef(Avatar)
+        sx={
+          Object {
+            "bgcolor": "#1DA1F2",
+            "height": 52,
+            "mb": 2,
+            "width": 52,
+          }
+        }
+      >
+        <Memo(ForwardRef(TwitterIcon))
+          style={
+            Object {
+              "fontSize": 45,
+            }
+          }
+        />
+      </ForwardRef(Avatar)>
+      <ForwardRef(Typography)
+        variant="h4"
+      >
+        tester displayName
+      </ForwardRef(Typography)>
+      <ForwardRef(Typography)
+        style={
+          Object {
+            "marginLeft": 15,
+          }
+        }
+      >
+        @tester username
+      </ForwardRef(Typography)>
+    </div>
+    <div
+      style={
+        Object {
+          "marginRight": 18,
+        }
+      }
+    >
+      <UserPinsSelector
+        displaySetting="saved"
+        setDisplaySetting={[Function]}
+      />
+    </div>
+    <ForwardRef(Fab)
+      aria-label="add"
+      color="default"
+      id="createpin"
+      onClick={[Function]}
+      sx={
+        Object {
+          "marginTop": 1,
+          "zIndex": 1,
+        }
+      }
+    >
+      <Memo(ForwardRef(AddIcon))
+        fontSize="large"
+      />
+    </ForwardRef(Fab)>
+  </div>
+  <ForwardRef(Box)
+    sx={
+      Object {
+        "backgroundColor": "#eeeeee",
+        "marginLeft": "auto",
+        "marginRight": "auto",
+        "marginTop": 10,
+        "padding": 2,
+      }
+    }
+  >
+    <ForwardRef(Typography)
+      textAlign="center"
+      variant="h6"
+    >
+      You have no pins saved, you can save some from the
+       
+      <Link
+        to="/"
+      >
+        home
+      </Link>
+       
+      page
+    </ForwardRef(Typography)>
+  </ForwardRef(Box)>
+</Fragment>
+`;
+
+exports[`The Mypins Component Mypins landing page will render pins if found 1`] = `
+<Fragment>
+  <div
+    style={
+      Object {
+        "alignItems": "center",
+        "display": "flex",
+        "flexDirection": "column",
+        "justifyContent": "space-between",
+        "marginLeft": "auto",
+        "marginRight": "auto",
+        "marginTop": 80,
+        "width": 300,
+      }
+    }
+  >
+    <div
+      style={
+        Object {
+          "alignItems": "center",
+          "display": "flex",
+          "flexDirection": "column",
+          "justifyContent": "center",
+        }
+      }
+    >
+      <ForwardRef(Avatar)
+        sx={
+          Object {
+            "bgcolor": "#1DA1F2",
+            "height": 52,
+            "mb": 2,
+            "width": 52,
+          }
+        }
+      >
+        <Memo(ForwardRef(TwitterIcon))
+          style={
+            Object {
+              "fontSize": 45,
+            }
+          }
+        />
+      </ForwardRef(Avatar)>
+      <ForwardRef(Typography)
+        variant="h4"
+      >
+        tester displayName
+      </ForwardRef(Typography)>
+      <ForwardRef(Typography)
+        style={
+          Object {
+            "marginLeft": 15,
+          }
+        }
+      >
+        @tester username
+      </ForwardRef(Typography)>
+    </div>
+    <div
+      style={
+        Object {
+          "marginRight": 18,
+        }
+      }
+    >
+      <UserPinsSelector
+        displaySetting="created"
+        setDisplaySetting={[Function]}
+      />
+    </div>
+    <ForwardRef(Fab)
+      aria-label="add"
+      color="default"
+      id="createpin"
+      onClick={[Function]}
+      sx={
+        Object {
+          "marginTop": 1,
+          "zIndex": 1,
+        }
+      }
+    >
+      <Memo(ForwardRef(AddIcon))
+        fontSize="large"
+      />
+    </ForwardRef(Fab)>
   </div>
   <ImageBuild
     deletePin={[Function]}
@@ -152,124 +382,5 @@ exports[`The Mypins Component Mypins landing page will render pins if found 1`] 
       }
     }
   />
-</div>
-`;
-
-exports[`The Mypins Component Mypins landing page will render welcome message if no pins found 1`] = `
-<div>
-  <div
-    id="mypinframe"
-  >
-    <div
-      style={
-        Object {
-          "alignItems": "center",
-          "display": "flex",
-          "flexDirection": "column",
-          "justifyContent": "center",
-          "marginTop": 80,
-        }
-      }
-    >
-      <ForwardRef(Typography)
-        variant="h4"
-      >
-        tester displayName
-      </ForwardRef(Typography)>
-      <div
-        style={
-          Object {
-            "alignItems": "center",
-            "display": "flex",
-            "justifyContent": "center",
-          }
-        }
-      >
-        <ForwardRef(Avatar)
-          sx={
-            Object {
-              "bgcolor": "#1DA1F2",
-              "height": 32,
-              "width": 32,
-            }
-          }
-        >
-          <Memo(ForwardRef(TwitterIcon))
-            style={
-              Object {
-                "fontSize": 25,
-              }
-            }
-          />
-        </ForwardRef(Avatar)>
-        <ForwardRef(Typography)
-          style={
-            Object {
-              "marginLeft": 15,
-            }
-          }
-        >
-          @tester username
-        </ForwardRef(Typography)>
-      </div>
-    </div>
-    <div
-      id="creatpinwrapper"
-      onClick={[Function]}
-      onKeyDown={[Function]}
-      role="button"
-      tabIndex={0}
-    >
-      <div
-        id="createpin"
-      >
-        <i
-          aria-hidden="true"
-          className="fa fa-plus-circle"
-        />
-      </div>
-      <h3
-        id="createpintext"
-      >
-        Create Pin
-      </h3>
-    </div>
-  </div>
-  <ForwardRef(Box)
-    sx={
-      Object {
-        "backgroundColor": "#eeeeee",
-        "marginLeft": "auto",
-        "marginRight": "auto",
-        "marginTop": 10,
-        "padding": 2,
-      }
-    }
-  >
-    <ForwardRef(Typography)
-      style={
-        Object {
-          "textAlign": "center",
-        }
-      }
-      variant="h4"
-    >
-      Welcome!
-    </ForwardRef(Typography)>
-    <ForwardRef(Typography)
-      textAlign="center"
-      variant="h6"
-    >
-      To get started, you can create your own pin, or save an existing pin from the
-       
-      <Link
-        to="/"
-      >
-        home
-      </Link>
-       
-      page
-    </ForwardRef(Typography)>
-  </ForwardRef(Box)>
-</div>
+</Fragment>
 `;

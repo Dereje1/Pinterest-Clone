@@ -10,34 +10,35 @@ import Dialog from '@mui/material/Dialog';
 import DialogActions from '@mui/material/DialogActions';
 import DialogTitle from '@mui/material/DialogTitle';
 import Box from '@mui/material/Box';
+import Fab from '@mui/material/Fab';
+import AddIcon from '@mui/icons-material/Add';
 import PinCreate from './pincreatemodal';
 import ImageBuild from '../imagebuild/Imagebuild';
 import RESTcall from '../../crud'; // pin CRUD
 import { getProviderIcons, Loading, UserPinsSelector } from '../common/common';
-import './mypins.scss';
 
-const providerIcons = getProviderIcons({ fontSize: 25 });
+const providerIcons = getProviderIcons({ fontSize: 45 });
 
-const getUserName = ({ service, displayName, username }) => (
+const getUserInfo = ({ service, displayName, username }) => (
   <div style={{
-    marginTop: 80,
-    display: 'flex',
-    flexDirection: 'column',
-    justifyContent: 'center',
-    alignItems: 'center',
+    display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center',
   }}
   >
+    <Avatar sx={{
+      mb: 2,
+      width: 52,
+      height: 52,
+      bgcolor: providerIcons[service].color,
+    }}
+    >
+      {providerIcons[service].icon}
+    </Avatar>
     <Typography variant="h4">
       {displayName}
     </Typography>
-    <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-      <Avatar sx={{ width: 32, height: 32, bgcolor: providerIcons[service].color }}>
-        {providerIcons[service].icon}
-      </Avatar>
-      <Typography style={{ marginLeft: 15 }}>
-        {service === 'google' ? username : `@${username}`}
-      </Typography>
-    </div>
+    <Typography style={{ marginLeft: 15 }}>
+      {service === 'google' ? username : `@${username}`}
+    </Typography>
   </div>
 );
 
@@ -89,6 +90,7 @@ export class Mypins extends Component {
       allPinLinks: [...allPinLinks, { imgLink, originalImgLink }],
       ready: true,
       displayPinCreate: false,
+      displaySetting: 'created',
     });
   }
 
@@ -126,52 +128,57 @@ export class Mypins extends Component {
 
     const pins = pinList.filter((pin) => (displaySetting === 'created' ? Boolean(pin.owns) : Boolean(pin.hasSaved)));
     return (
-      <div>
-        <div id="mypinframe">
-          {getUserName(user)}
-          <div
-            id="creatpinwrapper"
-            onClick={() => this.pinForm()}
-            role="button"
-            onKeyDown={() => { }}
-            tabIndex={0}
-          >
-            <div id="createpin">
-              <i className="fa fa-plus-circle" aria-hidden="true" />
-            </div>
-            <h3 id="createpintext">Create Pin</h3>
+      <>
+        <div style={{
+          marginTop: 80,
+          marginLeft: 'auto',
+          marginRight: 'auto',
+          width: 300,
+          display: 'flex',
+          flexDirection: 'column',
+          alignItems: 'center',
+          justifyContent: 'space-between',
+        }}
+        >
+          {getUserInfo(user)}
+          <div style={{ marginRight: 18 }}>
+            <UserPinsSelector
+              displaySetting={displaySetting}
+              setDisplaySetting={(val) => this.setState({ displaySetting: val })}
+            />
           </div>
+
+          <Fab
+            id="createpin"
+            color="default"
+            aria-label="add"
+            onClick={() => this.pinForm()}
+            sx={{ marginTop: 1, zIndex: 1 }}
+          >
+            <AddIcon fontSize="large" />
+          </Fab>
         </div>
         {
-          pinList.length
+          pins.length
             ? (
-              <>
-                <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
-                  <UserPinsSelector
-                    displaySetting={displaySetting}
-                    setDisplaySetting={(val) => this.setState({ displaySetting: val })}
-                  />
-                </div>
-                { Boolean(pins.length) && (
-                  <ImageBuild
-                    pinImage={null}
-                    deletePin={(e) => {
-                      if (e.owns) {
-                        this.setState({
-                          showDeleteImageModal: true,
-                          deletableImgInfo: e,
-                        });
-                      } else {
-                        this.deletePic(e);
-                      }
-                    }}
-                    pinList={pins}
-                    ready={ready}
-                    displayBrokenImage
-                    user={user}
-                  />
-                )}
-              </>
+              <ImageBuild
+                pinImage={null}
+                deletePin={(e) => {
+                  if (e.owns) {
+                    this.setState({
+                      showDeleteImageModal: true,
+                      deletableImgInfo: e,
+                    });
+                  } else {
+                    this.deletePic(e);
+                  }
+                }}
+                pinList={pins}
+                ready={ready}
+                displayBrokenImage
+                user={user}
+              />
+
             )
             : (
               <Box
@@ -183,21 +190,29 @@ export class Mypins extends Component {
                   backgroundColor: '#eeeeee',
                 }}
               >
-                <Typography variant="h4" style={{ textAlign: 'center' }}>
-                  Welcome!
-                </Typography>
-                <Typography variant="h6" textAlign="center">
-                  To get started, you can create your own pin,
-                  or save an existing pin from the
-                  {' '}
-                  <Link to="/">home</Link>
-                  {' '}
-                  page
-                </Typography>
+                { displaySetting === 'saved' ? (
+                  <Typography variant="h6" textAlign="center">
+                    You have no pins saved, you can save some from the
+                    {' '}
+                    <Link to="/">home</Link>
+                    {' '}
+                    page
+                  </Typography>
+                )
+                  : (
+                    <>
+                      <Typography variant="h4" style={{ textAlign: 'center' }}>
+                        Welcome!
+                      </Typography>
+                      <Typography variant="h6" textAlign="center">
+                        You have not created any pins, you can create some
+                        by clicking on the button above
+                      </Typography>
+                    </>
+                  )}
               </Box>
             )
         }
-
         {displayPinCreate && (
           <PinCreate
             reset={() => this.setState({ displayPinCreate: false })}
@@ -230,7 +245,7 @@ export class Mypins extends Component {
             </DialogActions>
           </Dialog>
         )}
-      </div>
+      </>
     );
   }
 
