@@ -5,7 +5,7 @@ import Typography from '@mui/material/Typography';
 import Avatar from '@mui/material/Avatar';
 import Box from '@mui/material/Box';
 import ImageBuild from '../imagebuild/Imagebuild';
-import { Loading, getProviderIcons, UserPinsSelector } from '../common/common';
+import { Loading, getProviderIcons, UserPinsSelector } from '../common/common.tsx';
 import SignIn from '../signin/signin';
 import RESTcall from '../../crud';
 import error from '../mypins/error.png';

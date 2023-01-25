@@ -15,7 +15,7 @@ import AddIcon from '@mui/icons-material/Add';
 import PinCreate from './pincreatemodal';
 import ImageBuild from '../imagebuild/Imagebuild';
 import RESTcall from '../../crud'; // pin CRUD
-import { getProviderIcons, Loading, UserPinsSelector } from '../common/common';
+import { getProviderIcons, Loading, UserPinsSelector } from '../common/common.tsx';
 
 const providerIcons = getProviderIcons({ fontSize: 45 });
 

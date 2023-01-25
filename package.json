@@ -9,7 +9,8 @@
     "dev": "concurrently --kill-others-on-fail \"nodemon start\" \"nodemon --exec npm run client \"",
     "lint": "./node_modules/.bin/eslint server client tests",
     "test": "jest --watch",
-    "coverage": "jest --coverage"
+    "coverage": "jest --coverage",
+    "compileTS": "tsc -p ."
   },
   "dependencies": {
     "@emotion/react": "^11.7.1",

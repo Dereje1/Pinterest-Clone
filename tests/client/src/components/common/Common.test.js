@@ -1,7 +1,7 @@
 import React from 'react';
 import { shallow } from 'enzyme';
 import toJson from 'enzyme-to-json';
-import { Loading, UserPinsSelector } from '../../../../../client/src/components/common/common';
+import { Loading, UserPinsSelector } from '../../../../../client/src/components/common/common.tsx';
 
 describe('Loading...', () => {
   test('Will render the loading bubbles', () => {

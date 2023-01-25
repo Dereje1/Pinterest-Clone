@@ -10,10 +10,15 @@
         "allowSyntheticDefaultImports": true,
         "noImplicitAny": true,
         "lib": ["dom", "esnext"],
-        "esModuleInterop": true
-
+        "esModuleInterop": true,
+        "noImplicitThis": true,
+        "moduleResolution": "node",
+        "noEmitOnError": true,
+        "skipLibCheck": true
     },
     "include": [
         "./client/src/"
-    ]
+    ],
+    "exclude": ["./node_modules"],
+    "compileOnSave": true
 }

@@ -1,5 +1,4 @@
 import React from 'react';
-import PropTypes from 'prop-types';
 import TwitterIcon from '@mui/icons-material/Twitter';
 import GoogleIcon from '@mui/icons-material/Google';
 import GitHubIcon from '@mui/icons-material/GitHub';
@@ -8,7 +7,8 @@ import Button from '@mui/material/Button';
 import ButtonGroup from '@mui/material/ButtonGroup';
 import './common.scss';
 
-export const getProviderIcons = ({ fontSize }) => (
+
+export const getProviderIcons = ({ fontSize }: {fontSize: number}) => (
   {
     twitter: { icon: <TwitterIcon style={{ fontSize }} />, color: '#1DA1F2' },
     google: { icon: <GoogleIcon style={{ fontSize }} />, color: '#4285F4' },
@@ -16,7 +16,12 @@ export const getProviderIcons = ({ fontSize }) => (
   }
 );
 
-export function Loading({ imagesLoaded, ready }) {
+interface LoadingProps {
+  imagesLoaded?: boolean,
+  ready?: boolean
+}
+
+export function Loading({ imagesLoaded, ready }: LoadingProps) {
   return (
     <div id="loadingcontainer">
       {
@@ -33,17 +38,13 @@ export function Loading({ imagesLoaded, ready }) {
   );
 }
 
-Loading.defaultProps = {
-  imagesLoaded: undefined,
-  ready: undefined,
-};
 
-Loading.propTypes = {
-  imagesLoaded: PropTypes.bool,
-  ready: PropTypes.bool,
-};
+interface UserPinsSelectorProps {
+  displaySetting: string,
+  setDisplaySetting: (arg: string) => void,
+}
 
-export function UserPinsSelector({ displaySetting, setDisplaySetting }) {
+export function UserPinsSelector({ displaySetting, setDisplaySetting }: UserPinsSelectorProps) {
   return (
     <ButtonGroup variant="text" aria-label="text button group" sx={{ mt: 3 }}>
       <Button
@@ -61,8 +62,3 @@ export function UserPinsSelector({ displaySetting, setDisplaySetting }) {
     </ButtonGroup>
   );
 }
-
-UserPinsSelector.propTypes = {
-  displaySetting: PropTypes.string.isRequired,
-  setDisplaySetting: PropTypes.func.isRequired,
-};
