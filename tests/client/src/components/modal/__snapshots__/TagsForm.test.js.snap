@@ -3,7 +3,7 @@
 exports[`The tags form component will render 1`] = `
 <div
   style={
-    Object {
+    {
       "alignItems": "flex-end",
       "display": "flex",
       "marginLeft": "auto",
@@ -24,7 +24,7 @@ exports[`The tags form component will render 1`] = `
     onInputChange={[Function]}
     onKeyDown={[Function]}
     options={
-      Array [
+      [
         "SUGGESTED TAG 1",
         "SUGGESTED TAG 2",
       ]
@@ -36,7 +36,7 @@ exports[`The tags form component will render 1`] = `
     onClick={[Function]}
     onMouseDown={[Function]}
     style={
-      Object {
+      {
         "cursor": "pointer",
       }
     }

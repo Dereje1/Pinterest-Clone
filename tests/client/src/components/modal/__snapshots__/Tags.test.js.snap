@@ -3,12 +3,12 @@
 exports[`The tags component will render a list item 1`] = `
 <ContextProvider
   value={
-    Object {
+    {
       "insert": [Function],
-      "inserted": Object {},
+      "inserted": {},
       "key": "css",
       "nonce": undefined,
-      "registered": Object {},
+      "registered": {},
       "sheet": StyleSheet {
         "_insertTag": [Function],
         "before": null,
@@ -19,19 +19,19 @@ exports[`The tags component will render a list item 1`] = `
         "key": "css",
         "nonce": undefined,
         "prepend": undefined,
-        "tags": Array [],
+        "tags": [],
       },
     }
   }
 >
   <Insertion
     cache={
-      Object {
+      {
         "insert": [Function],
-        "inserted": Object {},
+        "inserted": {},
         "key": "css",
         "nonce": undefined,
-        "registered": Object {},
+        "registered": {},
         "sheet": StyleSheet {
           "_insertTag": [Function],
           "before": null,
@@ -42,13 +42,13 @@ exports[`The tags component will render a list item 1`] = `
           "key": "css",
           "nonce": undefined,
           "prepend": undefined,
-          "tags": Array [],
+          "tags": [],
         },
       }
     }
     isStringTag={true}
     serialized={
-      Object {
+      {
         "map": undefined,
         "name": "1kxrbkv",
         "next": undefined,
@@ -66,7 +66,7 @@ exports[`The tags component will render a list item 1`] = `
 exports[`The tags component will render with tags for non-owner 1`] = `
 <div
   style={
-    Object {
+    {
       "alignItems": "center",
       "display": "flex",
       "justifyContent": "space-between",
@@ -77,7 +77,7 @@ exports[`The tags component will render with tags for non-owner 1`] = `
     component="ul"
     elevation={0}
     sx={
-      Object {
+      {
         "display": "flex",
         "flexWrap": "wrap",
         "justifyContent": "center",
@@ -112,7 +112,7 @@ exports[`The tags component will render with tags for non-owner 1`] = `
   </ForwardRef(Paper)>
   <div
     style={
-      Object {
+      {
         "mr": 3,
       }
     }
@@ -123,7 +123,7 @@ exports[`The tags component will render with tags for non-owner 1`] = `
 exports[`The tags component will render with tags for owner 1`] = `
 <div
   style={
-    Object {
+    {
       "alignItems": "center",
       "display": "flex",
       "justifyContent": "space-between",
@@ -134,7 +134,7 @@ exports[`The tags component will render with tags for owner 1`] = `
     component="ul"
     elevation={0}
     sx={
-      Object {
+      {
         "display": "flex",
         "flexWrap": "wrap",
         "justifyContent": "center",
@@ -171,7 +171,7 @@ exports[`The tags component will render with tags for owner 1`] = `
   </ForwardRef(Paper)>
   <div
     style={
-      Object {
+      {
         "mr": 3,
       }
     }

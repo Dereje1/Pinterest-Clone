@@ -12,7 +12,7 @@ exports[`The search component Will render only search Icon if not selected by th
       fontSize="large"
       onClick={[MockFunction]}
       sx={
-        Object {
+        {
           "cursor": "pointer",
           "justifySelf": "flex-end",
         }
@@ -25,7 +25,7 @@ exports[`The search component Will render only search Icon if not selected by th
 exports[`The search component Will render search bar if selected by the user 1`] = `
 <div
   style={
-    Object {
+    {
       "alignItems": "center",
       "display": "flex",
       "justifyContent": "space-around",
@@ -37,7 +37,7 @@ exports[`The search component Will render search bar if selected by the user 1`]
   <ForwardRef(Paper)
     component="form"
     sx={
-      Object {
+      {
         "alignItems": "center",
         "display": "flex",
         "marginBottom": "auto",
@@ -53,7 +53,7 @@ exports[`The search component Will render search bar if selected by the user 1`]
       id="back"
       onClick={[Function]}
       sx={
-        Object {
+        {
           "p": "10px",
         }
       }
@@ -63,14 +63,14 @@ exports[`The search component Will render search bar if selected by the user 1`]
     <ForwardRef(InputBase)
       autoFocus={true}
       inputProps={
-        Object {
+        {
           "aria-label": "search",
         }
       }
       onChange={[Function]}
       placeholder="Search..."
       sx={
-        Object {
+        {
           "height": "100%",
           "width": "100%",
         }
@@ -81,7 +81,7 @@ exports[`The search component Will render search bar if selected by the user 1`]
       id="clear-search"
       onClick={[Function]}
       sx={
-        Object {
+        {
           "cursor": "pointer",
           "p": "10px",
           "visibility": "hidden",

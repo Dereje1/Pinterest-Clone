@@ -4,7 +4,7 @@ exports[`The profile page Will render for pins created by the user 1`] = `
 <Fragment>
   <div
     style={
-      Object {
+      {
         "alignItems": "center",
         "display": "flex",
         "flexDirection": "column",
@@ -23,7 +23,7 @@ exports[`The profile page Will render for pins created by the user 1`] = `
     </ForwardRef(Typography)>
     <ForwardRef(Avatar)
       sx={
-        Object {
+        {
           "bgcolor": "#1DA1F2",
           "mt": 3,
         }
@@ -31,7 +31,7 @@ exports[`The profile page Will render for pins created by the user 1`] = `
     >
       <Memo(ForwardRef(TwitterIcon))
         style={
-          Object {
+          {
             "fontSize": 25,
           }
         }
@@ -39,7 +39,7 @@ exports[`The profile page Will render for pins created by the user 1`] = `
     </ForwardRef(Avatar)>
     <ForwardRef(Typography)
       sx={
-        Object {
+        {
           "mt": 3,
         }
       }
@@ -56,39 +56,39 @@ exports[`The profile page Will render for pins created by the user 1`] = `
     deletePin={null}
     pinImage={true}
     pinList={
-      Array [
-        Object {
+      [
+        {
           "_id": 3,
-          "comments": Array [],
+          "comments": [],
           "createdAt": "2020-12-25T00:00:00.000+00:00",
           "hasSaved": false,
           "imgDescription": "imgDescription id-3",
           "imgLink": "imgLink id-3",
-          "owner": Object {
+          "owner": {
             "name": "owner id-3",
             "service": "github",
             "userId": "3",
           },
           "owns": true,
-          "savedBy": Array [
-            Object {
+          "savedBy": [
+            {
               "name": "savedBy - id-3",
               "service": "google",
               "userId": "3",
             },
-            Object {
+            {
               "name": "savedBy - id-3",
               "service": "github",
               "userId": "3",
             },
           ],
-          "tags": Array [],
+          "tags": [],
         },
       ]
     }
     ready={true}
     user={
-      Object {
+      {
         "authenticated": true,
       }
     }
@@ -100,7 +100,7 @@ exports[`The profile page Will render for pins saved by the user 1`] = `
 <Fragment>
   <div
     style={
-      Object {
+      {
         "alignItems": "center",
         "display": "flex",
         "flexDirection": "column",
@@ -119,7 +119,7 @@ exports[`The profile page Will render for pins saved by the user 1`] = `
     </ForwardRef(Typography)>
     <ForwardRef(Avatar)
       sx={
-        Object {
+        {
           "bgcolor": "#1DA1F2",
           "mt": 3,
         }
@@ -127,7 +127,7 @@ exports[`The profile page Will render for pins saved by the user 1`] = `
     >
       <Memo(ForwardRef(TwitterIcon))
         style={
-          Object {
+          {
             "fontSize": 25,
           }
         }
@@ -135,7 +135,7 @@ exports[`The profile page Will render for pins saved by the user 1`] = `
     </ForwardRef(Avatar)>
     <ForwardRef(Typography)
       sx={
-        Object {
+        {
           "mt": 3,
         }
       }
@@ -152,34 +152,34 @@ exports[`The profile page Will render for pins saved by the user 1`] = `
     deletePin={null}
     pinImage={true}
     pinList={
-      Array [
-        Object {
+      [
+        {
           "_id": 2,
-          "comments": Array [],
+          "comments": [],
           "createdAt": "2020-12-25T00:00:00.000+00:00",
           "hasSaved": true,
           "imgDescription": "imgDescription id-2",
           "imgLink": "imgLink id-2",
-          "owner": Object {
+          "owner": {
             "name": "owner id-2",
             "service": "twitter",
             "userId": "2",
           },
           "owns": false,
-          "savedBy": Array [
-            Object {
+          "savedBy": [
+            {
               "name": "savedBy - id-2",
               "service": "google",
               "userId": "2",
             },
-            Object {
+            {
               "name": "savedBy - id-2git",
               "service": "github",
               "userId": "2",
             },
           ],
-          "tags": Array [
-            Object {
+          "tags": [
+            {
               "_id": "tag_id_1",
               "tag": "tag 1",
             },
@@ -189,7 +189,7 @@ exports[`The profile page Will render for pins saved by the user 1`] = `
     }
     ready={true}
     user={
-      Object {
+      {
         "authenticated": true,
       }
     }
@@ -201,7 +201,7 @@ exports[`The profile page Will render no image sign if user has not pinned or cr
 <Fragment>
   <div
     style={
-      Object {
+      {
         "alignItems": "center",
         "display": "flex",
         "flexDirection": "column",
@@ -220,7 +220,7 @@ exports[`The profile page Will render no image sign if user has not pinned or cr
     </ForwardRef(Typography)>
     <ForwardRef(Avatar)
       sx={
-        Object {
+        {
           "bgcolor": "#1DA1F2",
           "mt": 3,
         }
@@ -228,7 +228,7 @@ exports[`The profile page Will render no image sign if user has not pinned or cr
     >
       <Memo(ForwardRef(TwitterIcon))
         style={
-          Object {
+          {
             "fontSize": 25,
           }
         }
@@ -236,7 +236,7 @@ exports[`The profile page Will render no image sign if user has not pinned or cr
     </ForwardRef(Avatar)>
     <ForwardRef(Typography)
       sx={
-        Object {
+        {
           "mt": 3,
         }
       }
@@ -251,7 +251,7 @@ exports[`The profile page Will render no image sign if user has not pinned or cr
   </div>
   <div
     style={
-      Object {
+      {
         "alignItems": "center",
         "display": "flex",
         "flexDirection": "column",
@@ -261,7 +261,7 @@ exports[`The profile page Will render no image sign if user has not pinned or cr
   >
     <ForwardRef(Box)
       sx={
-        Object {
+        {
           "marginLeft": "auto",
           "marginRight": "auto",
           "marginTop": 2,
@@ -280,17 +280,12 @@ exports[`The profile page Will render no image sign if user has not pinned or cr
     <img
       alt="no-pins-created"
       src={
-        Object {
-          "canInstrument": true,
+        {
           "createTransformer": [Function],
-          "getCacheKey": [Function],
-          "getCacheKeyAsync": [Function],
-          "process": [Function],
-          "processAsync": [Function],
         }
       }
       style={
-        Object {
+        {
           "height": 200,
           "width": 200,
         }

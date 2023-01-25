@@ -3,8 +3,8 @@
 exports[`The pinners dialog will render 1`] = `
 <ForwardRef(Dialog)
   PaperProps={
-    Object {
-      "sx": Object {
+    {
+      "sx": {
         "position": "fixed",
         "top": 0,
       },
@@ -17,7 +17,7 @@ exports[`The pinners dialog will render 1`] = `
     subheader={
       <ForwardRef(ListSubheader)
         sx={
-          Object {
+          {
             "textAlign": "center",
           }
         }
@@ -26,16 +26,16 @@ exports[`The pinners dialog will render 1`] = `
       </ForwardRef(ListSubheader)>
     }
     sx={
-      Object {
+      {
         "pt": 0,
       }
     }
   >
     <ForwardRef(ListItem)
       component={
-        Object {
+        {
           "$$typeof": Symbol(react.forward_ref),
-          "propTypes": Object {
+          "propTypes": {
             "innerRef": [Function],
             "onClick": [Function],
             "replace": [Function],
@@ -52,7 +52,7 @@ exports[`The pinners dialog will render 1`] = `
       <ForwardRef(ListItemAvatar)>
         <ForwardRef(Avatar)
           sx={
-            Object {
+            {
               "bgcolor": "#4285F4",
               "height": 26,
               "width": 26,
@@ -61,7 +61,7 @@ exports[`The pinners dialog will render 1`] = `
         >
           <Memo(ForwardRef(GoogleIcon))
             style={
-              Object {
+              {
                 "fontSize": 20,
               }
             }
@@ -74,9 +74,9 @@ exports[`The pinners dialog will render 1`] = `
     </ForwardRef(ListItem)>
     <ForwardRef(ListItem)
       component={
-        Object {
+        {
           "$$typeof": Symbol(react.forward_ref),
-          "propTypes": Object {
+          "propTypes": {
             "innerRef": [Function],
             "onClick": [Function],
             "replace": [Function],
@@ -93,7 +93,7 @@ exports[`The pinners dialog will render 1`] = `
       <ForwardRef(ListItemAvatar)>
         <ForwardRef(Avatar)
           sx={
-            Object {
+            {
               "bgcolor": "#1d7b20",
               "height": 26,
               "width": 26,
@@ -102,7 +102,7 @@ exports[`The pinners dialog will render 1`] = `
         >
           <Memo(ForwardRef(GitHubIcon))
             style={
-              Object {
+              {
                 "fontSize": 20,
               }
             }

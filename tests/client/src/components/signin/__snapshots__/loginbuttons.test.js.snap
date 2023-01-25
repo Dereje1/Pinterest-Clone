@@ -25,7 +25,7 @@ exports[`The sign in component will render for cover page 1`] = `
     startIcon={
       <Memo
         style={
-          Object {
+          {
             "fontSize": 25,
           }
         }
@@ -58,7 +58,7 @@ exports[`The sign in component will render only available providers 1`] = `
     startIcon={
       <Memo
         style={
-          Object {
+          {
             "fontSize": 25,
           }
         }

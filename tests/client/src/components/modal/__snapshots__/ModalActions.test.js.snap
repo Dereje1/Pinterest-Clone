@@ -6,7 +6,7 @@ exports[`Handling zoomed image action buttons will render the delete button for 
   onClick={[Function]}
   onMouseDown={[Function]}
   style={
-    Object {
+    {
       "margin": "1vh",
     }
   }
@@ -17,7 +17,7 @@ exports[`Handling zoomed image action buttons will render the delete button for 
   >
     <Memo(ForwardRef(DeleteForeverIcon))
       style={
-        Object {
+        {
           "color": "#d12929",
           "fontSize": "2em",
         }
@@ -33,7 +33,7 @@ exports[`Handling zoomed image action buttons will render the delete button for 
   onClick={[Function]}
   onMouseDown={[Function]}
   style={
-    Object {
+    {
       "margin": "1vh",
     }
   }
@@ -44,7 +44,7 @@ exports[`Handling zoomed image action buttons will render the delete button for 
   >
     <Memo(ForwardRef(PushPinIcon))
       style={
-        Object {
+        {
           "color": "#3a1c1cde",
           "fontSize": "2em",
         }
@@ -61,7 +61,7 @@ exports[`Handling zoomed image action buttons will render the disabled pin butto
   onClick={null}
   onMouseDown={[Function]}
   style={
-    Object {
+    {
       "margin": "1vh",
     }
   }
@@ -72,7 +72,7 @@ exports[`Handling zoomed image action buttons will render the disabled pin butto
   >
     <Memo(ForwardRef(PushPinIcon))
       style={
-        Object {
+        {
           "color": "#c50000",
           "fontSize": "2em",
         }
@@ -88,7 +88,7 @@ exports[`Handling zoomed image action buttons will render the pin button for unp
   onClick={[Function]}
   onMouseDown={[Function]}
   style={
-    Object {
+    {
       "margin": "1vh",
     }
   }
@@ -99,7 +99,7 @@ exports[`Handling zoomed image action buttons will render the pin button for unp
   >
     <Memo(ForwardRef(PushPinOutlinedIcon))
       style={
-        Object {
+        {
           "fontSize": "2em",
         }
       }
@@ -115,7 +115,7 @@ exports[`Handling zoomed image action buttons will render the unpin button for a
   onClick={[Function]}
   onMouseDown={[Function]}
   style={
-    Object {
+    {
       "margin": "1vh",
     }
   }
@@ -126,7 +126,7 @@ exports[`Handling zoomed image action buttons will render the unpin button for a
   >
     <Memo(ForwardRef(PushPinIcon))
       style={
-        Object {
+        {
           "color": "#3a1c1cde",
           "fontSize": "2em",
         }

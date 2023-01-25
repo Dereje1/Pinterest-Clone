@@ -3,7 +3,7 @@
 exports[`The comments window will render with comments 1`] = `
 <div
   style={
-    Object {
+    {
       "height": 30,
       "overflowY": "auto",
       "paddingBottom": 3,
@@ -13,7 +13,7 @@ exports[`The comments window will render with comments 1`] = `
 >
   <div
     style={
-      Object {
+      {
         "bottom": 10,
         "display": "flex",
         "justifyContent": "space-around",
@@ -58,7 +58,7 @@ exports[`The comments window will render with comments 1`] = `
   </div>
   <div
     style={
-      Object {
+      {
         "alignItems": "center",
         "background": "white",
         "display": "flex",
@@ -71,7 +71,7 @@ exports[`The comments window will render with comments 1`] = `
   >
     <div
       style={
-        Object {
+        {
           "alignItems": "center",
           "display": "flex",
           "justifyContent": "flex-start",
@@ -87,7 +87,7 @@ exports[`The comments window will render with comments 1`] = `
         onClick={[MockFunction]}
         src="imgLink id-1"
         style={
-          Object {
+          {
             "cursor": "pointer",
             "height": 56,
             "width": 56,
@@ -98,10 +98,10 @@ exports[`The comments window will render with comments 1`] = `
         closePin={[MockFunction]}
         commentFormIsOpen={false}
         pinInformation={
-          Object {
+          {
             "_id": 1,
-            "comments": Array [
-              Object {
+            "comments": [
+              {
                 "_id": "Comment_id_1",
                 "comment": "Test comment",
                 "createdAt": "2021-07-28T16:30:48.572Z",
@@ -112,30 +112,30 @@ exports[`The comments window will render with comments 1`] = `
             "hasSaved": false,
             "imgDescription": "imgDescription id-1",
             "imgLink": "imgLink id-1",
-            "owner": Object {
+            "owner": {
               "name": "owner id-1",
               "service": "google",
               "userId": "1",
             },
             "owns": false,
-            "savedBy": Array [
-              Object {
+            "savedBy": [
+              {
                 "name": "savedBy - id-1",
                 "service": "google",
                 "userId": "1",
               },
-              Object {
+              {
                 "name": "savedBy - id-1",
                 "service": "github",
                 "userId": "1",
               },
             ],
-            "tags": Array [
-              Object {
+            "tags": [
+              {
                 "_id": "tag_id_1",
                 "tag": "tag 1",
               },
-              Object {
+              {
                 "_id": "tag_id_2",
                 "tag": "tag 2",
               },
@@ -149,7 +149,7 @@ exports[`The comments window will render with comments 1`] = `
   <ForwardRef(Card)
     raised={true}
     sx={
-      Object {
+      {
         "margin": 1,
       }
     }
@@ -157,7 +157,7 @@ exports[`The comments window will render with comments 1`] = `
     <ForwardRef(CardContent)>
       <div
         style={
-          Object {
+          {
             "alignItems": "center",
             "display": "flex",
           }
@@ -165,7 +165,7 @@ exports[`The comments window will render with comments 1`] = `
       >
         <ForwardRef(Typography)
           sx={
-            Object {
+            {
               "color": "#4c62bc",
               "fontWeight": "bold",
             }
@@ -177,7 +177,7 @@ exports[`The comments window will render with comments 1`] = `
         <ForwardRef(Typography)
           color="text.secondary"
           sx={
-            Object {
+            {
               "fontSize": 12,
               "ml": 1,
             }
@@ -189,7 +189,7 @@ exports[`The comments window will render with comments 1`] = `
       <ForwardRef(Typography)
         color="text.secondary"
         sx={
-          Object {
+          {
             "mb": 1.5,
           }
         }
@@ -200,7 +200,7 @@ exports[`The comments window will render with comments 1`] = `
   </ForwardRef(Card)>
   <div
     style={
-      Object {
+      {
         "height": 65,
         "width": "100%",
       }
@@ -211,13 +211,13 @@ exports[`The comments window will render with comments 1`] = `
     onClosePin={[MockFunction]}
     open={false}
     pinnersList={
-      Array [
-        Object {
+      [
+        {
           "name": "savedBy - id-1",
           "service": "google",
           "userId": "1",
         },
-        Object {
+        {
           "name": "savedBy - id-1",
           "service": "github",
           "userId": "1",
@@ -231,7 +231,7 @@ exports[`The comments window will render with comments 1`] = `
 exports[`The comments window will render with no comments for authenticated users 1`] = `
 <div
   style={
-    Object {
+    {
       "height": 30,
       "overflowY": "auto",
       "paddingBottom": 3,
@@ -241,7 +241,7 @@ exports[`The comments window will render with no comments for authenticated user
 >
   <div
     style={
-      Object {
+      {
         "bottom": 10,
         "display": "flex",
         "justifyContent": "space-around",
@@ -286,7 +286,7 @@ exports[`The comments window will render with no comments for authenticated user
   </div>
   <div
     style={
-      Object {
+      {
         "alignItems": "center",
         "background": "white",
         "display": "flex",
@@ -299,7 +299,7 @@ exports[`The comments window will render with no comments for authenticated user
   >
     <div
       style={
-        Object {
+        {
           "alignItems": "center",
           "display": "flex",
           "justifyContent": "flex-start",
@@ -315,7 +315,7 @@ exports[`The comments window will render with no comments for authenticated user
         onClick={[MockFunction]}
         src="imgLink id-2"
         style={
-          Object {
+          {
             "cursor": "pointer",
             "height": 56,
             "width": 56,
@@ -326,33 +326,33 @@ exports[`The comments window will render with no comments for authenticated user
         closePin={[MockFunction]}
         commentFormIsOpen={false}
         pinInformation={
-          Object {
+          {
             "_id": 2,
-            "comments": Array [],
+            "comments": [],
             "createdAt": "2020-12-25T00:00:00.000+00:00",
             "hasSaved": true,
             "imgDescription": "imgDescription id-2",
             "imgLink": "imgLink id-2",
-            "owner": Object {
+            "owner": {
               "name": "owner id-2",
               "service": "twitter",
               "userId": "2",
             },
             "owns": false,
-            "savedBy": Array [
-              Object {
+            "savedBy": [
+              {
                 "name": "savedBy - id-2",
                 "service": "google",
                 "userId": "2",
               },
-              Object {
+              {
                 "name": "savedBy - id-2git",
                 "service": "github",
                 "userId": "2",
               },
             ],
-            "tags": Array [
-              Object {
+            "tags": [
+              {
                 "_id": "tag_id_1",
                 "tag": "tag 1",
               },
@@ -366,7 +366,7 @@ exports[`The comments window will render with no comments for authenticated user
   <ForwardRef(Card)
     raised={true}
     sx={
-      Object {
+      {
         "margin": 1,
       }
     }
@@ -375,7 +375,7 @@ exports[`The comments window will render with no comments for authenticated user
       <ForwardRef(Typography)
         color="text.secondary"
         sx={
-          Object {
+          {
             "margin": "auto",
           }
         }
@@ -390,13 +390,13 @@ exports[`The comments window will render with no comments for authenticated user
     onClosePin={[MockFunction]}
     open={false}
     pinnersList={
-      Array [
-        Object {
+      [
+        {
           "name": "savedBy - id-2",
           "service": "google",
           "userId": "2",
         },
-        Object {
+        {
           "name": "savedBy - id-2git",
           "service": "github",
           "userId": "2",
@@ -410,7 +410,7 @@ exports[`The comments window will render with no comments for authenticated user
 exports[`The comments window will render with no comments for unauthenticated users 1`] = `
 <div
   style={
-    Object {
+    {
       "height": 30,
       "overflowY": "auto",
       "paddingBottom": 3,
@@ -420,7 +420,7 @@ exports[`The comments window will render with no comments for unauthenticated us
 >
   <div
     style={
-      Object {
+      {
         "bottom": 10,
         "display": "flex",
         "justifyContent": "space-around",
@@ -465,7 +465,7 @@ exports[`The comments window will render with no comments for unauthenticated us
   </div>
   <div
     style={
-      Object {
+      {
         "alignItems": "center",
         "background": "white",
         "display": "flex",
@@ -478,7 +478,7 @@ exports[`The comments window will render with no comments for unauthenticated us
   >
     <div
       style={
-        Object {
+        {
           "alignItems": "center",
           "display": "flex",
           "justifyContent": "flex-start",
@@ -494,7 +494,7 @@ exports[`The comments window will render with no comments for unauthenticated us
         onClick={[MockFunction]}
         src="imgLink id-2"
         style={
-          Object {
+          {
             "cursor": "pointer",
             "height": 56,
             "width": 56,
@@ -505,33 +505,33 @@ exports[`The comments window will render with no comments for unauthenticated us
         closePin={[MockFunction]}
         commentFormIsOpen={false}
         pinInformation={
-          Object {
+          {
             "_id": 2,
-            "comments": Array [],
+            "comments": [],
             "createdAt": "2020-12-25T00:00:00.000+00:00",
             "hasSaved": true,
             "imgDescription": "imgDescription id-2",
             "imgLink": "imgLink id-2",
-            "owner": Object {
+            "owner": {
               "name": "owner id-2",
               "service": "twitter",
               "userId": "2",
             },
             "owns": false,
-            "savedBy": Array [
-              Object {
+            "savedBy": [
+              {
                 "name": "savedBy - id-2",
                 "service": "google",
                 "userId": "2",
               },
-              Object {
+              {
                 "name": "savedBy - id-2git",
                 "service": "github",
                 "userId": "2",
               },
             ],
-            "tags": Array [
-              Object {
+            "tags": [
+              {
                 "_id": "tag_id_1",
                 "tag": "tag 1",
               },
@@ -545,7 +545,7 @@ exports[`The comments window will render with no comments for unauthenticated us
   <ForwardRef(Card)
     raised={true}
     sx={
-      Object {
+      {
         "margin": 1,
       }
     }
@@ -554,7 +554,7 @@ exports[`The comments window will render with no comments for unauthenticated us
       <ForwardRef(Typography)
         color="text.secondary"
         sx={
-          Object {
+          {
             "margin": "auto",
           }
         }
@@ -569,13 +569,13 @@ exports[`The comments window will render with no comments for unauthenticated us
     onClosePin={[MockFunction]}
     open={false}
     pinnersList={
-      Array [
-        Object {
+      [
+        {
           "name": "savedBy - id-2",
           "service": "google",
           "userId": "2",
         },
-        Object {
+        {
           "name": "savedBy - id-2git",
           "service": "github",
           "userId": "2",

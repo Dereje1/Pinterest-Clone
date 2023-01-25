@@ -6,7 +6,7 @@ exports[`The collapsible menu component will render for home 1`] = `
     fontSize="large"
     onClick={[Function]}
     sx={
-      Object {
+      {
         "marginLeft": 1,
         "marginRight": 1,
       }
@@ -22,7 +22,7 @@ exports[`The collapsible menu component will render for home 1`] = `
       onKeyDown={[Function]}
       role="presentation"
       sx={
-        Object {
+        {
           "width": 250,
         }
       }
@@ -30,9 +30,9 @@ exports[`The collapsible menu component will render for home 1`] = `
       <ForwardRef(MenuList)>
         <ForwardRef(MenuItem)
           component={
-            Object {
+            {
               "$$typeof": Symbol(react.forward_ref),
-              "propTypes": Object {
+              "propTypes": {
                 "activeClassName": [Function],
                 "activeStyle": [Function],
                 "aria-current": [Function],
@@ -61,14 +61,14 @@ exports[`The collapsible menu component will render for home 1`] = `
           </ForwardRef(ListItemIcon)>
           <ForwardRef(ListItemText)
             primaryTypographyProps={
-              Object {
+              {
                 "fontSize": 20,
                 "fontWeight": "bold",
                 "marginLeft": 5,
               }
             }
             sx={
-              Object {
+              {
                 "color": "#b20e0e",
               }
             }
@@ -78,9 +78,9 @@ exports[`The collapsible menu component will render for home 1`] = `
         </ForwardRef(MenuItem)>
         <ForwardRef(MenuItem)
           component={
-            Object {
+            {
               "$$typeof": Symbol(react.forward_ref),
-              "propTypes": Object {
+              "propTypes": {
                 "activeClassName": [Function],
                 "activeStyle": [Function],
                 "aria-current": [Function],
@@ -109,14 +109,14 @@ exports[`The collapsible menu component will render for home 1`] = `
           </ForwardRef(ListItemIcon)>
           <ForwardRef(ListItemText)
             primaryTypographyProps={
-              Object {
+              {
                 "fontSize": 20,
                 "fontWeight": "bold",
                 "marginLeft": 5,
               }
             }
             sx={
-              Object {
+              {
                 "color": "#5e6870",
               }
             }
@@ -134,14 +134,14 @@ exports[`The collapsible menu component will render for home 1`] = `
           </ForwardRef(ListItemIcon)>
           <ForwardRef(ListItemText)
             primaryTypographyProps={
-              Object {
+              {
                 "fontSize": 20,
                 "fontWeight": "bold",
                 "marginLeft": 5,
               }
             }
             sx={
-              Object {
+              {
                 "color": "#5e6870",
               }
             }
@@ -161,7 +161,7 @@ exports[`The collapsible menu component will render for my pins 1`] = `
     fontSize="large"
     onClick={[Function]}
     sx={
-      Object {
+      {
         "marginLeft": 1,
         "marginRight": 1,
       }
@@ -177,7 +177,7 @@ exports[`The collapsible menu component will render for my pins 1`] = `
       onKeyDown={[Function]}
       role="presentation"
       sx={
-        Object {
+        {
           "width": 250,
         }
       }
@@ -185,9 +185,9 @@ exports[`The collapsible menu component will render for my pins 1`] = `
       <ForwardRef(MenuList)>
         <ForwardRef(MenuItem)
           component={
-            Object {
+            {
               "$$typeof": Symbol(react.forward_ref),
-              "propTypes": Object {
+              "propTypes": {
                 "activeClassName": [Function],
                 "activeStyle": [Function],
                 "aria-current": [Function],
@@ -216,14 +216,14 @@ exports[`The collapsible menu component will render for my pins 1`] = `
           </ForwardRef(ListItemIcon)>
           <ForwardRef(ListItemText)
             primaryTypographyProps={
-              Object {
+              {
                 "fontSize": 20,
                 "fontWeight": "bold",
                 "marginLeft": 5,
               }
             }
             sx={
-              Object {
+              {
                 "color": "#5e6870",
               }
             }
@@ -233,9 +233,9 @@ exports[`The collapsible menu component will render for my pins 1`] = `
         </ForwardRef(MenuItem)>
         <ForwardRef(MenuItem)
           component={
-            Object {
+            {
               "$$typeof": Symbol(react.forward_ref),
-              "propTypes": Object {
+              "propTypes": {
                 "activeClassName": [Function],
                 "activeStyle": [Function],
                 "aria-current": [Function],
@@ -264,14 +264,14 @@ exports[`The collapsible menu component will render for my pins 1`] = `
           </ForwardRef(ListItemIcon)>
           <ForwardRef(ListItemText)
             primaryTypographyProps={
-              Object {
+              {
                 "fontSize": 20,
                 "fontWeight": "bold",
                 "marginLeft": 5,
               }
             }
             sx={
-              Object {
+              {
                 "color": "#b20e0e",
               }
             }
@@ -289,14 +289,14 @@ exports[`The collapsible menu component will render for my pins 1`] = `
           </ForwardRef(ListItemIcon)>
           <ForwardRef(ListItemText)
             primaryTypographyProps={
-              Object {
+              {
                 "fontSize": 20,
                 "fontWeight": "bold",
                 "marginLeft": 5,
               }
             }
             sx={
-              Object {
+              {
                 "color": "#5e6870",
               }
             }
