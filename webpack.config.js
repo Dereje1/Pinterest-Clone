@@ -5,6 +5,7 @@ require('babel-polyfill');
 
 const configMain = {
   entry: ['babel-polyfill', './client/src/index.js'],
+  devtool: 'source-map',
   output: {
     filename: 'bundle.js',
     path: path.resolve(__dirname, './client/public'),
@@ -13,7 +14,7 @@ const configMain = {
   module: {
     rules: [
       {
-        test: /\.(js|jsx)$/,
+        test: /\.(js|jsx|ts|tsx)$/,
         exclude: path.resolve(__dirname, 'node_modules'),
         use: ['babel-loader'],
       },
@@ -35,6 +36,9 @@ const configMain = {
         type: 'asset/resource',
       },
     ],
+  },
+  resolve: {
+    extensions: ['*', '.js', '.jsx', '.tsx', '.ts'],
   },
   plugins: [
     new HtmlWebPackPlugin({
