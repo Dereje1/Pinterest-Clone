@@ -7,7 +7,7 @@ import { compose } from 'redux';
 import { getUser } from '../../actions/authentication';
 import updateSearch from '../../actions/search';
 import Search from './search';
-import Cover from '../cover/cover';
+import Cover from '../cover/cover.tsx';
 import SignIn from '../signin/signin';
 import CollapsibleMenu from './CollapsibleMenu';
 import './menu.scss';

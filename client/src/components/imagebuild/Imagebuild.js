@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import InfiniteScroll from 'react-infinite-scroll-component';
 import MasonryPins from './MasonryPins';
 import PinZoom from '../modal/modalzoom';
-import { Loading } from '../common/common';
+import { Loading } from '../common/common.tsx';
 import SignIn from '../signin/signin';
 import RESTcall from '../../crud';
 import {

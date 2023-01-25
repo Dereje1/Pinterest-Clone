@@ -4,7 +4,7 @@ import Button from '@mui/material/Button';
 import AccountCircleIcon from '@mui/icons-material/AccountCircle';
 import { connect } from 'react-redux';
 import { setGuest } from '../../actions/authentication';
-import { getProviderIcons } from '../common/common';
+import { getProviderIcons } from '../common/common.tsx';
 import './loginbuttons.scss';
 
 export const mapStateToProps = ({ user }) => ({ user });

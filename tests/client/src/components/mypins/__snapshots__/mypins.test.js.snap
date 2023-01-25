@@ -3,7 +3,7 @@
 exports[`The Mypins Component Mypins landing page will render bubbles until ready 1`] = `
 <div
   style={
-    Object {
+    {
       "marginTop": 100,
     }
   }
@@ -16,7 +16,7 @@ exports[`The Mypins Component Mypins landing page will render message if no pins
 <Fragment>
   <div
     style={
-      Object {
+      {
         "alignItems": "center",
         "display": "flex",
         "flexDirection": "column",
@@ -30,7 +30,7 @@ exports[`The Mypins Component Mypins landing page will render message if no pins
   >
     <div
       style={
-        Object {
+        {
           "alignItems": "center",
           "display": "flex",
           "flexDirection": "column",
@@ -40,7 +40,7 @@ exports[`The Mypins Component Mypins landing page will render message if no pins
     >
       <ForwardRef(Avatar)
         sx={
-          Object {
+          {
             "bgcolor": "#1DA1F2",
             "height": 52,
             "mb": 2,
@@ -50,7 +50,7 @@ exports[`The Mypins Component Mypins landing page will render message if no pins
       >
         <Memo(ForwardRef(TwitterIcon))
           style={
-            Object {
+            {
               "fontSize": 45,
             }
           }
@@ -63,7 +63,7 @@ exports[`The Mypins Component Mypins landing page will render message if no pins
       </ForwardRef(Typography)>
       <ForwardRef(Typography)
         style={
-          Object {
+          {
             "marginLeft": 15,
           }
         }
@@ -73,7 +73,7 @@ exports[`The Mypins Component Mypins landing page will render message if no pins
     </div>
     <div
       style={
-        Object {
+        {
           "marginRight": 18,
         }
       }
@@ -89,7 +89,7 @@ exports[`The Mypins Component Mypins landing page will render message if no pins
       id="createpin"
       onClick={[Function]}
       sx={
-        Object {
+        {
           "marginTop": 1,
           "zIndex": 1,
         }
@@ -102,7 +102,7 @@ exports[`The Mypins Component Mypins landing page will render message if no pins
   </div>
   <ForwardRef(Box)
     sx={
-      Object {
+      {
         "backgroundColor": "#eeeeee",
         "marginLeft": "auto",
         "marginRight": "auto",
@@ -113,7 +113,7 @@ exports[`The Mypins Component Mypins landing page will render message if no pins
   >
     <ForwardRef(Typography)
       style={
-        Object {
+        {
           "textAlign": "center",
         }
       }
@@ -135,7 +135,7 @@ exports[`The Mypins Component Mypins landing page will render message if no pins
 <Fragment>
   <div
     style={
-      Object {
+      {
         "alignItems": "center",
         "display": "flex",
         "flexDirection": "column",
@@ -149,7 +149,7 @@ exports[`The Mypins Component Mypins landing page will render message if no pins
   >
     <div
       style={
-        Object {
+        {
           "alignItems": "center",
           "display": "flex",
           "flexDirection": "column",
@@ -159,7 +159,7 @@ exports[`The Mypins Component Mypins landing page will render message if no pins
     >
       <ForwardRef(Avatar)
         sx={
-          Object {
+          {
             "bgcolor": "#1DA1F2",
             "height": 52,
             "mb": 2,
@@ -169,7 +169,7 @@ exports[`The Mypins Component Mypins landing page will render message if no pins
       >
         <Memo(ForwardRef(TwitterIcon))
           style={
-            Object {
+            {
               "fontSize": 45,
             }
           }
@@ -182,7 +182,7 @@ exports[`The Mypins Component Mypins landing page will render message if no pins
       </ForwardRef(Typography)>
       <ForwardRef(Typography)
         style={
-          Object {
+          {
             "marginLeft": 15,
           }
         }
@@ -192,7 +192,7 @@ exports[`The Mypins Component Mypins landing page will render message if no pins
     </div>
     <div
       style={
-        Object {
+        {
           "marginRight": 18,
         }
       }
@@ -208,7 +208,7 @@ exports[`The Mypins Component Mypins landing page will render message if no pins
       id="createpin"
       onClick={[Function]}
       sx={
-        Object {
+        {
           "marginTop": 1,
           "zIndex": 1,
         }
@@ -221,7 +221,7 @@ exports[`The Mypins Component Mypins landing page will render message if no pins
   </div>
   <ForwardRef(Box)
     sx={
-      Object {
+      {
         "backgroundColor": "#eeeeee",
         "marginLeft": "auto",
         "marginRight": "auto",
@@ -252,7 +252,7 @@ exports[`The Mypins Component Mypins landing page will render pins if found 1`] 
 <Fragment>
   <div
     style={
-      Object {
+      {
         "alignItems": "center",
         "display": "flex",
         "flexDirection": "column",
@@ -266,7 +266,7 @@ exports[`The Mypins Component Mypins landing page will render pins if found 1`] 
   >
     <div
       style={
-        Object {
+        {
           "alignItems": "center",
           "display": "flex",
           "flexDirection": "column",
@@ -276,7 +276,7 @@ exports[`The Mypins Component Mypins landing page will render pins if found 1`] 
     >
       <ForwardRef(Avatar)
         sx={
-          Object {
+          {
             "bgcolor": "#1DA1F2",
             "height": 52,
             "mb": 2,
@@ -286,7 +286,7 @@ exports[`The Mypins Component Mypins landing page will render pins if found 1`] 
       >
         <Memo(ForwardRef(TwitterIcon))
           style={
-            Object {
+            {
               "fontSize": 45,
             }
           }
@@ -299,7 +299,7 @@ exports[`The Mypins Component Mypins landing page will render pins if found 1`] 
       </ForwardRef(Typography)>
       <ForwardRef(Typography)
         style={
-          Object {
+          {
             "marginLeft": 15,
           }
         }
@@ -309,7 +309,7 @@ exports[`The Mypins Component Mypins landing page will render pins if found 1`] 
     </div>
     <div
       style={
-        Object {
+        {
           "marginRight": 18,
         }
       }
@@ -325,7 +325,7 @@ exports[`The Mypins Component Mypins landing page will render pins if found 1`] 
       id="createpin"
       onClick={[Function]}
       sx={
-        Object {
+        {
           "marginTop": 1,
           "zIndex": 1,
         }
@@ -341,39 +341,39 @@ exports[`The Mypins Component Mypins landing page will render pins if found 1`] 
     displayBrokenImage={true}
     pinImage={null}
     pinList={
-      Array [
-        Object {
+      [
+        {
           "_id": 3,
-          "comments": Array [],
+          "comments": [],
           "createdAt": "2020-12-25T00:00:00.000+00:00",
           "hasSaved": false,
           "imgDescription": "imgDescription id-3",
           "imgLink": "imgLink id-3",
-          "owner": Object {
+          "owner": {
             "name": "owner id-3",
             "service": "github",
             "userId": "3",
           },
           "owns": true,
-          "savedBy": Array [
-            Object {
+          "savedBy": [
+            {
               "name": "savedBy - id-3",
               "service": "google",
               "userId": "3",
             },
-            Object {
+            {
               "name": "savedBy - id-3",
               "service": "github",
               "userId": "3",
             },
           ],
-          "tags": Array [],
+          "tags": [],
         },
       ]
     }
     ready={true}
     user={
-      Object {
+      {
         "authenticated": true,
         "displayName": "tester displayName",
         "service": "twitter",

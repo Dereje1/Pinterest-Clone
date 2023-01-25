@@ -4,9 +4,9 @@ exports[`The pin creation modal will render for links to images 1`] = `
 <ForwardRef(Dialog)
   open={true}
   sx={
-    Object {
-      "& .MuiDialog-container": Object {
-        "& .MuiPaper-root": Object {
+    {
+      "& .MuiDialog-container": {
+        "& .MuiPaper-root": {
           "maxWidth": 341.3333333333333,
           "width": "100%",
         },
@@ -23,7 +23,7 @@ exports[`The pin creation modal will render for links to images 1`] = `
       id="close-pin-create-modal"
       onClick={[Function]}
       sx={
-        Object {
+        {
           "color": [Function],
           "position": "absolute",
           "right": 8,
@@ -33,7 +33,7 @@ exports[`The pin creation modal will render for links to images 1`] = `
     >
       <Memo(ForwardRef(CancelIcon))
         style={
-          Object {
+          {
             "color": "#3a1c1cde",
             "fontSize": "1.5em",
           }
@@ -43,7 +43,7 @@ exports[`The pin creation modal will render for links to images 1`] = `
   </ForwardRef(DialogTitle)>
   <ForwardRef(Card)
     sx={
-      Object {
+      {
         "width": 341.3333333333333,
       }
     }
@@ -59,7 +59,7 @@ exports[`The pin creation modal will render for links to images 1`] = `
           }
           label={<Memo />}
           sx={
-            Object {
+            {
               "color": "900",
               "marginRight": 80,
             }
@@ -74,7 +74,7 @@ exports[`The pin creation modal will render for links to images 1`] = `
       onError={[Function]}
       onLoad={[Function]}
       sx={
-        Object {
+        {
           "height": 240,
           "objectFit": "contain",
         }
@@ -83,7 +83,7 @@ exports[`The pin creation modal will render for links to images 1`] = `
     <ForwardRef(CardActions)>
       <div
         style={
-          Object {
+          {
             "alignItems": "center",
             "display": "flex",
             "flexDirection": "column",
@@ -100,7 +100,7 @@ exports[`The pin creation modal will render for links to images 1`] = `
           maxLength="28"
           onChange={[Function]}
           style={
-            Object {
+            {
               "margin": "1.5vh",
               "width": "100%",
             }
@@ -115,7 +115,7 @@ exports[`The pin creation modal will render for links to images 1`] = `
           label="Paste image address here http://..."
           onChange={[Function]}
           style={
-            Object {
+            {
               "margin": "1.5vh",
               "width": "100%",
             }
@@ -140,9 +140,9 @@ exports[`The pin creation modal will render for uploading images 1`] = `
 <ForwardRef(Dialog)
   open={true}
   sx={
-    Object {
-      "& .MuiDialog-container": Object {
-        "& .MuiPaper-root": Object {
+    {
+      "& .MuiDialog-container": {
+        "& .MuiPaper-root": {
           "maxWidth": 341.3333333333333,
           "width": "100%",
         },
@@ -159,7 +159,7 @@ exports[`The pin creation modal will render for uploading images 1`] = `
       id="close-pin-create-modal"
       onClick={[Function]}
       sx={
-        Object {
+        {
           "color": [Function],
           "position": "absolute",
           "right": 8,
@@ -169,7 +169,7 @@ exports[`The pin creation modal will render for uploading images 1`] = `
     >
       <Memo(ForwardRef(CancelIcon))
         style={
-          Object {
+          {
             "color": "#3a1c1cde",
             "fontSize": "1.5em",
           }
@@ -179,7 +179,7 @@ exports[`The pin creation modal will render for uploading images 1`] = `
   </ForwardRef(DialogTitle)>
   <ForwardRef(Card)
     sx={
-      Object {
+      {
         "width": 341.3333333333333,
       }
     }
@@ -195,7 +195,7 @@ exports[`The pin creation modal will render for uploading images 1`] = `
           }
           label={<Memo />}
           sx={
-            Object {
+            {
               "color": "900",
               "marginRight": 80,
             }
@@ -210,7 +210,7 @@ exports[`The pin creation modal will render for uploading images 1`] = `
       onError={[Function]}
       onLoad={[Function]}
       sx={
-        Object {
+        {
           "height": 240,
           "objectFit": "contain",
         }
@@ -219,7 +219,7 @@ exports[`The pin creation modal will render for uploading images 1`] = `
     <ForwardRef(CardActions)>
       <div
         style={
-          Object {
+          {
             "alignItems": "center",
             "display": "flex",
             "flexDirection": "column",
@@ -236,7 +236,7 @@ exports[`The pin creation modal will render for uploading images 1`] = `
           maxLength="28"
           onChange={[Function]}
           style={
-            Object {
+            {
               "margin": "1.5vh",
               "width": "100%",
             }
@@ -249,7 +249,7 @@ exports[`The pin creation modal will render for uploading images 1`] = `
           component="label"
           startIcon={<Memo />}
           sx={
-            Object {
+            {
               "margin": "2.3vh",
             }
           }

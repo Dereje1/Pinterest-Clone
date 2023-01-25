@@ -8,7 +8,7 @@ import ListItemAvatar from '@mui/material/ListItemAvatar';
 import ListItemText from '@mui/material/ListItemText';
 import Dialog from '@mui/material/Dialog';
 import ListSubheader from '@mui/material/ListSubheader';
-import { getProviderIcons } from '../common/common';
+import { getProviderIcons } from '../common/common.tsx';
 
 const providerIcons = getProviderIcons({ fontSize: 20 });
 

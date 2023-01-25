@@ -9,7 +9,7 @@ exports[`The pin zoom modal will render 1`] = `
     className="zoom cshow"
     onBlur={[Function]}
     sx={
-      Object {
+      {
         "top": 10,
         "width": 622.5,
       }
@@ -31,7 +31,7 @@ exports[`The pin zoom modal will render 1`] = `
             >
               <Memo
                 style={
-                  Object {
+                  {
                     "fontSize": "1.7em",
                   }
                 }
@@ -47,10 +47,10 @@ exports[`The pin zoom modal will render 1`] = `
             <GetAction
               deletePin={null}
               element={
-                Object {
+                {
                   "_id": 1,
-                  "comments": Array [
-                    Object {
+                  "comments": [
+                    {
                       "_id": "Comment_id_1",
                       "comment": "Test comment",
                       "createdAt": "2021-07-28T16:30:48.572Z",
@@ -61,30 +61,30 @@ exports[`The pin zoom modal will render 1`] = `
                   "hasSaved": false,
                   "imgDescription": "imgDescription id-1",
                   "imgLink": "imgLink id-1",
-                  "owner": Object {
+                  "owner": {
                     "name": "owner id-1",
                     "service": "google",
                     "userId": "1",
                   },
                   "owns": false,
-                  "savedBy": Array [
-                    Object {
+                  "savedBy": [
+                    {
                       "name": "savedBy - id-1",
                       "service": "google",
                       "userId": "1",
                     },
-                    Object {
+                    {
                       "name": "savedBy - id-1",
                       "service": "github",
                       "userId": "1",
                     },
                   ],
-                  "tags": Array [
-                    Object {
+                  "tags": [
+                    {
                       "_id": "tag_id_1",
                       "tag": "tag 1",
                     },
-                    Object {
+                    {
                       "_id": "tag_id_2",
                       "tag": "tag 2",
                     },
@@ -101,9 +101,9 @@ exports[`The pin zoom modal will render 1`] = `
         <React.Fragment>
           <ForwardRef(Link)
             component={
-              Object {
+              {
                 "$$typeof": Symbol(react.forward_ref),
-                "propTypes": Object {
+                "propTypes": {
                   "innerRef": [Function],
                   "onClick": [Function],
                   "replace": [Function],
@@ -123,7 +123,7 @@ exports[`The pin zoom modal will render 1`] = `
           <br />
           <span
             style={
-              Object {
+              {
                 "marginLeft": 0,
               }
             }
@@ -133,21 +133,21 @@ exports[`The pin zoom modal will render 1`] = `
         </React.Fragment>
       }
       subheaderTypographyProps={
-        Object {
+        {
           "fontWeight": "bold",
         }
       }
       title="imgDescription ..."
       titleTypographyProps={
-        Object {
+        {
           "fontWeight": "bold",
         }
       }
     />
     <ForwardRef(CardContent)
       sx={
-        Object {
-          "&:last-child": Object {
+        {
+          "&:last-child": {
             "pb": 0,
           },
           "background": "",
@@ -160,7 +160,7 @@ exports[`The pin zoom modal will render 1`] = `
         id="pin-zoom"
         image="imgLink id-1"
         sx={
-          Object {
+          {
             "marginLeft": "auto",
             "marginRight": "auto",
             "width": "622.5px",

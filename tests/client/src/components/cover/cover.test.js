@@ -1,7 +1,7 @@
 import React from 'react';
 import { shallow } from 'enzyme';
 import toJson from 'enzyme-to-json';
-import Cover from '../../../../../client/src/components/cover/cover';
+import Cover from '../../../../../client/src/components/cover/cover.tsx';
 
 describe('The landing page', () => {
   test('will display the cover', () => {
