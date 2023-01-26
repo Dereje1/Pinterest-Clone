@@ -97,7 +97,6 @@ exports[`The pin creation modal will render for links to images 1`] = `
           error={true}
           id="pin-description"
           label="Description..."
-          maxLength="28"
           onChange={[Function]}
           style={
             {
@@ -233,7 +232,6 @@ exports[`The pin creation modal will render for uploading images 1`] = `
           error={true}
           id="pin-description"
           label="Description..."
-          maxLength="28"
           onChange={[Function]}
           style={
             {

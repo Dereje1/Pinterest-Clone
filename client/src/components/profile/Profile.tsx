@@ -31,7 +31,7 @@ function Profile() {
       setReady(false);
       const {
         createdPins, savedPins, user, redirect,
-      } = await RESTcall({ address: `/api/userProfile/${userInfo}` });
+      } = await RESTcall({ address: `/api/userProfile/${userInfo}`, payload: null });
       if (redirect) {
         history.push(redirect);
         return;

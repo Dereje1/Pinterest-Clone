@@ -3,7 +3,7 @@
 exports[`The save pin action button will render with both errors 1`] = `
 <ForwardRef(Fab)
   aria-label="Pin Image"
-  color="#f79f9fd9"
+  color="success"
   disabled={true}
   onClick={[MockFunction]}
   sx={
@@ -32,7 +32,7 @@ exports[`The save pin action button will render with both errors 1`] = `
 exports[`The save pin action button will render with description error only 1`] = `
 <ForwardRef(Fab)
   aria-label="Pin Image"
-  color="#f79f9fd9"
+  color="success"
   disabled={true}
   onClick={[MockFunction]}
   sx={
@@ -61,7 +61,7 @@ exports[`The save pin action button will render with description error only 1`] 
 exports[`The save pin action button will render with duplicate error only 1`] = `
 <ForwardRef(Fab)
   aria-label="Pin Image"
-  color="#f79f9fd9"
+  color="success"
   disabled={true}
   onClick={[MockFunction]}
   sx={
@@ -90,7 +90,7 @@ exports[`The save pin action button will render with duplicate error only 1`] = 
 exports[`The save pin action button will render with image error only 1`] = `
 <ForwardRef(Fab)
   aria-label="Pin Image"
-  color="#f79f9fd9"
+  color="success"
   disabled={true}
   onClick={[MockFunction]}
   sx={
@@ -148,7 +148,7 @@ exports[`The save pin action button will render with no errors 1`] = `
 exports[`The save pin action button will render with not yet loaded error only 1`] = `
 <ForwardRef(Fab)
   aria-label="Pin Image"
-  color="#aa9c9cd9"
+  color="success"
   disabled={true}
   onClick={[MockFunction]}
   sx={

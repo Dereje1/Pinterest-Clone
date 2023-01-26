@@ -1,7 +1,6 @@
 // user page only for authenticated users
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import PropTypes from 'prop-types';
 import { Link } from 'react-router-dom';
 import Avatar from '@mui/material/Avatar';
 import Typography from '@mui/material/Typography';
@@ -15,11 +14,19 @@ import AddIcon from '@mui/icons-material/Add';
 import PinCreate from './pincreatemodal';
 import ImageBuild from '../imagebuild/Imagebuild';
 import RESTcall from '../../crud'; // pin CRUD
-import { getProviderIcons, Loading, UserPinsSelector } from '../common/common.tsx';
+import { getProviderIcons, Loading, UserPinsSelector } from '../common/common';
+import {
+  providerIconsType, userType, PinType, allPinLinksType,
+} from '../../interfaces';
 
 const providerIcons = getProviderIcons({ fontSize: 45 });
 
-const getUserInfo = ({ service, displayName, username }) => (
+interface getUserInfoProps {
+  service: string
+  displayName: string | null
+  username: string | null
+}
+const getUserInfo = ({ service, displayName, username }: getUserInfoProps) => (
   <div style={{
     display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center',
   }}
@@ -28,10 +35,10 @@ const getUserInfo = ({ service, displayName, username }) => (
       mb: 2,
       width: 52,
       height: 52,
-      bgcolor: providerIcons[service].color,
+      bgcolor: providerIcons[service as keyof providerIconsType].color,
     }}
     >
-      {providerIcons[service].icon}
+      {providerIcons[service as keyof providerIconsType].icon}
     </Avatar>
     <Typography variant="h4">
       {displayName}
@@ -42,9 +49,23 @@ const getUserInfo = ({ service, displayName, username }) => (
   </div>
 );
 
-export class Mypins extends Component {
+interface MypinsProps {
+  user: userType
+}
 
-  constructor(props) {
+interface MypinsState {
+  displayPinCreate: boolean
+  pinList: PinType[]
+  allPinLinks: allPinLinksType[], // TODO
+  showDeleteImageModal: boolean
+  deletableImgInfo: PinType | null,
+  ready: boolean,
+  displaySetting: string,
+}
+
+export class Mypins extends Component<MypinsProps, MypinsState> {
+
+  constructor(props: MypinsProps) {
     super(props);
     this.state = {
       displayPinCreate: false, // controls pin creation modal
@@ -62,6 +83,7 @@ export class Mypins extends Component {
     const { profilePins, allPinLinks } = await RESTcall({
       address: '/api/mypins',
       method: 'get',
+      payload: null,
     });
     this.setState({
       pinList: profilePins,
@@ -70,7 +92,7 @@ export class Mypins extends Component {
     });
   }
 
-  async addPic(pinJSON) { // adds a pin to the db
+  async addPic(pinJSON: {imgDescription: string, imgLink: string}) { // adds a pin to the db
     // copy then add pin to db and then update client state (in that order)
     const { pinList, allPinLinks } = this.state;
     this.setState({ ready: false });
@@ -100,7 +122,7 @@ export class Mypins extends Component {
     });
   }
 
-  deletePic({ _id, imgLink, owns }) {
+  deletePic({ _id, imgLink, owns }: {_id: string, imgLink: string, owns: boolean}) {
     const { pinList, displayPinCreate, allPinLinks } = this.state;
     if (displayPinCreate) return;
     this.setState({
@@ -112,6 +134,7 @@ export class Mypins extends Component {
       await RESTcall({
         address: owns ? `/api/${_id}` : `/api/unpin/${_id}`,
         method: owns ? 'delete' : 'put',
+        payload: null,
       });
     });
   }
@@ -227,7 +250,7 @@ export class Mypins extends Component {
             aria-describedby="alert-dialog-description"
           >
             <DialogTitle id="alert-dialog-title">
-              {`Permanently delete ${showDeleteImageModal && deletableImgInfo.imgDescription}?`}
+              {`Permanently delete ${deletableImgInfo && deletableImgInfo.imgDescription}?`}
             </DialogTitle>
             <DialogActions>
               <Button
@@ -239,7 +262,15 @@ export class Mypins extends Component {
               >
                 Cancel
               </Button>
-              <Button id="resume-delete-alert" onClick={() => this.deletePic(deletableImgInfo)} autoFocus>
+              <Button
+                id="resume-delete-alert"
+                onClick={() => {
+                  if (deletableImgInfo !== null) {
+                    this.deletePic(deletableImgInfo);
+                  }
+                }}
+                autoFocus
+              >
                 Delete
               </Button>
             </DialogActions>
@@ -251,15 +282,6 @@ export class Mypins extends Component {
 
 }
 
-export const mapStateToProps = ({ user }) => ({ user });
+export const mapStateToProps = ({ user }:{user: userType}) => ({ user });
 
 export default connect(mapStateToProps)(Mypins);
-
-Mypins.defaultProps = {
-  user: {},
-};
-
-Mypins.propTypes = {
-  // authentication info from redux
-  user: PropTypes.shape(PropTypes.shape),
-};

@@ -1,7 +1,7 @@
 // used for pin crud actions
 import axios from 'axios';
 
-export default async ({ address, method = 'get', payload = null }) => {
+export default async ({ address, method = 'get', payload }) => {
   try {
     const { data } = await axios[method](address, payload);
     return data;

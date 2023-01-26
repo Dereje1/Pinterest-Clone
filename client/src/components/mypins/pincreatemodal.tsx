@@ -1,6 +1,5 @@
 // displays modal that creates pin
 import React, { Component } from 'react';
-import PropTypes from 'prop-types';
 import CancelIcon from '@mui/icons-material/Cancel';
 import TextField from '@mui/material/TextField';
 import Card from '@mui/material/Card';
@@ -17,17 +16,33 @@ import Dialog from '@mui/material/Dialog';
 import DialogTitle from '@mui/material/DialogTitle';
 import SavePin from './SavePin';
 import error from './error.png';
-
 import {
   validateURL,
   getModalWidth,
   isDuplicateError,
   encodeImageFileAsURL,
 } from '../../utils/utils';
+import {
+  allPinLinksType,
+} from '../../interfaces';
 
-class PinCreate extends Component {
+interface PinCreateProps {
+  reset: () => void
+  savePin: (pinJSON: {imgDescription: string, imgLink: string}) => void
+  allPinLinks: allPinLinksType[]
+}
 
-  constructor(props) {
+interface PinCreateState {
+  picPreview: string
+  description: string
+  isError: boolean
+  isLoaded: boolean
+  upload: boolean
+}
+
+class PinCreate extends Component<PinCreateProps, PinCreateState> {
+
+  constructor(props: PinCreateProps) {
     super(props);
     // initialize modal show state to false
     this.state = {
@@ -48,8 +63,10 @@ class PinCreate extends Component {
     }, reset);
   };
 
-  processImage = (e) => { // processes picture on change of text box
-    const imgLink = validateURL(e.target.value);
+  // processes picture on change of text box
+  processImage = (e: React.SyntheticEvent) => {
+    const target = e.target as HTMLTextAreaElement;
+    const imgLink = validateURL(target.value);
     if (!imgLink) return;
     this.setState({
       picPreview: imgLink,
@@ -79,29 +96,33 @@ class PinCreate extends Component {
     });
   };
 
-  onLoad = ({ target }) => {
+  onLoad = (e: React.SyntheticEvent<HTMLDivElement>) => {
+    const target = e.target as HTMLMediaElement;
     this.setState({
       isLoaded: true,
       isError: target.currentSrc === `${window.location.origin}${error}`,
     });
   };
 
-  encodeImage = async (imgFile) => {
+  encodeImage = async (imgFile: File) => {
     try {
       const value = await encodeImageFileAsURL(imgFile);
-      this.processImage({
-        target: {
-          value,
-        },
+      this.setState({
+        picPreview: value,
+        isError: false,
+        isLoaded: false,
       });
     } catch (_) {
       this.onError();
     }
   };
 
-  handleUploadedImage = ({ target: { files } }) => {
-    const [imgFile] = files;
-    this.setState({ isLoaded: false }, () => this.encodeImage(imgFile));
+  handleUploadedImage = (e: React.SyntheticEvent<HTMLDivElement>) => {
+    const target = (e.target as HTMLInputElement).files;
+    if (target !== null) {
+      const imgFile = target[0];
+      this.setState({ isLoaded: false }, () => this.encodeImage(imgFile));
+    }
   };
 
   render() {
@@ -177,7 +198,6 @@ class PinCreate extends Component {
                 id="pin-description"
                 label="Description..."
                 variant="standard"
-                maxLength="28"
                 color="success"
                 onChange={({ target: { value } }) => value.trim().length <= 20
      && this.setState({ description: value })}
@@ -204,7 +224,7 @@ class PinCreate extends Component {
                       id="pin-img-link"
                       label="Paste image address here http://..."
                       variant="standard"
-                      onChange={(e) => this.processImage(e)}
+                      onChange={this.processImage}
                       value={picPreview}
                       error={isError}
                       color="success"
@@ -231,12 +251,3 @@ class PinCreate extends Component {
 }
 
 export default PinCreate;
-
-PinCreate.propTypes = {
-  // data used for pin creation
-  allPinLinks: PropTypes.arrayOf(PropTypes.shape).isRequired,
-  // callback in mypins to turn modal off
-  reset: PropTypes.func.isRequired,
-  // POST request via axios
-  savePin: PropTypes.func.isRequired,
-};

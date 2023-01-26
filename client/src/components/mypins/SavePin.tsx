@@ -4,9 +4,21 @@ import SaveAltIcon from '@mui/icons-material/SaveAlt';
 import Fab from '@mui/material/Fab';
 import FileDownloadOffIcon from '@mui/icons-material/FileDownloadOff';
 
+interface SavePinProps {
+  isImageError: boolean
+  isDescriptionError: boolean
+  isDuplicateError: boolean
+  isImageLoaded: boolean
+  savePic: () => void
+}
+
 function SavePin({
-  isImageError, isDescriptionError, isDuplicateError, savePic, isImageLoaded,
-}) {
+  isImageError,
+  isDescriptionError,
+  isDuplicateError,
+  savePic,
+  isImageLoaded,
+}: SavePinProps) {
   let validation;
   if (!isImageLoaded) {
     validation = {
@@ -46,7 +58,7 @@ function SavePin({
       aria-label="Pin Image"
       onClick={savePic}
       disabled={isDisabled}
-      color={validation.color}
+      color="success"
       sx={{
         '&:disabled': {
           backgroundColor: validation.color,

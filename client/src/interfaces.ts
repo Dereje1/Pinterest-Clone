@@ -42,7 +42,8 @@ export interface userType {
     userIp: string,
     username: string | null,
     displayName: string | null,
-    providers: providersType
+    providers: providersType,
+    service: string
 }
 
 export interface searchType {
@@ -54,4 +55,9 @@ export interface providerIconsType {
     twitter: {icon: ReactElement, color: string},
     google: {icon: ReactElement, color: string},
     github: {icon: ReactElement, color: string}
-  }
+}
+
+export interface allPinLinksType {
+    imgLink: string,
+    originalImgLink: string
+}
