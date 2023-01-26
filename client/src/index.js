@@ -17,7 +17,7 @@ import { ThemeProvider, createTheme } from '@mui/material/styles';
 import Menu from './components/menu/menu';
 import Home from './components/home/home.tsx';
 import Mypins from './components/mypins/mypins';
-import Profile from './components/profile/Profile';
+import Profile from './components/profile/Profile.tsx';
 // import combined reducer to pass to store here
 import reducers from './reducers/index';
 

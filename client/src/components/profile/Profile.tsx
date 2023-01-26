@@ -5,9 +5,10 @@ import Typography from '@mui/material/Typography';
 import Avatar from '@mui/material/Avatar';
 import Box from '@mui/material/Box';
 import ImageBuild from '../imagebuild/Imagebuild';
-import { Loading, getProviderIcons, UserPinsSelector } from '../common/common.tsx';
-import SignIn from '../signin/signin.tsx';
+import { Loading, getProviderIcons, UserPinsSelector } from '../common/common';
+import SignIn from '../signin/signin';
 import RESTcall from '../../crud';
+import {providerIcons as providerIconTypes, user} from '../../interfaces';
 import error from '../mypins/error.png';
 
 const providerIcons = getProviderIcons({ fontSize: 25 });
@@ -20,10 +21,10 @@ function Profile() {
   const [displayLogin, setDisplayLogin] = useState(false);
   const [retrievedUser, setRetrievedUser] = useState({ userId: '', service: 'twitter', displayName: '' });
 
-  const { userInfo } = useParams();
+  const { userInfo }:{userInfo: string} = useParams();
   const { pathname } = useLocation();
   const history = useHistory();
-  const loggedInUser = useSelector((state) => state.user);
+  const loggedInUser = useSelector(({user}:{user: user}) => user);
 
   const getProfileData = async () => {
     try {
@@ -94,8 +95,8 @@ function Profile() {
         >
           PROFILE
         </Typography>
-        <Avatar sx={{ bgcolor: providerIcons[retrievedUser.service].color, mt: 3 }}>
-          {providerIcons[retrievedUser.service].icon}
+        <Avatar sx={{ bgcolor: providerIcons[retrievedUser.service as keyof providerIconTypes].color, mt: 3 }}>
+          {providerIcons[retrievedUser.service as keyof providerIconTypes].icon}
         </Avatar>
         <Typography variant="h6" sx={{ mt: 3 }}>{retrievedUser.displayName}</Typography>
         <UserPinsSelector

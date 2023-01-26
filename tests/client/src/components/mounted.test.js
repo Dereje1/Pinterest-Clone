@@ -12,7 +12,7 @@ import { mount } from 'enzyme';
 import { Provider } from 'react-redux';
 import { MemoryRouter } from 'react-router-dom';
 import Search from '../../../../client/src/components/menu/search';
-import Profile from '../../../../client/src/components/profile/Profile';
+import Profile from '../../../../client/src/components/profile/Profile.tsx';
 
 test('Will render fully mounted search component wrapped in the redux provider without errors', () => {
   const props = {
