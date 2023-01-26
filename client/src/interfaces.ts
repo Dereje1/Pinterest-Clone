@@ -1,57 +1,57 @@
-import { ReactElement } from "react"
+import { ReactElement } from 'react';
 
-export interface Pinner {
+export interface PinnerType {
     name: string,
     service: string,
     userId: string
 }
 
-export interface comment {
+export interface commentType {
     _id: string,
     displayName: string,
     comment: string,
     createdAt: string
 }
 
-export interface tag {
+export interface tagType {
     _id: string,
     tag: string,
 }
 
-export interface Pin {
+export interface PinType {
     _id: string,
     imgDescription: string,
     imgLink: string,
     owner: { name: string, service: string, userId: string },
-    savedBy: Pinner[],
+    savedBy: PinnerType[],
     owns: boolean,
     hasSaved: boolean,
     createdAt: string,
-    comments: comment[],
-    tags: tag[],
+    comments: commentType[],
+    tags: tagType[],
 }
 
-export interface providers {
+export interface providersType {
     twitter: boolean,
     google: boolean,
     github: boolean
   }
 
-export interface user {
+export interface userType {
     authenticated: boolean,
     userIp: string,
     username: string | null,
     displayName: string | null,
-    providers: providers
+    providers: providersType
 }
 
-export interface search {
+export interface searchType {
     term: string | null,
     tagSearch: boolean
 }
 
-export interface providerIcons {
+export interface providerIconsType {
     twitter: {icon: ReactElement, color: string},
     google: {icon: ReactElement, color: string},
     github: {icon: ReactElement, color: string}
-  } 
+  }

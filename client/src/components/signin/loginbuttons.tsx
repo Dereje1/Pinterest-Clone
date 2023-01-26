@@ -4,11 +4,10 @@ import AccountCircleIcon from '@mui/icons-material/AccountCircle';
 import { connect } from 'react-redux';
 import { setGuest } from '../../actions/authentication';
 import { getProviderIcons } from '../common/common';
-import { user, providerIcons, providers } from '../../interfaces'
+import { userType, providerIconsType, providersType } from '../../interfaces';
 import './loginbuttons.scss';
 
-
-export const mapStateToProps = ({ user }: {user: user}) => ({ user });
+export const mapStateToProps = ({ user }: {user: userType}) => ({ user });
 
 const actionCreators = {
   setGuest,
@@ -19,12 +18,12 @@ const handleLogin = (loc: string) => { // twitter/ google authentication
 };
 
 export function ProviderButton({ service }: {service: string}) {
-  const providerIcons: providerIcons = getProviderIcons({ fontSize: 25 });
+  const providerIcons: providerIconsType = getProviderIcons({ fontSize: 25 });
   return (
     <Button
       id={`${service}loginbutton`}
       variant="outlined"
-      startIcon={providerIcons[service as keyof providerIcons].icon}
+      startIcon={providerIcons[service as keyof providerIconsType].icon}
       onClick={() => handleLogin(`/auth/${service}`)}
       onMouseDown={(e) => e.preventDefault()}
     >
@@ -34,7 +33,7 @@ export function ProviderButton({ service }: {service: string}) {
 }
 
 interface LoginButtonsProps{
-  user: user
+  user: userType
   setGuest: (path: string) => void
   guest: () => void
 }
@@ -64,7 +63,9 @@ export class LoginButtons extends React.Component<LoginButtonsProps> {
 
         {
           providerKeys.map((service) => {
-            if (providers[service as keyof providers]) return <ProviderButton key={service} service={service} />;
+            if (providers[service as keyof providersType]) {
+              return <ProviderButton key={service} service={service} />;
+            }
             return null;
           })
         }
@@ -75,4 +76,3 @@ export class LoginButtons extends React.Component<LoginButtonsProps> {
 }
 
 export default connect(mapStateToProps, actionCreators)(LoginButtons);
-

@@ -1,4 +1,4 @@
-import React, {createRef} from 'react';
+import React, { createRef } from 'react';
 import LoginButtons from './loginbuttons';
 import {
   delay,
@@ -11,9 +11,11 @@ interface SignInProps{
 
 interface SignInState {
   show: boolean
-};
+}
 
 export class SignIn extends React.Component<SignInProps, SignInState> {
+
+  private signInModal = createRef<HTMLDivElement>();
 
   constructor(props: SignInProps) {
     super(props);
@@ -23,10 +25,8 @@ export class SignIn extends React.Component<SignInProps, SignInState> {
     this.signInModal = React.createRef<HTMLInputElement>();
   }
 
-  private signInModal = createRef<HTMLDivElement>();
-
   componentDidMount() {
-    if(this.signInModal.current !== null){
+    if (this.signInModal.current !== null) {
       this.signInModal.current.focus();
     }
     this.setState({ show: true });

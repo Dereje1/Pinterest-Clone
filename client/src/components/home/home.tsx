@@ -4,17 +4,17 @@ import { connect } from 'react-redux';
 import RESTcall from '../../crud';
 import ImageBuild from '../imagebuild/Imagebuild';
 import { shuffleImages, getFilteredPins } from '../../utils/utils';
-import { Pin, user, search } from '../../interfaces';
+import { PinType, userType, searchType } from '../../interfaces';
 
-interface HomeProps  {
-  user: user
-  search: search
-};
+interface HomeProps {
+  user: userType
+  search: searchType
+}
 
 interface HomeState {
-  pinList: Pin[],
+  pinList: PinType[],
   ready: boolean
-};
+}
 
 export class Home extends Component<HomeProps, HomeState> {
 
@@ -57,6 +57,6 @@ export class Home extends Component<HomeProps, HomeState> {
 
 }
 
-export const mapStateToProps = ({user, search}: HomeProps) => ({user, search});
+export const mapStateToProps = ({ user, search }: HomeProps) => ({ user, search });
 
 export default connect(mapStateToProps)(Home);

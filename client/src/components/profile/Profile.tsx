@@ -8,7 +8,7 @@ import ImageBuild from '../imagebuild/Imagebuild';
 import { Loading, getProviderIcons, UserPinsSelector } from '../common/common';
 import SignIn from '../signin/signin';
 import RESTcall from '../../crud';
-import {providerIcons as providerIconTypes, user} from '../../interfaces';
+import { providerIconsType, userType } from '../../interfaces';
 import error from '../mypins/error.png';
 
 const providerIcons = getProviderIcons({ fontSize: 25 });
@@ -24,7 +24,7 @@ function Profile() {
   const { userInfo }:{userInfo: string} = useParams();
   const { pathname } = useLocation();
   const history = useHistory();
-  const loggedInUser = useSelector(({user}:{user: user}) => user);
+  const loggedInUser = useSelector(({ user }:{user: userType}) => user);
 
   const getProfileData = async () => {
     try {
@@ -95,13 +95,16 @@ function Profile() {
         >
           PROFILE
         </Typography>
-        <Avatar sx={{ bgcolor: providerIcons[retrievedUser.service as keyof providerIconTypes].color, mt: 3 }}>
-          {providerIcons[retrievedUser.service as keyof providerIconTypes].icon}
+        <Avatar sx={{
+          bgcolor: providerIcons[retrievedUser.service as keyof providerIconsType].color, mt: 3,
+        }}
+        >
+          {providerIcons[retrievedUser.service as keyof providerIconsType].icon}
         </Avatar>
         <Typography variant="h6" sx={{ mt: 3 }}>{retrievedUser.displayName}</Typography>
         <UserPinsSelector
           displaySetting={displaySetting}
-          setDisplaySetting={(val) => setDisplaySetting(val)}
+          setDisplaySetting={(val: string) => setDisplaySetting(val)}
         />
       </div>
 

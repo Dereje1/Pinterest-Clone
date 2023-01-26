@@ -26,7 +26,7 @@ function MasonryPins({
             role="button"
             className="image-box"
             onClick={(e) => pinEnlarge(e, element)}
-            onKeyDown={() => {}}
+            onKeyDown={() => ({})}
             tabIndex={0}
           >
             <img

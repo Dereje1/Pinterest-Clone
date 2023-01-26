@@ -10,10 +10,13 @@ module.exports = {
   extends: [
     'airbnb',
     'plugin:react/recommended',
+    'plugin:@typescript-eslint/eslint-recommended',
+    'plugin:@typescript-eslint/recommended',
   ],
-  parser: '@babel/eslint-parser',
+  parser: '@typescript-eslint/parser',
   plugins: [
     'react',
+    '@typescript-eslint',
   ],
   rules: {
     semi: ['error', 'always'],
@@ -35,7 +38,7 @@ module.exports = {
     }],
     'react/jsx-filename-extension': [
       1,
-      { extensions: ['.js', '.jsx'] },
+      { extensions: ['.js', '.jsx', '.tsx', '.ts'] },
     ],
     'react/jsx-uses-vars': [2],
     'linebreak-style': ['error', process.env.OS === 'Windows_NT' ? 'windows' : 'unix'],
@@ -43,5 +46,14 @@ module.exports = {
     'no-param-reassign': ['error', { props: true, ignorePropertyModificationsFor: ['user', 'req', 'res'] }],
     'import/no-named-as-default': 0,
     'react/jsx-props-no-spreading': 'off',
+    '@typescript-eslint/no-var-requires': 0,
+    'import/extensions': 0,
+  },
+  settings: {
+    'import/resolver': {
+      node: {
+        extensions: ['.js', '.jsx', '.ts', '.tsx'],
+      },
+    },
   },
 };

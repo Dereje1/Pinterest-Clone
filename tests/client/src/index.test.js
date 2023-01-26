@@ -2,7 +2,7 @@
  * @jest-environment jsdom
  */
 import ReactDOM from 'react-dom';
-// eslint-disable-next-line no-unused-vars
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
 import index from '../../../client/src/index';
 
 jest.mock('../../../client/src/crud');

@@ -1,15 +1,14 @@
-import React, { ReactElement } from 'react';
+import React from 'react';
 import TwitterIcon from '@mui/icons-material/Twitter';
 import GoogleIcon from '@mui/icons-material/Google';
 import GitHubIcon from '@mui/icons-material/GitHub';
 import DownloadDoneIcon from '@mui/icons-material/DownloadDone';
 import Button from '@mui/material/Button';
 import ButtonGroup from '@mui/material/ButtonGroup';
-import {providerIcons} from '../../interfaces'
+import { providerIconsType } from '../../interfaces';
 import './common.scss';
 
-
-export const getProviderIcons = ({ fontSize }: {fontSize: number}): providerIcons => (
+export const getProviderIcons = ({ fontSize }: {fontSize: number}): providerIconsType => (
   {
     twitter: { icon: <TwitterIcon style={{ fontSize }} />, color: '#1DA1F2' },
     google: { icon: <GoogleIcon style={{ fontSize }} />, color: '#4285F4' },
@@ -38,7 +37,10 @@ export function Loading({ imagesLoaded, ready }: LoadingProps) {
     </div>
   );
 }
-
+Loading.defaultProps = {
+  imagesLoaded: undefined,
+  ready: undefined,
+};
 
 interface UserPinsSelectorProps {
   displaySetting: string,

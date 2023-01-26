@@ -19,7 +19,7 @@ function Cover() {
           </div>
         </div>
         <div>
-          <LoginButtons guest={() => {}} />
+          <LoginButtons guest={() => ({})} />
         </div>
       </div>
     </div>
