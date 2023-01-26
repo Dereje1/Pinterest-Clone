@@ -4,7 +4,7 @@
 import React from 'react';
 import { shallow } from 'enzyme';
 import toJson from 'enzyme-to-json';
-import { LoginButtons, mapStateToProps, ProviderButton } from '../../../../../client/src/components/signin/loginbuttons';
+import { LoginButtons, mapStateToProps, ProviderButton } from '../../../../../client/src/components/signin/loginbuttons.tsx';
 
 describe('The sign in component', () => {
   let props;

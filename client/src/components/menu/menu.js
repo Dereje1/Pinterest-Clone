@@ -8,7 +8,7 @@ import { getUser } from '../../actions/authentication';
 import updateSearch from '../../actions/search';
 import Search from './search';
 import Cover from '../cover/cover.tsx';
-import SignIn from '../signin/signin';
+import SignIn from '../signin/signin.tsx';
 import CollapsibleMenu from './CollapsibleMenu';
 import './menu.scss';
 

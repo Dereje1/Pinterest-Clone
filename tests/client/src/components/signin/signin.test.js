@@ -4,7 +4,7 @@
 import React from 'react';
 import { shallow } from 'enzyme';
 import toJson from 'enzyme-to-json';
-import { SignIn } from '../../../../../client/src/components/signin/signin';
+import { SignIn } from '../../../../../client/src/components/signin/signin.tsx';
 
 jest.useFakeTimers();
 

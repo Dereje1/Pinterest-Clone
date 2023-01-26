@@ -4,54 +4,11 @@ import { connect } from 'react-redux';
 import RESTcall from '../../crud';
 import ImageBuild from '../imagebuild/Imagebuild';
 import { shuffleImages, getFilteredPins } from '../../utils/utils';
-
-interface Pinner  { 
-  name: string, 
-  service: string, 
-  userId: string 
-}
-
-interface comment  { 
-  _id: string,
-  displayName: string, 
-  comment: string, 
-  createdAt: string 
-}
-
-interface tag  { 
-  _id: string,
-  tag: string,
-}
-
-interface Pin  {
-  _id: string,
-  imgDescription: string,
-  imgLink: string,
-  owner: { name: string, service: string, userId: string },
-  savedBy: Pinner[],
-  owns: boolean,
-  hasSaved: boolean,
-  createdAt: string,
-  comments: comment[],
-  tags: tag[],
-}
+import { Pin, user, search } from '../../interfaces';
 
 interface HomeProps  {
-  user: {
-    authenticated: boolean,
-    userIp: string,
-    username: string | null,
-    displayName: string | null,
-    providers: {
-        twitter: boolean,
-        google: boolean,
-        github: boolean
-    }
-  },
-  search: {
-    term: string | null,
-    tagSearch: boolean
-  }
+  user: user
+  search: search
 };
 
 interface HomeState {

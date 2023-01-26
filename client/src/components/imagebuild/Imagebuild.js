@@ -4,7 +4,7 @@ import InfiniteScroll from 'react-infinite-scroll-component';
 import MasonryPins from './MasonryPins';
 import PinZoom from '../modal/modalzoom';
 import { Loading } from '../common/common.tsx';
-import SignIn from '../signin/signin';
+import SignIn from '../signin/signin.tsx';
 import RESTcall from '../../crud';
 import {
   initialDisplayPerScroll,

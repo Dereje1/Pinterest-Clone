@@ -1,23 +1,34 @@
-import React from 'react';
-import PropTypes from 'prop-types';
+import React, {createRef} from 'react';
 import LoginButtons from './loginbuttons';
 import {
   delay,
 } from '../../utils/utils';
 import './signin.scss';
 
-export class SignIn extends React.Component {
+interface SignInProps{
+  removeSignin: () => void
+}
 
-  constructor(props) {
+interface SignInState {
+  show: boolean
+};
+
+export class SignIn extends React.Component<SignInProps, SignInState> {
+
+  constructor(props: SignInProps) {
     super(props);
     this.state = {
       show: false,
     };
-    this.signInModal = React.createRef();
+    this.signInModal = React.createRef<HTMLInputElement>();
   }
 
+  private signInModal = createRef<HTMLDivElement>();
+
   componentDidMount() {
-    this.signInModal.current.focus();
+    if(this.signInModal.current !== null){
+      this.signInModal.current.focus();
+    }
     this.setState({ show: true });
   }
 
@@ -51,9 +62,3 @@ export class SignIn extends React.Component {
 
 }
 export default SignIn;
-
-SignIn.propTypes = {
-  // callback to toggle login div
-  removeSignin: PropTypes.func.isRequired,
-  // used for eventlistener targeting to close login div
-};

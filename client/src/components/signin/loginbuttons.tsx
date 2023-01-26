@@ -1,29 +1,30 @@
 import React from 'react';
-import PropTypes from 'prop-types';
 import Button from '@mui/material/Button';
 import AccountCircleIcon from '@mui/icons-material/AccountCircle';
 import { connect } from 'react-redux';
 import { setGuest } from '../../actions/authentication';
-import { getProviderIcons } from '../common/common.tsx';
+import { getProviderIcons } from '../common/common';
+import { user, providerIcons, providers } from '../../interfaces'
 import './loginbuttons.scss';
 
-export const mapStateToProps = ({ user }) => ({ user });
+
+export const mapStateToProps = ({ user }: {user: user}) => ({ user });
 
 const actionCreators = {
   setGuest,
 };
 
-const handleLogin = (loc) => { // twitter/ google authentication
+const handleLogin = (loc: string) => { // twitter/ google authentication
   window.location.assign(loc);
 };
 
-export function ProviderButton({ service }) {
-  const providerIcons = getProviderIcons({ fontSize: 25 });
+export function ProviderButton({ service }: {service: string}) {
+  const providerIcons: providerIcons = getProviderIcons({ fontSize: 25 });
   return (
     <Button
       id={`${service}loginbutton`}
       variant="outlined"
-      startIcon={providerIcons[service].icon}
+      startIcon={providerIcons[service as keyof providerIcons].icon}
       onClick={() => handleLogin(`/auth/${service}`)}
       onMouseDown={(e) => e.preventDefault()}
     >
@@ -32,7 +33,13 @@ export function ProviderButton({ service }) {
   );
 }
 
-export class LoginButtons extends React.Component {
+interface LoginButtonsProps{
+  user: user
+  setGuest: (path: string) => void
+  guest: () => void
+}
+
+export class LoginButtons extends React.Component<LoginButtonsProps> {
 
   handleGuest = () => { // set guest user
     const { setGuest: setGuestStatus, guest } = this.props;
@@ -57,7 +64,7 @@ export class LoginButtons extends React.Component {
 
         {
           providerKeys.map((service) => {
-            if (providers[service]) return <ProviderButton key={service} service={service} />;
+            if (providers[service as keyof providers]) return <ProviderButton key={service} service={service} />;
             return null;
           })
         }
@@ -69,18 +76,3 @@ export class LoginButtons extends React.Component {
 
 export default connect(mapStateToProps, actionCreators)(LoginButtons);
 
-LoginButtons.defaultProps = {
-  user: {},
-};
-
-LoginButtons.propTypes = {
-  // redux action to set guest user status on server
-  setGuest: PropTypes.func.isRequired,
-  // used for reseting back to guest mode in signin
-  guest: PropTypes.func.isRequired,
-  user: PropTypes.shape(PropTypes.shape),
-};
-
-ProviderButton.propTypes = {
-  service: PropTypes.string.isRequired,
-};
