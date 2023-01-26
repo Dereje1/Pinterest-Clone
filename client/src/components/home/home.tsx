@@ -1,14 +1,67 @@
 // homepage for both logged in and guest users
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import PropTypes from 'prop-types';
 import RESTcall from '../../crud';
 import ImageBuild from '../imagebuild/Imagebuild';
 import { shuffleImages, getFilteredPins } from '../../utils/utils';
 
-export class Home extends Component {
+interface Pinner  { 
+  name: string, 
+  service: string, 
+  userId: string 
+}
 
-  constructor(props) {
+interface comment  { 
+  _id: string,
+  displayName: string, 
+  comment: string, 
+  createdAt: string 
+}
+
+interface tag  { 
+  _id: string,
+  tag: string,
+}
+
+interface Pin  {
+  _id: string,
+  imgDescription: string,
+  imgLink: string,
+  owner: { name: string, service: string, userId: string },
+  savedBy: Pinner[],
+  owns: boolean,
+  hasSaved: boolean,
+  createdAt: string,
+  comments: comment[],
+  tags: tag[],
+}
+
+interface HomeProps  {
+  user: {
+    authenticated: boolean,
+    userIp: string,
+    username: string | null,
+    displayName: string | null,
+    providers: {
+        twitter: boolean,
+        google: boolean,
+        github: boolean
+    }
+  },
+  search: {
+    term: string | null,
+    tagSearch: boolean
+  }
+};
+
+interface HomeState {
+  pinList: Pin[],
+  ready: boolean
+};
+
+export class Home extends Component<HomeProps, HomeState> {
+
+  constructor(props: HomeProps) {
     super(props);
     this.state = {
       pinList: [], // stores all pins in db in state
@@ -47,17 +100,6 @@ export class Home extends Component {
 
 }
 
-export const mapStateToProps = (state) => state;
+export const mapStateToProps = ({user, search}: HomeProps) => ({user, search});
 
 export default connect(mapStateToProps)(Home);
-
-Home.defaultProps = {
-  user: {},
-  search: {},
-};
-
-Home.propTypes = {
-  // authentication info from redux
-  user: PropTypes.shape(PropTypes.shape),
-  search: PropTypes.shape(PropTypes.shape),
-};

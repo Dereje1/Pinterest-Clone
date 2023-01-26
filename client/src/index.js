@@ -15,7 +15,7 @@ import { ThemeProvider, createTheme } from '@mui/material/styles';
 // Import all Created react components that are associated with the router
 // standard menu (non-authenticated) components
 import Menu from './components/menu/menu';
-import Home from './components/home/home';
+import Home from './components/home/home.tsx';
 import Mypins from './components/mypins/mypins';
 import Profile from './components/profile/Profile';
 // import combined reducer to pass to store here

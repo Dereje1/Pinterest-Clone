@@ -1,6 +1,6 @@
 import React from 'react';
 import { shallow } from 'enzyme';
-import { Home, mapStateToProps } from '../../../../../client/src/components/home/home';
+import { Home, mapStateToProps } from '../../../../../client/src/components/home/home.tsx';
 import RESTcall from '../../../../../client/src/crud';
 import { pinsStub } from '../../../pinsStub';
 
@@ -71,7 +71,7 @@ describe('The Home Component', () => {
   });
 
   test('Shall map redux state to component props', () => {
-    const mappedProps = mapStateToProps({ reduxState: 'state' });
-    expect(mappedProps).toStrictEqual({ reduxState: 'state' });
+    const mappedProps = mapStateToProps({ search: 'search state', user: 'user state' });
+    expect(mappedProps).toStrictEqual({ search: 'search state', user: 'user state' });
   });
 });
