@@ -67,6 +67,7 @@ describe('Handling zoomed image action buttons', () => {
   test('will render the unpin button for already pinned images', () => {
     const updatedProps = {
       ...props,
+      deletePin: null,
       element: {
         hasSaved: true,
         owns: false,
@@ -101,7 +102,8 @@ describe('Handling zoomed image action buttons', () => {
 
   test('will render the pin button for unpinned images', () => {
     const preventDefault = jest.fn();
-    const wrapper = shallow(<ModalActions {...props} />);
+    const updatedProps = { ...props, deletePin: null };
+    const wrapper = shallow(<ModalActions {...updatedProps} />);
     const iconButton = wrapper.find('ForwardRef(IconButton)');
     iconButton.props().onClick();
     iconButton.props().onMouseDown({ preventDefault });

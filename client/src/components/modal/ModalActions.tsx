@@ -10,7 +10,7 @@ interface GetActionProps{
   element: PinType
   reset: (_: React.SyntheticEvent, forceClose?: boolean) => void
   pinImage: (pin: PinType) => void
-  deletePin: (pin: PinType) => void
+  deletePin: ((pin: PinType) => void) | null
 }
 
 function GetAction({
@@ -19,7 +19,7 @@ function GetAction({
   deletePin,
   reset,
 }: GetActionProps) {
-  if (!pinImage) { // means called from profile page
+  if (deletePin) { // means called from profile page
     return (
       <IconButton
         aria-label="settings"

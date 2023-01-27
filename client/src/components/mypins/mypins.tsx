@@ -185,15 +185,15 @@ export class Mypins extends Component<MypinsProps, MypinsState> {
           pins.length
             ? (
               <ImageBuild
-                pinImage={null}
-                deletePin={(e) => {
-                  if (e.owns) {
+                pinImage={false}
+                deletePin={(pin) => {
+                  if (pin.owns) {
                     this.setState({
                       showDeleteImageModal: true,
-                      deletableImgInfo: e,
+                      deletableImgInfo: pin,
                     });
                   } else {
-                    this.deletePic(e);
+                    this.deletePic(pin);
                   }
                 }}
                 pinList={pins}

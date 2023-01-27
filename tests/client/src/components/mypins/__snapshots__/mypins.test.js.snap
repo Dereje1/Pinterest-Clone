@@ -339,7 +339,7 @@ exports[`The Mypins Component Mypins landing page will render pins if found 1`] 
   <ImageBuild
     deletePin={[Function]}
     displayBrokenImage={true}
-    pinImage={null}
+    pinImage={false}
     pinList={
       [
         {

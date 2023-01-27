@@ -20,7 +20,7 @@ interface CommentsProps {
   handleNewComment: (comment: string) => void
   toggleComments: () => void
   closePin: (_: React.SyntheticEvent, forceClose?: boolean) => void
-  updateTags: () => void
+  updateTags: (query: string) => void
 }
 
 function Comments({

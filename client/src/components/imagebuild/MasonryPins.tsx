@@ -1,7 +1,18 @@
 import React, { useState } from 'react';
-import PropTypes from 'prop-types';
 import Masonry from 'react-masonry-component';
 import HandleThumbnailImage from './HandleThumbnailImage';
+import { PinType } from '../../interfaces';
+
+interface MasonryPinsProps {
+  pins: PinType[]
+  layoutComplete: () => void
+  pinEnlarge: (e: React.SyntheticEvent, pin: PinType) => void
+  onBrokenImage: (_id: string) => void
+  pinImage: (pin: PinType) => void
+  deletePin: ((pin: PinType) => void) | null
+}
+
+const initialLoadedImages: string[] = [];
 
 function MasonryPins({
   layoutComplete,
@@ -10,8 +21,8 @@ function MasonryPins({
   pinImage,
   deletePin,
   pins,
-}) {
-  const [loadedImages, setLoadedImages] = useState([]);
+}: MasonryPinsProps) {
+  const [loadedImages, setLoadedImages] = useState(initialLoadedImages);
 
   return (
     <Masonry
@@ -53,18 +64,3 @@ function MasonryPins({
   );
 }
 export default MasonryPins;
-
-MasonryPins.defaultProps = {
-  pins: [null],
-  pinImage: null,
-  deletePin: null,
-};
-
-MasonryPins.propTypes = {
-  pinImage: PropTypes.func,
-  deletePin: PropTypes.func,
-  layoutComplete: PropTypes.func.isRequired,
-  pinEnlarge: PropTypes.func.isRequired,
-  onBrokenImage: PropTypes.func.isRequired,
-  pins: PropTypes.arrayOf(PropTypes.shape),
-};

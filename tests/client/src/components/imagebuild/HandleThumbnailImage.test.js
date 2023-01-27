@@ -54,6 +54,7 @@ describe('Handling image action buttons', () => {
   test('will not render any action buttons for owner', () => {
     const updatedProps = {
       ...props,
+      deletePin: null,
       element: {
         owns: true,
       },
@@ -83,11 +84,21 @@ describe('Handling image action buttons', () => {
   });
 
   test('will render the save button', () => {
-    const wrapper = shallow(<HandleThumbnailImage {...props} />);
+    const updatedProps = {
+      ...props,
+      deletePin: null,
+      element: {
+        ...props.element,
+        owns: false,
+        hasSaved: false,
+      },
+    };
+    const wrapper = shallow(<HandleThumbnailImage {...updatedProps} />);
     wrapper.props().onClick();
     expect(wrapper.text()).toBe(' Save');
     expect(props.pinImage).toHaveBeenCalledWith({
       hasSaved: false,
+      owns: false,
     });
   });
 });

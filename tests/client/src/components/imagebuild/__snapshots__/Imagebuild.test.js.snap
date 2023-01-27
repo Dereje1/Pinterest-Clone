@@ -9,6 +9,7 @@ exports[`The ImageBuild component will render.... 1`] = `
       dataLength={3}
       hasMore={false}
       initialScrollY={0}
+      loader={<div />}
       next={[Function]}
     >
       <MasonryPins

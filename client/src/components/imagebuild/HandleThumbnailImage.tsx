@@ -1,10 +1,16 @@
 import React from 'react';
-import PropTypes from 'prop-types';
+import { PinType } from '../../interfaces';
 import './imagebuild.scss';
 
-function HandleThumbnailImage({ element, pinImage, deletePin }) {
+interface HandleThumbnailImageProps {
+  element: PinType
+  pinImage: (pin: PinType) => void
+  deletePin: ((pin: PinType) => void) | null
+}
+
+function HandleThumbnailImage({ element, pinImage, deletePin }: HandleThumbnailImageProps) {
   /* For the logged in user's profile page */
-  if (!pinImage) {
+  if (deletePin) {
     return (
       <button
         type="submit"
@@ -45,15 +51,3 @@ function HandleThumbnailImage({ element, pinImage, deletePin }) {
 }
 
 export default HandleThumbnailImage;
-
-HandleThumbnailImage.defaultProps = {
-  pinImage: null,
-  deletePin: null,
-};
-
-HandleThumbnailImage.propTypes = {
-  element: PropTypes.objectOf(PropTypes.shape).isRequired,
-  // what type of button to place on pic/thumbnail executed by caller
-  pinImage: PropTypes.func,
-  deletePin: PropTypes.func,
-};

@@ -43,10 +43,10 @@ interface PinZoomProps {
     ],
     user: userType
     reset: () => void
-    pinImage: () => void
-    deletePin: () => void
-    handleNewComment: () => void
-    updateTags: () => void
+    pinImage: (pin: PinType) => void
+    deletePin: ((pin: PinType) => void) | null
+    handleNewComment: (newComment: string) => void
+    updateTags: (query: string) => void
 }
 
 interface PinZoomState {
