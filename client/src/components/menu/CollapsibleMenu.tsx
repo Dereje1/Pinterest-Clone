@@ -14,11 +14,17 @@ import MenuIcon from '@mui/icons-material/Menu';
 
 const ListItemTextStyling = { marginLeft: 5, fontSize: 20, fontWeight: 'bold' };
 
-function CollapsibleMenu({ pathname }) {
+function CollapsibleMenu({ pathname }: {pathname: string}) {
   const [openDrawer, setOpenDrawer] = useState(false);
 
-  const toggleDrawer = (event) => {
-    if (event.type === 'keydown' && (event.key === 'Tab' || event.key === 'Shift')) {
+  const handleKeyDown = (event: React.KeyboardEvent) => {
+    if ((event.key === 'Tab' || event.key === 'Shift')) return true;
+    return false;
+  };
+
+  const toggleDrawer = (event: React.SyntheticEvent) => {
+    const keyDown = event as React.KeyboardEvent;
+    if (event.type === 'keydown' && handleKeyDown(keyDown)) {
       return;
     }
     setOpenDrawer(!openDrawer);

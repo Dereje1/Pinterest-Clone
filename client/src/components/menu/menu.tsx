@@ -1,18 +1,18 @@
 // menu bar
 import React from 'react';
-import PropTypes from 'prop-types';
 import { NavLink, withRouter } from 'react-router-dom';
 import { connect } from 'react-redux';
 import { compose } from 'redux';
 import { getUser } from '../../actions/authentication';
 import updateSearch from '../../actions/search';
 import Search from './search';
-import Cover from '../cover/cover.tsx';
-import SignIn from '../signin/signin.tsx';
+import Cover from '../cover/cover';
+import SignIn from '../signin/signin';
 import CollapsibleMenu from './CollapsibleMenu';
+import { userType } from '../../interfaces';
 import './menu.scss';
 
-export const mapStateToProps = ({ user }) => ({ user });
+export const mapStateToProps = ({ user }: {user: userType}) => ({ user });
 const actionCreators = {
   getUser,
   updateSearch,
@@ -29,7 +29,7 @@ export function Brand() {
   );
 }
 
-export function Login({ showSignIn }) {
+export function Login({ showSignIn }:{showSignIn: () => void}) {
   return (
     <div className="items login">
       <i
@@ -51,9 +51,24 @@ export function ExpandedMenu() {
   );
 }
 
-export class Menu extends React.Component {
+interface MenuProps {
+  user: userType
+  getUser: (path: string) => void
+  updateSearch: () => void
+  location: {
+    pathname: string
+  }
+}
 
-  constructor(props) {
+interface MenuState {
+  menuIsCollapsed: boolean
+  displaySignIn: boolean,
+  showSearch: boolean,
+}
+
+export class Menu extends React.Component<MenuProps, MenuState> {
+
+  constructor(props: MenuProps) {
     super(props);
     this.state = {
       menuIsCollapsed: window.innerWidth < 600, // test for screen size
@@ -73,7 +88,7 @@ export class Menu extends React.Component {
     );
   }
 
-  renderMenu = (authenticated) => {
+  renderMenu = (authenticated: boolean) => {
     const {
       location: { pathname },
     } = this.props;
@@ -138,20 +153,3 @@ export default compose(
   withRouter,
   connect(mapStateToProps, actionCreators),
 )(Menu);
-
-Menu.defaultProps = {
-  user: {},
-};
-
-Menu.propTypes = {
-  // stored authentication info from redux
-  user: PropTypes.shape(PropTypes.shape),
-  // redux action to get user status from server
-  getUser: PropTypes.func.isRequired,
-  updateSearch: PropTypes.func.isRequired,
-  location: PropTypes.shape(PropTypes.shape).isRequired,
-};
-
-Login.propTypes = {
-  showSignIn: PropTypes.func.isRequired,
-};

@@ -36,6 +36,7 @@ exports[`The search component Will render search bar if selected by the user 1`]
 >
   <ForwardRef(Paper)
     component="form"
+    elevation={3}
     sx={
       {
         "alignItems": "center",
@@ -46,7 +47,7 @@ exports[`The search component Will render search bar if selected by the user 1`]
         "width": 360,
       }
     }
-    variant="string"
+    variant="elevation"
   >
     <ForwardRef(IconButton)
       aria-label="menu"
@@ -72,6 +73,7 @@ exports[`The search component Will render search bar if selected by the user 1`]
       sx={
         {
           "height": "100%",
+          "marginLeft": 1,
           "width": "100%",
         }
       }

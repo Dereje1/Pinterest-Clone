@@ -9,22 +9,36 @@ import Tooltip from '@mui/material/Tooltip';
 import HighlightOffIcon from '@mui/icons-material/HighlightOff';
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 import IconButton from '@mui/material/IconButton';
+import { searchType } from '../../interfaces';
+
+interface SearchProps {
+  pathname: string
+  isShowing: boolean
+  searchUpdate: (val: string) => void
+  openSearch: () => void
+  closeSearch: () => void
+}
 
 function Search({
-  searchUpdate,
   pathname,
   isShowing,
+  searchUpdate,
   openSearch,
   closeSearch,
-}) {
+}: SearchProps) {
   const [searchVal, updateSearchVal] = useState('');
   const [scrollUp, setScrollUp] = useState(false);
 
-  const { term, tagSearch } = useSelector(({ search }) => search);
+  const { term, tagSearch } = useSelector(({ search }: {search: searchType}) => search);
 
-  const onDebounceSearch = _.debounce((val, reduxUpdate) => reduxUpdate(val), 500);
+  const onDebounceSearch = _.debounce((
+    val: string,
+    reduxUpdate,
+  ) => reduxUpdate(val), 500);
 
-  const handleSearch = ({ target: { value } }) => {
+  const handleSearch = (e: React.SyntheticEvent) => {
+    const target = e.target as HTMLTextAreaElement;
+    const { value } = target;
     updateSearchVal(value);
     onDebounceSearch(value, searchUpdate);
   };
@@ -35,10 +49,11 @@ function Search({
   };
 
   useEffect(() => {
-    if (tagSearch) {
+    if (tagSearch && term) {
       setScrollUp(true);
       openSearch();
-      handleSearch({ target: { value: term } });
+      updateSearchVal(term);
+      onDebounceSearch(term, searchUpdate);
     }
     return () => {
       setScrollUp(false);
@@ -94,7 +109,8 @@ function Search({
           marginTop: 'auto',
           marginBottom: 'auto',
         }}
-        variant="string"
+        variant="elevation"
+        elevation={3}
       >
         <IconButton
           sx={{ p: '10px' }}
@@ -108,7 +124,7 @@ function Search({
           <ArrowBackIcon />
         </IconButton>
         <InputBase
-          sx={{ width: '100%', height: '100%' }}
+          sx={{ width: '100%', height: '100%', marginLeft: 1 }}
           placeholder="Search..."
           inputProps={{ 'aria-label': 'search' }}
           onChange={handleSearch}
