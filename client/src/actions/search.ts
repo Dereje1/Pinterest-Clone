@@ -1,4 +1,4 @@
-const updateSearch = (val, tagSearch = false) => ({
+const updateSearch = (val: string, tagSearch = false) => ({
   type: 'UPDATE_SEARCH',
   payload: {
     term: val.trim().length ? val.trim().toLowerCase() : null,

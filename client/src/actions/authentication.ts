@@ -1,11 +1,17 @@
 // only getuser action dispatches to store
 import RESTcall from '../crud';
+import { userType } from '../interfaces';
 
 // action gets user authentication status from /profile that is generated
 // and updates store
-export const getUser = (path) => async (dispatch) => {
+interface dispatchType {
+    type: string,
+    payload: userType
+}
+
+export const getUser = (path: string) => async (dispatch: (action: dispatchType) => void) => {
   try {
-    const payload = await RESTcall({ address: path });
+    const payload = await RESTcall({ address: path, payload: null });
     dispatch({
       type: 'GET_USER_STATUS',
       payload,
@@ -19,9 +25,9 @@ export const getUser = (path) => async (dispatch) => {
 };
 
 // fake guest account setter look at backend /authconfig/routes
-export const setGuest = (path) => async (dispatch) => {
+export const setGuest = (path: string) => async (dispatch: (action: dispatchType) => void) => {
   try {
-    const payload = await RESTcall({ address: path });
+    const payload = await RESTcall({ address: path, payload: null });
     dispatch({
       type: 'SET_GUEST_STATUS',
       payload,
@@ -31,6 +37,5 @@ export const setGuest = (path) => async (dispatch) => {
       type: 'SET_GUEST_STATUS_REJECTED',
       payload: err,
     });
-  // }
   }
 };
