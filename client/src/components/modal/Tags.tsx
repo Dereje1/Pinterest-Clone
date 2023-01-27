@@ -1,5 +1,4 @@
 import * as React from 'react';
-import PropTypes from 'prop-types';
 import { useDispatch } from 'react-redux';
 import { useHistory } from 'react-router-dom';
 import { styled } from '@mui/material/styles';
@@ -10,19 +9,29 @@ import TagIcon from '@mui/icons-material/Tag';
 import updateSearch from '../../actions/search';
 import TagsForm from './TagsForm';
 import RESTcall from '../../crud';
+import { PinType, tagType } from '../../interfaces';
 
 export const ListItem = styled('li')(({ theme }) => ({
   margin: theme.spacing(0.5),
 }));
+
+interface TagsArrayProps {
+  pinInformation: PinType
+  commentFormIsOpen: boolean
+  updateTags: (tag: string) => void
+  closePin: (_: React.SyntheticEvent, forceClose?: boolean) => void
+}
+
+const initialTags: tagType[] = [];
 
 function TagsArray({
   pinInformation,
   commentFormIsOpen,
   updateTags,
   closePin,
-}) {
+}: TagsArrayProps) {
   const { tags, owns, _id } = pinInformation;
-  const [tagData, setTagData] = React.useState([]);
+  const [tagData, setTagData] = React.useState(initialTags);
   const [openTagsForm, setOpenTagsForm] = React.useState(false);
   const [suggestedTags, setSuggestedTags] = React.useState([]);
 
@@ -31,7 +40,7 @@ function TagsArray({
 
   const fetchSuggestedTags = async () => {
     try {
-      const retreivedTags = await RESTcall({ address: '/api/getTags' });
+      const retreivedTags = await RESTcall({ address: '/api/getTags', payload: null });
       setSuggestedTags(retreivedTags);
     } catch (error) {
       setSuggestedTags([]);
@@ -48,17 +57,17 @@ function TagsArray({
     }
   }, [openTagsForm]);
 
-  const handleAdd = (val) => {
+  const handleAdd = (val: string) => {
     updateTags(`?pinID=${_id}&tag=${val}`);
     setOpenTagsForm(false);
   };
 
-  const handleDelete = (tagToDelete) => () => {
+  const handleDelete = (tagToDelete: tagType) => () => {
     updateTags(`?pinID=${_id}&deleteId=${tagToDelete._id}`);
   };
 
-  const handleTagClick = (tag) => {
-    closePin();
+  const handleTagClick = (e: React.SyntheticEvent, tag: string) => {
+    closePin(e);
     dispatch(updateSearch(tag, true));
     history.push('/');
   };
@@ -96,13 +105,13 @@ function TagsArray({
               onDelete={owns ? handleDelete(data) : undefined}
               variant="outlined"
               size="small"
-              onClick={() => handleTagClick(data.tag)}
+              onClick={(e) => handleTagClick(e, data.tag)}
             />
           </ListItem>
         ))}
 
       </Paper>
-      <div style={{ mr: 3 }}>
+      <div style={{ marginRight: 3 }}>
         { owns && tagData.length < 6 && (
           <IconButton onClick={() => setOpenTagsForm(true)} disabled={commentFormIsOpen}>
             <TagIcon />
@@ -115,10 +124,3 @@ function TagsArray({
 }
 
 export default TagsArray;
-
-TagsArray.propTypes = {
-  commentFormIsOpen: PropTypes.bool.isRequired,
-  updateTags: PropTypes.func.isRequired,
-  closePin: PropTypes.func.isRequired,
-  pinInformation: PropTypes.objectOf(PropTypes.shape).isRequired,
-};

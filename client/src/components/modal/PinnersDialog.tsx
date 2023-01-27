@@ -1,5 +1,4 @@
 import * as React from 'react';
-import PropTypes from 'prop-types';
 import { Link } from 'react-router-dom';
 import Avatar from '@mui/material/Avatar';
 import List from '@mui/material/List';
@@ -8,13 +7,24 @@ import ListItemAvatar from '@mui/material/ListItemAvatar';
 import ListItemText from '@mui/material/ListItemText';
 import Dialog from '@mui/material/Dialog';
 import ListSubheader from '@mui/material/ListSubheader';
-import { getProviderIcons } from '../common/common.tsx';
+import { getProviderIcons } from '../common/common';
+import { providerIconsType, PinnerType } from '../../interfaces';
 
-const providerIcons = getProviderIcons({ fontSize: 20 });
+const providerIcons: providerIconsType = getProviderIcons({ fontSize: 20 });
+
+interface PinnersDialogProps {
+  onCloseDialog: () => void
+  onClosePin: (_: React.SyntheticEvent, forceClose?: boolean) => void
+  open: boolean
+  pinnersList: PinnerType[]
+}
 
 function PinnersDialog({
-  onCloseDialog, open, pinnersList, onClosePin,
-}) {
+  onCloseDialog,
+  onClosePin,
+  open,
+  pinnersList,
+}:PinnersDialogProps) {
   return (
     <Dialog
       onClose={onCloseDialog}
@@ -27,14 +37,20 @@ function PinnersDialog({
       >
         {pinnersList.map((pinner) => (
           <ListItem
-            onClick={() => { onCloseDialog(); onClosePin(); }}
+            onClick={(e) => { onCloseDialog(); onClosePin(e); }}
             key={pinner.userId}
             component={Link}
             to={`/profile/${pinner.userId}-${pinner.service}-${pinner.name}`}
           >
             <ListItemAvatar>
-              <Avatar sx={{ width: 26, height: 26, bgcolor: providerIcons[pinner.service].color }}>
-                {providerIcons[pinner.service].icon}
+              <Avatar
+                sx={{
+                  width: 26,
+                  height: 26,
+                  bgcolor: providerIcons[pinner.service as keyof providerIconsType].color,
+                }}
+              >
+                {providerIcons[pinner.service as keyof providerIconsType].icon}
               </Avatar>
             </ListItemAvatar>
             <ListItemText primary={pinner.name} />
@@ -44,12 +60,5 @@ function PinnersDialog({
     </Dialog>
   );
 }
-
-PinnersDialog.propTypes = {
-  onCloseDialog: PropTypes.func.isRequired,
-  onClosePin: PropTypes.func.isRequired,
-  open: PropTypes.bool.isRequired,
-  pinnersList: PropTypes.arrayOf(PropTypes.objectOf(PropTypes.string)).isRequired,
-};
 
 export default PinnersDialog;

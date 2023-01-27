@@ -113,7 +113,7 @@ exports[`The tags component will render with tags for non-owner 1`] = `
   <div
     style={
       {
-        "mr": 3,
+        "marginRight": 3,
       }
     }
   />
@@ -172,7 +172,7 @@ exports[`The tags component will render with tags for owner 1`] = `
   <div
     style={
       {
-        "mr": 3,
+        "marginRight": 3,
       }
     }
   >

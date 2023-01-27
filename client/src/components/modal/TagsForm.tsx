@@ -1,19 +1,25 @@
 import React, { useState } from 'react';
-import PropTypes from 'prop-types';
 import DoneIcon from '@mui/icons-material/Done';
 import TextField from '@mui/material/TextField';
 import Autocomplete from '@mui/material/Autocomplete';
+
+interface TagsFormProps {
+  closeTagsForm: () => void
+  addTag: (tag: string) => void
+  suggestedTags: string[]
+  exisitingTags: string[]
+}
 
 function TagsForm({
   closeTagsForm,
   addTag,
   suggestedTags,
   exisitingTags,
-}) {
+}: TagsFormProps) {
   const [tag, setTag] = useState('');
 
   // args for mui onInputChange callback => event, value, reason
-  const handleTag = (_, value) => {
+  const handleTag = (_: React.SyntheticEvent, value: string) => {
     if (value.trim().length < 16) {
       setTag(value);
     }
@@ -28,7 +34,7 @@ function TagsForm({
     }
   };
 
-  const handleEnterKey = (e) => {
+  const handleEnterKey = (e: React.KeyboardEvent) => {
     if (e.key === 'Enter') {
       handleTagSubmit();
     }
@@ -71,7 +77,7 @@ function TagsForm({
 
       <DoneIcon
         color="success"
-        onClick={() => handleTagSubmit(tag)}
+        onClick={() => handleTagSubmit()}
         onMouseDown={(e) => e.preventDefault()}
         style={{ cursor: 'pointer' }}
       />
@@ -80,10 +86,3 @@ function TagsForm({
 }
 
 export default TagsForm;
-
-TagsForm.propTypes = {
-  closeTagsForm: PropTypes.func.isRequired,
-  addTag: PropTypes.func.isRequired,
-  suggestedTags: PropTypes.arrayOf(PropTypes.string).isRequired,
-  exisitingTags: PropTypes.arrayOf(PropTypes.string).isRequired,
-};

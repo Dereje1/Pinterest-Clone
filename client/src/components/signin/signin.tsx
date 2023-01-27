@@ -22,11 +22,10 @@ export class SignIn extends React.Component<SignInProps, SignInState> {
     this.state = {
       show: false,
     };
-    this.signInModal = React.createRef<HTMLInputElement>();
   }
 
   componentDidMount() {
-    if (this.signInModal.current !== null) {
+    if (this.signInModal.current) {
       this.signInModal.current.focus();
     }
     this.setState({ show: true });

@@ -58,7 +58,7 @@ exports[`Handling zoomed image action buttons will render the disabled pin butto
 <ForwardRef(IconButton)
   aria-label="settings"
   disableRipple={true}
-  onClick={null}
+  onClick={[Function]}
   onMouseDown={[Function]}
   style={
     {

@@ -1,9 +1,13 @@
 import React, { useState } from 'react';
-import PropTypes from 'prop-types';
 import Button from '@mui/material/Button';
 import TextField from '@mui/material/TextField';
 
-function CommentForm({ handleClose, handleSubmit }) {
+interface CommentFormProps {
+  handleClose: () => void
+  handleSubmit: (comment: string) => void
+}
+
+function CommentForm({ handleClose, handleSubmit }: CommentFormProps) {
   const [comment, setComment] = useState('');
 
   return (
@@ -32,8 +36,3 @@ function CommentForm({ handleClose, handleSubmit }) {
 }
 
 export default CommentForm;
-
-CommentForm.propTypes = {
-  handleClose: PropTypes.func.isRequired,
-  handleSubmit: PropTypes.func.isRequired,
-};

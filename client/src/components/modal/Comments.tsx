@@ -1,5 +1,4 @@
 import React from 'react';
-import PropTypes from 'prop-types';
 import CardContent from '@mui/material/CardContent';
 import Typography from '@mui/material/Typography';
 import Fab from '@mui/material/Fab';
@@ -12,16 +11,27 @@ import CommentForm from './CommentForm';
 import PinnersDialog from './PinnersDialog';
 import Tags from './Tags';
 import { formatDate } from '../../utils/utils';
+import { PinType } from '../../interfaces';
+
+interface CommentsProps {
+  stylingProps: {width: number, height: number}
+  pinInformation: PinType
+  authenticated: boolean
+  handleNewComment: (comment: string) => void
+  toggleComments: () => void
+  closePin: (_: React.SyntheticEvent, forceClose?: boolean) => void
+  updateTags: () => void
+}
 
 function Comments({
   stylingProps,
   pinInformation,
-  handleNewComment,
   authenticated,
+  handleNewComment,
   toggleComments,
   closePin,
   updateTags,
-}) {
+}: CommentsProps) {
   const [openCommentForm, setOpenCommentForm] = React.useState(false);
   const [openPinnersDialog, setOpenPinnersDialog] = React.useState(false);
 
@@ -33,7 +43,7 @@ function Comments({
     setOpenCommentForm(false);
   };
 
-  const submitComment = (comment) => {
+  const submitComment = (comment: string) => {
     if (comment.trim().length) {
       handleNewComment(comment);
     }
@@ -180,13 +190,3 @@ function Comments({
 }
 
 export default Comments;
-
-Comments.propTypes = {
-  pinInformation: PropTypes.objectOf(PropTypes.shape).isRequired,
-  stylingProps: PropTypes.objectOf(PropTypes.number).isRequired,
-  handleNewComment: PropTypes.func.isRequired,
-  authenticated: PropTypes.bool.isRequired,
-  toggleComments: PropTypes.func.isRequired,
-  closePin: PropTypes.func.isRequired,
-  updateTags: PropTypes.func.isRequired,
-};

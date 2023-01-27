@@ -1,6 +1,5 @@
 // displays pin zoom modal
-import React, { Component } from 'react';
-import PropTypes from 'prop-types';
+import React, { Component, createRef } from 'react';
 import { Link as RouterLink } from 'react-router-dom';
 /* MUI */
 import Card from '@mui/material/Card';
@@ -19,9 +18,10 @@ import Comments from './Comments';
 import {
   delay, getFormattedDescription, formatDate,
 } from '../../utils/utils';
+import { PinType, userType } from '../../interfaces';
 import './modal.scss';
 
-export const StyledBadge = styled(Badge)(({ name }) => ({
+export const StyledBadge = styled(Badge)(({ name }:{ name: string}) => ({
   '& .MuiBadge-badge': {
     right: name === 'pin' ? 32 : 43,
     top: name === 'pin' ? 17 : 13,
@@ -30,20 +30,48 @@ export const StyledBadge = styled(Badge)(({ name }) => ({
   },
 }));
 
-export class PinZoom extends Component {
+interface PinZoomProps {
+    zoomInfo: [
+      PinType,
+      {
+        imgWidth: string
+        parentWidth: number
+        isNoFit: boolean
+        top: number
+        width: string
+      }
+    ],
+    user: userType
+    reset: () => void
+    pinImage: () => void
+    deletePin: () => void
+    handleNewComment: () => void
+    updateTags: () => void
+}
 
-  constructor(props) {
+interface PinZoomState {
+  commentsShowing: {width: number, height: number} | null
+  cancelBlur: boolean
+  zoomClass: string
+}
+
+export class PinZoom extends Component<PinZoomProps, PinZoomState> {
+
+  private zoomedImage = createRef<HTMLDivElement>();
+
+  constructor(props: PinZoomProps) {
     super(props);
     this.state = {
       commentsShowing: null,
       cancelBlur: false,
       zoomClass: 'zoom cshow',
     };
-    this.zoomedImage = React.createRef();
   }
 
   componentDidMount() {
-    this.zoomedImage.current.focus();
+    if (this.zoomedImage.current) {
+      this.zoomedImage.current.focus();
+    }
     window.addEventListener('scroll', this.disableScroll);
   }
 
@@ -56,7 +84,7 @@ export class PinZoom extends Component {
     window.scrollTo(0, parentDivStyle.top);
   };
 
-  close = (_, forceClose = false) => {
+  close = (_: React.SyntheticEvent, forceClose = false) => {
     // sends a reset callback after closing modalstate
     const { cancelBlur } = this.state;
     if (cancelBlur && !forceClose) return;
@@ -73,7 +101,7 @@ export class PinZoom extends Component {
   toggleComments = () => {
     const { commentsShowing } = this.state;
     const { zoomInfo: [, parentDivStyle] } = this.props;
-    if (!commentsShowing) {
+    if (this.zoomedImage.current && !commentsShowing) {
       const { current: { clientHeight: cardHeight, children } } = this.zoomedImage;
       const [, image] = children;
       const { clientHeight: imageHeight } = image;
@@ -87,7 +115,9 @@ export class PinZoom extends Component {
       return;
     }
     // need to reinstate focus for blur to work again
-    this.zoomedImage.current.focus();
+    if (this.zoomedImage.current) {
+      this.zoomedImage.current.focus();
+    }
     this.setState({ commentsShowing: null, cancelBlur: false });
   };
 
@@ -187,7 +217,7 @@ export class PinZoom extends Component {
                   handleNewComment={handleNewComment}
                   authenticated={authenticated}
                   toggleComments={this.toggleComments}
-                  closePin={(e) => this.close(e, true)}
+                  closePin={(e: React.SyntheticEvent) => this.close(e, true)}
                   updateTags={updateTags}
                 />
               )}
@@ -201,21 +231,3 @@ export class PinZoom extends Component {
 }
 
 export default PinZoom;
-
-PinZoom.defaultProps = {
-  pinImage: null,
-  deletePin: null,
-};
-
-PinZoom.propTypes = {
-  // [picobject, overlay button type, last scroll distance]
-  zoomInfo: PropTypes.arrayOf(PropTypes.shape).isRequired,
-  // callback to caller to turn modal off
-  reset: PropTypes.func.isRequired,
-  // what type of button to place on pic/thumbnail executed by caller
-  pinImage: PropTypes.func,
-  deletePin: PropTypes.func,
-  user: PropTypes.objectOf(PropTypes.shape).isRequired,
-  handleNewComment: PropTypes.func.isRequired,
-  updateTags: PropTypes.func.isRequired,
-};

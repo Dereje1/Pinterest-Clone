@@ -1,22 +1,32 @@
 import React from 'react';
-import PropTypes from 'prop-types';
 import IconButton from '@mui/material/IconButton';
 import PushPinIcon from '@mui/icons-material/PushPin';
 import PushPinOutlinedIcon from '@mui/icons-material/PushPinOutlined';
 import DeleteForeverIcon from '@mui/icons-material/DeleteForever';
 import Tooltip from '@mui/material/Tooltip';
+import { PinType } from '../../interfaces';
+
+interface GetActionProps{
+  element: PinType
+  reset: (_: React.SyntheticEvent, forceClose?: boolean) => void
+  pinImage: (pin: PinType) => void
+  deletePin: (pin: PinType) => void
+}
 
 function GetAction({
-  element, pinImage, deletePin, reset,
-}) {
+  element,
+  pinImage,
+  deletePin,
+  reset,
+}: GetActionProps) {
   if (!pinImage) { // means called from profile page
     return (
       <IconButton
         aria-label="settings"
         style={{ margin: '1vh' }}
-        onClick={() => {
+        onClick={(e) => {
           deletePin(element);
-          reset();
+          reset(e);
         }}
         onMouseDown={(e) => e.preventDefault()}
       >
@@ -43,7 +53,11 @@ function GetAction({
         aria-label="settings"
         style={{ margin: '1vh' }}
         disableRipple={element.owns}
-        onClick={element.hasSaved ? () => { pinImage(element); } : null}
+        onClick={() => {
+          if (element.hasSaved) {
+            pinImage(element);
+          }
+        }}
         onMouseDown={(e) => e.preventDefault()}
       >
         <Tooltip title={element.owns ? 'You own this image' : 'Unpin this image'} placement="bottom">
@@ -70,16 +84,3 @@ function GetAction({
 }
 
 export default GetAction;
-
-GetAction.defaultProps = {
-  pinImage: null,
-  deletePin: null,
-};
-
-GetAction.propTypes = {
-  element: PropTypes.objectOf(PropTypes.shape).isRequired,
-  // what type of button to place on pic/thumbnail executed by caller
-  pinImage: PropTypes.func,
-  deletePin: PropTypes.func,
-  reset: PropTypes.func.isRequired,
-};
