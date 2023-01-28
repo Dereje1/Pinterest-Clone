@@ -137,7 +137,7 @@ function ImageBuild({
     const updatedPin = await RESTcall({
       address: `/api/${hasSaved ? 'unpin' : 'pin'}/${_id}`,
       method: 'put',
-      payload: null,
+      payload: undefined,
     });
 
     setLoadedPins(updatePinList(loadedPins, updatedPin));
@@ -147,7 +147,7 @@ function ImageBuild({
     const updatedPin = await RESTcall({
       address: `/api/updateTags/${query}`,
       method: 'put',
-      payload: null,
+      payload: undefined,
     });
 
     setLoadedPins(updatePinList(loadedPins, updatedPin));

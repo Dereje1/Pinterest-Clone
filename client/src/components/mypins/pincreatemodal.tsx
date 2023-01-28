@@ -28,12 +28,12 @@ import {
 
 interface PinCreateProps {
   reset: () => void
-  savePin: (pinJSON: {imgDescription: string, imgLink: string}) => void
+  savePin: (pinJSON: {imgDescription: string, imgLink: string | ArrayBuffer}) => void
   allPinLinks: allPinLinksType[]
 }
 
 interface PinCreateState {
-  picPreview: string
+  picPreview: string | ArrayBuffer
   description: string
   isError: boolean
   isLoaded: boolean
@@ -107,11 +107,13 @@ class PinCreate extends Component<PinCreateProps, PinCreateState> {
   encodeImage = async (imgFile: File) => {
     try {
       const value = await encodeImageFileAsURL(imgFile);
-      this.setState({
-        picPreview: value,
-        isError: false,
-        isLoaded: false,
-      });
+      if (value) {
+        this.setState({
+          picPreview: value,
+          isError: false,
+          isLoaded: false,
+        });
+      }
     } catch (_) {
       this.onError();
     }

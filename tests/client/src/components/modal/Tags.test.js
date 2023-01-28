@@ -66,7 +66,8 @@ describe('The tags component', () => {
     expect(tagsForm.isEmptyRender()).toBe(false);
     expect(RESTcall).toHaveBeenCalledWith({
       address: '/api/getTags',
-      payload: null,
+      method: 'get',
+      payload: undefined,
     });
     expect(tagsForm.props().suggestedTags).toEqual(['TAG 3', 'TAG 4']);
     // trigger form close
@@ -85,7 +86,8 @@ describe('The tags component', () => {
     expect(tagsForm.isEmptyRender()).toBe(false);
     expect(RESTcall).toHaveBeenCalledWith({
       address: '/api/getTags',
-      payload: null,
+      method: 'get',
+      payload: undefined,
     });
     expect(tagsForm.props().suggestedTags).toEqual([]);
   });

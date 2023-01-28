@@ -11,7 +11,7 @@ interface dispatchType {
 
 export const getUser = (path: string) => async (dispatch: (action: dispatchType) => void) => {
   try {
-    const payload = await RESTcall({ address: path, payload: null });
+    const payload = await RESTcall({ address: path, method: 'get', payload: undefined });
     dispatch({
       type: 'GET_USER_STATUS',
       payload,
@@ -27,7 +27,7 @@ export const getUser = (path: string) => async (dispatch: (action: dispatchType)
 // fake guest account setter look at backend /authconfig/routes
 export const setGuest = (path: string) => async (dispatch: (action: dispatchType) => void) => {
   try {
-    const payload = await RESTcall({ address: path, payload: null });
+    const payload = await RESTcall({ address: path, method: 'get', payload: undefined });
     dispatch({
       type: 'SET_GUEST_STATUS',
       payload,

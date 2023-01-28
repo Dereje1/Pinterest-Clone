@@ -60,4 +60,5 @@ export interface providerIconsType {
 export interface allPinLinksType {
     imgLink: string,
     originalImgLink: string
+    cloudFrontLink: string
 }

@@ -1,4 +1,6 @@
-export const shuffleImages = (arr) => {
+import { PinType, tagType, allPinLinksType } from '../interfaces';
+
+export const shuffleImages = (arr: PinType[]) => {
   const shuffled = [];
   while (arr.length) {
     const randIndex = Math.floor(Math.random() * arr.length);
@@ -8,7 +10,7 @@ export const shuffleImages = (arr) => {
   return shuffled;
 };
 
-const searchInTags = (tags, search) => {
+const searchInTags = (tags:tagType[], search: string) => {
   for (let i = 0; i < tags.length; i += 1) {
     if (tags[i].tag.toLowerCase().includes(search)) {
       return true;
@@ -17,7 +19,7 @@ const searchInTags = (tags, search) => {
   return false;
 };
 
-export const getFilteredPins = (pinList, search) => {
+export const getFilteredPins = (pinList: PinType[], search: string | null) => {
   if (!search) return pinList;
   const filteredPins = pinList.filter(({ owner, imgDescription, tags }) => {
     const isFoundInDescription = imgDescription.toLowerCase().includes(search);
@@ -31,7 +33,7 @@ export const getFilteredPins = (pinList, search) => {
 export const getZoomedImageStyle = ({
   naturalWidth: imageWidth,
   naturalHeight: imageHeight,
-}) => {
+}:{naturalWidth: number, naturalHeight: number}) => {
   // dynamically resize image
   let { innerWidth, innerHeight } = window;
   // parameter for innerwidth/height adjustment with mobile consideration
@@ -58,12 +60,12 @@ export const getZoomedImageStyle = ({
   };
 };
 
-export const getFormattedDescription = (imgDescription) => (imgDescription.length > 15 ? `${imgDescription.slice(0, 15)}...` : imgDescription);
+export const getFormattedDescription = (imgDescription: string) => (imgDescription.length > 15 ? `${imgDescription.slice(0, 15)}...` : imgDescription);
 
 // eslint-disable-next-line no-promise-executor-return
-export const delay = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
+export const delay = (ms: number) => new Promise((resolve) => setTimeout(resolve, ms));
 
-export const validateURL = (string) => {
+export const validateURL = (string: string) => {
   try {
     const url = new URL(string);
     if (url.protocol === 'data:' || url.protocol === 'https:') return string;
@@ -87,7 +89,10 @@ export const getModalWidth = () => {
   return innerWidth / 2;
 };
 
-export const isDuplicateError = (allPinLinks, picPreview) => {
+export const isDuplicateError = (
+  allPinLinks: allPinLinksType[],
+  picPreview: string | ArrayBuffer,
+) => {
   for (let i = 0; i < allPinLinks.length; i += 1) {
     const { imgLink, originalImgLink, cloudFrontLink } = allPinLinks[i];
     if (
@@ -99,25 +104,27 @@ export const isDuplicateError = (allPinLinks, picPreview) => {
   return false;
 };
 
-export const encodeImageFileAsURL = (imgFile) => new Promise((resolve, reject) => {
-  const reader = new FileReader();
-  reader.onloadend = () => {
-    resolve(reader.result);
-  };
-  reader.onerror = (err) => {
-    reject(err);
-  };
-  reader.readAsDataURL(imgFile);
-});
+export const encodeImageFileAsURL = (imgFile: File):Promise<string|ArrayBuffer|null> => new Promise(
+  (resolve, reject) => {
+    const reader = new FileReader();
+    reader.onloadend = () => {
+      resolve(reader.result);
+    };
+    reader.onerror = (err) => {
+      reject(err);
+    };
+    reader.readAsDataURL(imgFile);
+  },
+);
 
 export const initialDisplayPerScroll = () => (window.innerWidth > 1440 ? 20 : 10);
 
-export const formatDate = (date) => {
+export const formatDate = (date: string) => {
   const [, day, mth, year] = new Date(date).toUTCString().split(' ');
   return `${day} ${mth} ${year}`;
 };
 
-export const updatePinList = (oldList, newPin) => {
+export const updatePinList = (oldList: PinType[], newPin: PinType) => {
   const indexOfUpdate = oldList.findIndex((p) => p._id === newPin._id);
   return [
     ...oldList.slice(0, indexOfUpdate),

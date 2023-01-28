@@ -40,7 +40,7 @@ function TagsArray({
 
   const fetchSuggestedTags = async () => {
     try {
-      const retreivedTags = await RESTcall({ address: '/api/getTags', payload: null });
+      const retreivedTags = await RESTcall({ address: '/api/getTags', method: 'get', payload: undefined });
       setSuggestedTags(retreivedTags);
     } catch (error) {
       setSuggestedTags([]);

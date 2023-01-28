@@ -69,7 +69,7 @@ describe('The Mypins Component', () => {
     const displayedPinList = imageBuild.props().pinList;
     expect(displayedPinList).toStrictEqual([pinsStub[2]]);
     expect(RESTcall).toHaveBeenCalledTimes(1);
-    expect(RESTcall).toHaveBeenCalledWith({ address: '/api/mypins', method: 'get', payload: null });
+    expect(RESTcall).toHaveBeenCalledWith({ address: '/api/mypins', method: 'get', payload: undefined });
   });
 
   test('ImageBuild sub-component shall recieve the pins saved as props', async () => {
@@ -81,7 +81,7 @@ describe('The Mypins Component', () => {
     const displayedPinList = imageBuild.props().pinList;
     expect(displayedPinList).toStrictEqual([pinsStub[1]]);
     expect(RESTcall).toHaveBeenCalledTimes(1);
-    expect(RESTcall).toHaveBeenCalledWith({ address: '/api/mypins', method: 'get', payload: null });
+    expect(RESTcall).toHaveBeenCalledWith({ address: '/api/mypins', method: 'get', payload: undefined });
   });
 
   test('ImageBuild sub-component will signal to unpin a pin from the db', async () => {
@@ -92,12 +92,12 @@ describe('The Mypins Component', () => {
     expect(wrapper.state().pinList).toStrictEqual([pinsStub[2]]);
     expect(RESTcall).toHaveBeenCalledTimes(2);
     expect(RESTcall.mock.calls).toEqual([
-      [{ address: '/api/mypins', method: 'get', payload: null }],
+      [{ address: '/api/mypins', method: 'get', payload: undefined }],
       [
         {
           address: '/api/unpin/2',
           method: 'put',
-          payload: null,
+          payload: undefined,
         },
       ],
     ]);
@@ -110,12 +110,12 @@ describe('The Mypins Component', () => {
     expect(wrapper.state().pinList).toStrictEqual([pinsStub[1]]);
     expect(RESTcall).toHaveBeenCalledTimes(2);
     expect(RESTcall.mock.calls).toEqual([
-      [{ address: '/api/mypins', method: 'get', payload: null }],
+      [{ address: '/api/mypins', method: 'get', payload: undefined }],
       [
         {
           address: '/api/3',
           method: 'delete',
-          payload: null,
+          payload: undefined,
         },
       ],
     ]);
@@ -139,7 +139,7 @@ describe('The Mypins Component', () => {
     expect(wrapper.state().pinList).toStrictEqual([pinsStub[1], pinsStub[2]]);
     expect(RESTcall).toHaveBeenCalledTimes(1);
     expect(RESTcall.mock.calls).toEqual([
-      [{ address: '/api/mypins', method: 'get', payload: null }],
+      [{ address: '/api/mypins', method: 'get', payload: undefined }],
     ]);
   });
 
@@ -216,12 +216,12 @@ describe('The Mypins Component', () => {
     expect(wrapper.state().pinList).toStrictEqual([pinsStub[1]]);
     expect(RESTcall).toHaveBeenCalledTimes(2);
     expect(RESTcall.mock.calls).toEqual([
-      [{ address: '/api/mypins', method: 'get', payload: null }],
+      [{ address: '/api/mypins', method: 'get', payload: undefined }],
       [
         {
           address: '/api/3',
           method: 'delete',
-          payload: null,
+          payload: undefined,
         },
       ],
     ]);

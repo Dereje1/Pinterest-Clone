@@ -30,7 +30,7 @@ export class Home extends Component<HomeProps, HomeState> {
     const pinsFromDB = await RESTcall({
       address: '/api/home',
       method: 'get',
-      payload: null,
+      payload: undefined,
     });
     this.setState({
       pinList: shuffleImages([...pinsFromDB]),

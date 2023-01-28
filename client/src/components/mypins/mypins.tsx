@@ -83,7 +83,7 @@ export class Mypins extends Component<MypinsProps, MypinsState> {
     const { profilePins, allPinLinks } = await RESTcall({
       address: '/api/mypins',
       method: 'get',
-      payload: null,
+      payload: undefined,
     });
     this.setState({
       pinList: profilePins,
@@ -92,7 +92,8 @@ export class Mypins extends Component<MypinsProps, MypinsState> {
     });
   }
 
-  async addPic(pinJSON: {imgDescription: string, imgLink: string}) { // adds a pin to the db
+  // adds a new pin to the db
+  async addPic(pinJSON: {imgDescription: string, imgLink: string | ArrayBuffer}) {
     // copy then add pin to db and then update client state (in that order)
     const { pinList, allPinLinks } = this.state;
     this.setState({ ready: false });
@@ -109,7 +110,7 @@ export class Mypins extends Component<MypinsProps, MypinsState> {
     };
     this.setState({
       pinList: [...pinList, addedPin],
-      allPinLinks: [...allPinLinks, { imgLink, originalImgLink }],
+      allPinLinks: [...allPinLinks, { imgLink, originalImgLink, cloudFrontLink: '' }],
       ready: true,
       displayPinCreate: false,
       displaySetting: 'created',
@@ -134,7 +135,7 @@ export class Mypins extends Component<MypinsProps, MypinsState> {
       await RESTcall({
         address: owns ? `/api/${_id}` : `/api/unpin/${_id}`,
         method: owns ? 'delete' : 'put',
-        payload: null,
+        payload: undefined,
       });
     });
   }

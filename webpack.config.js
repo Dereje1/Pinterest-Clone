@@ -4,7 +4,7 @@ const HtmlWebPackPlugin = require('html-webpack-plugin');
 require('babel-polyfill');
 
 const configMain = {
-  entry: ['babel-polyfill', './client/src/index.js'],
+  entry: ['babel-polyfill', './client/src/index.tsx'],
   devtool: 'source-map',
   output: {
     filename: 'bundle.js',
