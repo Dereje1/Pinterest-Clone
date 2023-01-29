@@ -1,0 +1,22 @@
+{
+    "compilerOptions": {
+        "outDir": "../server_build",        // path to output directory
+        "sourceMap": true,          // allow sourcemap support
+        "strictNullChecks": true,    // specify module code generation
+        "target": "es5",            // specify ECMAScript target version
+        "allowJs": true,             // allow a partial TypeScript and JavaScript codebase
+        "allowSyntheticDefaultImports": true,
+        "noImplicitAny": true,
+        "esModuleInterop": true,
+        "noImplicitThis": true,
+        "moduleResolution": "node",
+        "noEmitOnError": true,
+        "skipLibCheck": true,
+        "downlevelIteration": true,       
+        "module": "commonjs",                    
+        "lib": ["es6"],    
+        "strict": true,         
+        "resolveJsonModule": true
+    },
+    "compileOnSave": true
+}

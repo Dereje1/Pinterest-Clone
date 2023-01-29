@@ -3,14 +3,15 @@
   "version": "0.0.0",
   "private": true,
   "scripts": {
-    "start": "node ./bin/www",
+    "start": "tsc -p ./server && node ./bin/www",
     "client": "webpack-dev-server --mode development",
+    "server": "ts-node ./bin/www",
     "build": "webpack --mode production",
-    "dev": "concurrently --kill-others-on-fail \"nodemon start\" \"nodemon --exec npm run client \"",
+    "dev": "concurrently --kill-others-on-fail \"nodemon --exec npm run server\" \"nodemon --exec npm run client \"",
     "lint": "./node_modules/.bin/eslint server client tests",
     "test": "jest --watch",
     "coverage": "jest --coverage",
-    "compileTS": "tsc -p ./client"
+    "compileTS": "tsc -p ./client && tsc -p ./server --noEmit"
   },
   "dependencies": {
     "@emotion/react": "^11.7.1",
@@ -89,6 +90,7 @@
     "supertest": "^6.2.3",
     "ts-jest": "^29.0.5",
     "ts-loader": "^9.4.2",
+    "ts-node": "^10.9.1",
     "typescript": "^4.9.4",
     "webpack": "^5.65.0",
     "webpack-cli": "^4.9.1",
