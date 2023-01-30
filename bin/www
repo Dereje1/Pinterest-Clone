@@ -7,7 +7,10 @@ process.env.DEBUG = 'Pinterest-Clone:server';
 require('dotenv').config();
 const debug = require('debug')('Pinterest-Clone:server');
 const http = require('http');
-const app = process.env.NODE_ENV === 'development' ? require('../server/app') : require('../server_build/app');
+
+const appPath = process.env.NODE_ENV === 'development' ? '../server/app' : '../server_build/app';
+// eslint-disable-next-line import/no-dynamic-require
+const app = require(appPath);
 /**
  * Normalize a port into a number, string, or false.
  */
