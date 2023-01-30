@@ -18,3 +18,4 @@ codecov
 nodemon.json
 /myscripts
 .DS_Store
+/server_build

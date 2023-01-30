@@ -59,6 +59,7 @@ GITHUB_CALLBACK=http://localhost:8080/auth/github/redirect
 AWS_ACCESS_KEY_ID=< Get from AWS >
 AWS_SECRET_KEY=< Get from AWS >
 S3_BUCKET_NAME=< s3 bucket name for uploaded pins>
+NODE_ENV=<development|production>
 ```
 Run development environment
 ```

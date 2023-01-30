@@ -3,14 +3,15 @@
   "version": "0.0.0",
   "private": true,
   "scripts": {
-    "start": "node ./bin/www",
+    "start": "tsc -p ./server && node ./bin/www",
     "client": "webpack-dev-server --mode development",
+    "server": "ts-node ./bin/www",
     "build": "webpack --mode production",
-    "dev": "concurrently --kill-others-on-fail \"nodemon start\" \"nodemon --exec npm run client \"",
+    "dev": "concurrently --kill-others-on-fail \"nodemon --exec npm run server\" \"nodemon --exec npm run client \"",
     "lint": "./node_modules/.bin/eslint server client tests",
     "test": "jest --watch",
     "coverage": "jest --coverage",
-    "compileTS": "tsc --noEmit"
+    "compileTS": "tsc -p ./client && tsc -p ./server --noEmit"
   },
   "dependencies": {
     "@emotion/react": "^11.7.1",
@@ -57,6 +58,7 @@
     "@babel/preset-typescript": "^7.18.6",
     "@types/jest": "^29.4.0",
     "@types/lodash": "^4.14.191",
+    "@types/node": "^18.11.18",
     "@types/react-router-dom": "^5.3.3",
     "@typescript-eslint/eslint-plugin": "^5.49.0",
     "@typescript-eslint/parser": "^5.49.0",
@@ -89,6 +91,7 @@
     "supertest": "^6.2.3",
     "ts-jest": "^29.0.5",
     "ts-loader": "^9.4.2",
+    "ts-node": "^10.9.1",
     "typescript": "^4.9.4",
     "webpack": "^5.65.0",
     "webpack-cli": "^4.9.1",
@@ -97,7 +100,12 @@
   "jest": {
     "transform": {
       "\\.js$": "<rootDir>/node_modules/babel-jest",
-      "^.+\\.tsx?$": "ts-jest"
+      "^.+\\.tsx?$": [
+        "ts-jest",
+        {
+          "tsconfig": "./tests/tsconfig.test.json"
+        }
+      ]
     },
     "moduleNameMapper": {
       "\\.(jpg|jpeg|png|gif|eot|otf|webp|svg|ttf|woff|woff2|mp4|webm|wav|mp3|m4a|aac|oga)$": "babel-jest",

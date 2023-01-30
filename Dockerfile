@@ -8,4 +8,4 @@ RUN npm install
 RUN npm run build
 #Expose default port and run
 EXPOSE 3000
-CMD [ "node", "./bin/www" ]
+CMD [ "npm", "start" ]

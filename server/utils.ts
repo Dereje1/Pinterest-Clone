@@ -1,4 +1,12 @@
-const https = require('https');
+/* eslint-disable import/no-import-module-exports */
+import * as https from 'https';
+import {
+  apiKeys,
+  reqUser,
+  PinType,
+  services,
+} from './interfaces';
+
 const Stream = require('stream').Transform;
 const AWS = require('aws-sdk');
 
@@ -15,7 +23,7 @@ const getApiKeys = () => {
     GITHUB_CALLBACK,
   } = process.env;
 
-  const keys = {
+  const keys: apiKeys = {
     twitterApiKeys: null,
     googleApiKeys: null,
     githubApiKeys: null,
@@ -54,11 +62,31 @@ const getApiKeys = () => {
 };
 
 /* Isolate auth service used from req.user and generate proffile */
-const getUserProfile = (user) => {
-  const [service] = ['google', 'twitter', 'github'].filter((s) => user && Boolean(user[s].id));
-  const userId = service && user[service].id;
-  const displayName = service && user[service].displayName;
-  const username = service && user[service].username;
+const getUserProfile = (user: reqUser | undefined) => {
+  if (!user) {
+    return {
+      service: undefined,
+      userId: undefined,
+      displayName: undefined,
+      username: undefined,
+      isAdmin: false,
+    };
+  }
+  const { _doc } = user;
+  let service;
+  let userId;
+  let displayName;
+  let username;
+  Object.keys(_doc).forEach((key) => {
+    const foundservice = Object.keys(_doc[key as keyof services]).length;
+    if (foundservice && key !== '_id') {
+      const servObj = _doc[key as keyof services];
+      service = key;
+      userId = servObj.id;
+      displayName = servObj.displayName;
+      username = servObj.username;
+    }
+  });
   const isAdmin = Boolean(
     process.env.ADMIN_USER_ID
     && userId === process.env.ADMIN_USER_ID,
@@ -72,7 +100,7 @@ const getUserProfile = (user) => {
   };
 };
 
-const getCloudFrontLink = (link) => {
+const getCloudFrontLink = (link: string) => {
   try {
     const [, , , bucketName, imgName] = link.split('/');
     return process.env.ENABLE_CLOUDFRONT === 'true' && bucketName === 'pinterest.clone' ? `https://d1ttxrulihk8wq.cloudfront.net/${imgName}` : link;
@@ -96,7 +124,12 @@ returns
     createdDate: send full pin creation time stamp
 };
 */
-const filterPins = ({ rawPins, userId, isAdmin }) => rawPins.map((pin) => {
+interface filterTypes {
+  rawPins: PinType[]
+   userId: string
+   isAdmin: boolean
+}
+const filterPins = ({ rawPins, userId, isAdmin }: filterTypes) => rawPins.map((pin) => {
   const {
     _id: pinId,
     imgDescription,
@@ -130,7 +163,7 @@ const filterPins = ({ rawPins, userId, isAdmin }) => rawPins.map((pin) => {
   };
 });
 
-const validateURL = (string) => {
+const validateURL = (string: string) => {
   try {
     const url = new URL(string);
     if (url.protocol === 'data:') return 'data protocol';
@@ -142,7 +175,8 @@ const validateURL = (string) => {
   }
 };
 
-const processImage = (url) => new Promise((resolve, reject) => {
+const processImage = (url: string):Promise<string|ArrayBuffer|null> => new
+Promise((resolve, reject) => {
   const urlType = validateURL(url);
   if (!urlType) {
     reject(new Error('Invalid URL type'));
@@ -150,12 +184,16 @@ const processImage = (url) => new Promise((resolve, reject) => {
 
   if (urlType === 'data protocol') {
     const base64Image = url.split(';base64,').pop();
-    resolve(Buffer.from(base64Image, 'base64'));
+    if (base64Image) {
+      resolve(Buffer.from(base64Image, 'base64'));
+    } else {
+      reject(new Error('Invalid Array buffer type'));
+    }
   }
 
   const request = https.request(url, (response) => {
     const data = new Stream();
-    response.on('data', (chunk) => {
+    response.on('data', (chunk: ArrayBuffer) => {
       data.push(chunk);
     });
 
@@ -164,7 +202,7 @@ const processImage = (url) => new Promise((resolve, reject) => {
     });
   });
 
-  request.on('error', (err) => {
+  request.on('error', (err: string) => {
     reject(err);
   });
   request.end();
@@ -177,7 +215,7 @@ const configureS3 = () => new AWS.S3({
 
 const uploadImageToS3 = async ({
   originalImgLink, userId, displayName, service,
-}) => {
+}:{originalImgLink: string, userId: string, displayName: string, service: string}) => {
   // unwanted characters (non ASCII) rejected by AWS tagging
   const ASCIIdisplayName = displayName.replace(/[^\x20-\x7E]+/g, '');
   try {
