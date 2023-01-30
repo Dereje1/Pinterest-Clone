@@ -68,3 +68,8 @@ export interface PinType {
     comments: commentType[],
     tags: tagType[],
 }
+
+export interface genericResponseType {
+    json: (res: string | unknown) => void
+    end: () => void
+}

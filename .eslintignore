@@ -2,3 +2,4 @@ node_modules
 # Ignore linting on CRA created files
 /client/public
 /dist
+/server_build
