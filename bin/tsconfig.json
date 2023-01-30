@@ -1,5 +1,6 @@
 {
     "compilerOptions": {
+        "outDir": "../server_build/bin",
         "sourceMap": true,          // allow sourcemap support
         "strictNullChecks": true,    // specify module code generation
         "target": "es5",            // specify ECMAScript target version
@@ -16,7 +17,7 @@
         "lib": ["es6"],    
         "strict": true,         
         "resolveJsonModule": true,
-        "noEmit": true
+        "noEmit": false
     },
     "include": [ "www.ts"],
     "compileOnSave": true
