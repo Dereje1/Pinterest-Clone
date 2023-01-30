@@ -72,4 +72,10 @@ export interface PinType {
 export interface genericResponseType {
     json: (res: string | unknown) => void
     end: () => void
+    redirect: (route: string) => void
 }
+
+export interface genericRequestType {
+    user: reqUser
+    logout: (cb: () => void) => void
+  }

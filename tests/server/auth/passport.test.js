@@ -119,7 +119,7 @@ describe('Processing a login', () => {
       }),
     );
     await processLogin('anytoken', '', googleProfile, done);
-    expect(done).toHaveBeenCalledWith(Error('Mocked rejection'));
+    expect(done).toHaveBeenCalledWith(Error('Mocked rejection'), undefined);
   });
 });
 

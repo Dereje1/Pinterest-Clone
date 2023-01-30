@@ -1,3 +1,8 @@
+/* eslint-disable import/no-import-module-exports */
+import { PassportStatic } from 'passport';
+import { Express } from 'express';
+import { genericResponseType } from '../interfaces';
+
 const ip = require('ip');
 const isLoggedIn = require('./isloggedin');
 const { getUserProfile, getApiKeys } = require('../utils');
@@ -8,7 +13,7 @@ const PROVIDERS = [
   { name: 'github', options: {} },
 ];
 
-const getProfile = (req, res) => {
+const getProfile = (req: Express.Request, res: genericResponseType) => {
   const profile = getUserProfile(req.user);
   res.json({
     ...profile,
@@ -17,7 +22,7 @@ const getProfile = (req, res) => {
   });
 };
 
-const setGuest = (req, res) => {
+const setGuest = (req: Express.Request, res: genericResponseType) => {
   const { apiKeysFound: providers } = getApiKeys();
   res.json({
     authenticated: false,
@@ -28,13 +33,13 @@ const setGuest = (req, res) => {
   });
 };
 
-const logOut = (req, res) => {
+const logOut = (req: Express.Request, res: genericResponseType) => {
   req.logout(() => {
     res.redirect('/');
   });
 };
 
-const setAuthRoutes = (app, passport) => {
+const setAuthRoutes = (app: Express, passport: PassportStatic) => {
   app.get('/auth/profile', isLoggedIn, getProfile);
   app.get('/auth/guest', setGuest);
   app.get('/auth/logout', logOut);
