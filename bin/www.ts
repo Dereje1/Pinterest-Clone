@@ -1,6 +1,6 @@
 #!/usr/bin/env node
 
-/** TODO : TS www is failing for production fix after migration is done to have just one file
+/**
  * Module dependencies.
  */
 process.env.DEBUG = 'Pinterest-Clone:server';
@@ -14,7 +14,7 @@ const app = require(appPath);
 /**
  * Normalize a port into a number, string, or false.
  */
-const normalizePort = (val) => {
+const normalizePort = (val:string) => {
   const port = parseInt(val, 10);
 
   if (Number.isNaN(port)) {
@@ -46,7 +46,7 @@ const server = http.createServer(app);
  * Event listener for HTTP server "error" event.
  */
 
-const onError = (error) => {
+const onError = (error: {syscall: string, code: string}) => {
   if (error.syscall !== 'listen') {
     throw error;
   }

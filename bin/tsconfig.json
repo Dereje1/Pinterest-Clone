@@ -1,0 +1,23 @@
+{
+    "compilerOptions": {
+        "sourceMap": true,          // allow sourcemap support
+        "strictNullChecks": true,    // specify module code generation
+        "target": "es5",            // specify ECMAScript target version
+        "allowJs": true,             // allow a partial TypeScript and JavaScript codebase
+        "allowSyntheticDefaultImports": true,
+        "noImplicitAny": true,
+        "esModuleInterop": true,
+        "noImplicitThis": true,
+        "moduleResolution": "node",
+        "noEmitOnError": true,
+        "skipLibCheck": true,
+        "downlevelIteration": true,       
+        "module": "commonjs",                    
+        "lib": ["es6"],    
+        "strict": true,         
+        "resolveJsonModule": true,
+        "noEmit": true
+    },
+    "include": [ "www.ts"],
+    "compileOnSave": true
+}

@@ -5,9 +5,9 @@
   "scripts": {
     "start": "tsc -p ./server && node ./bin/www",
     "client": "webpack-dev-server --mode development",
-    "server": "ts-node ./bin/www",
+    "server": "nodemon ./bin/www.ts",
     "build": "webpack --mode production",
-    "dev": "concurrently --kill-others-on-fail \"nodemon --exec npm run server\" \"nodemon --exec npm run client \"",
+    "dev": "concurrently --kill-others-on-fail \"npm run server\" \"npm run client\"",
     "lint": "./node_modules/.bin/eslint server client tests",
     "test": "jest --watch",
     "coverage": "jest --coverage",
@@ -46,7 +46,8 @@
     "react-redux": "^7.2.1",
     "react-router-dom": "^5.0.0",
     "redux": "^4.2.0",
-    "redux-thunk": "^2.2.0"
+    "redux-thunk": "^2.2.0",
+    "ts-node": "^10.9.1"
   },
   "devDependencies": {
     "@babel/core": "^7.4.3",
@@ -91,7 +92,6 @@
     "supertest": "^6.2.3",
     "ts-jest": "^29.0.5",
     "ts-loader": "^9.4.2",
-    "ts-node": "^10.9.1",
     "typescript": "^4.9.4",
     "webpack": "^5.65.0",
     "webpack-cli": "^4.9.1",
