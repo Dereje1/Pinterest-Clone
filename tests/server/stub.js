@@ -1,10 +1,12 @@
 const user = {
-  twitter: {
-    id: 'twitter test id',
-    displayName: 'tester-twitter',
+  _doc: {
+    twitter: {
+      id: 'twitter test id',
+      displayName: 'tester-twitter',
+    },
+    google: {},
+    github: {},
   },
-  google: {},
-  github: {},
 };
 const rawPinsStub = [{
   _id: '1',

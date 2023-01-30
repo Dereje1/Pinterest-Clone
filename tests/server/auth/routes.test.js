@@ -8,13 +8,15 @@ describe('Authentication routes', () => {
   beforeEach(() => {
     req = {
       user: {
-        google: {
-          id: 'abc',
-          username: 'test username',
-          displayName: 'test display name',
+        _doc: {
+          google: {
+            id: 'abc',
+            username: 'test username',
+            displayName: 'test display name',
+          },
+          twitter: {},
+          github: {},
         },
-        twitter: {},
-        github: {},
       },
       logout: jest.fn(),
     };

@@ -125,13 +125,13 @@ describe('Retrieving pins for user page', () => {
   });
 
   test('will retrieve pins for the profile page', async () => {
-    const profilePinsRaw = rawPinsStub.filter((p) => p.owner.id === user.twitter.id
-            || p.savedBy.map((s) => s.id).includes(user.twitter.id));
+    const profilePinsRaw = rawPinsStub.filter((p) => p.owner.id === user._doc.twitter.id
+            || p.savedBy.map((s) => s.id).includes(user._doc.twitter.id));
 
     setupMocks(profilePinsRaw);
     await getUserPins(req, res);
     expect(pins.find).toHaveBeenCalledTimes(1);
-    expect(pins.find).toHaveBeenCalledWith({ $or: [{ 'owner.id': user.twitter.id }, { 'savedBy.id': user.twitter.id }] });
+    expect(pins.find).toHaveBeenCalledWith({ $or: [{ 'owner.id': user._doc.twitter.id }, { 'savedBy.id': user._doc.twitter.id }] });
     expect(res.json).toHaveBeenCalledWith({
       profilePins: allPinsResponse.filter((p) => p.owns || p.hasSaved),
       allPinLinks: [
@@ -205,7 +205,7 @@ describe('Adding a pin', () => {
         owner: {
           name: 'tester-twitter',
           service: 'twitter',
-          id: user.twitter.id,
+          id: user._doc.twitter.id,
         },
         imgDescription: 'description-4',
         imgLink: 'https://stub-4',
@@ -248,7 +248,7 @@ describe('Adding a pin', () => {
         owner: {
           name: 'tester-twitter',
           service: 'twitter',
-          id: user.twitter.id,
+          id: user._doc.twitter.id,
         },
         imgDescription: 'description-4',
         imgLink: 'data:image/jpeg;base64,/stub-4-data-protocol/',
@@ -282,7 +282,7 @@ describe('Adding a pin', () => {
         owner: {
           name: 'tester-twitter',
           service: 'twitter',
-          id: user.twitter.id,
+          id: user._doc.twitter.id,
         },
         imgDescription: 'description-4',
         imgLink: 'htt://stub-4',
@@ -310,7 +310,7 @@ describe('Adding a pin', () => {
         owner: {
           name: 'tester-twitter',
           service: 'twitter',
-          id: user.twitter.id,
+          id: user._doc.twitter.id,
         },
         imgDescription: 'description-4',
         imgLink: 'https://stub-4',
@@ -335,7 +335,7 @@ describe('Adding a pin', () => {
         owner: {
           name: 'tester-twitter',
           service: 'twitter',
-          id: user.twitter.id,
+          id: user._doc.twitter.id,
         },
         imgDescription: 'description-4',
         imgLink: 'https://stub-4',
@@ -353,7 +353,7 @@ describe('Pinning an image', () => {
     body: {
       name: 'tester-twitter',
       service: 'twitter',
-      id: user.twitter.id,
+      id: user._doc.twitter.id,
     },
     params: { _id: 3 },
   };
@@ -711,10 +711,11 @@ describe('Retrieving pins for a profile page', () => {
     req = {
       ...req,
       user: {
-        ...user,
-        twitter: {
-          id: 'requestUserId',
-          displayName: 'tester-twitter',
+        _doc: {
+          twitter: {
+            id: 'requestUserId',
+            displayName: 'tester-twitter',
+          },
         },
       },
     };
@@ -726,7 +727,7 @@ describe('Retrieving pins for a profile page', () => {
   });
 
   test('will respond with error if GET is rejected', async () => {
-    pins.find = jest.fn().mockImplementation(
+    users.find = jest.fn().mockImplementation(
       () => ({
         exec: jest.fn().mockRejectedValue(new Error('Mocked rejection')),
       }),
