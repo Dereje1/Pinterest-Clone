@@ -17,7 +17,7 @@ mongoose.connect(
 
 // CONNECTION EVENTS
 ['connected', 'error', 'disconnected'].forEach((status) => {
-  mongoose.connection.on(status, (val) => {
+  mongoose.connection.on(status, (val: string | undefined) => {
     console.log(`Mongoose default connection to ${dbURI} -> ${status} ${val || ''}`);
   });
 });

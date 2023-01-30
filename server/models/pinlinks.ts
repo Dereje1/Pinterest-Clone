@@ -8,3 +8,5 @@ const pinLinksSchema = mongoose.Schema({
 }, { timestamps: true });
 
 module.exports = mongoose.model('pinLink', pinLinksSchema);
+
+export {};

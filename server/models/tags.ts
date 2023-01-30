@@ -5,3 +5,5 @@ const savedTagsSchema = mongoose.Schema({
 }, { timestamps: true });
 
 module.exports = mongoose.model('savedTags', savedTagsSchema);
+
+export {};
