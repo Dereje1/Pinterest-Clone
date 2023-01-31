@@ -1,9 +1,9 @@
-const express = require('express');
-const path = require('path');
-const cookieSession = require('cookie-session');
-const bodyParser = require('body-parser');
-const logger = require('morgan');
-const { router } = require('./crudroutes');
+import express from 'express';
+import path from 'path';
+import cookieSession from 'cookie-session';
+import bodyParser from 'body-parser';
+import logger from 'morgan';
+import { router } from './crudroutes';
 
 interface reqType {
   session:{
@@ -90,4 +90,4 @@ App.use((err: Error, req: reqType, res: resType) => {
   res.json(err);
 });
 
-module.exports = App;
+export default App;

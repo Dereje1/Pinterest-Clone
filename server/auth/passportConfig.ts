@@ -1,14 +1,14 @@
 /* eslint-disable import/no-import-module-exports */
 import { PassportStatic } from 'passport';
-import { services } from '../interfaces';
 
 // config/passport.js for twitter
-const TwitterStrategy = require('passport-twitter').Strategy;
-const GoogleStrategy = require('passport-google-oauth').OAuth2Strategy;
-const GitHubStrategy = require('passport-github').Strategy;
-const { getApiKeys } = require('../utils');
+import { Strategy as TwitterStrategy } from 'passport-twitter';
+import { OAuth2Strategy as GoogleStrategy } from 'passport-google-oauth';
+import { Strategy as GitHubStrategy } from 'passport-github';
+import { services } from '../interfaces';
+import { getApiKeys } from '../utils';
 // load up the user model
-const User = require('../models/user');
+import User from '../models/user';
 
 interface emailsType {
   value: string
@@ -30,7 +30,7 @@ interface userType {
 
 type doneType = (err: unknown | null, user: userType | undefined) => void;
 
-const processLogin = async (
+export const processLogin = async (
   token: string,
   tokenSecret: string,
   profile: profileType,
@@ -58,7 +58,7 @@ const processLogin = async (
   }
 };
 
-const passportConfig = (passport: PassportStatic) => {
+export const passportConfig = (passport: PassportStatic) => {
   const strategyMap = {
     twitter: TwitterStrategy,
     google: GoogleStrategy,
@@ -85,4 +85,3 @@ const passportConfig = (passport: PassportStatic) => {
     }
   });
 };
-module.exports = { passportConfig, processLogin };

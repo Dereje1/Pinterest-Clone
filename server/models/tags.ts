@@ -1,9 +1,7 @@
-const mongoose = require('mongoose');
+import mongoose from 'mongoose';
 
-const savedTagsSchema = mongoose.Schema({
+const savedTagsSchema = new mongoose.Schema({
   tag: { type: String, required: true },
 }, { timestamps: true });
 
-module.exports = mongoose.model('savedTags', savedTagsSchema);
-
-export {};
+export default mongoose.model('savedTags', savedTagsSchema);

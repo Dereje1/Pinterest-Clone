@@ -1,9 +1,9 @@
 /* eslint-disable import/no-import-module-exports */
 import { Express } from 'express';
 // Index for authentication
-const passport = require('passport');
-const { setAuthRoutes } = require('./routes');
-const { passportConfig } = require('./passportConfig');
+import passport from 'passport';
+import { setAuthRoutes } from './routes';
+import { passportConfig } from './passportConfig';
 
 const configEntry = (app: Express) => {
   passportConfig(passport); // pass passport for configuration
@@ -13,4 +13,4 @@ const configEntry = (app: Express) => {
   setAuthRoutes(app, passport);
 };
 
-module.exports = configEntry;
+export default configEntry;

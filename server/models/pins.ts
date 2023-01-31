@@ -1,5 +1,5 @@
 // mongoose shcema on what to store fror pins?
-const mongoose = require('mongoose');
+import mongoose from 'mongoose';
 
 const commentSchema = new mongoose.Schema({
   displayName: { type: String, required: true },
@@ -14,7 +14,7 @@ const tagSchema = new mongoose.Schema({
   tag: { type: String, required: true },
 });
 
-const pinSchema = mongoose.Schema({
+const pinSchema = new mongoose.Schema({
   owner: {
     name: { type: String, required: true },
     service: { type: String, required: true },
@@ -42,6 +42,4 @@ const pinSchema = mongoose.Schema({
   isBroken: { type: Boolean },
 }, { timestamps: true });
 
-module.exports = mongoose.model('pin', pinSchema);
-
-export {};
+export default mongoose.model('pin', pinSchema);

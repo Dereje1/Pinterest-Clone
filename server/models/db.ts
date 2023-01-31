@@ -1,6 +1,6 @@
 // create one place for db connection
 // Bring Mongoose into the app
-const mongoose = require('mongoose');
+import mongoose from 'mongoose';
 
 // Build the connection string
 const dbURI = process.env.MONGOLAB_URI;

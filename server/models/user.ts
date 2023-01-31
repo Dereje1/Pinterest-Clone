@@ -1,9 +1,7 @@
-//  for new users
-// load the things we need
-const mongoose = require('mongoose');
+import mongoose from 'mongoose';
 
 // define the schema for our user model
-const userSchema = mongoose.Schema({
+const userSchema = new mongoose.Schema({
   twitter: {
     id: String,
     token: String,
@@ -24,7 +22,4 @@ const userSchema = mongoose.Schema({
   },
 });
 
-// create the model for users and expose it to our app
-module.exports = mongoose.model('User', userSchema);
-
-export {};
+export default mongoose.model('User', userSchema);
