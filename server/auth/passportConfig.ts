@@ -2,39 +2,18 @@
 import { PassportStatic } from 'passport';
 
 // config/passport.js for twitter
-import { Strategy as TwitterStrategy } from 'passport-twitter';
-import { OAuth2Strategy as GoogleStrategy } from 'passport-google-oauth';
-import { Strategy as GitHubStrategy } from 'passport-github';
-import { services } from '../interfaces';
+import { Strategy as TwitterStrategy, Profile as twitterProfile } from 'passport-twitter';
+import { OAuth2Strategy as GoogleStrategy, Profile as googleProfile, VerifyFunction } from 'passport-google-oauth';
+import { Strategy as GitHubStrategy, Profile as githubProfile } from 'passport-github';
 import { getApiKeys } from '../utils';
 // load up the user model
 import User from '../models/user';
 
-interface emailsType {
-  value: string
-}
-
-interface profileType {
-  provider: string
-  id: string
-  displayName: string
-  username: string | undefined
-  emails: emailsType[]
-}
-
-interface userType {
-    displayName: string,
-    username: string,
-    id: string
-}
-
-type doneType = (err: unknown | null, user: userType | undefined) => void;
-
 export const processLogin = async (
   token: string,
   tokenSecret: string,
-  profile: profileType,
-  done: doneType,
+  profile: twitterProfile | googleProfile | githubProfile,
+  done: VerifyFunction,
 ) => {
   const {
     provider, id, username, displayName, emails,
@@ -48,7 +27,7 @@ export const processLogin = async (
       [provider]: {
         id,
         token,
-        username: username || emails[0].value,
+        username: username || (emails && emails[0].value),
         displayName,
       },
     });
@@ -59,12 +38,7 @@ export const processLogin = async (
 };
 
 export const passportConfig = (passport: PassportStatic) => {
-  const strategyMap = {
-    twitter: TwitterStrategy,
-    google: GoogleStrategy,
-    github: GitHubStrategy,
-  };
-  const { keys } = getApiKeys();
+  const { keys: { twitterApiKeys, googleApiKeys, githubApiKeys } } = getApiKeys();
 
   // used to serialize the user for the session
   passport.serializeUser((user: { id?: number }, done) => {
@@ -78,10 +52,15 @@ export const passportConfig = (passport: PassportStatic) => {
     });
   });
 
-  Object.keys(strategyMap).forEach((service) => {
-    const apiKeys = keys[`${service}ApiKeys`];
-    if (apiKeys) {
-      passport.use(new strategyMap[service as keyof services](apiKeys, processLogin));
-    }
-  });
+  if (twitterApiKeys) {
+    passport.use(new TwitterStrategy(twitterApiKeys, processLogin));
+  }
+
+  if (googleApiKeys) {
+    passport.use(new GoogleStrategy(googleApiKeys, processLogin));
+  }
+
+  if (githubApiKeys) {
+    passport.use(new GitHubStrategy(githubApiKeys, processLogin));
+  }
 };

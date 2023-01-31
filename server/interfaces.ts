@@ -34,7 +34,7 @@ export interface services {
 }
 
 export interface reqUser {
-    _doc: services
+    _doc?: services
 }
 
 export interface PinnerType {

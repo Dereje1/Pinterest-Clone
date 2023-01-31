@@ -1,16 +1,21 @@
 #!/usr/bin/env node
+/* eslint-disable import/first */
 
 /**
  * Module dependencies.
  */
-process.env.DEBUG = 'Pinterest-Clone:server';
 require('dotenv').config();
-const debug = require('debug')('Pinterest-Clone:server');
-const http = require('http');
+
+import http from 'http';
+import debugg from 'debug';
+
+process.env.DEBUG = 'Pinterest-Clone:server';
+const debug = debugg('Pinterest-Clone:server');
+// const http = require('http');
 
 const appPath = process.env.NODE_ENV === 'development' ? '../server/app' : '../app';
 // eslint-disable-next-line import/no-dynamic-require
-const app = require(appPath);
+const app = require(appPath).default;
 /**
  * Normalize a port into a number, string, or false.
  */
@@ -76,10 +81,12 @@ const onError = (error: {syscall: string, code: string}) => {
 
 const onListening = () => {
   const addr = server.address();
-  const bind = typeof addr === 'string'
-    ? `pipe ${addr}`
-    : `port ${addr.port}`;
-  debug(`Listening on ${bind}`);
+  if (addr) {
+    const bind = typeof addr === 'string'
+      ? `pipe ${addr}`
+      : `port ${addr.port}`;
+    debug(`Listening on ${bind}`);
+  }
 };
 
 /**

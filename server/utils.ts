@@ -9,7 +9,14 @@ import {
   services,
 } from './interfaces';
 
-export const getApiKeys = () => {
+export const getApiKeys = ():({
+  keys: apiKeys
+  apiKeysFound: {
+    twitter: boolean
+    google: boolean
+    github: boolean
+  }
+}) => {
   const {
     TWITTER_CONSUMER_KEY,
     TWITTER_CONSUMER_SECRET,
@@ -78,6 +85,15 @@ export const getUserProfile = (user: reqUser | undefined):({
     };
   }
   const { _doc } = user;
+  if (!_doc) {
+    return {
+      service: undefined,
+      userId: undefined,
+      displayName: undefined,
+      username: undefined,
+      isAdmin: false,
+    };
+  }
   let service;
   let userId;
   let displayName;
@@ -180,7 +196,7 @@ const validateURL = (string: string) => {
   }
 };
 
-export const processImage = (url: string):Promise<string|ArrayBuffer|null> => new
+export const processImage = (url: string):Promise<string|ArrayBuffer|undefined> => new
 Promise((resolve, reject) => {
   const urlType = validateURL(url);
   if (!urlType) {
@@ -233,7 +249,7 @@ export const uploadImageToS3 = async ({
     const Body = await processImage(originalImgLink);
     const Key = `${Date.now()}`;
     const params = {
-      Bucket: process.env.S3_BUCKET_NAME,
+      Bucket: process.env.S3_BUCKET_NAME || '',
       Key,
       Body,
       ContentType: 'image/png',

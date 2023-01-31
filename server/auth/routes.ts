@@ -12,7 +12,7 @@ const PROVIDERS = [
   { name: 'github', options: {} },
 ];
 
-interface getProfileReq extends Request {
+interface getProfileReq {
   body:{
     imgLink: string
     description: string
@@ -20,7 +20,7 @@ interface getProfileReq extends Request {
   user: reqUser
 }
 
-export const getProfile = (req: getProfileReq, res: genericResponseType) => {
+export const getProfile = (req: getProfileReq | Request, res: genericResponseType) => {
   const profile = getUserProfile(req.user);
   res.json({
     ...profile,
