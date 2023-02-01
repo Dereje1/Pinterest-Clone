@@ -99,22 +99,20 @@ export const getProfilePins = async (
     }).exec();
 
     if (!user) {
-      res.json({ redirect: '/' });
-      return;
+      return res.json({ redirect: '/' });
     }
     if (loggedInUserid === userId) {
-      res.json({ redirect: '/pins' });
-      return;
+      return res.json({ redirect: '/pins' });
     }
     const createdPins = await pins.find({ 'owner.id': userId }).exec();
     const savedPins = await pins.find({ 'savedBy.id': userId }).exec();
-    res.json({
+    return res.json({
       createdPins: filterPins({ rawPins: createdPins, userId: loggedInUserid, isAdmin: false }),
       savedPins: filterPins({ rawPins: savedPins, userId: loggedInUserid, isAdmin: false }),
       user: { userId: user.id, service, displayName: user.displayName },
     });
   } catch (error) {
-    res.json(error);
+    return res.json(error);
   }
 };
 
@@ -131,7 +129,7 @@ interface pinImageReq extends Request {
   params: { _id: string }
   user: reqUser
 }
-const pinImage = async (req: pinImageReq | Request, res: genericResponseType) => {
+export const pinImage = async (req: pinImageReq | Request, res: genericResponseType) => {
   const pinID = req.params._id;
   const {
     userId, displayName, service, isAdmin,

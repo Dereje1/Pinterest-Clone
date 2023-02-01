@@ -11,10 +11,10 @@ const {
   updateTags,
   getTags,
 } = require('../../server/crudroutes');
-const pins = require('../../server/models/pins'); // schema for pins
-const users = require('../../server/models/user'); // schema for pins
-const pinLinks = require('../../server/models/pinlinks'); // schema for pins
-const savedTags = require('../../server/models/tags');
+const pins = require('../../server/models/pins').default; // schema for pins
+const users = require('../../server/models/user').default; // schema for pins
+const pinLinks = require('../../server/models/pinlinks').default; // schema for pins
+const savedTags = require('../../server/models/tags').default;
 const {
   user, rawPinsStub, allPinsResponse,
 } = require('./stub');
@@ -43,7 +43,7 @@ const setupMocks = (response = rawPinsStub) => {
   );
   users.find = jest.fn().mockImplementation(
     () => ({
-      exec: jest.fn().mockResolvedValue([{ twitter: { id: 'requestUserId', displayName: 'requestDisplayName' } }]),
+      exec: jest.fn().mockResolvedValue([{ id: 'requestUserId', displayName: 'requestDisplayName' }]),
     }),
   );
 };
