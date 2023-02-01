@@ -29,7 +29,6 @@
     "enzyme": "^3.11.0",
     "express": "^4.18.2",
     "ip": "^1.1.5",
-    "jest-react-hooks-shallow": "^1.5.1",
     "lodash": "^4.17.21",
     "mongoose": "^5.12.12",
     "morgan": "~1.9.0",
@@ -37,7 +36,6 @@
     "passport-github": "^1.1.0",
     "passport-google-oauth": "^2.0.0",
     "passport-twitter": "latest",
-    "prop-types": "^15.7.2",
     "react": "^17.0.0",
     "react-dom": "^17.0.0",
     "react-infinite-scroll-component": "^6.1.0",
@@ -93,6 +91,7 @@
     "html-webpack-plugin": "^5.5.0",
     "jest": "latest",
     "jest-environment-jsdom": "^29.4.0",
+    "jest-react-hooks-shallow": "^1.5.1",
     "nock": "^13.2.2",
     "nodemon": "^2.0.20",
     "postcss-loader": "^7.0.2",
@@ -128,10 +127,12 @@
       "./testingSetup/jestSetup.js"
     ],
     "collectCoverageFrom": [
-      "**/*.{js,jsx,tsx}",
+      "**/*.{js,ts,jsx,tsx}",
       "!**/node_modules/**",
       "!**/coverage/**",
-      "!**/myscripts/**"
+      "!**/myscripts/**",
+      "!**/bin/**",
+      "!**/tests/**"
     ]
   },
   "browserslist": {

@@ -1,5 +1,4 @@
 import React from 'react';
-import PropTypes from 'prop-types';
 import SaveAltIcon from '@mui/icons-material/SaveAlt';
 import Fab from '@mui/material/Fab';
 import FileDownloadOffIcon from '@mui/icons-material/FileDownloadOff';
@@ -75,11 +74,3 @@ function SavePin({
 }
 
 export default SavePin;
-
-SavePin.propTypes = {
-  isImageError: PropTypes.bool.isRequired,
-  isDescriptionError: PropTypes.bool.isRequired,
-  isDuplicateError: PropTypes.bool.isRequired,
-  isImageLoaded: PropTypes.bool.isRequired,
-  savePic: PropTypes.func.isRequired,
-};

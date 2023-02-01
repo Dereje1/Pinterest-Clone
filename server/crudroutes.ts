@@ -147,6 +147,7 @@ export const pinImage = async (req: pinImageReq | Request, res: genericResponseT
       };
       const update = { $set: { savedBy: [...pin.savedBy, newPinnerInfo] } };
       const modified = { new: true };
+      // note: can use `updateOne` on retrieved pin but need an updated doc returned
       const updatedPin = await pins.findByIdAndUpdate(pinID, update, modified).exec();
       if (!updatedPin) return res.end();
       const [filteredAndUpdatedPin] = filterPins({ rawPins: [updatedPin], userId, isAdmin });

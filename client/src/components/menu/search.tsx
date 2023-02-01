@@ -1,5 +1,4 @@
 import React, { useEffect, useState, useLayoutEffect } from 'react';
-import PropTypes from 'prop-types';
 import _ from 'lodash';
 import { useSelector } from 'react-redux';
 import Paper from '@mui/material/Paper';
@@ -151,11 +150,3 @@ function Search({
 }
 
 export default Search;
-
-Search.propTypes = {
-  searchUpdate: PropTypes.func.isRequired,
-  openSearch: PropTypes.func.isRequired,
-  closeSearch: PropTypes.func.isRequired,
-  pathname: PropTypes.string.isRequired,
-  isShowing: PropTypes.bool.isRequired,
-};
