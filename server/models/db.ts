@@ -1,19 +1,23 @@
 // create one place for db connection
 // Bring Mongoose into the app
-const mongoose = require('mongoose');
+import mongoose from 'mongoose';
 
 // Build the connection string
-const dbURI = process.env.MONGOLAB_URI;
-mongoose.Promise = global.Promise;
-// Create the database connection
-mongoose.connect(
-  dbURI,
-  {
-    useUnifiedTopology: true,
-    useNewUrlParser: true,
-    useFindAndModify: false,
-  },
-);
+
+const dbURI = process.env.MONGOLAB_URI || '';
+
+const connect = () => {
+  mongoose.Promise = global.Promise;
+  // Create the database connection
+  mongoose.connect(
+    dbURI,
+    {
+      useUnifiedTopology: true,
+      useNewUrlParser: true,
+      useFindAndModify: false,
+    },
+  );
+};
 
 // CONNECTION EVENTS
 ['connected', 'error', 'disconnected'].forEach((status) => {
@@ -29,3 +33,4 @@ process.on('SIGINT', () => {
     process.exit(0);
   });
 });
+export default connect;

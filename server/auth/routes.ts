@@ -1,11 +1,10 @@
 /* eslint-disable import/no-import-module-exports */
 import { PassportStatic } from 'passport';
-import { Express } from 'express';
-import { genericResponseType } from '../interfaces';
-
-const ip = require('ip');
-const isLoggedIn = require('./isloggedin');
-const { getUserProfile, getApiKeys } = require('../utils');
+import { Request, Express } from 'express';
+import ip from 'ip';
+import isLoggedIn from './isloggedin';
+import { getUserProfile, getApiKeys } from '../utils';
+import { genericResponseType, reqUser } from '../interfaces';
 
 const PROVIDERS = [
   { name: 'twitter', options: {} },
@@ -13,7 +12,15 @@ const PROVIDERS = [
   { name: 'github', options: {} },
 ];
 
-const getProfile = (req: Express.Request, res: genericResponseType) => {
+interface getProfileReq {
+  body:{
+    imgLink: string
+    description: string
+  }
+  user: reqUser
+}
+
+export const getProfile = (req: getProfileReq | Request, res: genericResponseType) => {
   const profile = getUserProfile(req.user);
   res.json({
     ...profile,
@@ -22,7 +29,7 @@ const getProfile = (req: Express.Request, res: genericResponseType) => {
   });
 };
 
-const setGuest = (req: Express.Request, res: genericResponseType) => {
+export const setGuest = (req: Express.Request, res: genericResponseType) => {
   const { apiKeysFound: providers } = getApiKeys();
   res.json({
     authenticated: false,
@@ -33,13 +40,13 @@ const setGuest = (req: Express.Request, res: genericResponseType) => {
   });
 };
 
-const logOut = (req: Express.Request, res: genericResponseType) => {
+export const logOut = (req: Express.Request, res: genericResponseType) => {
   req.logout(() => {
     res.redirect('/');
   });
 };
 
-const setAuthRoutes = (app: Express, passport: PassportStatic) => {
+export const setAuthRoutes = (app: Express, passport: PassportStatic) => {
   app.get('/auth/profile', isLoggedIn, getProfile);
   app.get('/auth/guest', setGuest);
   app.get('/auth/logout', logOut);
@@ -54,8 +61,4 @@ const setAuthRoutes = (app: Express, passport: PassportStatic) => {
       failureRedirect: '/',
     }));
   });
-};
-
-module.exports = {
-  setAuthRoutes, getProfile, logOut, setGuest,
 };

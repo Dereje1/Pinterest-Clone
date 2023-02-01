@@ -1,4 +1,4 @@
-const user = require('../../../server/models/user');
+const user = require('../../../server/models/user').default;
 const { processLogin, passportConfig } = require('../../../server/auth/passportConfig');
 
 describe('Processing a login', () => {

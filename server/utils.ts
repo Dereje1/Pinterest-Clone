@@ -1,5 +1,7 @@
 /* eslint-disable import/no-import-module-exports */
 import * as https from 'https';
+import { Transform as Stream } from 'stream';
+import AWS from 'aws-sdk';
 import {
   apiKeys,
   reqUser,
@@ -7,10 +9,14 @@ import {
   services,
 } from './interfaces';
 
-const Stream = require('stream').Transform;
-const AWS = require('aws-sdk');
-
-const getApiKeys = () => {
+export const getApiKeys = ():({
+  keys: apiKeys
+  apiKeysFound: {
+    twitter: boolean
+    google: boolean
+    github: boolean
+  }
+}) => {
   const {
     TWITTER_CONSUMER_KEY,
     TWITTER_CONSUMER_SECRET,
@@ -62,7 +68,13 @@ const getApiKeys = () => {
 };
 
 /* Isolate auth service used from req.user and generate proffile */
-const getUserProfile = (user: reqUser | undefined) => {
+export const getUserProfile = (user: reqUser | undefined):({
+  service: string | undefined,
+  userId: string | undefined,
+  displayName: string | undefined,
+  username: string |undefined,
+  isAdmin: boolean,
+}) => {
   if (!user) {
     return {
       service: undefined,
@@ -73,6 +85,15 @@ const getUserProfile = (user: reqUser | undefined) => {
     };
   }
   const { _doc } = user;
+  if (!_doc) {
+    return {
+      service: undefined,
+      userId: undefined,
+      displayName: undefined,
+      username: undefined,
+      isAdmin: false,
+    };
+  }
   let service;
   let userId;
   let displayName;
@@ -100,7 +121,7 @@ const getUserProfile = (user: reqUser | undefined) => {
   };
 };
 
-const getCloudFrontLink = (link: string) => {
+export const getCloudFrontLink = (link: string) => {
   try {
     const [, , , bucketName, imgName] = link.split('/');
     return process.env.ENABLE_CLOUDFRONT === 'true' && bucketName === 'pinterest.clone' ? `https://d1ttxrulihk8wq.cloudfront.net/${imgName}` : link;
@@ -126,10 +147,10 @@ returns
 */
 interface filterTypes {
   rawPins: PinType[]
-   userId: string
+   userId: string | undefined
    isAdmin: boolean
 }
-const filterPins = ({ rawPins, userId, isAdmin }: filterTypes) => rawPins.map((pin) => {
+export const filterPins = ({ rawPins, userId, isAdmin }: filterTypes) => rawPins.map((pin) => {
   const {
     _id: pinId,
     imgDescription,
@@ -175,7 +196,7 @@ const validateURL = (string: string) => {
   }
 };
 
-const processImage = (url: string):Promise<string|ArrayBuffer|null> => new
+export const processImage = (url: string):Promise<string|ArrayBuffer|undefined> => new
 Promise((resolve, reject) => {
   const urlType = validateURL(url);
   if (!urlType) {
@@ -208,22 +229,27 @@ Promise((resolve, reject) => {
   request.end();
 });
 
-const configureS3 = () => new AWS.S3({
+export const configureS3 = () => new AWS.S3({
   accessKeyId: process.env.AWS_ACCESS_KEY_ID,
   secretAccessKey: process.env.AWS_SECRET_KEY,
 });
 
-const uploadImageToS3 = async ({
+export const uploadImageToS3 = async ({
   originalImgLink, userId, displayName, service,
-}:{originalImgLink: string, userId: string, displayName: string, service: string}) => {
+}:{
+  originalImgLink: string,
+  userId: string | undefined,
+  displayName: string | undefined,
+  service: string | undefined
+}) => {
   // unwanted characters (non ASCII) rejected by AWS tagging
-  const ASCIIdisplayName = displayName.replace(/[^\x20-\x7E]+/g, '');
+  const ASCIIdisplayName = displayName && displayName.replace(/[^\x20-\x7E]+/g, '');
   try {
     const s3 = configureS3();
     const Body = await processImage(originalImgLink);
     const Key = `${Date.now()}`;
     const params = {
-      Bucket: process.env.S3_BUCKET_NAME,
+      Bucket: process.env.S3_BUCKET_NAME || '',
       Key,
       Body,
       ContentType: 'image/png',
@@ -236,13 +262,4 @@ const uploadImageToS3 = async ({
     console.log(`Error uploading img. ${originalImgLink.slice(0, 50)}... - ${error}`);
     return null;
   }
-};
-
-module.exports = {
-  getUserProfile,
-  filterPins,
-  uploadImageToS3,
-  configureS3,
-  getCloudFrontLink,
-  getApiKeys,
 };

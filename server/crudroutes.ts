@@ -1,17 +1,14 @@
 /* eslint-disable import/no-import-module-exports */
+import { Router, Request } from 'express';
 import { reqUser, PinnerType, genericResponseType } from './interfaces';
+import { getUserProfile, filterPins, uploadImageToS3 } from './utils';
+import isLoggedIn from './auth/isloggedin';
+import pins from './models/pins';
+import users from './models/user';
+import pinLinks from './models/pinlinks';
+import savedTags from './models/tags';
 
-const router = require('express').Router();
-const pins = require('./models/pins'); // schema for pins
-const users = require('./models/user');
-const pinLinks = require('./models/pinlinks');
-const savedTags = require('./models/tags');
-const isLoggedIn = require('./auth/isloggedin');
-const {
-  getUserProfile, filterPins, uploadImageToS3,
-} = require('./utils');
-
-interface addPinReq {
+interface addPinReq extends Request {
   body:{
     imgLink: string
     description: string
@@ -19,7 +16,7 @@ interface addPinReq {
   user: reqUser
 }
 
-const addPin = async (req: addPinReq, res: genericResponseType) => {
+export const addPin = async (req: addPinReq | Request, res: genericResponseType) => {
   const { displayName, userId, service } = getUserProfile(req.user);
   const { imgLink: originalImgLink } = req.body;
   try {
@@ -51,10 +48,10 @@ const addPin = async (req: addPinReq, res: genericResponseType) => {
   }
 };
 
-interface getPinsReq {
+interface getPinsReq extends Request{
   user: reqUser
 }
-const getPins = async (req: getPinsReq, res: genericResponseType) => {
+export const getPins = async (req: getPinsReq | Request, res: genericResponseType) => {
   const { userId, isAdmin } = getUserProfile(req.user);
   try {
     const allPins = await pins.find({ isBroken: false }).exec();
@@ -64,10 +61,10 @@ const getPins = async (req: getPinsReq, res: genericResponseType) => {
   }
 };
 
-interface getUserPinsReq {
+interface getUserPinsReq extends Request{
   user: reqUser
 }
-const getUserPins = async (req: getUserPinsReq, res: genericResponseType) => {
+export const getUserPins = async (req: getUserPinsReq | Request, res: genericResponseType) => {
   const { userId, isAdmin } = getUserProfile(req.user);
   try {
     const allPinLinks = await pinLinks.find({}).exec();
@@ -83,11 +80,14 @@ const getUserPins = async (req: getUserPinsReq, res: genericResponseType) => {
   }
 };
 
-interface getProfilePinsReq {
+interface getProfilePinsReq extends Request {
   params: { userid: string }
   user: reqUser
 }
-const getProfilePins = async (req: getProfilePinsReq, res: genericResponseType) => {
+export const getProfilePins = async (
+  req: getProfilePinsReq | Request,
+  res: genericResponseType,
+) => {
   const params = req.params.userid;
   const { userId: loggedInUserid } = getUserProfile(req.user);
   // displayNames can contain '-', therefore rejoin if accidentally split
@@ -99,29 +99,24 @@ const getProfilePins = async (req: getProfilePinsReq, res: genericResponseType) 
     }).exec();
 
     if (!user) {
-      res.json({ redirect: '/' });
-      return;
+      return res.json({ redirect: '/' });
     }
     if (loggedInUserid === userId) {
-      res.json({ redirect: '/pins' });
-      return;
+      return res.json({ redirect: '/pins' });
     }
     const createdPins = await pins.find({ 'owner.id': userId }).exec();
     const savedPins = await pins.find({ 'savedBy.id': userId }).exec();
-    res.json({
+    return res.json({
       createdPins: filterPins({ rawPins: createdPins, userId: loggedInUserid, isAdmin: false }),
       savedPins: filterPins({ rawPins: savedPins, userId: loggedInUserid, isAdmin: false }),
-      user: { userId: user[service].id, service, displayName: user[service].displayName },
+      user: { userId: user.id, service, displayName: user.displayName },
     });
   } catch (error) {
-    res.json(error);
+    return res.json(error);
   }
 };
 
-interface getTagsReq {
-  user: reqUser
-}
-const getTags = async (req: getTagsReq, res: genericResponseType) => {
+export const getTags = async (req: Request, res: genericResponseType) => {
   try {
     const tags = await savedTags.find().distinct('tag').exec();
     res.json(tags);
@@ -130,11 +125,11 @@ const getTags = async (req: getTagsReq, res: genericResponseType) => {
   }
 };
 
-interface pinImageReq {
+interface pinImageReq extends Request {
   params: { _id: string }
   user: reqUser
 }
-const pinImage = async (req: pinImageReq, res: genericResponseType) => {
+export const pinImage = async (req: pinImageReq | Request, res: genericResponseType) => {
   const pinID = req.params._id;
   const {
     userId, displayName, service, isAdmin,
@@ -142,6 +137,7 @@ const pinImage = async (req: pinImageReq, res: genericResponseType) => {
 
   try {
     const pin = await pins.findById(pinID).exec();
+    if (!pin) return res.end();
     const alreadyPinned = pin.savedBy.some((p: PinnerType) => p.id === userId);
     if (!alreadyPinned) {
       const newPinnerInfo = {
@@ -151,49 +147,52 @@ const pinImage = async (req: pinImageReq, res: genericResponseType) => {
       };
       const update = { $set: { savedBy: [...pin.savedBy, newPinnerInfo] } };
       const modified = { new: true };
+      // note: can use `updateOne` on retrieved pin but need an updated doc returned
       const updatedPin = await pins.findByIdAndUpdate(pinID, update, modified).exec();
+      if (!updatedPin) return res.end();
       const [filteredAndUpdatedPin] = filterPins({ rawPins: [updatedPin], userId, isAdmin });
       console.log(`${displayName} pinned ${updatedPin.imgDescription}`);
-      res.json(filteredAndUpdatedPin);
-    } else {
-      console.log(`${displayName} has the pin - ${pin.imgDescription} already saved`);
-      res.end();
+      return res.json(filteredAndUpdatedPin);
     }
+    console.log(`${displayName} has the pin - ${pin.imgDescription} already saved`);
+    return res.end();
   } catch (error) {
-    res.json(error);
+    return res.json(error);
   }
 };
 
-interface unpinImageReq {
+interface unpinImageReq extends Request {
   params: { _id: string }
   user: reqUser
 }
 
-const unpin = async (req: unpinImageReq, res: genericResponseType) => {
+export const unpin = async (req: unpinImageReq | Request, res: genericResponseType) => {
   const { userId, displayName, isAdmin } = getUserProfile(req.user);
   const pinID = req.params._id;
   try {
     const pin = await pins.findById(pinID).exec();
+    if (!pin) return res.end();
     const pinToUpdate = pin.savedBy.filter((s: PinnerType) => s.id !== userId);
     const update = { $set: { savedBy: pinToUpdate } };
     const modified = { new: true };
     const updatedPin = await pins.findByIdAndUpdate(pinID, update, modified).exec();
+    if (!updatedPin) return res.end();
     const [filteredAndUpdatedPin] = filterPins({ rawPins: [updatedPin], userId, isAdmin });
     console.log(`${displayName} unpinned ${updatedPin.imgDescription}`);
-    res.json(filteredAndUpdatedPin);
+    return res.json(filteredAndUpdatedPin);
   } catch (error) {
-    res.json(error);
+    return res.json(error);
   }
 };
 
-interface addCommentReq {
+interface addCommentReq extends Request {
   params: { _id: string }
   body:{
     comment: string
   }
   user: reqUser
 }
-const addComment = async (req: addCommentReq, res: genericResponseType) => {
+export const addComment = async (req: addCommentReq | Request, res: genericResponseType) => {
   const {
     userId, displayName, service, isAdmin,
   } = getUserProfile(req.user);
@@ -209,15 +208,16 @@ const addComment = async (req: addCommentReq, res: genericResponseType) => {
     const update = { $push: { comments: { ...commentPayload } } };
     const modified = { new: true };
     const updatedPin = await pins.findByIdAndUpdate(pinID, update, modified).exec();
+    if (!updatedPin) return res.end();
     const [filteredAndUpdatedPin] = filterPins({ rawPins: [updatedPin], userId, isAdmin });
     console.log(`${displayName} commented on ${updatedPin.imgDescription}`);
-    res.json(filteredAndUpdatedPin);
+    return res.json(filteredAndUpdatedPin);
   } catch (error) {
-    res.json(error);
+    return res.json(error);
   }
 };
 
-interface updateTagsReq {
+interface updateTagsReq extends Request {
   query:{
     pinID: string
     tag: string | undefined
@@ -225,60 +225,59 @@ interface updateTagsReq {
   }
   user: reqUser
 }
-const updateTags = async (req: updateTagsReq, res: genericResponseType) => {
+export const updateTags = async (req: updateTagsReq | Request, res: genericResponseType) => {
   const {
     userId, displayName, isAdmin,
   } = getUserProfile(req.user);
   const { pinID, tag, deleteId } = req.query;
   try {
     const pin = await pins.findById(pinID).exec();
-    if (pin.owner.id !== userId && !isAdmin) {
-      res.end();
-      return;
-    }
+    if (!pin) return res.end();
+    if (pin.owner.id !== userId && !isAdmin) return res.end();
 
     let update;
     if (deleteId) {
-      const pinToUpdate = pin.tags.filter((t: {_id: () => void}) => t._id.toString() !== deleteId);
+      const pinToUpdate = pin.tags.filter((t) => t._id.toString() !== deleteId);
       update = { $set: { tags: pinToUpdate } };
     } else {
       update = { $push: { tags: { tag } } };
       await savedTags.create({ tag });
     }
     const updatedPin = await pins.findByIdAndUpdate(pinID, update, { new: true }).exec();
+    if (!updatedPin) return res.end();
     const [filteredAndUpdatedPin] = filterPins({ rawPins: [updatedPin], userId, isAdmin });
     console.log(`${displayName} ${deleteId ? 'deleted' : `added ${tag}`} tag on ${updatedPin.imgDescription}`);
-    res.json(filteredAndUpdatedPin);
+    return res.json(filteredAndUpdatedPin);
   } catch (error) {
-    res.json(error);
+    return res.json(error);
   }
 };
 
-interface updateTagsReq {
+interface updateTagsReq extends Request {
   params:{
     _id: string
   }
   user: reqUser
 }
-const deletePin = async (req: updateTagsReq, res: genericResponseType) => {
+export const deletePin = async (req: updateTagsReq | Request, res: genericResponseType) => {
   const { userId, displayName, isAdmin } = getUserProfile(req.user);
   const query = { _id: req.params._id };
   const pinID = req.params._id;
   try {
     const pin = await pins.findById(pinID).exec();
+    if (!pin) return res.end();
     if (userId === pin.owner.id || isAdmin) {
       const removedPin = await pins.findOneAndRemove(query).exec();
       await pinLinks.findOneAndRemove({ pin_id: pinID }).exec();
-      console.log(`${displayName} deleted pin ${removedPin.imgDescription}`);
-      res.json(removedPin);
-    } else {
-      throw new Error(`Pin ID: ${pinID} is not owned by user ID: ${userId} - delete operation cancelled!`);
+      console.log(`${displayName} deleted pin ${removedPin && removedPin.imgDescription}`);
+      return res.json(removedPin);
     }
+    throw new Error(`Pin ID: ${pinID} is not owned by user ID: ${userId} - delete operation cancelled!`);
   } catch (error) {
-    res.json(error);
+    return res.json(error);
   }
 };
-
+export const router = Router();
 // adds a new pin to the db
 router.post('/api/newpin', isLoggedIn, addPin);
 
@@ -308,17 +307,3 @@ router.put('/api/updateTags/', isLoggedIn, updateTags);
 
 // deletes a pin if owned by user
 router.delete('/api/:_id', isLoggedIn, deletePin);
-
-module.exports = {
-  router,
-  addPin,
-  getPins,
-  pinImage,
-  unpin,
-  deletePin,
-  addComment,
-  getProfilePins,
-  getUserPins,
-  updateTags,
-  getTags,
-};

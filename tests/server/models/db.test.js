@@ -10,10 +10,11 @@ process.env = {
   ...process.env,
   MONGOLAB_URI: 'TEST_MONGO_URI',
 };
-require('../../../server/models/db');
+const connect = require('../../../server/models/db').default;
 
 describe('Mongo db', () => {
   test('will connect', () => {
+    connect();
     expect(mongoose.connect).toHaveBeenCalledWith(
       'TEST_MONGO_URI',
       { useUnifiedTopology: true, useNewUrlParser: true, useFindAndModify: false },

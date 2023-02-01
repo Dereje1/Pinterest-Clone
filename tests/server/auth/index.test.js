@@ -1,4 +1,4 @@
-const authConfig = require('../../../server/auth/index');
+const authConfig = require('../../../server/auth/index').default;
 
 test('Will initialize passport, set routes and use in the app', () => {
   const app = {

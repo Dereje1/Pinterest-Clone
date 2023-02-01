@@ -1,5 +1,4 @@
 import React, { useState } from 'react';
-import PropTypes from 'prop-types';
 import { NavLink } from 'react-router-dom';
 import Box from '@mui/material/Box';
 import Drawer from '@mui/material/Drawer';
@@ -94,7 +93,3 @@ function CollapsibleMenu({ pathname }: {pathname: string}) {
 }
 
 export default CollapsibleMenu;
-
-CollapsibleMenu.propTypes = {
-  pathname: PropTypes.string.isRequired,
-};

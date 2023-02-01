@@ -11,10 +11,10 @@ const {
   updateTags,
   getTags,
 } = require('../../server/crudroutes');
-const pins = require('../../server/models/pins'); // schema for pins
-const users = require('../../server/models/user'); // schema for pins
-const pinLinks = require('../../server/models/pinlinks'); // schema for pins
-const savedTags = require('../../server/models/tags');
+const pins = require('../../server/models/pins').default; // schema for pins
+const users = require('../../server/models/user').default; // schema for pins
+const pinLinks = require('../../server/models/pinlinks').default; // schema for pins
+const savedTags = require('../../server/models/tags').default;
 const {
   user, rawPinsStub, allPinsResponse,
 } = require('./stub');
@@ -43,7 +43,7 @@ const setupMocks = (response = rawPinsStub) => {
   );
   users.find = jest.fn().mockImplementation(
     () => ({
-      exec: jest.fn().mockResolvedValue([{ twitter: { id: 'requestUserId', displayName: 'requestDisplayName' } }]),
+      exec: jest.fn().mockResolvedValue([{ id: 'requestUserId', displayName: 'requestDisplayName' }]),
     }),
   );
 };
@@ -362,6 +362,8 @@ describe('Pinning an image', () => {
   });
   afterEach(() => {
     jest.restoreAllMocks();
+    pins.findById.mockClear();
+    pins.findByIdAndUpdate.mockClear();
   });
 
   test('will pin an image', async () => {
@@ -396,6 +398,36 @@ describe('Pinning an image', () => {
       hasSaved: true,
     });
     expect(res.end).toHaveBeenCalledTimes(0);
+  });
+
+  test('will end response if pin not found in db', async () => {
+    pins.findById = jest.fn().mockImplementation(
+      () => ({
+        exec: jest.fn().mockResolvedValue(null),
+      }),
+    );
+
+    await pinImage(req, res);
+    expect(pins.findById).toHaveBeenCalledTimes(1);
+    expect(pins.findById).toHaveBeenCalledWith(3);
+    expect(pins.findByIdAndUpdate).not.toHaveBeenCalled();
+    expect(res.json).not.toHaveBeenCalled();
+    expect(res.end).toHaveBeenCalledTimes(1);
+  });
+
+  test('will end response if updatedpin not returned from db', async () => {
+    pins.findByIdAndUpdate = jest.fn().mockImplementation(
+      () => ({
+        exec: jest.fn().mockResolvedValue(null),
+      }),
+    );
+    setupMocks(rawPinsStub[2]);
+    await pinImage(req, res);
+    expect(pins.findById).toHaveBeenCalledTimes(1);
+    expect(pins.findById).toHaveBeenCalledWith(3);
+    expect(pins.findByIdAndUpdate).toHaveBeenCalledTimes(1);
+    expect(res.json).not.toHaveBeenCalled();
+    expect(res.end).toHaveBeenCalledTimes(1);
   });
 
   test('will not pin an image if user has already pinned', async () => {
@@ -435,6 +467,8 @@ describe('Deleting an image', () => {
   afterEach(() => {
     jest.restoreAllMocks();
     pinLinks.findOneAndRemove.mockClear();
+    pins.findById.mockClear();
+    pins.findByIdAndUpdate.mockClear();
   });
 
   test('will delete an image if the user is an owner', async () => {
@@ -484,6 +518,27 @@ describe('Deleting an image', () => {
     expect(res.json).toHaveBeenCalledWith(rawPinsStub[1]);
   });
 
+  test('will end response if pin not found in db', async () => {
+    pins.findById = jest.fn().mockImplementation(
+      () => ({
+        exec: jest.fn().mockResolvedValue(null),
+      }),
+    );
+
+    pins.findOneAndRemove = jest.fn().mockImplementation(
+      () => ({
+        exec: jest.fn().mockResolvedValue(rawPinsStub[0]),
+      }),
+    );
+
+    await deletePin(req, res);
+    expect(pins.findById).toHaveBeenCalledTimes(1);
+    expect(pins.findById).toHaveBeenCalledWith(1);
+    expect(pins.findOneAndRemove).toHaveBeenCalledTimes(0);
+    expect(res.json).not.toHaveBeenCalled();
+    expect(res.end).toHaveBeenCalledTimes(1);
+  });
+
   test('will respond with error if DELETE is rejected', async () => {
     pins.findById = jest.fn().mockImplementation(
       () => ({
@@ -510,6 +565,8 @@ describe('Unpinning an image', () => {
   });
   afterEach(() => {
     jest.restoreAllMocks();
+    pins.findById.mockClear();
+    pins.findByIdAndUpdate.mockClear();
   });
 
   test('will unpin an image', async () => {
@@ -536,6 +593,38 @@ describe('Unpinning an image', () => {
       { new: true },
     );
     expect(res.json).toHaveBeenCalledWith({ ...allPinsResponse[1], savedBy: [], hasSaved: false });
+  });
+
+  test('will end response if pin not found in db', async () => {
+    pins.findById = jest.fn().mockImplementation(
+      () => ({
+        exec: jest.fn().mockResolvedValue(null),
+      }),
+    );
+
+    await unpin(req, res);
+    expect(pins.findById).toHaveBeenCalledTimes(1);
+    expect(pins.findById).toHaveBeenCalledWith(1);
+    expect(pins.findByIdAndUpdate).not.toHaveBeenCalled();
+    expect(res.json).not.toHaveBeenCalled();
+    expect(res.end).toHaveBeenCalledTimes(1);
+  });
+
+  test('will end response if updatedpin not returned from db', async () => {
+    const updatedReq = { ...req, params: { _id: 2 } };
+    pins.findByIdAndUpdate = jest.fn().mockImplementation(
+      () => ({
+        exec: jest.fn().mockResolvedValue(null),
+      }),
+    );
+
+    setupMocks(rawPinsStub[1]);
+    await unpin(updatedReq, res);
+    expect(pins.findById).toHaveBeenCalledTimes(1);
+    expect(pins.findById).toHaveBeenCalledWith(2);
+    expect(pins.findByIdAndUpdate).toHaveBeenCalledTimes(1);
+    expect(res.json).not.toHaveBeenCalled();
+    expect(res.end).toHaveBeenCalledTimes(1);
   });
 
   test('will respond with error if PUT is rejected', async () => {
@@ -628,6 +717,20 @@ describe('Adding a comment', () => {
       tags: [],
     });
     expect(res.end).toHaveBeenCalledTimes(0);
+  });
+
+  test('will end response if updatedpin not returned from db', async () => {
+    pins.findByIdAndUpdate = jest.fn().mockImplementation(
+      () => ({
+        exec: jest.fn().mockResolvedValue(null),
+      }),
+    );
+
+    setupMocks(rawPinsStub[2]);
+    await addComment(req, res);
+    expect(pins.findByIdAndUpdate).toHaveBeenCalledTimes(1);
+    expect(res.json).not.toHaveBeenCalled();
+    expect(res.end).toHaveBeenCalledTimes(1);
   });
 
   test('will respond with error if PUT is rejected', async () => {
@@ -748,6 +851,8 @@ describe('Updating tags for a pin', () => {
   });
   afterEach(() => {
     jest.restoreAllMocks();
+    pins.findById.mockClear();
+    pins.findByIdAndUpdate.mockClear();
   });
 
   test('will add a tag to a pin', async () => {
@@ -818,6 +923,25 @@ describe('Updating tags for a pin', () => {
     expect(res.json).toHaveBeenCalledWith({ ...allPinsResponse[1] });
   });
 
+  test('will end response if pin not found in db', async () => {
+    const req = {
+      user,
+      query: { pinID: 1, tag: 'a new tag' },
+    };
+    pins.findById = jest.fn().mockImplementation(
+      () => ({
+        exec: jest.fn().mockResolvedValue(null),
+      }),
+    );
+    savedTags.create = jest.fn().mockResolvedValue([]);
+    await updateTags(req, res);
+    expect(pins.findById).toHaveBeenCalledTimes(1);
+    expect(pins.findById).toHaveBeenCalledWith(1);
+    expect(pins.findByIdAndUpdate).toHaveBeenCalledTimes(0);
+    expect(res.json).not.toHaveBeenCalled();
+    expect(res.end).toHaveBeenCalledTimes(1);
+  });
+
   test('will end response if user is not owner of the pin', async () => {
     const req = {
       user,
@@ -839,6 +963,30 @@ describe('Updating tags for a pin', () => {
     expect(pins.findByIdAndUpdate).not.toHaveBeenCalled();
     expect(res.json).not.toHaveBeenCalled();
     expect(res.end).toHaveBeenCalled();
+  });
+
+  test('will end response if updatedpin not returned from db', async () => {
+    const req = {
+      user,
+      query: { pinID: 1, tag: 'a new tag' },
+    };
+    pins.findById = jest.fn().mockImplementation(
+      () => ({
+        exec: jest.fn().mockResolvedValue({ owner: { id: 'twitter test id' } }),
+      }),
+    );
+    pins.findByIdAndUpdate = jest.fn().mockImplementation(
+      () => ({
+        exec: jest.fn().mockResolvedValue(null),
+      }),
+    );
+    savedTags.create = jest.fn().mockResolvedValue([]);
+    await updateTags(req, res);
+    expect(pins.findById).toHaveBeenCalledTimes(1);
+    expect(pins.findById).toHaveBeenCalledWith(1);
+    expect(pins.findByIdAndUpdate).toHaveBeenCalledTimes(1);
+    expect(res.json).not.toHaveBeenCalled();
+    expect(res.end).toHaveBeenCalledTimes(1);
   });
 
   test('will respond with error if PUT is rejected', async () => {
