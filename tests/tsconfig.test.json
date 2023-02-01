@@ -8,7 +8,7 @@
         "target": "es5",            // specify ECMAScript target version
         "allowJs": true,             // allow a partial TypeScript and JavaScript codebase
         "allowSyntheticDefaultImports": true,
-        "noImplicitAny": true,
+        "noImplicitAny": false,
         "lib": ["dom", "esnext"],
         "esModuleInterop": true,
         "noImplicitThis": true,

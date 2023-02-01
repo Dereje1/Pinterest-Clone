@@ -4,7 +4,7 @@
 import React from 'react';
 import { shallow } from 'enzyme';
 import toJson from 'enzyme-to-json';
-import { LoginButtons, mapStateToProps, ProviderButton } from '../../../../../client/src/components/signin/loginbuttons.tsx';
+import { LoginButtons, mapStateToProps, ProviderButton } from '../../../../../client/src/components/signin/loginbuttons';
 
 describe('The sign in component', () => {
   let props;
@@ -77,8 +77,34 @@ describe('The sign in component', () => {
   });
 
   test('will map redux user state to props', () => {
-    const reduxProps = mapStateToProps({ user: 'test user' });
-    expect(reduxProps).toEqual({ user: 'test user' });
+    const reduxProps = mapStateToProps({
+      user: {
+        authenticated: false,
+        userIp: 'stub ip',
+        username: null,
+        displayName: null,
+        providers: {
+          twitter: false,
+          google: true,
+          github: true,
+        },
+        service: 'stub service',
+      },
+    });
+    expect(reduxProps).toEqual({
+      user: {
+        authenticated: false,
+        userIp: 'stub ip',
+        username: null,
+        displayName: null,
+        providers: {
+          twitter: false,
+          google: true,
+          github: true,
+        },
+        service: 'stub service',
+      },
+    });
   });
 });
 
@@ -86,14 +112,13 @@ describe('Provider buttons', () => {
   let mockedAssign;
   let preventDefault;
   beforeEach(() => {
-    const windowSpy = jest.spyOn(global, 'window', 'get');
+    const windowSpy = jest.spyOn(window, 'location', 'get');
     mockedAssign = jest.fn();
     preventDefault = jest.fn();
-    windowSpy.mockImplementation(() => ({
-      location: {
-        assign: mockedAssign,
-      },
-    }));
+    windowSpy.mockReturnValue({
+      ...window.location,
+      assign: mockedAssign,
+    });
   });
 
   afterEach(() => {

@@ -2,9 +2,9 @@
  * @jest-environment jsdom
  */
 import React from 'react';
-import { shallow } from 'enzyme';
+import { EnzymeSelector, shallow } from 'enzyme';
 import toJson from 'enzyme-to-json';
-import { SignIn } from '../../../../../client/src/components/signin/signin.tsx';
+import { SignIn } from '../../../../../client/src/components/signin/signin';
 
 jest.useFakeTimers();
 
@@ -36,9 +36,9 @@ describe('The sign in component', () => {
   });
 
   test('will reset the guest user', async () => {
-    const wrapper = shallow(<SignIn {...props} />);
+    const wrapper = shallow<SignIn>(<SignIn {...props} />);
     wrapper.setState({ show: true });
-    const loginButtons = wrapper.find('Connect(LoginButtons)');
+    const loginButtons: EnzymeSelector = wrapper.find('Connect(LoginButtons)');
     loginButtons.props().guest();
     jest.advanceTimersByTime(1000);
     await Promise.resolve();
@@ -47,9 +47,9 @@ describe('The sign in component', () => {
   });
 
   test('will remove component on blur', async () => {
-    const wrapper = shallow(<SignIn {...props} />);
+    const wrapper = shallow<SignIn>(<SignIn {...props} />);
     wrapper.setState({ show: true });
-    const signInModal = wrapper.find({ className: 'signinmodal signshow' });
+    const signInModal: EnzymeSelector = wrapper.find({ className: 'signinmodal signshow' });
     signInModal.props().onBlur();
     jest.advanceTimersByTime(1000);
     await Promise.resolve();

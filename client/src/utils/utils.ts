@@ -1,7 +1,7 @@
 import { PinType, tagType, allPinLinksType } from '../interfaces';
 
 export const shuffleImages = (arr: PinType[]) => {
-  const shuffled = [];
+  const shuffled: PinType[] = [];
   while (arr.length) {
     const randIndex = Math.floor(Math.random() * arr.length);
     const [removed] = arr.splice(randIndex, 1);

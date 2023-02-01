@@ -1,7 +1,7 @@
 import React from 'react';
 import { shallow } from 'enzyme';
 import toJson from 'enzyme-to-json';
-import { Loading, UserPinsSelector } from '../../../../../client/src/components/common/common.tsx';
+import { Loading, UserPinsSelector } from '../../../../../client/src/components/common/common';
 
 describe('Loading...', () => {
   test('Will render the loading bubbles', () => {
@@ -26,7 +26,7 @@ describe('The user pins selector', () => {
     const savedButton = wrapper.find('ForwardRef(Button)').at(1);
     expect(ownedButton.props().color).toBe('secondary');
     expect(savedButton.props().color).toBe('primary');
-    savedButton.props().onClick();
+    savedButton.props().onClick?.({} as any);
     expect(setDisplaySetting).toHaveBeenCalledWith('saved');
   });
   test('Will highlight the saved button', () => {
@@ -37,7 +37,7 @@ describe('The user pins selector', () => {
     const savedButton = wrapper.find('ForwardRef(Button)').at(1);
     expect(ownedButton.props().color).toBe('primary');
     expect(savedButton.props().color).toBe('secondary');
-    ownedButton.props().onClick();
+    ownedButton.props().onClick?.({} as any);
     expect(setDisplaySetting).toHaveBeenCalledWith('created');
   });
 });
