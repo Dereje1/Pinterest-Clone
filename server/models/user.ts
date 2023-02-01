@@ -1,9 +1,24 @@
 import mongoose from 'mongoose';
 
 export interface UserType extends mongoose.Document {
-  displayName: string,
-  username: string,
-  id: string
+  twitter: {
+    id: string,
+    token: string,
+    displayName: string,
+    username: string,
+  },
+  google: {
+    id: string,
+    token: string,
+    displayName: string,
+    username: string,
+  },
+  github: {
+    id: string,
+    token: string,
+    displayName: string,
+    username: string,
+  }
 }
 
 // define the schema for our user model

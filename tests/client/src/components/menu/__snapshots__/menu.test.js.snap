@@ -81,7 +81,9 @@ exports[`The Menu component will render the brand 1`] = `
   className="brand"
 >
   <a
-    href="/"
+    href="https://github.com/Dereje1/Pinterest-Clone"
+    rel="noopener noreferrer"
+    target="_blank"
   >
     <i
       aria-hidden="true"

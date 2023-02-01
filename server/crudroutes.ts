@@ -4,7 +4,7 @@ import { reqUser, PinnerType, genericResponseType } from './interfaces';
 import { getUserProfile, filterPins, uploadImageToS3 } from './utils';
 import isLoggedIn from './auth/isloggedin';
 import pins from './models/pins';
-import users from './models/user';
+import users, { UserType } from './models/user';
 import pinLinks from './models/pinlinks';
 import savedTags from './models/tags';
 
@@ -109,7 +109,11 @@ export const getProfilePins = async (
     return res.json({
       createdPins: filterPins({ rawPins: createdPins, userId: loggedInUserid, isAdmin: false }),
       savedPins: filterPins({ rawPins: savedPins, userId: loggedInUserid, isAdmin: false }),
-      user: { userId: user.id, service, displayName: user.displayName },
+      user: {
+        userId: user[service as keyof UserType].id,
+        service,
+        displayName: user[service as keyof UserType].displayName,
+      },
     });
   } catch (error) {
     return res.json(error);

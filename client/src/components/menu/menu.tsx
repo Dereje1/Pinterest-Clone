@@ -21,7 +21,7 @@ const actionCreators = {
 export function Brand() {
   return (
     <div className="brand">
-      <a href="/">
+      <a href="https://github.com/Dereje1/Pinterest-Clone" target="_blank" rel="noopener noreferrer">
         <i className="fa fa-pinterest" aria-hidden="true" />
         {' Clone'}
       </a>

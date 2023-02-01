@@ -43,7 +43,7 @@ const setupMocks = (response = rawPinsStub) => {
   );
   users.find = jest.fn().mockImplementation(
     () => ({
-      exec: jest.fn().mockResolvedValue([{ id: 'requestUserId', displayName: 'requestDisplayName' }]),
+      exec: jest.fn().mockResolvedValue([{ twitter: { id: 'requestUserId', displayName: 'requestDisplayName' } }]),
     }),
   );
 };
