@@ -58,7 +58,7 @@ exports[`The profile page Will render for pins created by the user 1`] = `
     pinList={
       [
         {
-          "_id": 3,
+          "_id": "3",
           "comments": [],
           "createdAt": "2020-12-25T00:00:00.000+00:00",
           "hasSaved": false,
@@ -154,7 +154,7 @@ exports[`The profile page Will render for pins saved by the user 1`] = `
     pinList={
       [
         {
-          "_id": 2,
+          "_id": "2",
           "comments": [],
           "createdAt": "2020-12-25T00:00:00.000+00:00",
           "hasSaved": true,

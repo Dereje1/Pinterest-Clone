@@ -3,7 +3,7 @@
  */
 /* eslint-disable no-import-assign */
 import React from 'react';
-import { shallow } from 'enzyme';
+import { EnzymePropSelector, shallow } from 'enzyme';
 import toJson from 'enzyme-to-json';
 import PinCreate from '../../../../../client/src/components/mypins/pincreatemodal';
 import * as utils from '../../../../../client/src/utils/utils';
@@ -27,11 +27,9 @@ describe('The pin creation modal', () => {
       reset: jest.fn(),
       savePin: jest.fn(),
     };
-    global.scrollTo = jest.fn();
   });
   afterEach(() => {
     props = null;
-    global.scrollTo = null;
   });
 
   test('will render for links to images', () => {
@@ -41,7 +39,7 @@ describe('The pin creation modal', () => {
 
   test('will render for uploading images', () => {
     const wrapper = shallow(<PinCreate {...props} />);
-    const cardHeader = wrapper.find('ForwardRef(CardHeader)');
+    const cardHeader: EnzymePropSelector = wrapper.find('ForwardRef(CardHeader)');
     let dialogTitle = wrapper.find('ForwardRef(DialogTitle)');
     expect(dialogTitle.text()).toBe('Create pin from link');
     const uploadSwitch = cardHeader.props().action.props.control.props;
@@ -52,7 +50,7 @@ describe('The pin creation modal', () => {
   });
 
   test('will handle errors in images', () => {
-    const wrapper = shallow(<PinCreate {...props} />);
+    const wrapper = shallow<PinCreate>(<PinCreate {...props} />);
     wrapper.setState({ isError: false });
     expect(wrapper.state().isError).toBe(false);
     const img = wrapper.find({ id: 'new-pin-image' });
@@ -61,7 +59,7 @@ describe('The pin creation modal', () => {
   });
 
   test('will handle a loaded image with an error', () => {
-    const wrapper = shallow(<PinCreate {...props} />);
+    const wrapper = shallow<PinCreate>(<PinCreate {...props} />);
     wrapper.setState({ isLoaded: false });
     expect(wrapper.state().isLoaded).toBe(false);
     const img = wrapper.find({ id: 'new-pin-image' });
@@ -71,7 +69,7 @@ describe('The pin creation modal', () => {
   });
 
   test('will handle a loaded image without an error', () => {
-    const wrapper = shallow(<PinCreate {...props} />);
+    const wrapper = shallow<PinCreate>(<PinCreate {...props} />);
     wrapper.setState({ isLoaded: false });
     expect(wrapper.state().isLoaded).toBe(false);
     const img = wrapper.find({ id: 'new-pin-image' });
@@ -81,35 +79,35 @@ describe('The pin creation modal', () => {
   });
 
   test('will handle changes in description', () => {
-    const wrapper = shallow(<PinCreate {...props} />);
+    const wrapper = shallow<PinCreate>(<PinCreate {...props} />);
     const description = wrapper.find({ id: 'pin-description' });
     description.props().onChange({ target: { value: 'abc' } });
     expect(wrapper.state().description).toBe('abc');
   });
 
   test('will handle changes in image links', () => {
-    const wrapper = shallow(<PinCreate {...props} />);
+    const wrapper = shallow<PinCreate>(<PinCreate {...props} />);
     const imgLink = wrapper.find({ id: 'pin-img-link' });
     imgLink.props().onChange({ target: { value: 'https://abc.com' } });
     expect(wrapper.state().picPreview).toBe('https://abc.com');
   });
 
   test('will handle changes in image links with http', () => {
-    const wrapper = shallow(<PinCreate {...props} />);
+    const wrapper = shallow<PinCreate>(<PinCreate {...props} />);
     const imgLink = wrapper.find({ id: 'pin-img-link' });
     imgLink.props().onChange({ target: { value: 'http://abc.com' } });
     expect(wrapper.state().picPreview).toBe('https://abc.com');
   });
 
   test('will handle changes in image links with data protocol', () => {
-    const wrapper = shallow(<PinCreate {...props} />);
+    const wrapper = shallow<PinCreate>(<PinCreate {...props} />);
     const imgLink = wrapper.find({ id: 'pin-img-link' });
     imgLink.props().onChange({ target: { value: 'data:abc.com' } });
     expect(wrapper.state().picPreview).toBe('data:abc.com');
   });
 
   test('will handle changes in image links with invalid url', () => {
-    const wrapper = shallow(<PinCreate {...props} />);
+    const wrapper = shallow<PinCreate>(<PinCreate {...props} />);
     const imgLink = wrapper.find({ id: 'pin-img-link' });
     imgLink.props().onChange({ target: { value: 'htt://abc.com' } });
     expect(wrapper.state().picPreview).toBe('');
@@ -122,30 +120,38 @@ describe('The pin creation modal', () => {
       description: 'abcde',
       showErrorImage: false,
     });
-    const SavePin = wrapper.find('SavePin');
+    const SavePin: EnzymePropSelector = wrapper.find('SavePin');
     expect(SavePin.props().isDuplicateError).toBe(true);
   });
 
   test('will handle successfully uploading images', async () => {
-    utils.encodeImageFileAsURL = jest.fn(() => Promise.resolve('data:image successfully encoded'));
-    const wrapper = shallow(<PinCreate {...props} />);
+    jest
+      .spyOn(utils, 'encodeImageFileAsURL')
+      .mockImplementationOnce(() => Promise.resolve('data:image successfully encoded'));
+    const wrapper = shallow<PinCreate>(<PinCreate {...props} />);
     // turn upload switch on
-    const cardHeader = wrapper.find('ForwardRef(CardHeader)');
+    const cardHeader: EnzymePropSelector = wrapper.find('ForwardRef(CardHeader)');
     const uploadSwitch = cardHeader.props().action.props.control.props;
 
     wrapper.setState({ isLoaded: true, isError: true });
     uploadSwitch.onChange();
-    await wrapper.instance().handleUploadedImage({ target: { files: ['an image'] } });
+    const instance = wrapper.instance() as PinCreate;
+    // TODO: Fix is any declaration
+    await instance.handleUploadedImage({ target: { files: ['a file'] } } as any);
     expect(wrapper.state().picPreview).toBe('data:image successfully encoded');
     expect(wrapper.state().isError).toBe(false);
     expect(wrapper.state().isLoaded).toBe(false);
   });
 
   test('will handle uploading image failures', async () => {
-    utils.encodeImageFileAsURL = jest.fn(() => Promise.reject(new Error()));
-    const wrapper = shallow(<PinCreate {...props} />);
+    jest
+      .spyOn(utils, 'encodeImageFileAsURL')
+      .mockImplementationOnce(() => Promise.reject(new Error()));
+    const wrapper = shallow<PinCreate>(<PinCreate {...props} />);
     wrapper.setState({ isLoaded: true, isError: false, picPreview: 'stub_url' });
-    await wrapper.instance().handleUploadedImage({ target: { files: ['an image'] } });
+    const instance = wrapper.instance() as PinCreate;
+    // TODO: Fix is any declaration
+    await instance.handleUploadedImage({ target: { files: ['a file'] } } as any);
     expect(wrapper.state().picPreview).toBe('');
     expect(wrapper.state().isError).toBe(true);
     expect(wrapper.state().isLoaded).toBe(false);
@@ -158,7 +164,7 @@ describe('The pin creation modal', () => {
       description: 'abcde',
       showErrorImage: false,
     });
-    const SavePin = wrapper.find('SavePin');
+    const SavePin: EnzymePropSelector = wrapper.find('SavePin');
     expect(SavePin.props().isDuplicateError).toBe(false);
     SavePin.props().savePic();
     jest.advanceTimersByTime(500);

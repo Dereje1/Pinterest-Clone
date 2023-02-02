@@ -21,7 +21,7 @@ exports[`The ImageBuild component will render.... 1`] = `
         pins={
           [
             {
-              "_id": 1,
+              "_id": "1",
               "comments": [
                 {
                   "_id": "Comment_id_1",
@@ -64,7 +64,7 @@ exports[`The ImageBuild component will render.... 1`] = `
               ],
             },
             {
-              "_id": 2,
+              "_id": "2",
               "comments": [],
               "createdAt": "2020-12-25T00:00:00.000+00:00",
               "hasSaved": true,
@@ -96,7 +96,7 @@ exports[`The ImageBuild component will render.... 1`] = `
               ],
             },
             {
-              "_id": 3,
+              "_id": "3",
               "comments": [],
               "createdAt": "2020-12-25T00:00:00.000+00:00",
               "hasSaved": false,

@@ -2,13 +2,14 @@
  * @jest-environment jsdom
  */
 import React from 'react';
-import { shallow } from 'enzyme';
+import { EnzymePropSelector, shallow } from 'enzyme';
 import toJson from 'enzyme-to-json';
 import { Mypins, mapStateToProps } from '../../../../../client/src/components/mypins/mypins';
 import RESTcall from '../../../../../client/src/crud';
-import { pinsStub } from '../../../stub';
+import { pinsStub, reduxStub } from '../../../stub';
 
 jest.mock('../../../../../client/src/crud');
+const mockedRESTcall = jest.mocked(RESTcall);
 
 describe('The Mypins Component', () => {
   let props;
@@ -25,7 +26,7 @@ describe('The Mypins Component', () => {
   });
   afterEach(() => {
     props = null;
-    RESTcall.mockClear();
+    mockedRESTcall.mockClear();
   });
 
   test('Mypins landing page will render nothing if not authenticated', async () => {
@@ -65,33 +66,33 @@ describe('The Mypins Component', () => {
   test('ImageBuild sub-component shall recieve the pins owned as props', async () => {
     const wrapper = shallow(<Mypins {...props} />);
     await Promise.resolve();
-    const imageBuild = wrapper.find('ImageBuild');
+    const imageBuild: EnzymePropSelector = wrapper.find('ImageBuild');
     const displayedPinList = imageBuild.props().pinList;
     expect(displayedPinList).toStrictEqual([pinsStub[2]]);
-    expect(RESTcall).toHaveBeenCalledTimes(1);
-    expect(RESTcall).toHaveBeenCalledWith({ address: '/api/mypins', method: 'get', payload: undefined });
+    expect(mockedRESTcall).toHaveBeenCalledTimes(1);
+    expect(mockedRESTcall).toHaveBeenCalledWith({ address: '/api/mypins', method: 'get', payload: undefined });
   });
 
   test('ImageBuild sub-component shall recieve the pins saved as props', async () => {
     const wrapper = shallow(<Mypins {...props} />);
     await Promise.resolve();
-    const selector = wrapper.find('UserPinsSelector');
+    const selector: EnzymePropSelector = wrapper.find('UserPinsSelector');
     selector.props().setDisplaySetting('saved');
-    const imageBuild = wrapper.find('ImageBuild');
+    const imageBuild: EnzymePropSelector = wrapper.find('ImageBuild');
     const displayedPinList = imageBuild.props().pinList;
     expect(displayedPinList).toStrictEqual([pinsStub[1]]);
-    expect(RESTcall).toHaveBeenCalledTimes(1);
-    expect(RESTcall).toHaveBeenCalledWith({ address: '/api/mypins', method: 'get', payload: undefined });
+    expect(mockedRESTcall).toHaveBeenCalledTimes(1);
+    expect(mockedRESTcall).toHaveBeenCalledWith({ address: '/api/mypins', method: 'get', payload: undefined });
   });
 
   test('ImageBuild sub-component will signal to unpin a pin from the db', async () => {
-    const wrapper = shallow(<Mypins {...props} />);
+    const wrapper = shallow<Mypins>(<Mypins {...props} />);
     await Promise.resolve();
-    const imageBuild = wrapper.find('ImageBuild');
-    imageBuild.props().deletePin({ _id: 2 });
+    const imageBuild: EnzymePropSelector = wrapper.find('ImageBuild');
+    imageBuild.props().deletePin({ _id: '2' });
     expect(wrapper.state().pinList).toStrictEqual([pinsStub[2]]);
-    expect(RESTcall).toHaveBeenCalledTimes(2);
-    expect(RESTcall.mock.calls).toEqual([
+    expect(mockedRESTcall).toHaveBeenCalledTimes(2);
+    expect(mockedRESTcall.mock.calls).toEqual([
       [{ address: '/api/mypins', method: 'get', payload: undefined }],
       [
         {
@@ -104,12 +105,13 @@ describe('The Mypins Component', () => {
   });
 
   test('ImageBuild sub-component will signal (with modal) to delete a pin from the db', async () => {
-    const wrapper = shallow(<Mypins {...props} />);
+    const wrapper = shallow<Mypins>(<Mypins {...props} />);
     await Promise.resolve();
-    wrapper.instance().deletePic({ _id: 3, owns: true });
+    const instance = wrapper.instance() as Mypins;
+    instance.deletePic({ _id: '3', owns: true, imgLink: '' });
     expect(wrapper.state().pinList).toStrictEqual([pinsStub[1]]);
-    expect(RESTcall).toHaveBeenCalledTimes(2);
-    expect(RESTcall.mock.calls).toEqual([
+    expect(mockedRESTcall).toHaveBeenCalledTimes(2);
+    expect(mockedRESTcall.mock.calls).toEqual([
       [{ address: '/api/mypins', method: 'get', payload: undefined }],
       [
         {
@@ -122,29 +124,29 @@ describe('The Mypins Component', () => {
   });
 
   test('ImageBuild sub-component will show alert to permanently delete a pin if owner', async () => {
-    const wrapper = shallow(<Mypins {...props} />);
+    const wrapper = shallow<Mypins>(<Mypins {...props} />);
     await Promise.resolve();
-    const imageBuild = wrapper.find('ImageBuild');
+    const imageBuild: EnzymePropSelector = wrapper.find('ImageBuild');
     imageBuild.props().deletePin({ _id: 3, owns: true, imgDescription: 'deletable' });
     expect(wrapper.state().showDeleteImageModal).toBe(true);
     expect(wrapper.state().deletableImgInfo).toStrictEqual({ _id: 3, imgDescription: 'deletable', owns: true });
   });
 
   test('will cancel signal to delete/unpin if pincreate modal is showing', async () => {
-    const wrapper = shallow(<Mypins {...props} />);
+    const wrapper = shallow<Mypins>(<Mypins {...props} />);
     wrapper.setState({ displayPinCreate: true });
     await Promise.resolve();
-    const imageBuild = wrapper.find('ImageBuild');
+    const imageBuild: EnzymePropSelector = wrapper.find('ImageBuild');
     imageBuild.props().deletePin({ _id: 3 });
     expect(wrapper.state().pinList).toStrictEqual([pinsStub[1], pinsStub[2]]);
-    expect(RESTcall).toHaveBeenCalledTimes(1);
-    expect(RESTcall.mock.calls).toEqual([
+    expect(mockedRESTcall).toHaveBeenCalledTimes(1);
+    expect(mockedRESTcall.mock.calls).toEqual([
       [{ address: '/api/mypins', method: 'get', payload: undefined }],
     ]);
   });
 
   test('Will display the form to create a new pin', async () => {
-    const wrapper = shallow(<Mypins {...props} />);
+    const wrapper = shallow<Mypins>(<Mypins {...props} />);
     await Promise.resolve();
     expect(wrapper.state().displayPinCreate).toBe(false);
     const form = wrapper.find({ id: 'createpin' });
@@ -153,10 +155,10 @@ describe('The Mypins Component', () => {
   });
 
   test('PinCreate sub-component will signal to add a new pin to the db and state', async () => {
-    const wrapper = shallow(<Mypins {...props} />);
+    const wrapper = shallow<Mypins>(<Mypins {...props} />);
     await Promise.resolve();
     wrapper.setState({ displayPinCreate: true });
-    const createPin = wrapper.find('PinCreate');
+    const createPin: EnzymePropSelector = wrapper.find('PinCreate');
     createPin.props().savePin({});
     await Promise.resolve();
     expect(wrapper.state().pinList.length).toBe(3);
@@ -174,23 +176,31 @@ describe('The Mypins Component', () => {
   });
 
   test('PinCreate sub-component will signal to reset the display of the pin creation modal', async () => {
-    const wrapper = shallow(<Mypins {...props} />);
+    const wrapper = shallow<Mypins>(<Mypins {...props} />);
     wrapper.setState({ displayPinCreate: true });
     await Promise.resolve();
     expect(wrapper.state().displayPinCreate).toBe(true);
-    const createPin = wrapper.find('PinCreate');
+    const createPin: EnzymePropSelector = wrapper.find('PinCreate');
     createPin.props().reset();
     expect(wrapper.state().displayPinCreate).toBe(false);
   });
 
   test('Will cancel pin delete on alert', async () => {
-    const wrapper = shallow(<Mypins {...props} />);
+    const wrapper = shallow<Mypins>(<Mypins {...props} />);
     wrapper.setState({
       showDeleteImageModal: true,
       deletableImgInfo: {
-        _id: 3, owns: true, imgDescription: 'deletable',
+        _id: '3',
+        owns: true,
+        imgDescription: 'deletable',
+        imgLink: '',
+        owner: { name: '', service: '', userId: '' },
+        savedBy: [],
+        hasSaved: false,
+        createdAt: '',
+        comments: [],
+        tags: [],
       },
-      displayPinZoom: false,
     });
     await Promise.resolve();
     const cancelAlert = wrapper.find({ id: 'cancel-delete-alert' });
@@ -200,13 +210,21 @@ describe('The Mypins Component', () => {
   });
 
   test('Will delete pin on alert', async () => {
-    const wrapper = shallow(<Mypins {...props} />);
+    const wrapper = shallow<Mypins>(<Mypins {...props} />);
     wrapper.setState({
       showDeleteImageModal: true,
       deletableImgInfo: {
-        _id: 3, owns: true, imgDescription: 'deletable',
+        _id: '3',
+        owns: true,
+        imgDescription: 'deletable',
+        imgLink: '',
+        owner: { name: '', service: '', userId: '' },
+        savedBy: [],
+        hasSaved: false,
+        createdAt: '',
+        comments: [],
+        tags: [],
       },
-      displayPinZoom: false,
     });
     await Promise.resolve();
     const deleteAlert = wrapper.find({ id: 'resume-delete-alert' });
@@ -214,8 +232,8 @@ describe('The Mypins Component', () => {
     expect(wrapper.state().showDeleteImageModal).toBe(false);
     expect(wrapper.state().deletableImgInfo).toBe(null);
     expect(wrapper.state().pinList).toStrictEqual([pinsStub[1]]);
-    expect(RESTcall).toHaveBeenCalledTimes(2);
-    expect(RESTcall.mock.calls).toEqual([
+    expect(mockedRESTcall).toHaveBeenCalledTimes(2);
+    expect(mockedRESTcall.mock.calls).toEqual([
       [{ address: '/api/mypins', method: 'get', payload: undefined }],
       [
         {
@@ -228,7 +246,7 @@ describe('The Mypins Component', () => {
   });
 
   test('will map redux state to the component props', () => {
-    const compProps = mapStateToProps({ user: 'user props' });
-    expect(compProps).toEqual({ user: 'user props' });
+    const compProps = mapStateToProps(reduxStub);
+    expect(compProps).toEqual({ user: reduxStub.user });
   });
 });

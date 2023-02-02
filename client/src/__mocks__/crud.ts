@@ -9,17 +9,17 @@ const restMock = jest.fn().mockImplementation((...args) => {
     return Promise.resolve([]);
   } if (address.includes('/api/pin') && method === 'put' && !payload) {
     return Promise.resolve({
-      _id: 1,
+      _id: '1',
       savedBy: [{ name: 'tester displayName', userId: 'tester id', service: 'google' }],
     });
   } if (address.includes('/api/unpin') && method === 'put' && !payload) {
     return Promise.resolve({
-      _id: 2,
+      _id: '2',
       savedBy: [{ name: 'savedBy - id-2', service: 'google', userId: '2' }],
     });
   } if (address.includes('/api/comment') && method === 'put') {
     return Promise.resolve({
-      _id: 2,
+      _id: '2',
       comments: ['tester comment'],
     });
   } if (address.includes('/api/mypins') && method === 'get' && !payload) {
@@ -62,7 +62,7 @@ const restMock = jest.fn().mockImplementation((...args) => {
     });
   } if (address.includes('/api/updateTags') && method === 'put') {
     return Promise.resolve({
-      _id: 2,
+      _id: '2',
       tags: [{ _id: 6, tag: 'tester tag' }],
     });
   } if (address.includes('/api/getTags') && method === 'get' && !payload) {

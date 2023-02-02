@@ -48,7 +48,7 @@ exports[`The pin zoom modal will render 1`] = `
               deletePin={null}
               element={
                 {
-                  "_id": 1,
+                  "_id": "1",
                   "comments": [
                     {
                       "_id": "Comment_id_1",

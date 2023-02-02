@@ -53,6 +53,6 @@ describe('The MasonryPins component', () => {
     const imageBox: EnzymePropSelector = wrapper.find({ className: 'image-box' }).at(0);
     const img = imageBox.find('img');
     img.props().onError();
-    expect(props.onBrokenImage).toHaveBeenCalledWith(1);
+    expect(props.onBrokenImage).toHaveBeenCalledWith('1');
   });
 });

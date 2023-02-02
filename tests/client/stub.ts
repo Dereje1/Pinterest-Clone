@@ -1,7 +1,7 @@
 // eslint-disable-next-line import/prefer-default-export
 export const pinsStub = [
   {
-    _id: 1,
+    _id: '1',
     imgDescription: 'imgDescription id-1',
     imgLink: 'imgLink id-1',
     owner: { name: 'owner id-1', service: 'google', userId: '1' },
@@ -23,7 +23,7 @@ export const pinsStub = [
     tags: [{ _id: 'tag_id_1', tag: 'tag 1' }, { _id: 'tag_id_2', tag: 'tag 2' }],
   },
   {
-    _id: 2,
+    _id: '2',
     imgDescription: 'imgDescription id-2',
     imgLink: 'imgLink id-2',
     owner: { name: 'owner id-2', service: 'twitter', userId: '2' },
@@ -38,7 +38,7 @@ export const pinsStub = [
     tags: [{ _id: 'tag_id_1', tag: 'tag 1' }],
   },
   {
-    _id: 3,
+    _id: '3',
     imgDescription: 'imgDescription id-3',
     imgLink: 'imgLink id-3',
     owner: { name: 'owner id-3', service: 'github', userId: '3' },

@@ -99,7 +99,7 @@ exports[`The comments window will render with comments 1`] = `
         commentFormIsOpen={false}
         pinInformation={
           {
-            "_id": 1,
+            "_id": "1",
             "comments": [
               {
                 "_id": "Comment_id_1",
@@ -327,7 +327,7 @@ exports[`The comments window will render with no comments for authenticated user
         commentFormIsOpen={false}
         pinInformation={
           {
-            "_id": 2,
+            "_id": "2",
             "comments": [],
             "createdAt": "2020-12-25T00:00:00.000+00:00",
             "hasSaved": true,
@@ -506,7 +506,7 @@ exports[`The comments window will render with no comments for unauthenticated us
         commentFormIsOpen={false}
         pinInformation={
           {
-            "_id": 2,
+            "_id": "2",
             "comments": [],
             "createdAt": "2020-12-25T00:00:00.000+00:00",
             "hasSaved": true,

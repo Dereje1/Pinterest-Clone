@@ -128,7 +128,7 @@ describe('The ImageBuild component', () => {
     const wrapper = shallow(<ImageBuild {...props} />);
     let masonry: EnzymePropSelector = wrapper.find('MasonryPins');
     expect(masonry.props().pins).toEqual(pinsStub);
-    masonry.props().onBrokenImage(2);
+    masonry.props().onBrokenImage('2');
     masonry = wrapper.find('MasonryPins');
     expect(masonry.props().pins).toEqual([pinsStub[0], pinsStub[2]]);
   });
@@ -141,7 +141,7 @@ describe('The ImageBuild component', () => {
     const wrapper = shallow(<ImageBuild {...updatedProps} />);
     let masonry: EnzymePropSelector = wrapper.find('MasonryPins');
     expect(masonry.props().pins).toEqual(pinsStub);
-    masonry.props().onBrokenImage(2);
+    masonry.props().onBrokenImage('2');
     masonry = wrapper.find('MasonryPins');
     expect(masonry.props().pins[1].imgDescription).toBe('Broken Img - imgDescription id-2');
   });
@@ -184,7 +184,7 @@ describe('The ImageBuild component', () => {
     });
     // assert that new comment is reflected in zoomed pin
     pinZoom = wrapper.find('PinZoom');
-    expect(pinZoom.props().zoomInfo[0]).toEqual({ _id: 2, comments: ['tester comment'] });
+    expect(pinZoom.props().zoomInfo[0]).toEqual({ _id: '2', comments: ['tester comment'] });
   });
 
   test('will close pinzoom if zoomed pin disapears (ex. deleted from profile)', () => {
@@ -292,6 +292,6 @@ describe('The ImageBuild component', () => {
     });
     // assert that new comment is reflected in zoomed pin
     pinZoom = wrapper.find('PinZoom');
-    expect(pinZoom.props().zoomInfo[0]).toEqual({ _id: 2, tags: [{ _id: 6, tag: 'tester tag' }] });
+    expect(pinZoom.props().zoomInfo[0]).toEqual({ _id: '2', tags: [{ _id: 6, tag: 'tester tag' }] });
   });
 });
