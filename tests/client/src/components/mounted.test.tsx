@@ -11,8 +11,12 @@ import { act } from 'react-dom/test-utils';
 import { mount } from 'enzyme';
 import { Provider } from 'react-redux';
 import { MemoryRouter } from 'react-router-dom';
+import { createStore } from 'redux';
+import reducers from '../../../../client/src/reducers/index';
 import Search from '../../../../client/src/components/menu/search';
-import Profile from '../../../../client/src/components/profile/Profile.tsx';
+import Profile from '../../../../client/src/components/profile/Profile';
+
+const store = createStore(reducers);
 
 test('Will render fully mounted search component wrapped in the redux provider without errors', () => {
   const props = {
@@ -23,14 +27,7 @@ test('Will render fully mounted search component wrapped in the redux provider w
     closeSearch: jest.fn(),
   };
   mount(
-    <Provider store={
-      {
-        getState: jest.fn(() => ({ search: { term: null, tagSearch: false } })),
-        subscribe: jest.fn(),
-        dispatch: jest.fn(),
-      }
-    }
-    >
+    <Provider store={store}>
       <Search {...props} />
     </Provider>,
   );
@@ -38,14 +35,7 @@ test('Will render fully mounted search component wrapped in the redux provider w
 
 test('Will render fully mounted Profile component wrapped in the redux provider without errors', async () => {
   mount(
-    <Provider store={
-      {
-        getState: jest.fn(() => ({ user: {} })),
-        subscribe: jest.fn(),
-        dispatch: jest.fn(),
-      }
-    }
-    >
+    <Provider store={store}>
       <MemoryRouter>
         <Profile />
       </MemoryRouter>
