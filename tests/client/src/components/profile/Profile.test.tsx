@@ -4,9 +4,12 @@
 /* eslint-disable import/order */
 /* eslint-disable import/first */
 import React from 'react';
-import { shallow } from 'enzyme';
+import { EnzymePropSelector, shallow } from 'enzyme';
 import toJson from 'enzyme-to-json';
-import Profile from '../../../../../client/src/components/profile/Profile.tsx';
+import Profile from '../../../../../client/src/components/profile/Profile';
+import * as redux from 'react-redux';
+import * as router from 'react-router-dom';
+import RESTcall from '../../../../../client/src/crud';
 
 // Mock router hooks
 jest.mock('react-router-dom', () => ({
@@ -26,15 +29,11 @@ jest.mock('react-redux', () => ({
 
 // Mock REST calls
 jest.mock('../../../../../client/src/crud');
-
-import { useSelector } from 'react-redux';
-import { useHistory } from 'react-router-dom';
-import RESTcall from '../../../../../client/src/crud';
+const mockedRESTcall = jest.mocked(RESTcall);
 
 describe('The profile page', () => {
   afterEach(() => {
-    useSelector.mockClear();
-    RESTcall.mockClear();
+    mockedRESTcall.mockClear();
   });
   test('Will render for pins created by the user', async () => {
     const wrapper = shallow(<Profile />);
@@ -45,20 +44,22 @@ describe('The profile page', () => {
   test('Will render for pins saved by the user', async () => {
     const wrapper = shallow(<Profile />);
     await Promise.resolve();
-    const selector = wrapper.find('UserPinsSelector');
+    const selector: EnzymePropSelector = wrapper.find('UserPinsSelector');
     selector.props().setDisplaySetting('saved');
     expect(toJson(wrapper)).toMatchSnapshot();
   });
 
   test('Will render signin for non-authenticated users', async () => {
     // Mock redux hooks
-    useSelector.mockImplementationOnce(() => ({ authenticated: false }));
+    jest
+      .spyOn(redux, 'useSelector')
+      .mockImplementationOnce(() => ({ authenticated: false }));
     const wrapper = shallow(<Profile />);
     expect(toJson(wrapper)).toMatchSnapshot();
   });
 
   test('Will render no image sign if user has not pinned or created any', async () => {
-    RESTcall.mockImplementationOnce(() => Promise.resolve({
+    mockedRESTcall.mockImplementationOnce(() => Promise.resolve({
       createdPins: [],
       savedPins: [],
       user: {
@@ -72,26 +73,33 @@ describe('The profile page', () => {
 
   test('Will redirect to server response if query can not be handled', async () => {
     const push = jest.fn();
-    useHistory.mockImplementation(() => ({ push }));
-    RESTcall.mockImplementationOnce(() => Promise.resolve({ redirect: '/serverresponse' }));
+    const hist = router.useHistory();
+    jest
+      .spyOn(router, 'useHistory')
+      .mockImplementation(() => ({ ...hist, push }));
+    mockedRESTcall.mockImplementationOnce(() => Promise.resolve({ redirect: '/serverresponse' }));
     shallow(<Profile />);
     await Promise.resolve();
     expect(push).toHaveBeenCalledWith('/serverresponse');
   });
 
   test('Will redirect to root if user chooses not to sign in', async () => {
-    // Mock redux hooks
     const push = jest.fn();
-    useSelector.mockImplementationOnce(() => ({ authenticated: false }));
-    useHistory.mockImplementation(() => ({ push }));
+    const hist = router.useHistory();
+    jest
+      .spyOn(router, 'useHistory')
+      .mockImplementation(() => ({ ...hist, push }));
+    jest
+      .spyOn(redux, 'useSelector')
+      .mockImplementationOnce(() => ({ authenticated: false }));
     const wrapper = shallow(<Profile />);
-    const signin = wrapper.find('SignIn');
+    const signin: EnzymePropSelector = wrapper.find('SignIn');
     signin.props().removeSignin();
     expect(push).toHaveBeenCalledWith('/');
   });
 
   test('Will not render loading if not ready or REST call is rejected', async () => {
-    RESTcall.mockImplementationOnce(() => Promise.reject());
+    mockedRESTcall.mockImplementationOnce(() => Promise.reject());
     const wrapper = shallow(<Profile />);
     await Promise.resolve();
     expect(wrapper.find('Loading').length).toBe(1);

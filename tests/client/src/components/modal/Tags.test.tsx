@@ -117,7 +117,6 @@ describe('The tags component', () => {
     jest
       .spyOn(router, 'useHistory')
       .mockImplementation(() => ({ ...hist, push }));
-    // useHistory.mockImplementation(() => ({ push }));
 
     const wrapper = shallow(<Tags {...props} />);
     const chip = wrapper.find({ label: 'TAG 1' });
