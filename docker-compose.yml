@@ -14,3 +14,4 @@ services:
       - 8080:3000
     environment:
       - MONGOLAB_URI=mongodb://root:123456@mongodb:27017/
+      - NODE_ENV=production

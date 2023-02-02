@@ -5,7 +5,8 @@ WORKDIR /tmp
 COPY . .
 #Install packages and build client
 RUN npm install
-RUN npm run build
+RUN npm run build_client
+RUN npm run build_server
 #Expose default port and run
 EXPOSE 3000
 CMD [ "npm", "start" ]
