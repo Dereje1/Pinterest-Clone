@@ -20,7 +20,7 @@ describe('Loading...', () => {
 describe('The user pins selector', () => {
   test('Will highlight the owned button', () => {
     const setDisplaySetting = jest.fn();
-    const wrapper = shallow(<UserPinsSelector setDisplaySetting={setDisplaySetting} displaySetting="created" />);
+    const wrapper = shallow<typeof UserPinsSelector>(<UserPinsSelector setDisplaySetting={setDisplaySetting} displaySetting="created" />);
     // for owned button
     const ownedButton = wrapper.find('ForwardRef(Button)').at(0);
     const savedButton = wrapper.find('ForwardRef(Button)').at(1);

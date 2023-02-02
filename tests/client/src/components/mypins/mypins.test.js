@@ -6,7 +6,7 @@ import { shallow } from 'enzyme';
 import toJson from 'enzyme-to-json';
 import { Mypins, mapStateToProps } from '../../../../../client/src/components/mypins/mypins';
 import RESTcall from '../../../../../client/src/crud';
-import { pinsStub } from '../../../pinsStub';
+import { pinsStub } from '../../../stub';
 
 jest.mock('../../../../../client/src/crud');
 

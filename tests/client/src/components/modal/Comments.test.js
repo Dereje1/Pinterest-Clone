@@ -2,7 +2,7 @@ import React from 'react';
 import { shallow } from 'enzyme';
 import toJson from 'enzyme-to-json';
 import Comments from '../../../../../client/src/components/modal/Comments';
-import { pinsStub } from '../../../pinsStub';
+import { pinsStub } from '../../../stub';
 
 describe('The comments window', () => {
   let props;

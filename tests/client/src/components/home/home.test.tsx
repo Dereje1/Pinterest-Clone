@@ -1,10 +1,11 @@
 import React from 'react';
-import { shallow } from 'enzyme';
-import { Home, mapStateToProps } from '../../../../../client/src/components/home/home.tsx';
+import { EnzymePropSelector, shallow } from 'enzyme';
+import { Home, mapStateToProps } from '../../../../../client/src/components/home/home';
 import RESTcall from '../../../../../client/src/crud';
-import { pinsStub } from '../../../pinsStub';
+import { pinsStub, reduxStub } from '../../../stub';
 
 jest.mock('../../../../../client/src/crud');
+const mockedRESTcall = jest.mocked(RESTcall);
 
 describe('The Home Component', () => {
   let props;
@@ -21,7 +22,7 @@ describe('The Home Component', () => {
     };
   });
   afterEach(() => {
-    RESTcall.mockClear();
+    mockedRESTcall.mockClear();
   });
   test('Shall not render if username has not been populated yet', () => {
     const updatedProps = {
@@ -36,14 +37,14 @@ describe('The Home Component', () => {
   });
 
   test('ImageBuild sub-component shall recieve the pins on CDM as props', async () => {
-    const wrapper = shallow(<Home {...props} />);
+    const wrapper = shallow<Home>(<Home {...props} />);
     await Promise.resolve();
-    const imageBuild = wrapper.find('ImageBuild');
+    const imageBuild: EnzymePropSelector = wrapper.find('ImageBuild');
     const displayedPinList = imageBuild.props().pinList;
     displayedPinList.sort((a, b) => a._id - b._id);
     expect(displayedPinList).toStrictEqual(pinsStub);
-    expect(RESTcall).toHaveBeenCalledTimes(1);
-    expect(RESTcall).toHaveBeenCalledWith({ address: '/api/home', method: 'get', payload: undefined });
+    expect(mockedRESTcall).toHaveBeenCalledTimes(1);
+    expect(mockedRESTcall).toHaveBeenCalledWith({ address: '/api/home', method: 'get', payload: undefined });
   });
 
   test('Will filter pins if matching search found for description', async () => {
@@ -51,9 +52,9 @@ describe('The Home Component', () => {
       ...props,
       search: { term: 'id-3' },
     };
-    const wrapper = shallow(<Home {...updatedProps} />);
+    const wrapper = shallow<Home>(<Home {...updatedProps} />);
     await Promise.resolve();
-    const imageBuild = wrapper.find('ImageBuild');
+    const imageBuild: EnzymePropSelector = wrapper.find('ImageBuild');
     const displayedPinList = imageBuild.props().pinList;
     expect(displayedPinList).toStrictEqual([pinsStub[2]]);
   });
@@ -65,13 +66,13 @@ describe('The Home Component', () => {
     };
     const wrapper = shallow(<Home {...updatedProps} />);
     await Promise.resolve();
-    const imageBuild = wrapper.find('ImageBuild');
+    const imageBuild: EnzymePropSelector = wrapper.find('ImageBuild');
     const displayedPinList = imageBuild.props().pinList;
     expect(displayedPinList).toStrictEqual([pinsStub[0]]);
   });
 
   test('Shall map redux state to component props', () => {
-    const mappedProps = mapStateToProps({ search: 'search state', user: 'user state' });
-    expect(mappedProps).toStrictEqual({ search: 'search state', user: 'user state' });
+    const mappedProps = mapStateToProps(reduxStub);
+    expect(mappedProps).toStrictEqual(reduxStub);
   });
 });

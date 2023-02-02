@@ -5,7 +5,7 @@ import React from 'react';
 import { shallow } from 'enzyme';
 import toJson from 'enzyme-to-json';
 import { PinZoom, StyledBadge } from '../../../../../client/src/components/modal/modalzoom';
-import { pinsStub } from '../../../pinsStub';
+import { pinsStub } from '../../../stub';
 
 jest.useFakeTimers();
 

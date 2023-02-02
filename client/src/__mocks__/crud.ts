@@ -1,4 +1,4 @@
-const { pinsStub } = require('../../../tests/client/pinsStub');
+const { pinsStub } = require('../../../tests/client/stub');
 
 const restMock = jest.fn().mockImplementation((...args) => {
   const [callInfo] = args;

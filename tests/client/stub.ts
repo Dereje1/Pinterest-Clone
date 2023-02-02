@@ -1,4 +1,5 @@
-const pinsStub = [
+// eslint-disable-next-line import/prefer-default-export
+export const pinsStub = [
   {
     _id: 1,
     imgDescription: 'imgDescription id-1',
@@ -53,4 +54,18 @@ const pinsStub = [
   },
 ];
 
-module.exports = { pinsStub };
+export const reduxStub = {
+  search: { term: null, tagSearch: false },
+  user: {
+    authenticated: false,
+    userIp: 'stub ip',
+    username: null,
+    displayName: null,
+    providers: {
+      twitter: false,
+      google: true,
+      github: true,
+    },
+    service: 'stub service',
+  },
+};

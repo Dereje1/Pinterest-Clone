@@ -10,7 +10,7 @@
     "server": "nodemon ./bin/www.ts",
     "dev": "concurrently --kill-others-on-fail \"npm run server\" \"npm run client\"",
     "lint": "./node_modules/.bin/eslint server client tests",
-    "test": "jest --watchAll",
+    "test": "jest --watch",
     "coverage": "jest --coverage",
     "compileTS": "tsc -p ./client && tsc -p ./server --noEmit"
   },

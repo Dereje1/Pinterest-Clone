@@ -5,6 +5,7 @@ import React from 'react';
 import { shallow } from 'enzyme';
 import toJson from 'enzyme-to-json';
 import { LoginButtons, mapStateToProps, ProviderButton } from '../../../../../client/src/components/signin/loginbuttons';
+import { reduxStub } from '../../../stub';
 
 describe('The sign in component', () => {
   let props;
@@ -77,34 +78,8 @@ describe('The sign in component', () => {
   });
 
   test('will map redux user state to props', () => {
-    const reduxProps = mapStateToProps({
-      user: {
-        authenticated: false,
-        userIp: 'stub ip',
-        username: null,
-        displayName: null,
-        providers: {
-          twitter: false,
-          google: true,
-          github: true,
-        },
-        service: 'stub service',
-      },
-    });
-    expect(reduxProps).toEqual({
-      user: {
-        authenticated: false,
-        userIp: 'stub ip',
-        username: null,
-        displayName: null,
-        providers: {
-          twitter: false,
-          google: true,
-          github: true,
-        },
-        service: 'stub service',
-      },
-    });
+    const reduxProps = mapStateToProps(reduxStub);
+    expect(reduxProps).toEqual({ user: reduxStub.user });
   });
 });
 

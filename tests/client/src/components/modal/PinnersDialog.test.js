@@ -2,7 +2,7 @@ import React from 'react';
 import { shallow } from 'enzyme';
 import toJson from 'enzyme-to-json';
 import PinnersDialog from '../../../../../client/src/components/modal/PinnersDialog';
-import { pinsStub } from '../../../pinsStub';
+import { pinsStub } from '../../../stub';
 
 test('The pinners dialog will render', () => {
   const wrapper = shallow(<PinnersDialog

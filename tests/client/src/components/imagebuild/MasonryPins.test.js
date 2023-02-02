@@ -5,7 +5,7 @@ import React from 'react';
 import { shallow } from 'enzyme';
 import toJson from 'enzyme-to-json';
 import MasonryPins from '../../../../../client/src/components/imagebuild/MasonryPins';
-import { pinsStub } from '../../../pinsStub';
+import { pinsStub } from '../../../stub';
 
 describe('The MasonryPins component', () => {
   let props;
