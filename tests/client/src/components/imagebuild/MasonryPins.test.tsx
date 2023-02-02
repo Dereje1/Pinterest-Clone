@@ -2,7 +2,7 @@
  * @jest-environment jsdom
  */
 import React from 'react';
-import { shallow } from 'enzyme';
+import { EnzymePropSelector, shallow } from 'enzyme';
 import toJson from 'enzyme-to-json';
 import MasonryPins from '../../../../../client/src/components/imagebuild/MasonryPins';
 import { pinsStub } from '../../../stub';
@@ -40,7 +40,7 @@ describe('The MasonryPins component', () => {
   test('will set the visibility of a pin if it is done loading', () => {
     const wrapper = shallow(<MasonryPins {...props} />);
     let imageBox = wrapper.find({ className: 'image-box' }).at(0);
-    let img = imageBox.find('img');
+    let img: EnzymePropSelector = imageBox.find('img');
     expect(img.props().style.visibility).toBe('hidden');
     img.props().onLoad();
     imageBox = wrapper.find({ className: 'image-box' }).at(0);
@@ -50,7 +50,7 @@ describe('The MasonryPins component', () => {
 
   test('will send parameters for an error in loading', () => {
     const wrapper = shallow(<MasonryPins {...props} />);
-    const imageBox = wrapper.find({ className: 'image-box' }).at(0);
+    const imageBox: EnzymePropSelector = wrapper.find({ className: 'image-box' }).at(0);
     const img = imageBox.find('img');
     img.props().onError();
     expect(props.onBrokenImage).toHaveBeenCalledWith(1);

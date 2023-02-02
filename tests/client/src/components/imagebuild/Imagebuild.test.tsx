@@ -2,13 +2,14 @@
  * @jest-environment jsdom
  */
 import React from 'react';
-import { shallow } from 'enzyme';
+import { EnzymePropSelector, shallow } from 'enzyme';
 import toJson from 'enzyme-to-json';
 import ImageBuild from '../../../../../client/src/components/imagebuild/Imagebuild';
 import RESTcall from '../../../../../client/src/crud';
 import { pinsStub } from '../../../stub';
 
 jest.mock('../../../../../client/src/crud');
+const mockedRESTcall = jest.mocked(RESTcall);
 
 describe('The ImageBuild component', () => {
   let props; let
@@ -29,12 +30,10 @@ describe('The ImageBuild component', () => {
       width: '90%',
       isNoFit: false,
     };
-    global.scrollTo = jest.fn();
   });
 
   afterEach(() => {
-    RESTcall.mockClear();
-    global.scrollTo = null;
+    mockedRESTcall.mockClear();
     parentDivStyleStub = null;
     props = null;
   });
@@ -46,9 +45,9 @@ describe('The ImageBuild component', () => {
 
   test('will call layoutComplete when masonry is done loading', () => {
     const wrapper = shallow(<ImageBuild {...props} />);
-    let Loading = wrapper.find('Loading');
+    let Loading: EnzymePropSelector = wrapper.find('Loading');
     expect(Loading.props().imagesLoaded).toBe(false);
-    let masonry = wrapper.find('MasonryPins');
+    let masonry: EnzymePropSelector = wrapper.find('MasonryPins');
     masonry.props().layoutComplete();
     Loading = wrapper.find('Loading');
     expect(Loading.props().imagesLoaded).toBe(true);
@@ -62,8 +61,8 @@ describe('The ImageBuild component', () => {
   test('will call pinEnlarge for a single pin', () => {
     document.body.scrollTop = 10;
     const wrapper = shallow(<ImageBuild {...props} />);
-    const masonry = wrapper.find('MasonryPins');
-    let pinZoom = wrapper.find('PinZoom');
+    const masonry: EnzymePropSelector = wrapper.find('MasonryPins');
+    let pinZoom: EnzymePropSelector = wrapper.find('PinZoom');
     expect(pinZoom.isEmptyRender()).toBe(true);
     masonry.props().pinEnlarge({ target: { className: 'any', naturalWidth: 600, naturalHeight: 600 } }, pinsStub[1]);
     pinZoom = wrapper.find('PinZoom');
@@ -76,8 +75,8 @@ describe('The ImageBuild component', () => {
 
   test('will dismiss pinEnlarge for clicks on the action button', () => {
     const wrapper = shallow(<ImageBuild {...props} />);
-    const masonry = wrapper.find('MasonryPins');
-    let pinZoom = wrapper.find('PinZoom');
+    const masonry: EnzymePropSelector = wrapper.find('MasonryPins');
+    let pinZoom: EnzymePropSelector = wrapper.find('PinZoom');
     expect(pinZoom.isEmptyRender()).toBe(true);
     masonry.props().pinEnlarge({ target: { className: 'actionbutton' } }, pinsStub[1]);
     pinZoom = wrapper.find('PinZoom');
@@ -87,8 +86,8 @@ describe('The ImageBuild component', () => {
   test('will dismiss pinEnlarge if pin already zoomed', () => {
     document.body.scrollTop = 10;
     const wrapper = shallow(<ImageBuild {...props} />);
-    let masonry = wrapper.find('MasonryPins');
-    let pinZoom = wrapper.find('PinZoom');
+    let masonry: EnzymePropSelector = wrapper.find('MasonryPins');
+    let pinZoom: EnzymePropSelector = wrapper.find('PinZoom');
     expect(pinZoom.isEmptyRender()).toBe(true);
     masonry.props().pinEnlarge({ target: { className: 'any', naturalWidth: 600, naturalHeight: 600 } }, pinsStub[1]);
     pinZoom = wrapper.find('PinZoom');
@@ -110,8 +109,8 @@ describe('The ImageBuild component', () => {
 
   test('will reset pinEnlarge', () => {
     const wrapper = shallow(<ImageBuild {...props} />);
-    const masonry = wrapper.find('MasonryPins');
-    let pinZoom = wrapper.find('PinZoom');
+    const masonry: EnzymePropSelector = wrapper.find('MasonryPins');
+    let pinZoom: EnzymePropSelector = wrapper.find('PinZoom');
     expect(pinZoom.isEmptyRender()).toBe(true);
     masonry.props().pinEnlarge({ target: { className: 'any', naturalWidth: 600, naturalHeight: 600 } }, pinsStub[1]);
     pinZoom = wrapper.find('PinZoom');
@@ -127,7 +126,7 @@ describe('The ImageBuild component', () => {
 
   test('will handle onBrokenImage for an image load error on home page', () => {
     const wrapper = shallow(<ImageBuild {...props} />);
-    let masonry = wrapper.find('MasonryPins');
+    let masonry: EnzymePropSelector = wrapper.find('MasonryPins');
     expect(masonry.props().pins).toEqual(pinsStub);
     masonry.props().onBrokenImage(2);
     masonry = wrapper.find('MasonryPins');
@@ -140,7 +139,7 @@ describe('The ImageBuild component', () => {
       displayBrokenImage: true,
     };
     const wrapper = shallow(<ImageBuild {...updatedProps} />);
-    let masonry = wrapper.find('MasonryPins');
+    let masonry: EnzymePropSelector = wrapper.find('MasonryPins');
     expect(masonry.props().pins).toEqual(pinsStub);
     masonry.props().onBrokenImage(2);
     masonry = wrapper.find('MasonryPins');
@@ -149,11 +148,11 @@ describe('The ImageBuild component', () => {
 
   test('will go to next section on infinite scroll', () => {
     const wrapper = shallow(<ImageBuild {...props} />);
-    const masonry = wrapper.find('MasonryPins');
+    const masonry: EnzymePropSelector = wrapper.find('MasonryPins');
     masonry.props().layoutComplete();
-    let Loading = wrapper.find('Loading');
+    let Loading: EnzymePropSelector = wrapper.find('Loading');
     expect(Loading.props().imagesLoaded).toBe(true);
-    const infiniteScroll = wrapper.find('InfiniteScroll');
+    const infiniteScroll: EnzymePropSelector = wrapper.find('InfiniteScroll');
     infiniteScroll.props().next();
     Loading = wrapper.find('Loading');
     expect(Loading.props().imagesLoaded).toBe(false);
@@ -161,8 +160,8 @@ describe('The ImageBuild component', () => {
 
   test('will update comments while pin is zoomed', async () => {
     document.body.scrollTop = 10;
-    const wrapper = shallow(<ImageBuild {...props} />);
-    const masonry = wrapper.find('MasonryPins');
+    const wrapper: EnzymePropSelector = shallow(<ImageBuild {...props} />);
+    const masonry: EnzymePropSelector = wrapper.find('MasonryPins');
     let pinZoom = wrapper.find('PinZoom');
     expect(pinZoom.isEmptyRender()).toBe(true);
     // zoom into pin and assert pin has correct info
@@ -175,8 +174,8 @@ describe('The ImageBuild component', () => {
     ]);
     // trigger a new comment
     await pinZoom.props().handleNewComment('tester comment');
-    expect(RESTcall).toHaveBeenCalledTimes(1);
-    expect(RESTcall).toHaveBeenCalledWith({
+    expect(mockedRESTcall).toHaveBeenCalledTimes(1);
+    expect(mockedRESTcall).toHaveBeenCalledWith({
       address: '/api/comment/2',
       method: 'put',
       payload: {
@@ -191,8 +190,8 @@ describe('The ImageBuild component', () => {
   test('will close pinzoom if zoomed pin disapears (ex. deleted from profile)', () => {
     document.body.scrollTop = 10;
     const wrapper = shallow(<ImageBuild {...props} />);
-    const masonry = wrapper.find('MasonryPins');
-    let pinZoom = wrapper.find('PinZoom');
+    const masonry: EnzymePropSelector = wrapper.find('MasonryPins');
+    let pinZoom: EnzymePropSelector = wrapper.find('PinZoom');
     expect(pinZoom.isEmptyRender()).toBe(true);
     // zoom into pin and assert pin has correct info
     masonry.props().pinEnlarge({ target: { className: 'any', naturalWidth: 600, naturalHeight: 600 } }, pinsStub[1]);
@@ -211,7 +210,7 @@ describe('The ImageBuild component', () => {
   test('ImageBuild sub-component will signal to pin/save an image', async () => {
     const wrapper = shallow(<ImageBuild {...props} />);
     // await Promise.resolve();
-    let masonry = wrapper.find('MasonryPins');
+    let masonry: EnzymePropSelector = wrapper.find('MasonryPins');
     let imageToPin = masonry.props().pins.filter((p) => p._id === pinsStub[0]._id)[0];
     let savedByNames = imageToPin.savedBy.map((s) => s.name);
     expect(savedByNames.includes('tester displayName')).toBe(false);
@@ -220,8 +219,8 @@ describe('The ImageBuild component', () => {
     [imageToPin] = masonry.props().pins.filter((p) => p._id === pinsStub[0]._id);
     savedByNames = imageToPin.savedBy.map((s) => s.name);
     expect(savedByNames.includes('tester displayName')).toBe(true);
-    expect(RESTcall).toHaveBeenCalledTimes(1);
-    expect(RESTcall.mock.calls).toEqual([
+    expect(mockedRESTcall).toHaveBeenCalledTimes(1);
+    expect(mockedRESTcall.mock.calls).toEqual([
       [
         {
           address: '/api/pin/1',
@@ -235,7 +234,7 @@ describe('The ImageBuild component', () => {
   test('ImageBuild sub-component will signal to unpin an image', async () => {
     const wrapper = shallow(<ImageBuild {...props} />);
     // await Promise.resolve();
-    let masonry = wrapper.find('MasonryPins');
+    let masonry: EnzymePropSelector = wrapper.find('MasonryPins');
     let imageToUnPin = masonry.props().pins.filter((p) => p._id === pinsStub[1]._id)[0];
     let savedByNames = imageToUnPin.savedBy.map((s) => s.name);
     expect(savedByNames.includes('savedBy - id-2git')).toBe(true);
@@ -244,8 +243,8 @@ describe('The ImageBuild component', () => {
     [imageToUnPin] = masonry.props().pins.filter((p) => p._id === pinsStub[1]._id);
     savedByNames = imageToUnPin.savedBy.map((s) => s.name);
     expect(savedByNames.includes('savedBy - id-2git')).toBe(false);
-    expect(RESTcall).toHaveBeenCalledTimes(1);
-    expect(RESTcall.mock.calls).toEqual([
+    expect(mockedRESTcall).toHaveBeenCalledTimes(1);
+    expect(mockedRESTcall.mock.calls).toEqual([
       [
         {
           address: '/api/unpin/2',
@@ -266,9 +265,9 @@ describe('The ImageBuild component', () => {
       },
     };
     const wrapper = shallow(<ImageBuild {...updatedProps} />);
-    const masonry = wrapper.find('MasonryPins');
+    const masonry: EnzymePropSelector = wrapper.find('MasonryPins');
     await masonry.props().pinImage(pinsStub[0]);
-    let signIn = wrapper.find('SignIn');
+    let signIn: EnzymePropSelector = wrapper.find('SignIn');
     expect(signIn.length).toBe(1);
     signIn.props().removeSignin();
     signIn = wrapper.find('SignIn');
@@ -277,16 +276,16 @@ describe('The ImageBuild component', () => {
 
   test('will send query to update tags while pin is zoomed', async () => {
     const wrapper = shallow(<ImageBuild {...props} />);
-    const masonry = wrapper.find('MasonryPins');
-    let pinZoom = wrapper.find('PinZoom');
+    const masonry: EnzymePropSelector = wrapper.find('MasonryPins');
+    let pinZoom: EnzymePropSelector = wrapper.find('PinZoom');
     expect(pinZoom.isEmptyRender()).toBe(true);
     // zoom into pin
     masonry.props().pinEnlarge({ target: { className: 'any', naturalWidth: 600, naturalHeight: 600 } }, pinsStub[1]);
     pinZoom = wrapper.find('PinZoom');
     // trigger a tag update
     await pinZoom.props().updateTags('tag_query');
-    expect(RESTcall).toHaveBeenCalledTimes(1);
-    expect(RESTcall).toHaveBeenCalledWith({
+    expect(mockedRESTcall).toHaveBeenCalledTimes(1);
+    expect(mockedRESTcall).toHaveBeenCalledWith({
       address: '/api/updateTags/tag_query',
       method: 'put',
       payload: undefined,
