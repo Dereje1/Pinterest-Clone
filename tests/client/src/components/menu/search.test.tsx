@@ -2,9 +2,9 @@
  * @jest-environment jsdom
  */
 import React from 'react';
-import { shallow } from 'enzyme';
+import { EnzymePropSelector, shallow } from 'enzyme';
 import toJson from 'enzyme-to-json';
-import { useSelector } from 'react-redux';
+import * as redux from 'react-redux';
 import Search from '../../../../../client/src/components/menu/search';
 
 // Mock redux hooks
@@ -52,7 +52,7 @@ describe('The search component', () => {
   test('will update the search in state and the redux store on change', () => {
     const updatedProps = { ...props, isShowing: true };
     const wrapper = shallow(<Search {...updatedProps} />);
-    let searchInput = wrapper.find('ForwardRef(InputBase)');
+    let searchInput: EnzymePropSelector = wrapper.find('ForwardRef(InputBase)');
     searchInput.props().onChange({ target: { value: 'abc' } });
     jest.advanceTimersByTime(1000);
     expect(props.searchUpdate).toHaveBeenCalledWith('abc');
@@ -62,7 +62,7 @@ describe('The search component', () => {
   test('will clear the search in state and the redux store on click', () => {
     const updatedProps = { ...props, isShowing: true };
     const wrapper = shallow(<Search {...updatedProps} />);
-    let searchInput = wrapper.find('ForwardRef(InputBase)');
+    let searchInput: EnzymePropSelector = wrapper.find('ForwardRef(InputBase)');
     // first call to change search terms
     searchInput.props().onChange({ target: { value: 'abc' } });
     jest.advanceTimersByTime(1000);
@@ -80,7 +80,7 @@ describe('The search component', () => {
   test('will clear the search in state and the redux store if arrow back is clicked', () => {
     const updatedProps = { ...props, isShowing: true };
     const wrapper = shallow(<Search {...updatedProps} />);
-    let searchInput = wrapper.find('ForwardRef(InputBase)');
+    let searchInput: EnzymePropSelector = wrapper.find('ForwardRef(InputBase)');
     // first call to change search terms
     searchInput.props().onChange({ target: { value: 'abc' } });
     jest.advanceTimersByTime(1000);
@@ -100,7 +100,7 @@ describe('The search component', () => {
     const updatedProps = { ...props, isShowing: true };
     const wrapper = shallow(<Search {...updatedProps} />);
     // update search val
-    let searchInput = wrapper.find('ForwardRef(InputBase)');
+    let searchInput: EnzymePropSelector = wrapper.find('ForwardRef(InputBase)');
     searchInput.props().onChange({ target: { value: 'abc' } });
     expect(wrapper.isEmptyRender()).toBe(false);
     // go back to a non searchable path
@@ -115,7 +115,9 @@ describe('The search component', () => {
   });
 
   test('will use the tag terms to search if change in redux store', () => {
-    useSelector.mockImplementationOnce(() => ({ term: 'tag search', tagSearch: true }));
+    jest
+      .spyOn(redux, 'useSelector')
+      .mockImplementationOnce(() => ({ term: 'tag search', tagSearch: true }));
     const wrapper = shallow(<Search {...props} isShowing />);
     jest.advanceTimersByTime(1000);
     const searchInput = wrapper.find('ForwardRef(InputBase)');
