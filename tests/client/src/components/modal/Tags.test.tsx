@@ -1,12 +1,13 @@
 import React from 'react';
-import { shallow } from 'enzyme';
+import { EnzymePropSelector, shallow } from 'enzyme';
 import toJson from 'enzyme-to-json';
-import { useHistory } from 'react-router-dom';
+import * as router from 'react-router-dom';
 import Tags, { ListItem } from '../../../../../client/src/components/modal/Tags';
 import { pinsStub } from '../../../stub';
 import RESTcall from '../../../../../client/src/crud';
 
 jest.mock('../../../../../client/src/crud');
+const mockedRESTcall = jest.mocked(RESTcall);
 
 const mockdispatch = jest.fn();
 // Mock router hooks
@@ -57,14 +58,14 @@ describe('The tags component', () => {
 
   test('will open and close the form to add tags', async () => {
     const wrapper = shallow(<Tags {...props} />);
-    const addTags = wrapper.find('ForwardRef(IconButton)');
-    let tagsForm = wrapper.find('TagsForm');
+    const addTags: EnzymePropSelector = wrapper.find('ForwardRef(IconButton)');
+    let tagsForm: EnzymePropSelector = wrapper.find('TagsForm');
     expect(tagsForm.isEmptyRender()).toBe(true);
     // trigger form show and test tags fetch
     await addTags.props().onClick();
     tagsForm = wrapper.find('TagsForm');
     expect(tagsForm.isEmptyRender()).toBe(false);
-    expect(RESTcall).toHaveBeenCalledWith({
+    expect(mockedRESTcall).toHaveBeenCalledWith({
       address: '/api/getTags',
       method: 'get',
       payload: undefined,
@@ -77,14 +78,14 @@ describe('The tags component', () => {
   });
 
   test('will add no suggested tags if rest call is rejected', async () => {
-    RESTcall.mockImplementationOnce(() => Promise.reject());
+    mockedRESTcall.mockImplementationOnce(() => Promise.reject());
     const wrapper = shallow(<Tags {...props} />);
-    const addTags = wrapper.find('ForwardRef(IconButton)');
+    const addTags: EnzymePropSelector = wrapper.find('ForwardRef(IconButton)');
     // trigger form show and add tag
     await addTags.props().onClick();
-    const tagsForm = wrapper.find('TagsForm');
+    const tagsForm: EnzymePropSelector = wrapper.find('TagsForm');
     expect(tagsForm.isEmptyRender()).toBe(false);
-    expect(RESTcall).toHaveBeenCalledWith({
+    expect(mockedRESTcall).toHaveBeenCalledWith({
       address: '/api/getTags',
       method: 'get',
       payload: undefined,
@@ -94,10 +95,10 @@ describe('The tags component', () => {
 
   test('will add a tag', () => {
     const wrapper = shallow(<Tags {...props} />);
-    const addTags = wrapper.find('ForwardRef(IconButton)');
+    const addTags: EnzymePropSelector = wrapper.find('ForwardRef(IconButton)');
     // trigger form show and add tag
     addTags.props().onClick();
-    const tagsForm = wrapper.find('TagsForm');
+    const tagsForm: EnzymePropSelector = wrapper.find('TagsForm');
     tagsForm.props().addTag('a new tag');
     expect(props.updateTags).toHaveBeenCalledWith('?pinID=1&tag=a new tag');
   });
@@ -112,7 +113,11 @@ describe('The tags component', () => {
 
   test('will search on tag click', () => {
     const push = jest.fn();
-    useHistory.mockImplementation(() => ({ push }));
+    const hist = router.useHistory();
+    jest
+      .spyOn(router, 'useHistory')
+      .mockImplementation(() => ({ ...hist, push }));
+    // useHistory.mockImplementation(() => ({ push }));
 
     const wrapper = shallow(<Tags {...props} />);
     const chip = wrapper.find({ label: 'TAG 1' });

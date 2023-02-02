@@ -1,5 +1,5 @@
 import React from 'react';
-import { shallow } from 'enzyme';
+import { EnzymePropSelector, shallow } from 'enzyme';
 import toJson from 'enzyme-to-json';
 import ModalActions from '../../../../../client/src/components/modal/ModalActions';
 
@@ -32,7 +32,7 @@ describe('Handling zoomed image action buttons', () => {
     };
     const preventDefault = jest.fn();
     const wrapper = shallow(<ModalActions {...updatedProps} />);
-    const iconButton = wrapper.find('ForwardRef(IconButton)');
+    const iconButton: EnzymePropSelector = wrapper.find('ForwardRef(IconButton)');
     iconButton.props().onClick();
     iconButton.props().onMouseDown({ preventDefault });
     expect(props.deletePin).toHaveBeenCalledWith({
@@ -54,7 +54,7 @@ describe('Handling zoomed image action buttons', () => {
       pinImage: null,
     };
     const wrapper = shallow(<ModalActions {...updatedProps} />);
-    const iconButton = wrapper.find('ForwardRef(IconButton)');
+    const iconButton: EnzymePropSelector = wrapper.find('ForwardRef(IconButton)');
     iconButton.props().onClick();
     expect(props.deletePin).toHaveBeenCalledWith({
       hasSaved: false,
@@ -76,7 +76,7 @@ describe('Handling zoomed image action buttons', () => {
 
     const wrapper = shallow(<ModalActions {...updatedProps} />);
     const preventDefault = jest.fn();
-    const iconButton = wrapper.find('ForwardRef(IconButton)');
+    const iconButton: EnzymePropSelector = wrapper.find('ForwardRef(IconButton)');
     iconButton.props().onClick();
     iconButton.props().onMouseDown({ preventDefault });
     expect(props.pinImage).toHaveBeenCalledWith({
@@ -104,7 +104,7 @@ describe('Handling zoomed image action buttons', () => {
     const preventDefault = jest.fn();
     const updatedProps = { ...props, deletePin: null };
     const wrapper = shallow(<ModalActions {...updatedProps} />);
-    const iconButton = wrapper.find('ForwardRef(IconButton)');
+    const iconButton: EnzymePropSelector = wrapper.find('ForwardRef(IconButton)');
     iconButton.props().onClick();
     iconButton.props().onMouseDown({ preventDefault });
     expect(props.pinImage).toHaveBeenCalledWith({

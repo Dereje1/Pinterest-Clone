@@ -1,5 +1,5 @@
 import React from 'react';
-import { shallow } from 'enzyme';
+import { EnzymePropSelector, shallow } from 'enzyme';
 import toJson from 'enzyme-to-json';
 import Comments from '../../../../../client/src/components/modal/Comments';
 import { pinsStub } from '../../../stub';
@@ -41,8 +41,8 @@ describe('The comments window', () => {
 
   test('will open and close the comment form', () => {
     const wrapper = shallow(<Comments {...props} />);
-    let fabButton = wrapper.find({ 'aria-label': 'add' });
-    let commentForm = wrapper.find('CommentForm');
+    let fabButton: EnzymePropSelector = wrapper.find({ 'aria-label': 'add' });
+    let commentForm: EnzymePropSelector = wrapper.find('CommentForm');
     // assert closed -> open
     expect(commentForm.isEmptyRender()).toBe(true);
     fabButton.props().onClick();
@@ -58,26 +58,26 @@ describe('The comments window', () => {
 
   test('will submit a comment', () => {
     const wrapper = shallow(<Comments {...props} />);
-    const fabButton = wrapper.find({ 'aria-label': 'add' });
+    const fabButton: EnzymePropSelector = wrapper.find({ 'aria-label': 'add' });
     fabButton.props().onClick();
-    const commentForm = wrapper.find('CommentForm');
+    const commentForm: EnzymePropSelector = wrapper.find('CommentForm');
     commentForm.props().handleSubmit('a new comment');
     expect(props.handleNewComment).toHaveBeenCalledWith('a new comment');
   });
 
   test('will not submit a comment if empty', () => {
     const wrapper = shallow(<Comments {...props} />);
-    const fabButton = wrapper.find({ 'aria-label': 'add' });
+    const fabButton: EnzymePropSelector = wrapper.find({ 'aria-label': 'add' });
     fabButton.props().onClick();
-    const commentForm = wrapper.find('CommentForm');
+    const commentForm: EnzymePropSelector = wrapper.find('CommentForm');
     commentForm.props().handleSubmit('      ');
     expect(props.handleNewComment).not.toHaveBeenCalled();
   });
 
   test('will open and close the pinners dialog', () => {
     const wrapper = shallow(<Comments {...props} />);
-    const pinnersButton = wrapper.find({ 'aria-label': 'pinners' });
-    let pinnersDialog = wrapper.find('PinnersDialog');
+    const pinnersButton: EnzymePropSelector = wrapper.find({ 'aria-label': 'pinners' });
+    let pinnersDialog: EnzymePropSelector = wrapper.find('PinnersDialog');
     // assert closed -> open
     expect(pinnersDialog.props().open).toBe(false);
     pinnersButton.props().onClick();

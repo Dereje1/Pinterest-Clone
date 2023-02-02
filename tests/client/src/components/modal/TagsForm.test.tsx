@@ -1,5 +1,5 @@
 import React from 'react';
-import { shallow } from 'enzyme';
+import { EnzymePropSelector, shallow } from 'enzyme';
 import toJson from 'enzyme-to-json';
 import TagsForm from '../../../../../client/src/components/modal/TagsForm';
 
@@ -25,7 +25,7 @@ describe('The tags form component', () => {
 
   test('will update the value for characters <= 15', () => {
     const wrapper = shallow(<TagsForm {...props} />);
-    let autoComplete = wrapper.find('ForwardRef(Autocomplete)');
+    let autoComplete: EnzymePropSelector = wrapper.find('ForwardRef(Autocomplete)');
     expect(autoComplete.props().inputValue).toBe('');
     // trigger value change
     autoComplete.props().onInputChange('', '15 characters..');
@@ -35,7 +35,7 @@ describe('The tags form component', () => {
 
   test('will not update the value for characters > 15', () => {
     const wrapper = shallow(<TagsForm {...props} />);
-    let autoComplete = wrapper.find('ForwardRef(Autocomplete)');
+    let autoComplete: EnzymePropSelector = wrapper.find('ForwardRef(Autocomplete)');
     expect(autoComplete.props().inputValue).toBe('');
     // trigger value change
     autoComplete.props().onInputChange('', '16 characters..and more');
@@ -45,10 +45,10 @@ describe('The tags form component', () => {
 
   test('will submit on done if value is present', () => {
     const wrapper = shallow(<TagsForm {...props} />);
-    const autoComplete = wrapper.find('ForwardRef(Autocomplete)');
+    const autoComplete: EnzymePropSelector = wrapper.find('ForwardRef(Autocomplete)');
     // // trigger value change
     autoComplete.props().onInputChange('', '15 characters..');
-    const done = wrapper.find('Memo(ForwardRef(DoneIcon))');
+    const done: EnzymePropSelector = wrapper.find('Memo(ForwardRef(DoneIcon))');
     // trigger submit
     done.props().onMouseDown({ preventDefault: jest.fn() });
     done.props().onClick();
@@ -57,7 +57,7 @@ describe('The tags form component', () => {
 
   test('will submit on enter key if value is present', () => {
     const wrapper = shallow(<TagsForm {...props} />);
-    let autoComplete = wrapper.find('ForwardRef(Autocomplete)');
+    let autoComplete: EnzymePropSelector = wrapper.find('ForwardRef(Autocomplete)');
     // // trigger value change
     autoComplete.props().onInputChange('', '15 characters..');
     // trigger enter
@@ -68,10 +68,10 @@ describe('The tags form component', () => {
 
   test('will not submit on done if value is empty', () => {
     const wrapper = shallow(<TagsForm {...props} />);
-    const autoComplete = wrapper.find('ForwardRef(Autocomplete)');
+    const autoComplete: EnzymePropSelector = wrapper.find('ForwardRef(Autocomplete)');
     // // trigger value change
     autoComplete.props().onInputChange('', '   ');
-    const done = wrapper.find('Memo(ForwardRef(DoneIcon))');
+    const done: EnzymePropSelector = wrapper.find('Memo(ForwardRef(DoneIcon))');
     // trigger submit
     done.props().onMouseDown({ preventDefault: jest.fn() });
     done.props().onClick();
@@ -80,7 +80,7 @@ describe('The tags form component', () => {
 
   test('will not submit on any other key even if value is present', () => {
     const wrapper = shallow(<TagsForm {...props} />);
-    let autoComplete = wrapper.find('ForwardRef(Autocomplete)');
+    let autoComplete: EnzymePropSelector = wrapper.find('ForwardRef(Autocomplete)');
     // // trigger value change
     autoComplete.props().onInputChange('', '15 characters..');
     // trigger enter
@@ -91,7 +91,7 @@ describe('The tags form component', () => {
 
   test('autocomplete will filter the options present for auto complete', () => {
     const wrapper = shallow(<TagsForm {...props} />);
-    let autoComplete = wrapper.find('ForwardRef(Autocomplete)');
+    let autoComplete: EnzymePropSelector = wrapper.find('ForwardRef(Autocomplete)');
     autoComplete.props().onInputChange('', 'sug');
     autoComplete = wrapper.find('ForwardRef(Autocomplete)');
     const filtered = autoComplete.props().filterOptions(['SUGGESTED TAG 1', 'EXISTING TAG 2']);
@@ -100,7 +100,7 @@ describe('The tags form component', () => {
 
   test('autocomplete will render the text field as input', () => {
     const wrapper = shallow(<TagsForm {...props} />);
-    const autoComplete = wrapper.find('ForwardRef(Autocomplete)');
+    const autoComplete: EnzymePropSelector = wrapper.find('ForwardRef(Autocomplete)');
     const textfield = autoComplete.props().renderInput({});
     expect(textfield.props).toEqual({
       autoFocus: true,

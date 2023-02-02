@@ -1,5 +1,5 @@
 import React from 'react';
-import { shallow } from 'enzyme';
+import { EnzymePropSelector, shallow } from 'enzyme';
 import toJson from 'enzyme-to-json';
 import PinnersDialog from '../../../../../client/src/components/modal/PinnersDialog';
 import { pinsStub } from '../../../stub';
@@ -23,7 +23,7 @@ test('will close the dialog and the pin on a profile link click', () => {
     onCloseDialog={onCloseDialog}
     onClosePin={onClosePin}
   />);
-  const pinner = wrapper.find('ForwardRef(ListItem)').at(0);
+  const pinner: EnzymePropSelector = wrapper.find('ForwardRef(ListItem)').at(0);
   pinner.props().onClick();
   expect(onCloseDialog).toHaveBeenCalled();
   expect(onClosePin).toHaveBeenCalled();
