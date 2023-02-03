@@ -1,4 +1,4 @@
-const { filterPins, getCloudFrontLink } = require('../../server/utils');
+import { filterPins, getCloudFrontLink } from '../../server/utils';
 
 describe('filtering pins before returning to client', () => {
   process.env = {
@@ -10,6 +10,7 @@ describe('filtering pins before returning to client', () => {
     _id: 'mongoose _id',
     imgDescription: 'description',
     imgLink: 'https://stub',
+    originalImgLink: 'https://stub-original',
     owner: { name: 'tester', id: 'any id', service: 'twitter' },
     savedBy: [{ id: 'any id', name: 'tester', service: 'twitter' }],
     createdAt: 'creation date',
@@ -18,6 +19,8 @@ describe('filtering pins before returning to client', () => {
       displayName: 'tester-google',
       createdAt: 'today',
       comment: 'unit tests',
+      userId: 'commenter-userID',
+      service: 'twitter',
     }],
     tags: [{ _id: 'tag_id_1', tag: 'tag 1' }, { _id: 'tag_id_2', tag: 'tag 2' }],
   };
@@ -146,8 +149,8 @@ describe('Getting the cloudfront links', () => {
     expect(ans).toBe('https://s3.amazonaws.com/pinterest.clone.dev/a-pin');
   });
 
-  test('Will get original link for any split errors', () => {
-    const ans = getCloudFrontLink(null);
-    expect(ans).toBe(null);
+  test('Will get original link for any other string', () => {
+    const ans = getCloudFrontLink('3');
+    expect(ans).toBe('3');
   });
 });

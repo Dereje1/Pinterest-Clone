@@ -1,5 +1,5 @@
-const request = require('supertest');
-const app = require('../../server/app').default;
+import request from 'supertest';
+import app from '../../server/app';
 
 jest.mock('mongoose', () => ({
   Schema: jest.fn(),
