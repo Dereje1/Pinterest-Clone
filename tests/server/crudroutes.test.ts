@@ -1,5 +1,6 @@
-const nock = require('nock');
-const {
+import nock from 'nock';
+import { Request } from 'express';
+import {
   addPin,
   getPins,
   pinImage,
@@ -10,14 +11,42 @@ const {
   getUserPins,
   updateTags,
   getTags,
-} = require('../../server/crudroutes');
-const pins = require('../../server/models/pins').default; // schema for pins
-const users = require('../../server/models/user').default; // schema for pins
-const pinLinks = require('../../server/models/pinlinks').default; // schema for pins
-const savedTags = require('../../server/models/tags').default;
-const {
+} from '../../server/crudroutes';
+import pins from '../../server/models/pins'; // schema for pins
+import users from '../../server/models/user'; // schema for pins
+import pinLinks from '../../server/models/pinlinks'; // schema for pins
+import savedTags from '../../server/models/tags';
+import {
   user, rawPinsStub, allPinsResponse,
-} = require('./stub');
+} from './stub';
+import { reqUser } from '../../server/interfaces';
+
+interface genericRequest extends Request{
+  query: {
+    type: string | undefined
+    pinID: string | undefined
+    tag: string | undefined
+    deleteId: string | undefined
+  }
+  user: reqUser
+  body: {
+    owner: {
+      name: string,
+      service: string,
+      id: string,
+    },
+    imgDescription: string,
+    imgLink: string,
+    _id: number,
+    name: string,
+    service: string
+    id: string
+    comment: string
+  } | undefined
+  params: {
+    _id: string
+  }
+}
 
 /* AWS S3 mocks */
 const mockS3Instance = {
@@ -29,7 +58,7 @@ const mockS3Instance = {
 jest.mock('aws-sdk', () => ({ S3: jest.fn(() => mockS3Instance) }));
 
 /* Mongoose mocks */
-const setupMocks = (response = rawPinsStub) => {
+const setupMocks = (response: any = rawPinsStub) => {
   pins.find = jest.fn().mockImplementation(
     () => ({
       exec: jest.fn().mockResolvedValue(response),
@@ -51,9 +80,6 @@ const setupMocks = (response = rawPinsStub) => {
 describe('Retrieving pins for home page', () => {
   let res;
   const req = {
-    query: {
-      type: 'all',
-    },
     user,
   };
   beforeEach(() => {
@@ -69,7 +95,7 @@ describe('Retrieving pins for home page', () => {
 
   test('will retrieve all pins for the home page', async () => {
     setupMocks();
-    await getPins(req, res);
+    await getPins(req as genericRequest, res);
     expect(pins.find).toHaveBeenCalledTimes(1);
     expect(pins.find).toHaveBeenCalledWith({ isBroken: false });
     expect(res.json).toHaveBeenCalledWith(allPinsResponse);
@@ -87,13 +113,14 @@ describe('Retrieving pins for home page', () => {
       },
       user,
     };
-    await getPins(reqUpdate, res);
+    await getPins(reqUpdate as genericRequest, res);
     expect(res.json).toHaveBeenCalledWith(Error('Mocked rejection'));
   });
 });
 
 describe('Retrieving pins for user page', () => {
   let res;
+  let mockedFind;
   const req = {
     query: {
       type: 'all',
@@ -118,10 +145,11 @@ describe('Retrieving pins for user page', () => {
         ]),
       }),
     );
+    mockedFind = jest.mocked(pinLinks.find);
   });
   afterEach(() => {
     jest.restoreAllMocks();
-    pinLinks.find.mockClear();
+    mockedFind.mockClear();
   });
 
   test('will retrieve pins for the profile page', async () => {
@@ -129,7 +157,7 @@ describe('Retrieving pins for user page', () => {
             || p.savedBy.map((s) => s.id).includes(user._doc.twitter.id));
 
     setupMocks(profilePinsRaw);
-    await getUserPins(req, res);
+    await getUserPins(req as genericRequest, res);
     expect(pins.find).toHaveBeenCalledTimes(1);
     expect(pins.find).toHaveBeenCalledWith({ $or: [{ 'owner.id': user._doc.twitter.id }, { 'savedBy.id': user._doc.twitter.id }] });
     expect(res.json).toHaveBeenCalledWith({
@@ -151,7 +179,7 @@ describe('Retrieving pins for user page', () => {
       ADMIN_USER_ID: 'twitter test id',
     };
     setupMocks();
-    await getUserPins(req, res);
+    await getUserPins(req as genericRequest, res);
     expect(pins.find).toHaveBeenCalledTimes(1);
     expect(pins.find).toHaveBeenCalledWith({ isBroken: false });
     expect(res.json).toHaveBeenCalledWith({
@@ -179,7 +207,7 @@ describe('Retrieving pins for user page', () => {
       },
       user,
     };
-    await getUserPins(reqUpdate, res);
+    await getUserPins(reqUpdate as genericRequest, res);
     expect(res.json).toHaveBeenCalledWith(Error('Mocked rejection'));
   });
 });
@@ -217,8 +245,17 @@ describe('Adding a pin', () => {
       .get('/')
       .reply(200, 'Processed Image data');
 
-    setupMocks({ ...req.body });
-    await addPin(req, res);
+    setupMocks({
+      owner: {
+        name: 'tester-twitter',
+        service: 'twitter',
+        id: user._doc.twitter.id,
+      },
+      imgDescription: 'description-4',
+      imgLink: 'https://stub-4',
+      _id: 123,
+    });
+    await addPin(req as genericRequest, res);
     expect(pins.create).toHaveBeenCalledTimes(1);
     expect(pins.create).toHaveBeenCalledWith({
       ...req.body,
@@ -257,7 +294,7 @@ describe('Adding a pin', () => {
     };
     mockS3Instance.upload.mockClear();
     setupMocks({ ...req.body });
-    await addPin(req, res);
+    await addPin(req as genericRequest, res);
     expect(pins.create).toHaveBeenCalledTimes(1);
     expect(pins.create).toHaveBeenCalledWith({
       ...req.body,
@@ -291,7 +328,7 @@ describe('Adding a pin', () => {
     };
     mockS3Instance.upload.mockClear();
     setupMocks({ ...req.body });
-    await addPin(req, res);
+    await addPin(req as genericRequest, res);
     expect(pins.create).toHaveBeenCalledTimes(1);
     expect(pins.create).toHaveBeenCalledWith({
       ...req.body,
@@ -319,7 +356,7 @@ describe('Adding a pin', () => {
     };
 
     setupMocks({ ...req.body });
-    await addPin(req, res);
+    await addPin(req as genericRequest, res);
     expect(pins.create).toHaveBeenCalledTimes(1);
     expect(pins.create).toHaveBeenCalledWith({
       ...req.body, originalImgLink: req.body.imgLink, isBroken: false,
@@ -341,13 +378,15 @@ describe('Adding a pin', () => {
         imgLink: 'https://stub-4',
       },
     };
-    await addPin(req, res);
+    await addPin(req as genericRequest, res);
     expect(res.json).toHaveBeenCalledWith(Error('Mocked rejection'));
   });
 });
 
 describe('Pinning an image', () => {
   let res;
+  let mockedFindById;
+  let mockedFindByIdAndUpdate;
   const req = {
     user,
     body: {
@@ -355,32 +394,33 @@ describe('Pinning an image', () => {
       service: 'twitter',
       id: user._doc.twitter.id,
     },
-    params: { _id: 3 },
+    params: { _id: '3' },
   };
   beforeEach(() => {
     res = { json: jest.fn(), end: jest.fn() };
   });
   afterEach(() => {
     jest.restoreAllMocks();
-    pins.findById.mockClear();
-    pins.findByIdAndUpdate.mockClear();
   });
 
   test('will pin an image', async () => {
-    const newSavedBy = [...rawPinsStub[2].savedBy, { id: req.body.id, name: req.body.name }];
+    const newSavedBy = [
+      ...rawPinsStub[2].savedBy,
+      { id: req.body.id, name: req.body.name, service: req.body.service },
+    ];
     pins.findByIdAndUpdate = jest.fn().mockImplementation(
       () => ({
         exec: jest.fn().mockResolvedValue({ ...rawPinsStub[2], savedBy: newSavedBy }),
       }),
     );
-
+    mockedFindByIdAndUpdate = jest.mocked(pins.findByIdAndUpdate);
     setupMocks(rawPinsStub[2]);
-    await pinImage(req, res);
+    await pinImage(req as genericRequest, res);
     expect(pins.findById).toHaveBeenCalledTimes(1);
-    expect(pins.findById).toHaveBeenCalledWith(3);
+    expect(pins.findById).toHaveBeenCalledWith('3');
     expect(pins.findByIdAndUpdate).toHaveBeenCalledTimes(1);
     expect(pins.findByIdAndUpdate).toHaveBeenCalledWith(
-      3,
+      '3',
       {
         $set:
                 {
@@ -398,6 +438,7 @@ describe('Pinning an image', () => {
       hasSaved: true,
     });
     expect(res.end).toHaveBeenCalledTimes(0);
+    mockedFindByIdAndUpdate.mockClear();
   });
 
   test('will end response if pin not found in db', async () => {
@@ -406,13 +447,14 @@ describe('Pinning an image', () => {
         exec: jest.fn().mockResolvedValue(null),
       }),
     );
-
-    await pinImage(req, res);
+    mockedFindById = jest.mocked(pins.findById);
+    await pinImage(req as genericRequest, res);
     expect(pins.findById).toHaveBeenCalledTimes(1);
-    expect(pins.findById).toHaveBeenCalledWith(3);
+    expect(pins.findById).toHaveBeenCalledWith('3');
     expect(pins.findByIdAndUpdate).not.toHaveBeenCalled();
     expect(res.json).not.toHaveBeenCalled();
     expect(res.end).toHaveBeenCalledTimes(1);
+    mockedFindById.mockClear();
   });
 
   test('will end response if updatedpin not returned from db', async () => {
@@ -421,21 +463,23 @@ describe('Pinning an image', () => {
         exec: jest.fn().mockResolvedValue(null),
       }),
     );
+    mockedFindByIdAndUpdate = jest.mocked(pins.findByIdAndUpdate);
     setupMocks(rawPinsStub[2]);
-    await pinImage(req, res);
+    await pinImage(req as genericRequest, res);
     expect(pins.findById).toHaveBeenCalledTimes(1);
-    expect(pins.findById).toHaveBeenCalledWith(3);
+    expect(pins.findById).toHaveBeenCalledWith('3');
     expect(pins.findByIdAndUpdate).toHaveBeenCalledTimes(1);
     expect(res.json).not.toHaveBeenCalled();
     expect(res.end).toHaveBeenCalledTimes(1);
+    mockedFindByIdAndUpdate.mockClear();
   });
 
   test('will not pin an image if user has already pinned', async () => {
     const newSavedBy = [...rawPinsStub[2].savedBy, { id: req.body.id, name: req.body.name }];
     setupMocks({ ...rawPinsStub[2], savedBy: newSavedBy });
-    await pinImage(req, res);
+    await pinImage(req as genericRequest, res);
     expect(pins.findById).toHaveBeenCalledTimes(1);
-    expect(pins.findById).toHaveBeenCalledWith(3);
+    expect(pins.findById).toHaveBeenCalledWith('3');
     expect(res.end).toHaveBeenCalledTimes(1);
   });
 
@@ -445,16 +489,18 @@ describe('Pinning an image', () => {
         exec: jest.fn().mockRejectedValue(new Error('Mocked rejection')),
       }),
     );
-    await pinImage(req, res);
+    await pinImage(req as genericRequest, res);
     expect(res.json).toHaveBeenCalledWith(Error('Mocked rejection'));
   });
 });
 
 describe('Deleting an image', () => {
   let res;
+  let mockedFindOneAndRemove;
+  let mockedFindById;
   const req = {
     user,
-    params: { _id: 1 },
+    params: { _id: '1' },
   };
   beforeEach(() => {
     res = { json: jest.fn(), end: jest.fn() };
@@ -463,12 +509,11 @@ describe('Deleting an image', () => {
         exec: jest.fn().mockResolvedValue([]),
       }),
     );
+    mockedFindOneAndRemove = jest.mocked(pinLinks.findOneAndRemove);
   });
   afterEach(() => {
     jest.restoreAllMocks();
-    pinLinks.findOneAndRemove.mockClear();
-    pins.findById.mockClear();
-    pins.findByIdAndUpdate.mockClear();
+    mockedFindOneAndRemove.mockClear();
   });
 
   test('will delete an image if the user is an owner', async () => {
@@ -479,26 +524,26 @@ describe('Deleting an image', () => {
     );
 
     setupMocks(rawPinsStub[0]);
-    await deletePin(req, res);
+    await deletePin(req as genericRequest, res);
     expect(pins.findById).toHaveBeenCalledTimes(1);
-    expect(pins.findById).toHaveBeenCalledWith(1);
+    expect(pins.findById).toHaveBeenCalledWith('1');
     expect(pins.findOneAndRemove).toHaveBeenCalledTimes(1);
-    expect(pins.findOneAndRemove).toHaveBeenCalledWith({ _id: 1 });
-    expect(pinLinks.findOneAndRemove).toHaveBeenCalledWith({ pin_id: 1 });
+    expect(pins.findOneAndRemove).toHaveBeenCalledWith({ _id: '1' });
+    expect(pinLinks.findOneAndRemove).toHaveBeenCalledWith({ pin_id: '1' });
     expect(res.json).toHaveBeenCalledWith(rawPinsStub[0]);
   });
 
   test('will throw an error if user is not an owner', async () => {
-    const updatedReq = { ...req, params: { _id: 2 } };
+    const updatedReq = { ...req, params: { _id: '2' } };
     setupMocks(rawPinsStub[1]);
-    await deletePin(updatedReq, res);
+    await deletePin(updatedReq as genericRequest, res);
     expect(pins.findById).toHaveBeenCalledTimes(1);
-    expect(pins.findById).toHaveBeenCalledWith(2);
+    expect(pins.findById).toHaveBeenCalledWith('2');
     expect(res.json).toHaveBeenCalledWith(Error('Pin ID: 2 is not owned by user ID: twitter test id - delete operation cancelled!'));
   });
 
   test('will delete any image if the user is an admin', async () => {
-    const updatedReq = { ...req, params: { _id: 2 } };
+    const updatedReq = { ...req, params: { _id: '2' } };
     process.env = {
       ...process.env,
       ADMIN_USER_ID: 'twitter test id',
@@ -510,11 +555,11 @@ describe('Deleting an image', () => {
     );
 
     setupMocks(rawPinsStub[1]);
-    await deletePin(updatedReq, res);
+    await deletePin(updatedReq as genericRequest, res);
     expect(pins.findById).toHaveBeenCalledTimes(1);
-    expect(pins.findById).toHaveBeenCalledWith(2);
+    expect(pins.findById).toHaveBeenCalledWith('2');
     expect(pins.findOneAndRemove).toHaveBeenCalledTimes(1);
-    expect(pins.findOneAndRemove).toHaveBeenCalledWith({ _id: 2 });
+    expect(pins.findOneAndRemove).toHaveBeenCalledWith({ _id: '2' });
     expect(res.json).toHaveBeenCalledWith(rawPinsStub[1]);
   });
 
@@ -524,19 +569,20 @@ describe('Deleting an image', () => {
         exec: jest.fn().mockResolvedValue(null),
       }),
     );
+    mockedFindById = jest.mocked(pins.findById);
 
     pins.findOneAndRemove = jest.fn().mockImplementation(
       () => ({
         exec: jest.fn().mockResolvedValue(rawPinsStub[0]),
       }),
     );
-
-    await deletePin(req, res);
+    await deletePin(req as genericRequest, res);
     expect(pins.findById).toHaveBeenCalledTimes(1);
-    expect(pins.findById).toHaveBeenCalledWith(1);
+    expect(pins.findById).toHaveBeenCalledWith('1');
     expect(pins.findOneAndRemove).toHaveBeenCalledTimes(0);
     expect(res.json).not.toHaveBeenCalled();
     expect(res.end).toHaveBeenCalledTimes(1);
+    mockedFindById.mockClear();
   });
 
   test('will respond with error if DELETE is rejected', async () => {
@@ -545,7 +591,7 @@ describe('Deleting an image', () => {
         exec: jest.fn().mockRejectedValue(new Error('Mocked rejection')),
       }),
     );
-    await deletePin(req, res);
+    await deletePin(req as genericRequest, res);
     expect(res.json).toHaveBeenCalledWith(Error('Mocked rejection'));
   });
 });
@@ -554,7 +600,7 @@ describe('Unpinning an image', () => {
   let res;
   const req = {
     user,
-    params: { _id: 1 },
+    params: { _id: '1' },
   };
   beforeEach(() => {
     res = { json: jest.fn(), end: jest.fn() };
@@ -565,25 +611,24 @@ describe('Unpinning an image', () => {
   });
   afterEach(() => {
     jest.restoreAllMocks();
-    pins.findById.mockClear();
-    pins.findByIdAndUpdate.mockClear();
   });
 
   test('will unpin an image', async () => {
-    const updatedReq = { ...req, params: { _id: 2 } };
+    const updatedReq = { ...req, params: { _id: '2' } };
     pins.findByIdAndUpdate = jest.fn().mockImplementation(
       () => ({
         exec: jest.fn().mockResolvedValue({ ...rawPinsStub[1], savedBy: [] }),
       }),
     );
+    const mockedFindByIdAndUpdate = jest.mocked(pins.findByIdAndUpdate);
 
     setupMocks(rawPinsStub[1]);
-    await unpin(updatedReq, res);
+    await unpin(updatedReq as genericRequest, res);
     expect(pins.findById).toHaveBeenCalledTimes(1);
-    expect(pins.findById).toHaveBeenCalledWith(2);
+    expect(pins.findById).toHaveBeenCalledWith('2');
     expect(pins.findByIdAndUpdate).toHaveBeenCalledTimes(1);
     expect(pins.findByIdAndUpdate).toHaveBeenCalledWith(
-      2,
+      '2',
       {
         $set:
                 {
@@ -593,6 +638,7 @@ describe('Unpinning an image', () => {
       { new: true },
     );
     expect(res.json).toHaveBeenCalledWith({ ...allPinsResponse[1], savedBy: [], hasSaved: false });
+    mockedFindByIdAndUpdate.mockClear();
   });
 
   test('will end response if pin not found in db', async () => {
@@ -602,16 +648,16 @@ describe('Unpinning an image', () => {
       }),
     );
 
-    await unpin(req, res);
+    await unpin(req as genericRequest, res);
     expect(pins.findById).toHaveBeenCalledTimes(1);
-    expect(pins.findById).toHaveBeenCalledWith(1);
+    expect(pins.findById).toHaveBeenCalledWith('1');
     expect(pins.findByIdAndUpdate).not.toHaveBeenCalled();
     expect(res.json).not.toHaveBeenCalled();
     expect(res.end).toHaveBeenCalledTimes(1);
   });
 
   test('will end response if updatedpin not returned from db', async () => {
-    const updatedReq = { ...req, params: { _id: 2 } };
+    const updatedReq = { ...req, params: { _id: '2' } };
     pins.findByIdAndUpdate = jest.fn().mockImplementation(
       () => ({
         exec: jest.fn().mockResolvedValue(null),
@@ -619,9 +665,9 @@ describe('Unpinning an image', () => {
     );
 
     setupMocks(rawPinsStub[1]);
-    await unpin(updatedReq, res);
+    await unpin(updatedReq as genericRequest, res);
     expect(pins.findById).toHaveBeenCalledTimes(1);
-    expect(pins.findById).toHaveBeenCalledWith(2);
+    expect(pins.findById).toHaveBeenCalledWith('2');
     expect(pins.findByIdAndUpdate).toHaveBeenCalledTimes(1);
     expect(res.json).not.toHaveBeenCalled();
     expect(res.end).toHaveBeenCalledTimes(1);
@@ -633,7 +679,7 @@ describe('Unpinning an image', () => {
         exec: jest.fn().mockRejectedValue(new Error('Mocked rejection')),
       }),
     );
-    await unpin(req, res);
+    await unpin(req as genericRequest, res);
     expect(res.json).toHaveBeenCalledWith(Error('Mocked rejection'));
   });
 });
@@ -645,7 +691,7 @@ describe('Adding a comment', () => {
     body: {
       comment: 'a new comment',
     },
-    params: { _id: 3 },
+    params: { _id: '3' },
   };
   beforeEach(() => {
     res = { json: jest.fn(), end: jest.fn() };
@@ -674,10 +720,10 @@ describe('Adding a comment', () => {
     );
 
     setupMocks(rawPinsStub[2]);
-    await addComment(req, res);
+    await addComment(req as genericRequest, res);
     expect(pins.findByIdAndUpdate).toHaveBeenCalledTimes(1);
     expect(pins.findByIdAndUpdate).toHaveBeenCalledWith(
-      3,
+      '3',
       {
         $push:
                 {
@@ -727,7 +773,7 @@ describe('Adding a comment', () => {
     );
 
     setupMocks(rawPinsStub[2]);
-    await addComment(req, res);
+    await addComment(req as genericRequest, res);
     expect(pins.findByIdAndUpdate).toHaveBeenCalledTimes(1);
     expect(res.json).not.toHaveBeenCalled();
     expect(res.end).toHaveBeenCalledTimes(1);
@@ -739,7 +785,7 @@ describe('Adding a comment', () => {
         exec: jest.fn().mockRejectedValue(new Error('Mocked rejection')),
       }),
     );
-    await addComment(req, res);
+    await addComment(req as genericRequest, res);
     expect(res.json).toHaveBeenCalledWith(Error('Mocked rejection'));
   });
 });
@@ -851,14 +897,12 @@ describe('Updating tags for a pin', () => {
   });
   afterEach(() => {
     jest.restoreAllMocks();
-    pins.findById.mockClear();
-    pins.findByIdAndUpdate.mockClear();
   });
 
   test('will add a tag to a pin', async () => {
     const req = {
       user,
-      query: { pinID: 1, tag: 'a new tag' },
+      query: { pinID: '1', tag: 'a new tag' },
     };
     pins.findById = jest.fn().mockImplementation(
       () => ({
@@ -871,12 +915,12 @@ describe('Updating tags for a pin', () => {
       }),
     );
     savedTags.create = jest.fn().mockResolvedValue([]);
-    await updateTags(req, res);
+    await updateTags(req as genericRequest, res);
     expect(pins.findById).toHaveBeenCalledTimes(1);
-    expect(pins.findById).toHaveBeenCalledWith(1);
+    expect(pins.findById).toHaveBeenCalledWith('1');
     expect(pins.findByIdAndUpdate).toHaveBeenCalledTimes(1);
     expect(pins.findByIdAndUpdate).toHaveBeenCalledWith(
-      1,
+      '1',
       {
         $push:
                 {
@@ -891,7 +935,7 @@ describe('Updating tags for a pin', () => {
   test('will remove a tag from a pin', async () => {
     const req = {
       user,
-      query: { pinID: 1, deleteId: '12345' },
+      query: { pinID: '1', deleteId: '12345' },
     };
     pins.findById = jest.fn().mockImplementation(
       () => ({
@@ -906,12 +950,13 @@ describe('Updating tags for a pin', () => {
         exec: jest.fn().mockResolvedValue({ ...rawPinsStub[1] }),
       }),
     );
-    await updateTags(req, res);
+    const mockedFindByIdAndUpdate = jest.mocked(pins.findByIdAndUpdate);
+    await updateTags(req as genericRequest, res);
     expect(pins.findById).toHaveBeenCalledTimes(1);
-    expect(pins.findById).toHaveBeenCalledWith(1);
+    expect(pins.findById).toHaveBeenCalledWith('1');
     expect(pins.findByIdAndUpdate).toHaveBeenCalledTimes(1);
     expect(pins.findByIdAndUpdate).toHaveBeenCalledWith(
-      1,
+      '1',
       {
         $set:
                 {
@@ -921,12 +966,13 @@ describe('Updating tags for a pin', () => {
       { new: true },
     );
     expect(res.json).toHaveBeenCalledWith({ ...allPinsResponse[1] });
+    mockedFindByIdAndUpdate.mockClear();
   });
 
   test('will end response if pin not found in db', async () => {
     const req = {
       user,
-      query: { pinID: 1, tag: 'a new tag' },
+      query: { pinID: '1', tag: 'a new tag' },
     };
     pins.findById = jest.fn().mockImplementation(
       () => ({
@@ -934,9 +980,9 @@ describe('Updating tags for a pin', () => {
       }),
     );
     savedTags.create = jest.fn().mockResolvedValue([]);
-    await updateTags(req, res);
+    await updateTags(req as genericRequest, res);
     expect(pins.findById).toHaveBeenCalledTimes(1);
-    expect(pins.findById).toHaveBeenCalledWith(1);
+    expect(pins.findById).toHaveBeenCalledWith('1');
     expect(pins.findByIdAndUpdate).toHaveBeenCalledTimes(0);
     expect(res.json).not.toHaveBeenCalled();
     expect(res.end).toHaveBeenCalledTimes(1);
@@ -945,7 +991,7 @@ describe('Updating tags for a pin', () => {
   test('will end response if user is not owner of the pin', async () => {
     const req = {
       user,
-      query: { pinID: 1, tag: 'a new tag' },
+      query: { pinID: '1', tag: 'a new tag' },
     };
     pins.findById = jest.fn().mockImplementation(
       () => ({
@@ -957,9 +1003,9 @@ describe('Updating tags for a pin', () => {
         exec: jest.fn().mockResolvedValue({ ...rawPinsStub[1] }),
       }),
     );
-    await updateTags(req, res);
+    await updateTags(req as genericRequest, res);
     expect(pins.findById).toHaveBeenCalledTimes(1);
-    expect(pins.findById).toHaveBeenCalledWith(1);
+    expect(pins.findById).toHaveBeenCalledWith('1');
     expect(pins.findByIdAndUpdate).not.toHaveBeenCalled();
     expect(res.json).not.toHaveBeenCalled();
     expect(res.end).toHaveBeenCalled();
@@ -968,7 +1014,7 @@ describe('Updating tags for a pin', () => {
   test('will end response if updatedpin not returned from db', async () => {
     const req = {
       user,
-      query: { pinID: 1, tag: 'a new tag' },
+      query: { pinID: '1', tag: 'a new tag' },
     };
     pins.findById = jest.fn().mockImplementation(
       () => ({
@@ -981,9 +1027,9 @@ describe('Updating tags for a pin', () => {
       }),
     );
     savedTags.create = jest.fn().mockResolvedValue([]);
-    await updateTags(req, res);
+    await updateTags(req as genericRequest, res);
     expect(pins.findById).toHaveBeenCalledTimes(1);
-    expect(pins.findById).toHaveBeenCalledWith(1);
+    expect(pins.findById).toHaveBeenCalledWith('1');
     expect(pins.findByIdAndUpdate).toHaveBeenCalledTimes(1);
     expect(res.json).not.toHaveBeenCalled();
     expect(res.end).toHaveBeenCalledTimes(1);
@@ -992,14 +1038,14 @@ describe('Updating tags for a pin', () => {
   test('will respond with error if PUT is rejected', async () => {
     const req = {
       user,
-      query: { pinID: 1, tag: 'a new tag' },
+      query: { pinID: '1', tag: 'a new tag' },
     };
     pins.findById = jest.fn().mockImplementation(
       () => ({
         exec: jest.fn().mockRejectedValue(new Error('Mocked rejection')),
       }),
     );
-    await updateTags(req, res);
+    await updateTags(req as genericRequest, res);
     expect(res.json).toHaveBeenCalledWith(Error('Mocked rejection'));
   });
 });
@@ -1026,7 +1072,7 @@ describe('Getting saved tags list', () => {
         })),
       }),
     );
-    await getTags({}, res);
+    await getTags({} as genericRequest, res);
     expect(savedTags.find).toHaveBeenCalledTimes(1);
     expect(distinct).toHaveBeenCalledWith('tag');
     expect(res.json).toHaveBeenCalledWith(['saved tags']);
@@ -1041,7 +1087,7 @@ describe('Getting saved tags list', () => {
         })),
       }),
     );
-    await getTags(req, res);
+    await getTags(req as genericRequest, res);
     expect(res.json).toHaveBeenCalledWith(Error('Mocked rejection'));
   });
 });

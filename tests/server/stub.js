@@ -3,6 +3,7 @@ const user = {
     twitter: {
       id: 'twitter test id',
       displayName: 'tester-twitter',
+      username: 'twitter-user-name',
     },
     google: {},
     github: {},
