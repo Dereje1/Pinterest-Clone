@@ -1,6 +1,6 @@
-const {
+import {
   setAuthRoutes, getProfile, logOut, setGuest,
-} = require('../../../server/auth/routes');
+} from '../../../server/auth/routes';
 
 describe('Authentication routes', () => {
   let req; let

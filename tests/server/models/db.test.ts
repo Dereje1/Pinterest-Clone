@@ -1,16 +1,18 @@
-const mongoose = require('mongoose');
+/* eslint-disable import/first */
+process.env = {
+  ...process.env,
+  MONGOLAB_URI: 'TEST_MONGO_URI',
+};
+import * as mongoose from 'mongoose';
+import connect from '../../../server/models/db';
 
 jest.mock('mongoose', () => ({
+  ...jest.requireActual('mongoose'),
   connect: jest.fn(),
   connection: {
     on: jest.fn(),
   },
 }));
-process.env = {
-  ...process.env,
-  MONGOLAB_URI: 'TEST_MONGO_URI',
-};
-const connect = require('../../../server/models/db').default;
 
 describe('Mongo db', () => {
   test('will connect', () => {
@@ -21,7 +23,9 @@ describe('Mongo db', () => {
     );
   });
   test('will invoke connection processes', () => {
-    let connectionProcesses = mongoose.connection.on.mock.calls;
+    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+    // @ts-ignore
+    let connectionProcesses = mongoose.default.connection.on.mock.calls;
     connectionProcesses = connectionProcesses.map((c) => c[0]);
     expect(connectionProcesses).toEqual(['connected', 'error', 'disconnected']);
   });

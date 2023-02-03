@@ -1,8 +1,11 @@
-const user = require('../../../server/models/user').default;
-const { processLogin, passportConfig } = require('../../../server/auth/passportConfig');
+import { Profile } from 'passport-google-oauth';
+import user from '../../../server/models/user';
+import { processLogin, passportConfig } from '../../../server/auth/passportConfig';
 
 describe('Processing a login', () => {
   let done;
+  let mockedFindOne;
+  let mockedCreate;
 
   const googleUserModel = {
     google: {
@@ -28,17 +31,23 @@ describe('Processing a login', () => {
         exec: jest.fn().mockResolvedValue(null),
       }),
     );
+
     user.create = jest.fn().mockImplementationOnce(
       () => jest.fn().mockResolvedValueOnce(null),
     );
+
+    mockedFindOne = jest.mocked(user.findOne);
+    mockedCreate = jest.mocked(user.create);
   });
 
   afterEach(() => {
     jest.restoreAllMocks();
+    mockedFindOne.mockClear();
+    mockedCreate.mockClear();
   });
 
   test('will create a google user if not found in the db', async () => {
-    await processLogin('anytoken', '', googleProfile, done);
+    await processLogin('anytoken', '', googleProfile as Profile, done);
     expect(user.findOne).toHaveBeenCalledTimes(1);
     expect(user.findOne).toHaveBeenCalledWith({ 'google.id': 'google test id' });
     expect(user.create).toHaveBeenCalledTimes(1);
@@ -63,7 +72,7 @@ describe('Processing a login', () => {
       emails: undefined,
     };
 
-    await processLogin('anytoken', '', twitterProfile, done);
+    await processLogin('anytoken', '', twitterProfile as Profile, done);
     expect(user.findOne).toHaveBeenCalledTimes(1);
     expect(user.findOne).toHaveBeenCalledWith({ 'twitter.id': 'twitter test id' });
     expect(user.create).toHaveBeenCalledTimes(1);
@@ -88,7 +97,7 @@ describe('Processing a login', () => {
       emails: undefined,
     };
 
-    await processLogin('anytoken', '', githubProfile, done);
+    await processLogin('anytoken', '', githubProfile as Profile, done);
     expect(user.findOne).toHaveBeenCalledTimes(1);
     expect(user.findOne).toHaveBeenCalledWith({ 'github.id': 'github test id' });
     expect(user.create).toHaveBeenCalledTimes(1);
@@ -97,14 +106,13 @@ describe('Processing a login', () => {
   });
 
   test('will not create a user if found in the db', async () => {
-    user.findOne.mockClear();
     user.findOne = jest.fn().mockImplementation(
       () => ({
         exec: jest.fn().mockResolvedValue(googleUserModel),
       }),
     );
 
-    await processLogin('anytoken', '', googleProfile, done);
+    await processLogin('anytoken', '', googleProfile as Profile, done);
     expect(user.findOne).toHaveBeenCalledTimes(1);
     expect(user.findOne).toHaveBeenCalledWith({ 'google.id': 'google test id' });
     expect(user.create).not.toHaveBeenCalled();
@@ -118,7 +126,7 @@ describe('Processing a login', () => {
         exec: jest.fn().mockRejectedValue(new Error('Mocked rejection')),
       }),
     );
-    await processLogin('anytoken', '', googleProfile, done);
+    await processLogin('anytoken', '', googleProfile as Profile, done);
     expect(done).toHaveBeenCalledWith(Error('Mocked rejection'), undefined);
   });
 });
@@ -142,7 +150,7 @@ describe('Configuring passport', () => {
       TWITTER_CALLBACK: ' ',
     };
 
-    passportConfig(passport);
+    passportConfig(passport as any);
     expect(passport.serializeUser).toHaveBeenCalledTimes(1);
     expect(passport.deserializeUser).toHaveBeenCalledTimes(1);
     expect(passport.use).toHaveBeenCalledTimes(1);
@@ -156,7 +164,7 @@ describe('Configuring passport', () => {
       GOOGLE_CLIENT_SECRET: '123',
       GOOGLE_CALLBACK: '123',
     };
-    passportConfig(passport);
+    passportConfig(passport as any);
     expect(passport.serializeUser).toHaveBeenCalledTimes(1);
     expect(passport.deserializeUser).toHaveBeenCalledTimes(1);
     expect(passport.use).toHaveBeenCalledTimes(1);
@@ -171,7 +179,7 @@ describe('Configuring passport', () => {
       GITHUB_CLIENT_SECRET: '123',
       GITHUB_CALLBACK: '123',
     };
-    passportConfig(passport);
+    passportConfig(passport as any);
     expect(passport.serializeUser).toHaveBeenCalledTimes(1);
     expect(passport.deserializeUser).toHaveBeenCalledTimes(1);
     expect(passport.use).toHaveBeenCalledTimes(1);
@@ -184,7 +192,7 @@ describe('Configuring passport', () => {
       GOOGLE_CLIENT_ID: undefined,
       GITHUB_CLIENT_ID: undefined,
     };
-    passportConfig(passport);
+    passportConfig(passport as any);
     expect(passport.serializeUser).toHaveBeenCalledTimes(1);
     expect(passport.deserializeUser).toHaveBeenCalledTimes(1);
     expect(passport.use).not.toHaveBeenCalled();

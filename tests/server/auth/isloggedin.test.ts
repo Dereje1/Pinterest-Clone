@@ -9,7 +9,7 @@ describe('isLoggedIn middleware', () => {
       isAuthenticated: jest.fn(() => false),
     };
     const next = jest.fn();
-    const result = isloggedin(req, res, next);
+    const result = isloggedin(req as any, res as any, next);
     expect(res.json).toHaveBeenCalledWith({
       authenticated: false,
       displayName: null,
@@ -33,7 +33,7 @@ describe('isLoggedIn middleware', () => {
       isAuthenticated: jest.fn(() => true),
     };
     const next = jest.fn();
-    isloggedin(req, res, next);
+    isloggedin(req as any, res as any, next);
     expect(res.json).not.toHaveBeenCalled();
     expect(next).toHaveBeenCalledTimes(1);
   });

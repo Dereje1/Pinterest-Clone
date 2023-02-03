@@ -13,10 +13,6 @@ const PROVIDERS = [
 ];
 
 interface getProfileReq {
-  body:{
-    imgLink: string
-    description: string
-  }
   user: reqUser
 }
 
