@@ -13,13 +13,12 @@ import {
   getTags,
 } from '../../server/crudroutes';
 import pins from '../../server/models/pins'; // schema for pins
-import users from '../../server/models/user'; // schema for pins
+import users, { UserType } from '../../server/models/user'; // schema for pins
 import pinLinks from '../../server/models/pinlinks'; // schema for pins
 import savedTags from '../../server/models/tags';
 import {
   user, rawPinsStub, allPinsResponse,
 } from './stub';
-import { reqUser } from '../../server/interfaces';
 
 interface genericRequest extends Request{
   query: {
@@ -28,7 +27,7 @@ interface genericRequest extends Request{
     tag: string | undefined
     deleteId: string | undefined
   }
-  user: reqUser
+  user: UserType
   body: {
     owner: {
       name: string,
@@ -72,7 +71,7 @@ const setupMocks = (response: any = rawPinsStub) => {
   );
   users.find = jest.fn().mockImplementation(
     () => ({
-      exec: jest.fn().mockResolvedValue([{ twitter: { id: 'requestUserId', displayName: 'requestDisplayName' } }]),
+      exec: jest.fn().mockResolvedValue([{ userId: 'requestUserId', displayName: 'requestDisplayName' }]),
     }),
   );
 };
@@ -153,13 +152,13 @@ describe('Retrieving pins for user page', () => {
   });
 
   test('will retrieve pins for the profile page', async () => {
-    const profilePinsRaw = rawPinsStub.filter((p) => p.owner.id === user._doc.twitter.id
-            || p.savedBy.map((s) => s.id).includes(user._doc.twitter.id));
+    const profilePinsRaw = rawPinsStub.filter((p) => p.owner.id === user.userId
+            || p.savedBy.map((s) => s.id).includes(user.userId));
 
     setupMocks(profilePinsRaw);
     await getUserPins(req as genericRequest, res);
     expect(pins.find).toHaveBeenCalledTimes(1);
-    expect(pins.find).toHaveBeenCalledWith({ $or: [{ 'owner.id': user._doc.twitter.id }, { 'savedBy.id': user._doc.twitter.id }] });
+    expect(pins.find).toHaveBeenCalledWith({ $or: [{ 'owner.id': user.userId }, { 'savedBy.id': user.userId }] });
     expect(res.json).toHaveBeenCalledWith({
       profilePins: allPinsResponse.filter((p) => p.owns || p.hasSaved),
       allPinLinks: [
@@ -233,7 +232,7 @@ describe('Adding a pin', () => {
         owner: {
           name: 'tester-twitter',
           service: 'twitter',
-          id: user._doc.twitter.id,
+          id: user.userId,
         },
         imgDescription: 'description-4',
         imgLink: 'https://stub-4',
@@ -249,7 +248,7 @@ describe('Adding a pin', () => {
       owner: {
         name: 'tester-twitter',
         service: 'twitter',
-        id: user._doc.twitter.id,
+        id: user.userId,
       },
       imgDescription: 'description-4',
       imgLink: 'https://stub-4',
@@ -285,7 +284,7 @@ describe('Adding a pin', () => {
         owner: {
           name: 'tester-twitter',
           service: 'twitter',
-          id: user._doc.twitter.id,
+          id: user.userId,
         },
         imgDescription: 'description-4',
         imgLink: 'data:image/jpeg;base64,/stub-4-data-protocol/',
@@ -319,7 +318,7 @@ describe('Adding a pin', () => {
         owner: {
           name: 'tester-twitter',
           service: 'twitter',
-          id: user._doc.twitter.id,
+          id: user.userId,
         },
         imgDescription: 'description-4',
         imgLink: 'htt://stub-4',
@@ -347,7 +346,7 @@ describe('Adding a pin', () => {
         owner: {
           name: 'tester-twitter',
           service: 'twitter',
-          id: user._doc.twitter.id,
+          id: user.userId,
         },
         imgDescription: 'description-4',
         imgLink: 'https://stub-4',
@@ -372,7 +371,7 @@ describe('Adding a pin', () => {
         owner: {
           name: 'tester-twitter',
           service: 'twitter',
-          id: user._doc.twitter.id,
+          id: user.userId,
         },
         imgDescription: 'description-4',
         imgLink: 'https://stub-4',
@@ -392,7 +391,7 @@ describe('Pinning an image', () => {
     body: {
       name: 'tester-twitter',
       service: 'twitter',
-      id: user._doc.twitter.id,
+      id: user.userId,
     },
     params: { _id: '3' },
   };
@@ -819,8 +818,9 @@ describe('Retrieving pins for a profile page', () => {
     expect(users.find).toHaveBeenCalledWith({
       $and:
       [
-        { 'twitter.id': 'requestUserId' },
-        { 'twitter.displayName': 'request-DisplayName' },
+        { userId: 'requestUserId' },
+        { displayName: 'request-DisplayName' },
+        { service: 'twitter' },
       ],
     });
     expect(res.json).toHaveBeenCalledWith({
@@ -839,10 +839,8 @@ describe('Retrieving pins for a profile page', () => {
       ...req,
       user: {
         ...user,
-        twitter: {
-          id: 'requestUserId',
-          displayName: 'tester-twitter',
-        },
+        userId: 'requestUserId',
+        displayName: 'tester-twitter',
       },
     };
     users.find = jest.fn().mockImplementation(
@@ -860,12 +858,9 @@ describe('Retrieving pins for a profile page', () => {
     req = {
       ...req,
       user: {
-        _doc: {
-          twitter: {
-            id: 'requestUserId',
-            displayName: 'tester-twitter',
-          },
-        },
+        ...user,
+        userId: 'requestUserId',
+        displayName: 'tester-twitter',
       },
     };
     setupMocks([]);

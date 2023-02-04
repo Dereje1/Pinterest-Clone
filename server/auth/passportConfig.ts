@@ -19,17 +19,16 @@ export const processLogin = async (
     provider, id, username, displayName, emails,
   } = profile;
   try {
-    const user = await User.findOne({ [`${provider}.id`]: id }).exec();
+    const user = await User.findOne({ $and: [{ userId: id }, { service: provider }] }).exec();
     if (user) {
       return done(null, user);
     }
     const newUser = await User.create({
-      [provider]: {
-        id,
-        token,
-        username: username || (emails && emails[0].value),
-        displayName,
-      },
+      userId: id,
+      token,
+      username: username || (emails && emails[0].value),
+      displayName,
+      service: provider,
     });
     return done(null, newUser);
   } catch (error) {

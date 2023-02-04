@@ -1,46 +1,20 @@
 import mongoose from 'mongoose';
 
 export interface UserType extends mongoose.Document {
-  twitter: {
-    id: string,
+    userId: string,
     token: string,
     displayName: string,
     username: string,
-  },
-  google: {
-    id: string,
-    token: string,
-    displayName: string,
-    username: string,
-  },
-  github: {
-    id: string,
-    token: string,
-    displayName: string,
-    username: string,
-  }
+    service: string,
 }
 
 // define the schema for our user model
 const userSchema = new mongoose.Schema({
-  twitter: {
-    id: String,
-    token: String,
-    displayName: String,
-    username: String,
-  },
-  google: {
-    id: String,
-    token: String,
-    displayName: String,
-    username: String,
-  },
-  github: {
-    id: String,
-    token: String,
-    displayName: String,
-    username: String,
-  },
-});
+  userId: String,
+  token: String,
+  displayName: String,
+  username: String,
+  service: String,
+}, { timestamps: true });
 
 export default mongoose.model<UserType>('User', userSchema);

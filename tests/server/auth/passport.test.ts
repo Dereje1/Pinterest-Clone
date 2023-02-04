@@ -8,12 +8,11 @@ describe('Processing a login', () => {
   let mockedCreate;
 
   const googleUserModel = {
-    google: {
-      displayName: 'tester-google',
-      id: 'google test id',
-      token: 'anytoken',
-      username: 'tester@abc.com',
-    },
+    displayName: 'tester-google',
+    userId: 'google test id',
+    token: 'anytoken',
+    username: 'tester@abc.com',
+    service: 'google',
   };
   const googleProfile = {
     provider: 'google',
@@ -49,7 +48,9 @@ describe('Processing a login', () => {
   test('will create a google user if not found in the db', async () => {
     await processLogin('anytoken', '', googleProfile as Profile, done);
     expect(user.findOne).toHaveBeenCalledTimes(1);
-    expect(user.findOne).toHaveBeenCalledWith({ 'google.id': 'google test id' });
+    expect(user.findOne).toHaveBeenCalledWith({
+      $and: [{ userId: googleProfile.id }, { service: googleProfile.provider }],
+    });
     expect(user.create).toHaveBeenCalledTimes(1);
     expect(user.create).toHaveBeenCalledWith(googleUserModel);
     expect(done).toHaveBeenCalledTimes(1);
@@ -57,12 +58,11 @@ describe('Processing a login', () => {
 
   test('will create a twitter user if not found in the db', async () => {
     const twitterUserModel = {
-      twitter: {
-        displayName: 'tester-twitter',
-        id: 'twitter test id',
-        token: 'anytoken',
-        username: 'test username',
-      },
+      displayName: 'tester-twitter',
+      userId: 'twitter test id',
+      token: 'anytoken',
+      username: 'test username',
+      service: 'twitter',
     };
     const twitterProfile = {
       provider: 'twitter',
@@ -74,7 +74,9 @@ describe('Processing a login', () => {
 
     await processLogin('anytoken', '', twitterProfile as Profile, done);
     expect(user.findOne).toHaveBeenCalledTimes(1);
-    expect(user.findOne).toHaveBeenCalledWith({ 'twitter.id': 'twitter test id' });
+    expect(user.findOne).toHaveBeenCalledWith({
+      $and: [{ userId: twitterProfile.id }, { service: twitterProfile.provider }],
+    });
     expect(user.create).toHaveBeenCalledTimes(1);
     expect(user.create).toHaveBeenCalledWith(twitterUserModel);
     expect(done).toHaveBeenCalledTimes(1);
@@ -82,12 +84,11 @@ describe('Processing a login', () => {
 
   test('will create a github user if not found in the db', async () => {
     const githubUserModel = {
-      github: {
-        displayName: 'tester-github',
-        id: 'github test id',
-        token: 'anytoken',
-        username: 'test username',
-      },
+      displayName: 'tester-github',
+      userId: 'github test id',
+      token: 'anytoken',
+      username: 'test username',
+      service: 'github',
     };
     const githubProfile = {
       provider: 'github',
@@ -99,7 +100,9 @@ describe('Processing a login', () => {
 
     await processLogin('anytoken', '', githubProfile as Profile, done);
     expect(user.findOne).toHaveBeenCalledTimes(1);
-    expect(user.findOne).toHaveBeenCalledWith({ 'github.id': 'github test id' });
+    expect(user.findOne).toHaveBeenCalledWith({
+      $and: [{ userId: githubProfile.id }, { service: githubProfile.provider }],
+    });
     expect(user.create).toHaveBeenCalledTimes(1);
     expect(user.create).toHaveBeenCalledWith(githubUserModel);
     expect(done).toHaveBeenCalledTimes(1);
@@ -114,7 +117,9 @@ describe('Processing a login', () => {
 
     await processLogin('anytoken', '', googleProfile as Profile, done);
     expect(user.findOne).toHaveBeenCalledTimes(1);
-    expect(user.findOne).toHaveBeenCalledWith({ 'google.id': 'google test id' });
+    expect(user.findOne).toHaveBeenCalledWith({
+      $and: [{ userId: googleProfile.id }, { service: googleProfile.provider }],
+    });
     expect(user.create).not.toHaveBeenCalled();
     expect(user.create).not.toHaveBeenCalled();
     expect(done).toHaveBeenCalledWith(null, googleUserModel);
