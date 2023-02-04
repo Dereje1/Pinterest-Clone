@@ -7,7 +7,7 @@ import { OAuth2Strategy as GoogleStrategy, Profile as googleProfile, VerifyFunct
 import { Strategy as GitHubStrategy, Profile as githubProfile } from 'passport-github';
 import { getApiKeys } from '../utils';
 // load up the user model
-import User from '../models/userV2';
+import User from '../models/user';
 
 export const processLogin = async (
   token: string,

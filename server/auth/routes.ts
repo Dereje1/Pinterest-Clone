@@ -4,7 +4,8 @@ import { Request, Express } from 'express';
 import ip from 'ip';
 import isLoggedIn from './isloggedin';
 import { getUserProfile, getApiKeys } from '../utils';
-import { genericResponseType, reqUser } from '../interfaces';
+import { genericResponseType } from '../interfaces';
+import { UserType } from '../models/user';
 
 const PROVIDERS = [
   { name: 'twitter', options: {} },
@@ -12,12 +13,8 @@ const PROVIDERS = [
   { name: 'github', options: {} },
 ];
 
-interface getProfileReq {
-  user: reqUser
-}
-
-export const getProfile = (req: getProfileReq | Request, res: genericResponseType) => {
-  const profile = getUserProfile(req.user);
+export const getProfile = (req: Request, res: genericResponseType) => {
+  const profile = getUserProfile(req.user as UserType);
   res.json({
     ...profile,
     authenticated: true,
@@ -25,7 +22,7 @@ export const getProfile = (req: getProfileReq | Request, res: genericResponseTyp
   });
 };
 
-export const setGuest = (req: Express.Request, res: genericResponseType) => {
+export const setGuest = (req: Request, res: genericResponseType) => {
   const { apiKeysFound: providers } = getApiKeys();
   res.json({
     authenticated: false,
@@ -36,7 +33,7 @@ export const setGuest = (req: Express.Request, res: genericResponseType) => {
   });
 };
 
-export const logOut = (req: Express.Request, res: genericResponseType) => {
+export const logOut = (req: Request, res: genericResponseType) => {
   req.logout(() => {
     res.redirect('/');
   });

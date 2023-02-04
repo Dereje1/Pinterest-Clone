@@ -79,3 +79,11 @@ export interface genericRequestType {
     user: reqUser
     logout: (cb: () => void) => void
   }
+
+export interface newUserType {
+    userId: string,
+    token: string,
+    displayName: string,
+    username: string,
+    service: string,
+}

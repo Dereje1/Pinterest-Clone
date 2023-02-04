@@ -1,6 +1,6 @@
 /* eslint-disable import/no-import-module-exports */
 import { Router, Request } from 'express';
-import { reqUser, PinnerType, genericResponseType } from './interfaces';
+import { PinnerType, genericResponseType } from './interfaces';
 import { getUserProfile, filterPins, uploadImageToS3 } from './utils';
 import isLoggedIn from './auth/isloggedin';
 import pins from './models/pins';
@@ -8,16 +8,8 @@ import users, { UserType } from './models/user';
 import pinLinks from './models/pinlinks';
 import savedTags from './models/tags';
 
-interface addPinReq extends Request {
-  body:{
-    imgLink: string
-    description: string
-  }
-  user: reqUser
-}
-
-export const addPin = async (req: addPinReq | Request, res: genericResponseType) => {
-  const { displayName, userId, service } = getUserProfile(req.user);
+export const addPin = async (req: Request, res: genericResponseType) => {
+  const { displayName, userId, service } = getUserProfile(req.user as UserType);
   const { imgLink: originalImgLink } = req.body;
   try {
     const newImgLink = await uploadImageToS3({
@@ -48,11 +40,8 @@ export const addPin = async (req: addPinReq | Request, res: genericResponseType)
   }
 };
 
-interface getPinsReq extends Request{
-  user: reqUser
-}
-export const getPins = async (req: getPinsReq | Request, res: genericResponseType) => {
-  const { userId, isAdmin } = getUserProfile(req.user);
+export const getPins = async (req: Request, res: genericResponseType) => {
+  const { userId, isAdmin } = getUserProfile(req.user as UserType);
   try {
     const allPins = await pins.find({ isBroken: false }).exec();
     res.json(filterPins({ rawPins: allPins, userId, isAdmin }));
@@ -61,11 +50,8 @@ export const getPins = async (req: getPinsReq | Request, res: genericResponseTyp
   }
 };
 
-interface getUserPinsReq extends Request{
-  user: reqUser
-}
-export const getUserPins = async (req: getUserPinsReq | Request, res: genericResponseType) => {
-  const { userId, isAdmin } = getUserProfile(req.user);
+export const getUserPins = async (req: Request, res: genericResponseType) => {
+  const { userId, isAdmin } = getUserProfile(req.user as UserType);
   try {
     const allPinLinks = await pinLinks.find({}).exec();
     if (isAdmin) {
@@ -80,16 +66,12 @@ export const getUserPins = async (req: getUserPinsReq | Request, res: genericRes
   }
 };
 
-interface getProfilePinsReq extends Request {
-  params: { userid: string }
-  user: reqUser
-}
 export const getProfilePins = async (
-  req: getProfilePinsReq | Request,
+  req: Request,
   res: genericResponseType,
 ) => {
   const params = req.params.userid;
-  const { userId: loggedInUserid } = getUserProfile(req.user);
+  const { userId: loggedInUserid } = getUserProfile(req.user as UserType);
   // displayNames can contain '-', therefore rejoin if accidentally split
   const [userId, service, ...remainder] = params.split('-');
   const displayName = remainder.join('-');
@@ -129,15 +111,11 @@ export const getTags = async (req: Request, res: genericResponseType) => {
   }
 };
 
-interface pinImageReq extends Request {
-  params: { _id: string }
-  user: reqUser
-}
-export const pinImage = async (req: pinImageReq | Request, res: genericResponseType) => {
+export const pinImage = async (req: Request, res: genericResponseType) => {
   const pinID = req.params._id;
   const {
     userId, displayName, service, isAdmin,
-  } = getUserProfile(req.user);
+  } = getUserProfile(req.user as UserType);
 
   try {
     const pin = await pins.findById(pinID).exec();
@@ -165,13 +143,8 @@ export const pinImage = async (req: pinImageReq | Request, res: genericResponseT
   }
 };
 
-interface unpinImageReq extends Request {
-  params: { _id: string }
-  user: reqUser
-}
-
-export const unpin = async (req: unpinImageReq | Request, res: genericResponseType) => {
-  const { userId, displayName, isAdmin } = getUserProfile(req.user);
+export const unpin = async (req: Request, res: genericResponseType) => {
+  const { userId, displayName, isAdmin } = getUserProfile(req.user as UserType);
   const pinID = req.params._id;
   try {
     const pin = await pins.findById(pinID).exec();
@@ -189,17 +162,10 @@ export const unpin = async (req: unpinImageReq | Request, res: genericResponseTy
   }
 };
 
-interface addCommentReq extends Request {
-  params: { _id: string }
-  body:{
-    comment: string
-  }
-  user: reqUser
-}
-export const addComment = async (req: addCommentReq | Request, res: genericResponseType) => {
+export const addComment = async (req: Request, res: genericResponseType) => {
   const {
     userId, displayName, service, isAdmin,
-  } = getUserProfile(req.user);
+  } = getUserProfile(req.user as UserType);
   const pinID = req.params._id;
   const { comment } = req.body;
   try {
@@ -221,18 +187,10 @@ export const addComment = async (req: addCommentReq | Request, res: genericRespo
   }
 };
 
-interface updateTagsReq extends Request {
-  query:{
-    pinID: string
-    tag: string | undefined
-    deleteId: string | undefined
-  }
-  user: reqUser
-}
-export const updateTags = async (req: updateTagsReq | Request, res: genericResponseType) => {
+export const updateTags = async (req: Request, res: genericResponseType) => {
   const {
     userId, displayName, isAdmin,
-  } = getUserProfile(req.user);
+  } = getUserProfile(req.user as UserType);
   const { pinID, tag, deleteId } = req.query;
   try {
     const pin = await pins.findById(pinID).exec();
@@ -257,14 +215,8 @@ export const updateTags = async (req: updateTagsReq | Request, res: genericRespo
   }
 };
 
-interface updateTagsReq extends Request {
-  params:{
-    _id: string
-  }
-  user: reqUser
-}
-export const deletePin = async (req: updateTagsReq | Request, res: genericResponseType) => {
-  const { userId, displayName, isAdmin } = getUserProfile(req.user);
+export const deletePin = async (req: Request, res: genericResponseType) => {
+  const { userId, displayName, isAdmin } = getUserProfile(req.user as UserType);
   const query = { _id: req.params._id };
   const pinID = req.params._id;
   try {

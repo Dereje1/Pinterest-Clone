@@ -4,10 +4,9 @@ import { Transform as Stream } from 'stream';
 import AWS from 'aws-sdk';
 import {
   apiKeys,
-  reqUser,
   PinType,
-  services,
 } from './interfaces';
+import { UserType } from './models/user';
 
 export const getApiKeys = ():({
   keys: apiKeys
@@ -68,7 +67,7 @@ export const getApiKeys = ():({
 };
 
 /* Isolate auth service used from req.user and generate proffile */
-export const getUserProfile = (user: reqUser | undefined):({
+export const getUserProfile = (user: UserType):({
   service: string | undefined,
   userId: string | undefined,
   displayName: string | undefined,
@@ -84,30 +83,10 @@ export const getUserProfile = (user: reqUser | undefined):({
       isAdmin: false,
     };
   }
-  const { _doc } = user;
-  if (!_doc) {
-    return {
-      service: undefined,
-      userId: undefined,
-      displayName: undefined,
-      username: undefined,
-      isAdmin: false,
-    };
-  }
-  let service;
-  let userId;
-  let displayName;
-  let username;
-  Object.keys(_doc).forEach((key) => {
-    const foundservice = Object.keys(_doc[key as keyof services]).length;
-    if (foundservice && key !== '_id') {
-      const servObj = _doc[key as keyof services];
-      service = key;
-      userId = servObj.id;
-      displayName = servObj.displayName;
-      username = servObj.username;
-    }
-  });
+  const {
+    service, userId, displayName, username,
+  } = user;
+
   const isAdmin = Boolean(
     process.env.ADMIN_USER_ID
     && userId === process.env.ADMIN_USER_ID,
