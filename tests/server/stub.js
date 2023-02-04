@@ -1,14 +1,11 @@
 const user = {
-  _doc: {
-    twitter: {
-      id: 'twitter test id',
-      displayName: 'tester-twitter',
-      username: 'twitter-user-name',
-    },
-    google: {},
-    github: {},
-  },
+  userId: 'twitter test id',
+  displayName: 'tester-twitter',
+  username: 'twitter-user-name',
+  token: 'stub -token',
+  service: 'twitter',
 };
+
 const rawPinsStub = [{
   _id: '1',
   imgDescription: 'description-1',

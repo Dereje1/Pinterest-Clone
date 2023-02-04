@@ -1,23 +1,14 @@
 import {
   setAuthRoutes, getProfile, logOut, setGuest,
 } from '../../../server/auth/routes';
+import { user } from '../stub';
 
 describe('Authentication routes', () => {
   let req; let
     res;
   beforeEach(() => {
     req = {
-      user: {
-        _doc: {
-          google: {
-            id: 'abc',
-            username: 'test username',
-            displayName: 'test display name',
-          },
-          twitter: {},
-          github: {},
-        },
-      },
+      user,
       logout: jest.fn(),
     };
     res = {
@@ -33,10 +24,10 @@ describe('Authentication routes', () => {
     expect(res.json).toHaveBeenCalledWith({
       authenticated: true,
       userIp: expect.any(String),
-      username: 'test username',
-      userId: 'abc',
-      displayName: 'test display name',
-      service: 'google',
+      username: 'twitter-user-name',
+      userId: 'twitter test id',
+      displayName: 'tester-twitter',
+      service: 'twitter',
       isAdmin: false,
     });
   });

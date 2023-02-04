@@ -77,7 +77,7 @@ export const getProfilePins = async (
   const displayName = remainder.join('-');
   try {
     const [user] = await users.find({
-      $and: [{ [`${service}.id`]: userId }, { [`${service}.displayName`]: displayName }],
+      $and: [{ userId }, { displayName }, { service }],
     }).exec();
 
     if (!user) {
@@ -92,9 +92,9 @@ export const getProfilePins = async (
       createdPins: filterPins({ rawPins: createdPins, userId: loggedInUserid, isAdmin: false }),
       savedPins: filterPins({ rawPins: savedPins, userId: loggedInUserid, isAdmin: false }),
       user: {
-        userId: user[service as keyof UserType].id,
+        userId: user.userId,
         service,
-        displayName: user[service as keyof UserType].displayName,
+        displayName: user.displayName,
       },
     });
   } catch (error) {
