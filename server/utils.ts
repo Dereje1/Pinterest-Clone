@@ -70,7 +70,7 @@ export const getApiKeys = ():({
 export const getUserProfile = (user: UserType):({
   service: string | undefined,
   userId: string | undefined,
-  displayName: string | undefined,
+  displayName: string | null,
   username: string |undefined,
   isAdmin: boolean,
 }) => {
@@ -78,7 +78,7 @@ export const getUserProfile = (user: UserType):({
     return {
       service: undefined,
       userId: undefined,
-      displayName: undefined,
+      displayName: null,
       username: undefined,
       isAdmin: false,
     };
@@ -94,7 +94,7 @@ export const getUserProfile = (user: UserType):({
   return {
     service,
     userId,
-    displayName,
+    displayName: displayName || '🚫',
     username,
     isAdmin,
   };
@@ -153,7 +153,7 @@ export const filterPins = ({ rawPins, userId, isAdmin }: filterTypes) => rawPins
     _id: pinId,
     imgDescription,
     imgLink: getCloudFrontLink(imgLink),
-    owner: { name: owner.name, userId: owner.id, service: owner.service },
+    owner: { name: owner.name || '🚫', userId: owner.id, service: owner.service },
     savedBy: savedNames,
     owns: Boolean(userId && (userId === owner.id || isAdmin)),
     hasSaved: Boolean(userId && savedIds.includes(userId)),
@@ -218,7 +218,7 @@ export const uploadImageToS3 = async ({
 }:{
   originalImgLink: string,
   userId: string | undefined,
-  displayName: string | undefined,
+  displayName: string | null,
   service: string | undefined
 }) => {
   // unwanted characters (non ASCII) rejected by AWS tagging

@@ -8,6 +8,7 @@ import ListItemText from '@mui/material/ListItemText';
 import Dialog from '@mui/material/Dialog';
 import ListSubheader from '@mui/material/ListSubheader';
 import { getProviderIcons } from '../common/common';
+import { getUserLinkQuery } from '../../utils/utils';
 import { providerIconsType, PinnerType } from '../../interfaces';
 
 const providerIcons: providerIconsType = getProviderIcons({ fontSize: 20 });
@@ -40,7 +41,7 @@ function PinnersDialog({
             onClick={(e) => { onCloseDialog(); onClosePin(e); }}
             key={pinner.userId}
             component={Link}
-            to={`/profile/${pinner.userId}-${pinner.service}-${pinner.name}`}
+            to={`/profile/${getUserLinkQuery(pinner)}`}
           >
             <ListItemAvatar>
               <Avatar

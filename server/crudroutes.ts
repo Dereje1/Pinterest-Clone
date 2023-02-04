@@ -74,7 +74,8 @@ export const getProfilePins = async (
   const { userId: loggedInUserid } = getUserProfile(req.user as UserType);
   // displayNames can contain '-', therefore rejoin if accidentally split
   const [userId, service, ...remainder] = params.split('-');
-  const displayName = remainder.join('-');
+  let displayName: string | null = remainder.join('-');
+  displayName = displayName === 'null' ? null : displayName;
   try {
     const [user] = await users.find({
       $and: [{ userId }, { displayName }, { service }],

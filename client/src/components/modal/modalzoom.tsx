@@ -16,7 +16,7 @@ import { styled } from '@mui/styles';
 import ModalActions from './ModalActions';
 import Comments from './Comments';
 import {
-  delay, getFormattedDescription, formatDate,
+  delay, getFormattedDescription, formatDate, getUserLinkQuery,
 } from '../../utils/utils';
 import { PinType, userType } from '../../interfaces';
 import './modal.scss';
@@ -177,7 +177,9 @@ export class PinZoom extends Component<PinZoomProps, PinZoomState> {
                 <Link
                   component={RouterLink}
                   underline="none"
-                  to={`/profile/${pinInformation.owner.userId}-${pinInformation.owner.service}-${pinInformation.owner.name}`}
+                  to={
+                    `/profile/${getUserLinkQuery(pinInformation.owner)}`
+                  }
                   onMouseDown={(e) => e.preventDefault()}
                   onClick={(e) => this.close(e, true)}
                 >

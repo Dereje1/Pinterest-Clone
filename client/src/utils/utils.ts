@@ -132,3 +132,5 @@ export const updatePinList = (oldList: PinType[], newPin: PinType) => {
     ...oldList.slice(indexOfUpdate + 1),
   ];
 };
+
+export const getUserLinkQuery = ({ userId, service, name }: {userId: string, service: string, name: string}) => `${userId}-${service}-${name !== '🚫' ? name : null}`;

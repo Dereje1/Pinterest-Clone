@@ -3,7 +3,7 @@ import mongoose from 'mongoose';
 export interface UserType extends mongoose.Document {
     userId: string,
     token: string,
-    displayName: string,
+    displayName: string | null,
     username: string,
     service: string,
 }
