@@ -115,7 +115,7 @@ exports[`The pin zoom modal will render 1`] = `
             }
             onClick={[Function]}
             onMouseDown={[Function]}
-            to="/profile/1-google-owner id-1"
+            to="/profile/1"
             underline="none"
           >
             owner id-1

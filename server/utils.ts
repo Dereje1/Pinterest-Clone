@@ -84,7 +84,7 @@ export const getUserProfile = (user: UserType):({
     };
   }
   const {
-    service, userId, displayName, username,
+    _id, service, userId, displayName, username,
   } = user;
 
   const isAdmin = Boolean(
@@ -93,7 +93,7 @@ export const getUserProfile = (user: UserType):({
   );
   return {
     service,
-    userId,
+    userId: _id.toString(), // mask actual userId sent to client by mongo doc Id
     displayName: displayName || '🚫',
     username,
     isAdmin,
@@ -144,9 +144,9 @@ export const filterPins = ({ rawPins, userId, isAdmin }: filterTypes) => rawPins
   const savedNames = savedBy.map(({ name, id, service }) => ({ name, userId: id, service }));
   const modifiedComments = comments.map(
     ({
-      _id, displayName, comment, createdAt,
+      _id, displayName, comment, createdAt, userId: commentorUserId,
     }) => ({
-      _id, displayName, comment, createdAt,
+      _id, displayName, comment, createdAt, userId: commentorUserId,
     }),
   );
   return {

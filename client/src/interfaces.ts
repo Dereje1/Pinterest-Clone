@@ -10,7 +10,8 @@ export interface commentType {
     _id: string,
     displayName: string,
     comment: string,
-    createdAt: string
+    createdAt: string,
+    userId: string
 }
 
 export interface tagType {
