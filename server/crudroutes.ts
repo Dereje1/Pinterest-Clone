@@ -70,17 +70,10 @@ export const getProfilePins = async (
   req: Request,
   res: genericResponseType,
 ) => {
-  const params = req.params.userid;
+  const userId = req.params.userid;
   const { userId: loggedInUserid } = getUserProfile(req.user as UserType);
-  // displayNames can contain '-', therefore rejoin if accidentally split
-  const [userId, service, ...remainder] = params.split('-');
-  let displayName: string | null = remainder.join('-');
-  displayName = displayName === 'null' ? null : displayName;
   try {
-    const [user] = await users.find({
-      $and: [{ userId }, { displayName }, { service }],
-    }).exec();
-
+    const user = await users.findById(userId).exec();
     if (!user) {
       return res.json({ redirect: '/' });
     }
@@ -94,12 +87,13 @@ export const getProfilePins = async (
       savedPins: filterPins({ rawPins: savedPins, userId: loggedInUserid, isAdmin: false }),
       user: {
         userId: user.userId,
-        service,
+        service: user.service,
         displayName: user.displayName,
       },
     });
   } catch (error) {
-    return res.json(error);
+    // mongoose errors out on invalid ObjectIds sent -> redirect also in that case
+    return res.json({ redirect: '/' });
   }
 };
 

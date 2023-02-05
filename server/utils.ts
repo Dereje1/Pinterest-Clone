@@ -84,7 +84,7 @@ export const getUserProfile = (user: UserType):({
     };
   }
   const {
-    service, userId, displayName, username,
+    _id, service, userId, displayName, username,
   } = user;
 
   const isAdmin = Boolean(
@@ -93,7 +93,7 @@ export const getUserProfile = (user: UserType):({
   );
   return {
     service,
-    userId,
+    userId: _id.toString(),
     displayName: displayName || '🚫',
     username,
     isAdmin,
