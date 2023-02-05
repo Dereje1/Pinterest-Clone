@@ -182,8 +182,7 @@ describe('The pin zoom modal', () => {
     link.onClick();
     jest.advanceTimersByTime(500);
     await Promise.resolve();
-    expect(link.to).toBe('/profile/1-google-owner id-1');
-    // expect(wrapper.state().show).toBe(false);
+    expect(link.to).toBe('/profile/1');
     expect(props.reset).toHaveBeenCalledTimes(1);
   });
 });

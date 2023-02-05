@@ -19,7 +19,7 @@ function Profile() {
   const [ready, setReady] = useState(false);
   const [displaySetting, setDisplaySetting] = useState('created');
   const [displayLogin, setDisplayLogin] = useState(false);
-  const [retrievedUser, setRetrievedUser] = useState({ userId: '', service: 'twitter', displayName: '' });
+  const [retrievedUser, setRetrievedUser] = useState({ service: 'twitter', displayName: '' });
 
   const { userInfo }:{userInfo: string} = useParams();
   const { pathname } = useLocation();

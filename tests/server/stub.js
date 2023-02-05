@@ -1,4 +1,5 @@
 const user = {
+  _id: 'mongo_twitter test id',
   userId: 'twitter test id',
   displayName: 'tester-twitter',
   username: 'twitter-user-name',
@@ -10,7 +11,7 @@ const rawPinsStub = [{
   _id: '1',
   imgDescription: 'description-1',
   imgLink: 'https://stub-1',
-  owner: { id: 'twitter test id', name: 'tester-twitter', service: 'twitter' },
+  owner: { id: 'mongo_twitter test id', name: 'tester-twitter', service: 'twitter' },
   savedBy: [{ id: 'google test id', name: 'tester-google', service: 'google' }],
   comments: [{
     _id: 'comment-Id-1',
@@ -25,7 +26,7 @@ const rawPinsStub = [{
   imgDescription: 'description-2',
   imgLink: 'https://stub-2',
   owner: { id: 'google test id', name: 'tester-google', service: 'google' },
-  savedBy: [{ id: 'twitter test id', name: 'tester-twitter', service: 'twitter' }],
+  savedBy: [{ id: 'mongo_twitter test id', name: 'tester-twitter', service: 'twitter' }],
   comments: [{
     _id: 'comment-Id-1',
     userId: 'google test id',
@@ -55,7 +56,7 @@ const allPinsResponse = [
     _id: '1',
     imgDescription: 'description-1',
     imgLink: 'https://stub-1',
-    owner: { userId: 'twitter test id', name: 'tester-twitter', service: 'twitter' },
+    owner: { userId: 'mongo_twitter test id', name: 'tester-twitter', service: 'twitter' },
     savedBy: [{ userId: 'google test id', name: 'tester-google', service: 'google' }],
     owns: true,
     hasSaved: false,
@@ -72,7 +73,7 @@ const allPinsResponse = [
     imgDescription: 'description-2',
     imgLink: 'https://stub-2',
     owner: { userId: 'google test id', name: 'tester-google', service: 'google' },
-    savedBy: [{ userId: 'twitter test id', name: 'tester-twitter', service: 'twitter' }],
+    savedBy: [{ userId: 'mongo_twitter test id', name: 'tester-twitter', service: 'twitter' }],
     owns: false,
     hasSaved: true,
     comments: [{

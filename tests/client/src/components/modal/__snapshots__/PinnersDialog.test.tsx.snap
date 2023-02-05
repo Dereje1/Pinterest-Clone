@@ -47,7 +47,7 @@ exports[`The pinners dialog will render 1`] = `
       }
       key="1"
       onClick={[Function]}
-      to="/profile/1-google-savedBy - id-1"
+      to="/profile/1"
     >
       <ForwardRef(ListItemAvatar)>
         <ForwardRef(Avatar)
@@ -88,7 +88,7 @@ exports[`The pinners dialog will render 1`] = `
       }
       key="1"
       onClick={[Function]}
-      to="/profile/1-github-savedBy - id-1"
+      to="/profile/1"
     >
       <ForwardRef(ListItemAvatar)>
         <ForwardRef(Avatar)

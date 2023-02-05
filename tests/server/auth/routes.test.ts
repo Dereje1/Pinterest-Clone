@@ -25,7 +25,7 @@ describe('Authentication routes', () => {
       authenticated: true,
       userIp: expect.any(String),
       username: 'twitter-user-name',
-      userId: 'twitter test id',
+      userId: 'mongo_twitter test id',
       displayName: 'tester-twitter',
       service: 'twitter',
       isAdmin: false,
