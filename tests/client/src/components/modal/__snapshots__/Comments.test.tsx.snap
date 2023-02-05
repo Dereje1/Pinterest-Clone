@@ -163,17 +163,36 @@ exports[`The comments window will render with comments 1`] = `
           }
         }
       >
-        <ForwardRef(Typography)
-          sx={
+        <ForwardRef(Link)
+          component={
             {
-              "color": "#4c62bc",
-              "fontWeight": "bold",
+              "$$typeof": Symbol(react.forward_ref),
+              "propTypes": {
+                "innerRef": [Function],
+                "onClick": [Function],
+                "replace": [Function],
+                "target": [Function],
+                "to": [Function],
+              },
+              "render": [Function],
             }
           }
-          variant="subtitle1"
+          onClick={[MockFunction]}
+          to="/profile/undefined"
+          underline="none"
         >
-          tester-displayName
-        </ForwardRef(Typography)>
+          <ForwardRef(Typography)
+            sx={
+              {
+                "color": "#4c62bc",
+                "fontWeight": "bold",
+              }
+            }
+            variant="subtitle1"
+          >
+            tester-displayName
+          </ForwardRef(Typography)>
+        </ForwardRef(Link)>
         <ForwardRef(Typography)
           color="text.secondary"
           sx={
