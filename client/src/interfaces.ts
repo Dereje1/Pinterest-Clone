@@ -63,3 +63,14 @@ export interface allPinLinksType {
     originalImgLink: string
     cloudFrontLink: string
 }
+
+export interface zoomedImageInfoType {
+    pin: PinType
+    parentDivStyle: {
+        imgWidth: string
+        parentWidth: number
+        isNoFit: boolean
+        top: number
+        width: string
+      }
+}

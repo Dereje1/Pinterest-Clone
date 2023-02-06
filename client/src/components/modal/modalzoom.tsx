@@ -18,7 +18,7 @@ import Comments from './Comments';
 import {
   delay, getFormattedDescription, formatDate,
 } from '../../utils/utils';
-import { PinType, userType } from '../../interfaces';
+import { PinType, userType, zoomedImageInfoType } from '../../interfaces';
 import './modal.scss';
 
 export const StyledBadge = styled(Badge)(({ name }:{ name: string}) => ({
@@ -31,16 +31,7 @@ export const StyledBadge = styled(Badge)(({ name }:{ name: string}) => ({
 }));
 
 interface PinZoomProps {
-    zoomInfo: [
-      PinType,
-      {
-        imgWidth: string
-        parentWidth: number
-        isNoFit: boolean
-        top: number
-        width: string
-      }
-    ],
+    zoomInfo: zoomedImageInfoType,
     user: userType
     reset: () => void
     pinImage: (pin: PinType) => void
@@ -80,7 +71,7 @@ export class PinZoom extends Component<PinZoomProps, PinZoomState> {
   }
 
   disableScroll = () => {
-    const { zoomInfo: [, parentDivStyle] } = this.props;
+    const { zoomInfo: { parentDivStyle } } = this.props;
     window.scrollTo(0, parentDivStyle.top);
   };
 
@@ -100,7 +91,7 @@ export class PinZoom extends Component<PinZoomProps, PinZoomState> {
 
   toggleComments = () => {
     const { commentsShowing } = this.state;
-    const { zoomInfo: [, parentDivStyle] } = this.props;
+    const { zoomInfo: { parentDivStyle } } = this.props;
     if (this.zoomedImage.current && !commentsShowing) {
       const { current: { clientHeight: cardHeight, children } } = this.zoomedImage;
       const [, image] = children;
@@ -123,7 +114,7 @@ export class PinZoom extends Component<PinZoomProps, PinZoomState> {
 
   render() {
     const {
-      zoomInfo: [pinInformation, parentDivStyle],
+      zoomInfo: { pin: pinInformation, parentDivStyle },
       pinImage,
       deletePin,
       user: { authenticated },

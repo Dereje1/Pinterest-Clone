@@ -10,7 +10,7 @@ import {
   updatePinList,
   getZoomedImageStyle,
 } from '../../utils/utils';
-import { PinType, userType } from '../../interfaces';
+import { PinType, userType, zoomedImageInfoType } from '../../interfaces';
 import './imagebuild.scss';
 import error from '../mypins/error.png';
 
@@ -26,16 +26,7 @@ interface ImageBuildProps {
 }
 
 const initialLoadedPins: PinType[] = [];
-const initialZoomedImageInfo: [
-  PinType,
-  {
-    imgWidth: string
-    parentWidth: number
-    isNoFit: boolean
-    top: number
-    width: string
-  }
-] | null = null;
+const initialZoomedImageInfo: zoomedImageInfoType | null = null;
 
 // builds images, component shared by both home and mypins
 function ImageBuild({
@@ -61,10 +52,14 @@ function ImageBuild({
   useEffect(() => {
     setActivePins(loadedPins.slice(0, batchSize));
     if (zoomedImageInfo) {
-      const [zoomedImg, ...rest] = zoomedImageInfo;
-      const [pin] = loadedPins.filter((p) => p._id === zoomedImg._id);
-      if (pin) setZoomedImageInfo([pin, ...rest]);
-      else setZoomedImageInfo(null);
+      const { pin } = zoomedImageInfo;
+      const [foundpin] = loadedPins.filter((p) => p._id === pin._id);
+      if (foundpin) {
+        setZoomedImageInfo({
+          ...zoomedImageInfo,
+          pin: foundpin,
+        });
+      } else setZoomedImageInfo(null);
     }
     // cleanup function to avoid memory leakage warning
     return () => {
@@ -114,7 +109,7 @@ function ImageBuild({
 
   const handleNewComment = async (newComment: string) => {
     if (zoomedImageInfo) {
-      const [pin] = zoomedImageInfo;
+      const { pin } = zoomedImageInfo;
       const updatedPin = await RESTcall({
         address: `/api/comment/${pin._id}`,
         method: 'put',
@@ -165,10 +160,10 @@ function ImageBuild({
       top: document.body.scrollTop,
       width: '90%',
     };
-    setZoomedImageInfo([
-      currentImg,
+    setZoomedImageInfo({
+      pin: currentImg,
       parentDivStyle,
-    ]);
+    });
   };
 
   const nextScroll = () => {

@@ -25,17 +25,20 @@ describe('The pin zoom modal', () => {
     props = {
       displayPinZoom: false,
       // [picobject, overlay button type, last scroll distance]
-      zoomInfo: [pinsStub[0], {
-        top: 10,
-        imgWidth: '622.5px',
-        parentWidth: 622.5,
-        pinnersSize: '2em',
-        subTitleSize: '1.2em',
-        titleSize: '2em',
-        dateSize: '0.6em',
-        width: '90%',
-        isNoFit: false,
-      }],
+      zoomInfo: {
+        pin: pinsStub[0],
+        parentDivStyle: {
+          top: 10,
+          imgWidth: '622.5px',
+          parentWidth: 622.5,
+          pinnersSize: '2em',
+          subTitleSize: '1.2em',
+          titleSize: '2em',
+          dateSize: '0.6em',
+          width: '90%',
+          isNoFit: false,
+        },
+      },
       reset: jest.fn(),
       pinImage: jest.fn(),
       deletePin: null,
@@ -80,17 +83,20 @@ describe('The pin zoom modal', () => {
     global.innerHeight = 1000;
     const updatedProps = {
       ...props,
-      zoomInfo: [pinsStub[0], {
-        top: 10,
-        imgWidth: '622.5px',
-        parentWidth: 830,
-        pinnersSize: '2em',
-        subTitleSize: '1.2em',
-        titleSize: '2em',
-        dateSize: '0.6em',
-        width: '90%',
-        isNoFit: false,
-      }],
+      zoomInfo: {
+        pin: pinsStub[0],
+        parentDivStyle: {
+          top: 10,
+          imgWidth: '622.5px',
+          parentWidth: 830,
+          pinnersSize: '2em',
+          subTitleSize: '1.2em',
+          titleSize: '2em',
+          dateSize: '0.6em',
+          width: '90%',
+          isNoFit: false,
+        },
+      },
     };
     const wrapper = shallow<PinZoom>(<PinZoom {...updatedProps} />);
     // toggle comment on
@@ -133,14 +139,13 @@ describe('The pin zoom modal', () => {
   test('will set zero on badge content for pins icon if savedby is not defined', () => {
     const updatedProps = {
       ...props,
-      zoomInfo: [
-        {
+      zoomInfo: {
+        ...props.zoomInfo,
+        pin: {
           ...pinsStub[0],
           savedBy: undefined,
         },
-        10,
-        { naturalWidth: 600, naturalHeight: 800 },
-      ],
+      },
     };
     const wrapper = shallow(<PinZoom {...updatedProps} />);
     // toggle comment on
