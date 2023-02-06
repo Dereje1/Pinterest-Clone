@@ -1,35 +1,6 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`The save pin action button will render with both errors 1`] = `
-<ForwardRef(Fab)
-  aria-label="Pin Image"
-  color="success"
-  disabled={true}
-  onClick={[MockFunction]}
-  sx={
-    {
-      "&:disabled": {
-        "backgroundColor": "#f79f9fd9",
-        "color": "white",
-        "mb": 1,
-      },
-    }
-  }
-  variant="extended"
->
-  <Memo(ForwardRef(FileDownloadOffIcon))
-    sx={
-      {
-        "fontSize": "1.5em",
-        "mr": 1,
-      }
-    }
-  />
-  Invalid image and description
-</ForwardRef(Fab)>
-`;
-
-exports[`The save pin action button will render with description error only 1`] = `
+exports[`The save pin action button will render for a description error only 1`] = `
 <ForwardRef(Fab)
   aria-label="Pin Image"
   color="success"
@@ -58,7 +29,7 @@ exports[`The save pin action button will render with description error only 1`] 
 </ForwardRef(Fab)>
 `;
 
-exports[`The save pin action button will render with duplicate error only 1`] = `
+exports[`The save pin action button will render for a duplicate found error 1`] = `
 <ForwardRef(Fab)
   aria-label="Pin Image"
   color="success"
@@ -87,7 +58,123 @@ exports[`The save pin action button will render with duplicate error only 1`] = 
 </ForwardRef(Fab)>
 `;
 
-exports[`The save pin action button will render with image error only 1`] = `
+exports[`The save pin action button will render for a failed duplicate error call 1`] = `
+<ForwardRef(Fab)
+  aria-label="Pin Image"
+  color="success"
+  disabled={true}
+  onClick={[MockFunction]}
+  sx={
+    {
+      "&:disabled": {
+        "backgroundColor": "#f79f9fd9",
+        "color": "white",
+        "mb": 1,
+      },
+    }
+  }
+  variant="extended"
+>
+  <Memo(ForwardRef(FileDownloadOffIcon))
+    sx={
+      {
+        "fontSize": "1.5em",
+        "mr": 1,
+      }
+    }
+  />
+  Error processing...
+</ForwardRef(Fab)>
+`;
+
+exports[`The save pin action button will render for a pending duplicate error call 1`] = `
+<ForwardRef(Fab)
+  aria-label="Pin Image"
+  color="success"
+  disabled={true}
+  onClick={[MockFunction]}
+  sx={
+    {
+      "&:disabled": {
+        "backgroundColor": "#aa9c9cd9",
+        "color": "white",
+        "mb": 1,
+      },
+    }
+  }
+  variant="extended"
+>
+  <Memo(ForwardRef(FileDownloadOffIcon))
+    sx={
+      {
+        "fontSize": "1.5em",
+        "mr": 1,
+      }
+    }
+  />
+  Processing...
+</ForwardRef(Fab)>
+`;
+
+exports[`The save pin action button will render for a pending preview that is loading 1`] = `
+<ForwardRef(Fab)
+  aria-label="Pin Image"
+  color="success"
+  disabled={true}
+  onClick={[MockFunction]}
+  sx={
+    {
+      "&:disabled": {
+        "backgroundColor": "#aa9c9cd9",
+        "color": "white",
+        "mb": 1,
+      },
+    }
+  }
+  variant="extended"
+>
+  <Memo(ForwardRef(FileDownloadOffIcon))
+    sx={
+      {
+        "fontSize": "1.5em",
+        "mr": 1,
+      }
+    }
+  />
+  Image loading...
+</ForwardRef(Fab)>
+`;
+
+exports[`The save pin action button will render for an image and description eror 1`] = `
+<ForwardRef(Fab)
+  aria-label="Pin Image"
+  color="success"
+  disabled={true}
+  onClick={[MockFunction]}
+  sx={
+    {
+      "&:disabled": {
+        "backgroundColor": "#f79f9fd9",
+        "color": "white",
+        "mb": 1,
+      },
+    }
+  }
+  variant="extended"
+>
+  <Memo(ForwardRef(FileDownloadOffIcon))
+    sx={
+      {
+        "fontSize": "1.5em",
+        "mr": 1,
+      }
+    }
+  />
+  Invalid image and description
+</ForwardRef(Fab)>
+`;
+
+exports[`The save pin action button will render for an image error only 1`] = `
 <ForwardRef(Fab)
   aria-label="Pin Image"
   color="success"
@@ -116,7 +203,7 @@ exports[`The save pin action button will render with image error only 1`] = `
 </ForwardRef(Fab)>
 `;
 
-exports[`The save pin action button will render with no errors 1`] = `
+exports[`The save pin action button will render for no errors and ready to submit 1`] = `
 <ForwardRef(Fab)
   aria-label="Pin Image"
   color="success"
@@ -142,34 +229,5 @@ exports[`The save pin action button will render with no errors 1`] = `
     }
   />
   Save pin
-</ForwardRef(Fab)>
-`;
-
-exports[`The save pin action button will render with not yet loaded error only 1`] = `
-<ForwardRef(Fab)
-  aria-label="Pin Image"
-  color="success"
-  disabled={true}
-  onClick={[MockFunction]}
-  sx={
-    {
-      "&:disabled": {
-        "backgroundColor": "#aa9c9cd9",
-        "color": "white",
-        "mb": 1,
-      },
-    }
-  }
-  variant="extended"
->
-  <Memo(ForwardRef(FileDownloadOffIcon))
-    sx={
-      {
-        "fontSize": "1.5em",
-        "mr": 1,
-      }
-    }
-  />
-  Image loading...
 </ForwardRef(Fab)>
 `;

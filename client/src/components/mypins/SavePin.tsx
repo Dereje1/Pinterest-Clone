@@ -20,24 +20,32 @@ function SavePin({
   picPreview,
 }: SavePinProps) {
   const [isDuplicateError, setIsDuplicateError] = useState(true);
-  const [testingForDuplicates, setTestingForDuplicates] = useState(false);
+  const [
+    testingForDuplicates,
+    setTestingForDuplicates,
+  ] = useState({ waiting: false, error: false });
 
   const testForDuplicate = async (picInPreview: string | ArrayBuffer) => {
-    setTestingForDuplicates(true);
-    const { duplicateError } = await RESTcall({
-      address: '/api/getDuplicateError/',
-      method: 'post',
-      payload: { picInPreview },
-    });
-    setTestingForDuplicates(false);
-    setIsDuplicateError(duplicateError);
+    setTestingForDuplicates({ waiting: true, error: false });
+    try {
+      const { duplicateError } = await RESTcall({
+        address: '/api/getDuplicateError/',
+        method: 'post',
+        payload: { picInPreview },
+      });
+      setTestingForDuplicates({ waiting: false, error: false });
+      setIsDuplicateError(duplicateError);
+    } catch (error) {
+      setTestingForDuplicates({ waiting: false, error: true });
+      setIsDuplicateError(true);
+    }
   };
 
   useEffect(() => {
     if (!isImageError && !isDescriptionError && isImageLoaded) {
       testForDuplicate(picPreview);
     }
-  }, [isImageError, isDescriptionError, isImageLoaded]);
+  }, [isImageError, isImageLoaded]);
 
   let validation;
   if (!isImageLoaded) {
@@ -60,10 +68,15 @@ function SavePin({
       text: 'Invalid description',
       color: '#f79f9fd9',
     };
-  } else if (testingForDuplicates) {
+  } else if (testingForDuplicates.waiting) {
     validation = {
-      text: 'Searching duplicates...',
+      text: 'Processing...',
       color: '#aa9c9cd9',
+    };
+  } else if (testingForDuplicates.error) {
+    validation = {
+      text: 'Error processing...',
+      color: '#f79f9fd9',
     };
   } else if (isDuplicateError) {
     validation = {
@@ -80,7 +93,8 @@ function SavePin({
    || isDescriptionError
     || isDuplicateError
      || !isImageLoaded
-      || testingForDuplicates;
+      || testingForDuplicates.waiting
+       || testingForDuplicates.error;
   return (
     <Fab
       variant="extended"

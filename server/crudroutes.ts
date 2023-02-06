@@ -2,7 +2,7 @@
 import { Router, Request } from 'express';
 import { PinnerType, genericResponseType } from './interfaces';
 import {
-  getUserProfile, filterPins, uploadImageToS3, isDuplicateError,
+  getUserProfile, filterPins, uploadImageToS3,
 } from './utils';
 import isLoggedIn from './auth/isloggedin';
 import pins from './models/pins';
@@ -231,9 +231,14 @@ export const deletePin = async (req: Request, res: genericResponseType) => {
 export const getDuplicateError = async (req: Request, res: genericResponseType) => {
   const { picInPreview } = req.body;
   try {
-    const allPinLinks = await pinLinks.find({}).exec();
-    const duplicateError = isDuplicateError(allPinLinks, picInPreview.toString());
-    return res.json({ duplicateError });
+    const [duplicateFound] = await pinLinks.find({
+      $or: [
+        { imgLink: picInPreview },
+        { originalImgLink: picInPreview },
+        { cloudFrontLink: picInPreview },
+      ],
+    }).exec();
+    return res.json({ duplicateError: Boolean(duplicateFound) });
   } catch (error) {
     return res.json(error);
   }

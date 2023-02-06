@@ -25,14 +25,27 @@ describe('The save pin action button', () => {
     props = null;
   });
 
-  test('will render with both errors', () => {
+  test('will render for a pending preview that is loading', () => {
+    const updatedProps = {
+      ...props,
+      isImageError: false,
+      isDescriptionError: false,
+      isImageLoaded: false,
+    };
+    const wrapper = shallow(<SavePin {...updatedProps} />);
+    const validation = wrapper.find({ 'aria-label': 'Pin Image' });
+    expect(validation.text()).toBe('Image loading...');
+    expect(toJson(wrapper)).toMatchSnapshot();
+  });
+
+  test('will render for an image and description eror', () => {
     const wrapper = shallow(<SavePin {...props} />);
     const validation = wrapper.find({ 'aria-label': 'Pin Image' });
     expect(validation.text()).toBe('Invalid image and description');
     expect(toJson(wrapper)).toMatchSnapshot();
   });
 
-  test('will render with image error only', () => {
+  test('will render for an image error only', () => {
     const updatedProps = {
       ...props,
       isDescriptionError: false,
@@ -43,7 +56,7 @@ describe('The save pin action button', () => {
     expect(toJson(wrapper)).toMatchSnapshot();
   });
 
-  test('will render with description error only', () => {
+  test('will render for a description error only', () => {
     const updatedProps = {
       ...props,
       isImageError: false,
@@ -54,7 +67,35 @@ describe('The save pin action button', () => {
     expect(toJson(wrapper)).toMatchSnapshot();
   });
 
-  test('will render with duplicate error only', async () => {
+  test('will render for a pending duplicate error call', async () => {
+    const updatedProps = {
+      ...props,
+      isImageError: false,
+      isDescriptionError: false,
+      isImageLoaded: true,
+    };
+    const wrapper = shallow(<SavePin {...updatedProps} />);
+    const validation = wrapper.find({ 'aria-label': 'Pin Image' });
+    expect(validation.text()).toBe('Processing...');
+    expect(toJson(wrapper)).toMatchSnapshot();
+  });
+
+  test('will render for a failed duplicate error call', async () => {
+    mockedRESTcall.mockImplementationOnce(() => Promise.reject());
+    const updatedProps = {
+      ...props,
+      isImageError: false,
+      isDescriptionError: false,
+      isImageLoaded: true,
+    };
+    const wrapper = shallow(<SavePin {...updatedProps} />);
+    await Promise.resolve();
+    const validation = wrapper.find({ 'aria-label': 'Pin Image' });
+    expect(validation.text()).toBe('Error processing...');
+    expect(toJson(wrapper)).toMatchSnapshot();
+  });
+
+  test('will render for a duplicate found error', async () => {
     const updatedProps = {
       ...props,
       isDescriptionError: false,
@@ -68,20 +109,7 @@ describe('The save pin action button', () => {
     expect(toJson(wrapper)).toMatchSnapshot();
   });
 
-  test('will render with not yet loaded error only', () => {
-    const updatedProps = {
-      ...props,
-      isImageError: false,
-      isDescriptionError: false,
-      isImageLoaded: false,
-    };
-    const wrapper = shallow(<SavePin {...updatedProps} />);
-    const validation = wrapper.find({ 'aria-label': 'Pin Image' });
-    expect(validation.text()).toBe('Image loading...');
-    expect(toJson(wrapper)).toMatchSnapshot();
-  });
-
-  test('will render with no errors', async () => {
+  test('will render for no errors and ready to submit', async () => {
     mockedRESTcall.mockImplementationOnce(() => Promise.resolve({ duplicateError: false }));
     const updatedProps = {
       ...props,

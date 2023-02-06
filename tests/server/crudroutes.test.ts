@@ -11,6 +11,7 @@ import {
   getUserPins,
   updateTags,
   getTags,
+  getDuplicateError,
 } from '../../server/crudroutes';
 import pins from '../../server/models/pins'; // schema for pins
 import users, { UserType } from '../../server/models/user'; // schema for pins
@@ -41,6 +42,7 @@ interface genericRequest extends Request{
     service: string
     id: string
     comment: string
+    picInPreview: string
   } | undefined
   params: {
     _id: string
@@ -1063,6 +1065,62 @@ describe('Getting saved tags list', () => {
       }),
     );
     await getTags(req as genericRequest, res);
+    expect(res.json).toHaveBeenCalledWith(Error('Mocked rejection'));
+  });
+});
+
+describe('Getting duplicate errors on new pin', () => {
+  let res;
+  const req = {
+    body: {
+      picInPreview: 'duplicate-link',
+    },
+  };
+  beforeEach(() => {
+    res = { json: jest.fn() };
+  });
+  afterEach(() => {
+    jest.restoreAllMocks();
+  });
+
+  test('will respond if duplicate found', async () => {
+    pinLinks.find = jest.fn().mockImplementation(
+      () => ({
+        exec: jest.fn().mockResolvedValue([{
+          imgLink: 'duplicate-link',
+        }]),
+      }),
+    );
+    await getDuplicateError(req as genericRequest, res);
+    expect(pinLinks.find).toHaveBeenCalledTimes(1);
+    expect(pinLinks.find).toHaveBeenCalledWith({
+      $or: [
+        { imgLink: 'duplicate-link' },
+        { originalImgLink: 'duplicate-link' },
+        { cloudFrontLink: 'duplicate-link' },
+      ],
+    });
+    expect(res.json).toHaveBeenCalledWith({ duplicateError: true });
+  });
+
+  test('will respond if duplicate is not found', async () => {
+    pinLinks.find = jest.fn().mockImplementation(
+      () => ({
+        exec: jest.fn().mockResolvedValue([]),
+      }),
+    );
+    await getDuplicateError(req as genericRequest, res);
+    expect(pinLinks.find).toHaveBeenCalledTimes(1);
+    expect(res.json).toHaveBeenCalledWith({ duplicateError: false });
+  });
+
+  test('will respond with error if post is rejected', async () => {
+    pinLinks.find = jest.fn().mockImplementation(
+      () => ({
+        exec: jest.fn().mockRejectedValue(new Error('Mocked rejection')),
+      }),
+    );
+    await getDuplicateError(req as genericRequest, res);
     expect(res.json).toHaveBeenCalledWith(Error('Mocked rejection'));
   });
 });
