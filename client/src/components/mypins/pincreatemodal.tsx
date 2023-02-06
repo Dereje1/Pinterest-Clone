@@ -19,17 +19,12 @@ import error from './error.png';
 import {
   validateURL,
   getModalWidth,
-  isDuplicateError,
   encodeImageFileAsURL,
 } from '../../utils/utils';
-import {
-  allPinLinksType,
-} from '../../interfaces';
 
 interface PinCreateProps {
   reset: () => void
   savePin: (pinJSON: {imgDescription: string, imgLink: string | ArrayBuffer}) => void
-  allPinLinks: allPinLinksType[]
 }
 
 interface PinCreateState {
@@ -131,10 +126,8 @@ class PinCreate extends Component<PinCreateProps, PinCreateState> {
     const {
       description, isError, picPreview, isLoaded, upload,
     } = this.state;
-    const { allPinLinks } = this.props;
     const modalWidth = getModalWidth();
     const isDescriptionError = description.trim().length < 5;
-    const duplicateError = isDuplicateError(allPinLinks, picPreview);
     return (
       <Dialog
         open
@@ -238,7 +231,7 @@ class PinCreate extends Component<PinCreateProps, PinCreateState> {
                 isImageError={isError}
                 isImageLoaded={isLoaded}
                 isDescriptionError={isDescriptionError}
-                isDuplicateError={duplicateError}
+                picPreview={picPreview}
                 savePic={this.savePic}
               />
             </div>

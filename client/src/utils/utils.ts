@@ -1,4 +1,4 @@
-import { PinType, tagType, allPinLinksType } from '../interfaces';
+import { PinType, tagType } from '../interfaces';
 
 export const shuffleImages = (arr: PinType[]) => {
   const shuffled: PinType[] = [];
@@ -87,21 +87,6 @@ export const getModalWidth = () => {
     return innerWidth / 3;
   }
   return innerWidth / 2;
-};
-
-export const isDuplicateError = (
-  allPinLinks: allPinLinksType[],
-  picPreview: string | ArrayBuffer,
-) => {
-  for (let i = 0; i < allPinLinks.length; i += 1) {
-    const { imgLink, originalImgLink, cloudFrontLink } = allPinLinks[i];
-    if (
-      imgLink === picPreview
-      || originalImgLink === picPreview
-      || cloudFrontLink === picPreview
-    ) return true;
-  }
-  return false;
 };
 
 export const encodeImageFileAsURL = (imgFile: File):Promise<string|ArrayBuffer|null> => new Promise(

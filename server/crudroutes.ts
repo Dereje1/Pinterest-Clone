@@ -1,7 +1,9 @@
 /* eslint-disable import/no-import-module-exports */
 import { Router, Request } from 'express';
 import { PinnerType, genericResponseType } from './interfaces';
-import { getUserProfile, filterPins, uploadImageToS3 } from './utils';
+import {
+  getUserProfile, filterPins, uploadImageToS3, isDuplicateError,
+} from './utils';
 import isLoggedIn from './auth/isloggedin';
 import pins from './models/pins';
 import users, { UserType } from './models/user';
@@ -53,16 +55,14 @@ export const getPins = async (req: Request, res: genericResponseType) => {
 export const getUserPins = async (req: Request, res: genericResponseType) => {
   const { userId, isAdmin } = getUserProfile(req.user as UserType);
   try {
-    const allPinLinks = await pinLinks.find({}).exec();
     if (isAdmin) {
       const allPins = await pins.find({ isBroken: false }).exec();
-      res.json({ profilePins: filterPins({ rawPins: allPins, userId, isAdmin }), allPinLinks });
-      return;
+      return res.json({ profilePins: filterPins({ rawPins: allPins, userId, isAdmin }) });
     }
     const profilePins = await pins.find({ $or: [{ 'owner.id': userId }, { 'savedBy.id': userId }] }).exec();
-    res.json({ profilePins: filterPins({ rawPins: profilePins, userId, isAdmin }), allPinLinks });
+    return res.json({ profilePins: filterPins({ rawPins: profilePins, userId, isAdmin }) });
   } catch (error) {
-    res.json(error);
+    return res.json(error);
   }
 };
 
@@ -227,9 +227,24 @@ export const deletePin = async (req: Request, res: genericResponseType) => {
     return res.json(error);
   }
 };
+
+export const getDuplicateError = async (req: Request, res: genericResponseType) => {
+  const { picInPreview } = req.body;
+  try {
+    const allPinLinks = await pinLinks.find({}).exec();
+    const duplicateError = isDuplicateError(allPinLinks, picInPreview.toString());
+    return res.json({ duplicateError });
+  } catch (error) {
+    return res.json(error);
+  }
+};
+
 export const router = Router();
 // adds a new pin to the db
 router.post('/api/newpin', isLoggedIn, addPin);
+
+// validates for duplicate errors on new pins
+router.post('/api/getDuplicateError/', isLoggedIn, getDuplicateError);
 
 // gets all pins for home page
 router.get('/api/home', getPins);

@@ -1,12 +1,13 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import SaveAltIcon from '@mui/icons-material/SaveAlt';
 import Fab from '@mui/material/Fab';
 import FileDownloadOffIcon from '@mui/icons-material/FileDownloadOff';
+import RESTcall from '../../crud'; // pin CRUD
 
 interface SavePinProps {
   isImageError: boolean
   isDescriptionError: boolean
-  isDuplicateError: boolean
+  picPreview: string | ArrayBuffer
   isImageLoaded: boolean
   savePic: () => void
 }
@@ -14,10 +15,30 @@ interface SavePinProps {
 function SavePin({
   isImageError,
   isDescriptionError,
-  isDuplicateError,
   savePic,
   isImageLoaded,
+  picPreview,
 }: SavePinProps) {
+  const [isDuplicateError, setIsDuplicateError] = useState(true);
+  const [testingForDuplicates, setTestingForDuplicates] = useState(false);
+
+  const testForDuplicate = async (picInPreview: string | ArrayBuffer) => {
+    setTestingForDuplicates(true);
+    const { duplicateError } = await RESTcall({
+      address: '/api/getDuplicateError/',
+      method: 'post',
+      payload: { picInPreview },
+    });
+    setTestingForDuplicates(false);
+    setIsDuplicateError(duplicateError);
+  };
+
+  useEffect(() => {
+    if (!isImageError && !isDescriptionError && isImageLoaded) {
+      testForDuplicate(picPreview);
+    }
+  }, [isImageError, isDescriptionError, isImageLoaded]);
+
   let validation;
   if (!isImageLoaded) {
     validation = {
@@ -39,6 +60,11 @@ function SavePin({
       text: 'Invalid description',
       color: '#f79f9fd9',
     };
+  } else if (testingForDuplicates) {
+    validation = {
+      text: 'Searching duplicates...',
+      color: '#aa9c9cd9',
+    };
   } else if (isDuplicateError) {
     validation = {
       text: 'Image URL already exists',
@@ -50,7 +76,11 @@ function SavePin({
       color: 'success',
     };
   }
-  const isDisabled = isImageError || isDescriptionError || isDuplicateError || !isImageLoaded;
+  const isDisabled = isImageError
+   || isDescriptionError
+    || isDuplicateError
+     || !isImageLoaded
+      || testingForDuplicates;
   return (
     <Fab
       variant="extended"

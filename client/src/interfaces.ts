@@ -57,13 +57,6 @@ export interface providerIconsType {
     google: {icon: ReactElement, color: string},
     github: {icon: ReactElement, color: string}
 }
-
-export interface allPinLinksType {
-    imgLink: string,
-    originalImgLink: string
-    cloudFrontLink: string
-}
-
 export interface zoomedImageInfoType {
     pin: PinType
     parentDivStyle: {

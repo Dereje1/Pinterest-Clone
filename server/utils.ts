@@ -7,6 +7,7 @@ import {
   PinType,
 } from './interfaces';
 import { UserType } from './models/user';
+import { allPinLinksType } from './models/pinlinks';
 
 export const getApiKeys = ():({
   keys: apiKeys
@@ -241,4 +242,19 @@ export const uploadImageToS3 = async ({
     console.log(`Error uploading img. ${originalImgLink.slice(0, 50)}... - ${error}`);
     return null;
   }
+};
+
+export const isDuplicateError = (
+  allPinLinks: allPinLinksType[],
+  picPreview: string | undefined,
+) => {
+  for (let i = 0; i < allPinLinks.length; i += 1) {
+    const { imgLink, originalImgLink, cloudFrontLink } = allPinLinks[i];
+    if (
+      imgLink === picPreview
+      || originalImgLink === picPreview
+      || cloudFrontLink === picPreview
+    ) return true;
+  }
+  return false;
 };

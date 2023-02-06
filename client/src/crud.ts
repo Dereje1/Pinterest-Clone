@@ -12,10 +12,12 @@ interface pinAddPayload { imgDescription: string, imgLink: string | ArrayBuffer 
 
 interface commentAddPayload { comment: string }
 
+interface duplicateCheckPayload { picInPreview: string | ArrayBuffer }
+
 interface crudTypes {
   address: string
   method: string
-  payload: pinAddPayload | commentAddPayload | undefined
+  payload: pinAddPayload | commentAddPayload | duplicateCheckPayload | undefined
 }
 
 export default async ({ address, method = 'get', payload }: crudTypes) => {

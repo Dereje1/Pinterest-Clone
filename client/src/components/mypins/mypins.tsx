@@ -16,7 +16,7 @@ import ImageBuild from '../imagebuild/Imagebuild';
 import RESTcall from '../../crud'; // pin CRUD
 import { getProviderIcons, Loading, UserPinsSelector } from '../common/common';
 import {
-  providerIconsType, userType, PinType, allPinLinksType,
+  providerIconsType, userType, PinType,
 } from '../../interfaces';
 
 const providerIcons = getProviderIcons({ fontSize: 45 });
@@ -56,7 +56,6 @@ interface MypinsProps {
 interface MypinsState {
   displayPinCreate: boolean
   pinList: PinType[]
-  allPinLinks: allPinLinksType[], // TODO
   showDeleteImageModal: boolean
   deletableImgInfo: PinType | null,
   ready: boolean,
@@ -70,7 +69,6 @@ export class Mypins extends Component<MypinsProps, MypinsState> {
     this.state = {
       displayPinCreate: false, // controls pin creation modal
       pinList: [], // collects the pins user owns and saved
-      allPinLinks: [], // URL of all pins in DB
       showDeleteImageModal: false,
       deletableImgInfo: null,
       ready: false,
@@ -80,14 +78,13 @@ export class Mypins extends Component<MypinsProps, MypinsState> {
 
   async componentDidMount() {
     // get all pins and filter by owned and saved and then concatenate and set state
-    const { profilePins, allPinLinks } = await RESTcall({
+    const { profilePins } = await RESTcall({
       address: '/api/mypins',
       method: 'get',
       payload: undefined,
     });
     this.setState({
       pinList: profilePins,
-      allPinLinks,
       ready: true,
     });
   }
@@ -95,14 +92,13 @@ export class Mypins extends Component<MypinsProps, MypinsState> {
   // adds a new pin to the db
   async addPic(pinJSON: {imgDescription: string, imgLink: string | ArrayBuffer}) {
     // copy then add pin to db and then update client state (in that order)
-    const { pinList, allPinLinks } = this.state;
+    const { pinList } = this.state;
     this.setState({ ready: false });
     const newPin = await RESTcall({
       address: '/api/newpin',
       method: 'post',
       payload: pinJSON,
     });
-    const { imgLink, originalImgLink } = newPin;
     const addedPin = {
       ...newPin,
       owns: true,
@@ -110,7 +106,6 @@ export class Mypins extends Component<MypinsProps, MypinsState> {
     };
     this.setState({
       pinList: [...pinList, addedPin],
-      allPinLinks: [...allPinLinks, { imgLink, originalImgLink, cloudFrontLink: '' }],
       ready: true,
       displayPinCreate: false,
       displaySetting: 'created',
@@ -123,14 +118,13 @@ export class Mypins extends Component<MypinsProps, MypinsState> {
     });
   }
 
-  deletePic({ _id, imgLink, owns }: {_id: string, imgLink: string, owns: boolean}) {
-    const { pinList, displayPinCreate, allPinLinks } = this.state;
+  deletePic({ _id, owns }: {_id: string, owns: boolean}) {
+    const { pinList, displayPinCreate } = this.state;
     if (displayPinCreate) return;
     this.setState({
       pinList: pinList.filter((p) => p._id !== _id),
       showDeleteImageModal: false,
       deletableImgInfo: null,
-      allPinLinks: owns ? allPinLinks.filter((links) => links.imgLink !== imgLink) : allPinLinks,
     }, async () => {
       await RESTcall({
         address: owns ? `/api/${_id}` : `/api/unpin/${_id}`,
@@ -144,7 +138,7 @@ export class Mypins extends Component<MypinsProps, MypinsState> {
     const { user, user: { authenticated } } = this.props;
     const {
       displayPinCreate, showDeleteImageModal,
-      deletableImgInfo, allPinLinks, pinList,
+      deletableImgInfo, pinList,
       ready, displaySetting,
     } = this.state;
     if (!authenticated) return null;
@@ -241,7 +235,6 @@ export class Mypins extends Component<MypinsProps, MypinsState> {
           <PinCreate
             reset={() => this.setState({ displayPinCreate: false })}
             savePin={(pinJSON) => this.addPic(pinJSON)}
-            allPinLinks={allPinLinks}
           />
         )}
         { showDeleteImageModal && (
