@@ -5,6 +5,10 @@ import React from 'react';
 import { shallow } from 'enzyme';
 import toJson from 'enzyme-to-json';
 import SavePin from '../../../../../client/src/components/mypins/SavePin';
+import RESTcall from '../../../../../client/src/crud';
+
+jest.mock('../../../../../client/src/crud');
+const mockedRESTcall = jest.mocked(RESTcall);
 
 describe('The save pin action button', () => {
   let props;
@@ -50,14 +54,15 @@ describe('The save pin action button', () => {
     expect(toJson(wrapper)).toMatchSnapshot();
   });
 
-  test('will render with duplicate error only', () => {
+  test('will render with duplicate error only', async () => {
     const updatedProps = {
       ...props,
       isDescriptionError: false,
       isImageError: false,
-      isDuplicateError: true,
+      isImageLoaded: true,
     };
     const wrapper = shallow(<SavePin {...updatedProps} />);
+    await Promise.resolve();
     const validation = wrapper.find({ 'aria-label': 'Pin Image' });
     expect(validation.text()).toBe('Image URL already exists');
     expect(toJson(wrapper)).toMatchSnapshot();
@@ -76,7 +81,8 @@ describe('The save pin action button', () => {
     expect(toJson(wrapper)).toMatchSnapshot();
   });
 
-  test('will render with no errors', () => {
+  test('will render with no errors', async () => {
+    mockedRESTcall.mockImplementationOnce(() => Promise.resolve({ duplicateError: false }));
     const updatedProps = {
       ...props,
       isImageError: false,
@@ -84,6 +90,7 @@ describe('The save pin action button', () => {
       isImageLoaded: true,
     };
     const wrapper = shallow(<SavePin {...updatedProps} />);
+    await Promise.resolve();
     const validation = wrapper.find({ 'aria-label': 'Pin Image' });
     expect(validation.text()).toBe('Save pin');
     expect(toJson(wrapper)).toMatchSnapshot();

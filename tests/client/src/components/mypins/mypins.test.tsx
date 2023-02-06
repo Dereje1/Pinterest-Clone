@@ -108,7 +108,7 @@ describe('The Mypins Component', () => {
     const wrapper = shallow<Mypins>(<Mypins {...props} />);
     await Promise.resolve();
     const instance = wrapper.instance() as Mypins;
-    instance.deletePic({ _id: '3', owns: true, imgLink: '' });
+    instance.deletePic({ _id: '3', owns: true });
     expect(wrapper.state().pinList).toStrictEqual([pinsStub[1]]);
     expect(mockedRESTcall).toHaveBeenCalledTimes(2);
     expect(mockedRESTcall.mock.calls).toEqual([

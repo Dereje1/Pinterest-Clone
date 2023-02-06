@@ -113,17 +113,6 @@ describe('The pin creation modal', () => {
     expect(wrapper.state().picPreview).toBe('');
   });
 
-  test('will detect duplicate pins', async () => {
-    const wrapper = shallow(<PinCreate {...props} />);
-    wrapper.setState({
-      picPreview: 'https://duplicate.com',
-      description: 'abcde',
-      showErrorImage: false,
-    });
-    const SavePin: EnzymePropSelector = wrapper.find('SavePin');
-    expect(SavePin.props().isDuplicateError).toBe(true);
-  });
-
   test('will handle successfully uploading images', async () => {
     jest
       .spyOn(utils, 'encodeImageFileAsURL')
@@ -165,7 +154,6 @@ describe('The pin creation modal', () => {
       showErrorImage: false,
     });
     const SavePin: EnzymePropSelector = wrapper.find('SavePin');
-    expect(SavePin.props().isDuplicateError).toBe(false);
     SavePin.props().savePic();
     jest.advanceTimersByTime(500);
     await Promise.resolve();

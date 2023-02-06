@@ -67,6 +67,8 @@ const restMock = jest.fn().mockImplementation((...args) => {
     });
   } if (address.includes('/api/getTags') && method === 'get' && !payload) {
     return Promise.resolve(['TAG 3', 'TAG 4']);
+  } if (address.includes('/api/getDuplicateError') && method === 'post' && payload) {
+    return Promise.resolve({ duplicateError: true });
   }
   return Promise.reject(new Error(`Requested method:${method} and path: ${address} not mocked!!`));
 });

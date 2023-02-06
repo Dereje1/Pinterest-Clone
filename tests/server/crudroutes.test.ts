@@ -161,14 +161,6 @@ describe('Retrieving pins for user page', () => {
     expect(pins.find).toHaveBeenCalledWith({ $or: [{ 'owner.id': user._id }, { 'savedBy.id': user._id }] });
     expect(res.json).toHaveBeenCalledWith({
       profilePins: allPinsResponse.filter((p) => p.owns || p.hasSaved),
-      allPinLinks: [
-        {
-          pin_id: 'stub pin_id',
-          imgLink: 'stub imgLink',
-          originalImgLink: 'stub originalImgLink',
-          cloudFrontLink: 'stub originalImgLink',
-        },
-      ],
     });
   });
 
@@ -183,14 +175,6 @@ describe('Retrieving pins for user page', () => {
     expect(pins.find).toHaveBeenCalledWith({ isBroken: false });
     expect(res.json).toHaveBeenCalledWith({
       profilePins: allPinsResponse.map((pin) => ({ ...pin, owns: true })),
-      allPinLinks: [
-        {
-          pin_id: 'stub pin_id',
-          imgLink: 'stub imgLink',
-          originalImgLink: 'stub originalImgLink',
-          cloudFrontLink: 'stub originalImgLink',
-        },
-      ],
     });
   });
 

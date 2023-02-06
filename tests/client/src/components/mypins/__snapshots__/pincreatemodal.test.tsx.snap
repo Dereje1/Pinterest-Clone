@@ -124,9 +124,9 @@ exports[`The pin creation modal will render for links to images 1`] = `
         />
         <SavePin
           isDescriptionError={true}
-          isDuplicateError={false}
           isImageError={true}
           isImageLoaded={false}
+          picPreview=""
           savePic={[Function]}
         />
       </div>
@@ -263,9 +263,9 @@ exports[`The pin creation modal will render for uploading images 1`] = `
         </ForwardRef(Button)>
         <SavePin
           isDescriptionError={true}
-          isDuplicateError={false}
           isImageError={true}
           isImageLoaded={false}
+          picPreview=""
           savePic={[Function]}
         />
       </div>
