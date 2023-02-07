@@ -1,16 +1,11 @@
 import { applyMiddleware, createStore } from 'redux';
 import thunk from 'redux-thunk';
-import React from 'react';
+import React, { lazy, Suspense } from 'react';
 import { render } from 'react-dom';
 import { Provider } from 'react-redux';
 import { BrowserRouter, Route, Switch } from 'react-router-dom';
 import { ThemeProvider, createTheme } from '@mui/material/styles';
-
-// React components
-import Menu from './components/menu/menu';
-import Home from './components/home/home';
-import Mypins from './components/mypins/mypins';
-import Profile from './components/profile/Profile';
+import { Loading } from './components/common/common';
 // redux
 import reducers from './reducers/index';
 // css
@@ -31,16 +26,24 @@ const theme = createTheme({
   },
 });
 
+// Lazy load react components
+const Menu = lazy(() => import('./components/menu/menu'));
+const Home = lazy(() => import('./components/home/home'));
+const Mypins = lazy(() => import('./components/mypins/mypins'));
+const Profile = lazy(() => import('./components/profile/Profile'));
+
 const App = (
   <Provider store={store}>
     <BrowserRouter>
       <ThemeProvider theme={theme}>
-        <Menu />
-        <Switch>
-          <Route path="/" exact component={Home} />
-          <Route path="/pins" component={Mypins} />
-          <Route path="/profile/:userInfo" component={Profile} />
-        </Switch>
+        <Suspense fallback={<Loading />}>
+          <Menu />
+          <Switch>
+            <Route path="/" exact component={Home} />
+            <Route path="/pins" component={Mypins} />
+            <Route path="/profile/:userInfo" component={Profile} />
+          </Switch>
+        </Suspense>
       </ThemeProvider>
     </BrowserRouter>
   </Provider>
