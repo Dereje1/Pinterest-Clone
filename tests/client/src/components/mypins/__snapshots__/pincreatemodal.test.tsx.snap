@@ -67,19 +67,36 @@ exports[`The pin creation modal will render for links to images 1`] = `
         />
       }
     />
-    <ForwardRef(CardMedia)
-      component="img"
-      id="new-pin-image"
-      image="/load-error.png"
-      onError={[Function]}
-      onLoad={[Function]}
-      sx={
+    <div
+      style={
         {
-          "height": 240,
-          "objectFit": "contain",
+          "display": "flex",
+          "flexDirection": "column",
+          "justifyContent": "center",
         }
       }
-    />
+    >
+      <ForwardRef(CardMedia)
+        component="img"
+        id="new-pin-image"
+        image="/load-error.png"
+        onError={[Function]}
+        onLoad={[Function]}
+        sx={
+          {
+            "height": 240,
+            "objectFit": "contain",
+          }
+        }
+      />
+      <SavePin
+        isDescriptionError={true}
+        isImageError={true}
+        isImageLoaded={false}
+        picPreview=""
+        savePic={[Function]}
+      />
+    </div>
     <ForwardRef(CardActions)>
       <div
         style={
@@ -121,13 +138,6 @@ exports[`The pin creation modal will render for links to images 1`] = `
           }
           value=""
           variant="standard"
-        />
-        <SavePin
-          isDescriptionError={true}
-          isImageError={true}
-          isImageLoaded={false}
-          picPreview=""
-          savePic={[Function]}
         />
       </div>
     </ForwardRef(CardActions)>
@@ -202,19 +212,36 @@ exports[`The pin creation modal will render for uploading images 1`] = `
         />
       }
     />
-    <ForwardRef(CardMedia)
-      component="img"
-      id="new-pin-image"
-      image="/load-error.png"
-      onError={[Function]}
-      onLoad={[Function]}
-      sx={
+    <div
+      style={
         {
-          "height": 240,
-          "objectFit": "contain",
+          "display": "flex",
+          "flexDirection": "column",
+          "justifyContent": "center",
         }
       }
-    />
+    >
+      <ForwardRef(CardMedia)
+        component="img"
+        id="new-pin-image"
+        image="/load-error.png"
+        onError={[Function]}
+        onLoad={[Function]}
+        sx={
+          {
+            "height": 240,
+            "objectFit": "contain",
+          }
+        }
+      />
+      <SavePin
+        isDescriptionError={true}
+        isImageError={true}
+        isImageLoaded={false}
+        picPreview=""
+        savePic={[Function]}
+      />
+    </div>
     <ForwardRef(CardActions)>
       <div
         style={
@@ -261,13 +288,6 @@ exports[`The pin creation modal will render for uploading images 1`] = `
             type="file"
           />
         </ForwardRef(Button)>
-        <SavePin
-          isDescriptionError={true}
-          isImageError={true}
-          isImageLoaded={false}
-          picPreview=""
-          savePic={[Function]}
-        />
       </div>
     </ForwardRef(CardActions)>
   </ForwardRef(Card)>

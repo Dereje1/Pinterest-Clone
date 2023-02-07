@@ -1,233 +1,257 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`The save pin action button will render for a description error only 1`] = `
-<ForwardRef(Fab)
+<ForwardRef(Button)
   aria-label="Pin Image"
   color="success"
   disabled={true}
   onClick={[MockFunction]}
+  startIcon={
+    <Memo
+      sx={
+        {
+          "fontSize": "1.5em",
+          "mr": 1,
+        }
+      }
+    />
+  }
   sx={
     {
       "&:disabled": {
         "backgroundColor": "#f79f9fd9",
         "color": "white",
-        "mb": 1,
       },
+      "borderRadius": 0,
+      "mt": 1,
     }
   }
-  variant="extended"
+  variant="text"
 >
-  <Memo(ForwardRef(FileDownloadOffIcon))
-    sx={
-      {
-        "fontSize": "1.5em",
-        "mr": 1,
-      }
-    }
-  />
   Invalid description
-</ForwardRef(Fab)>
+</ForwardRef(Button)>
 `;
 
 exports[`The save pin action button will render for a duplicate found error 1`] = `
-<ForwardRef(Fab)
+<ForwardRef(Button)
   aria-label="Pin Image"
   color="success"
   disabled={true}
   onClick={[MockFunction]}
+  startIcon={
+    <Memo
+      sx={
+        {
+          "fontSize": "1.5em",
+          "mr": 1,
+        }
+      }
+    />
+  }
   sx={
     {
       "&:disabled": {
         "backgroundColor": "#f79f9fd9",
         "color": "white",
-        "mb": 1,
       },
+      "borderRadius": 0,
+      "mt": 1,
     }
   }
-  variant="extended"
+  variant="text"
 >
-  <Memo(ForwardRef(FileDownloadOffIcon))
-    sx={
-      {
-        "fontSize": "1.5em",
-        "mr": 1,
-      }
-    }
-  />
   Image URL already exists
-</ForwardRef(Fab)>
+</ForwardRef(Button)>
 `;
 
 exports[`The save pin action button will render for a failed duplicate error call 1`] = `
-<ForwardRef(Fab)
+<ForwardRef(Button)
   aria-label="Pin Image"
   color="success"
   disabled={true}
   onClick={[MockFunction]}
+  startIcon={
+    <Memo
+      sx={
+        {
+          "fontSize": "1.5em",
+          "mr": 1,
+        }
+      }
+    />
+  }
   sx={
     {
       "&:disabled": {
         "backgroundColor": "#f79f9fd9",
         "color": "white",
-        "mb": 1,
       },
+      "borderRadius": 0,
+      "mt": 1,
     }
   }
-  variant="extended"
+  variant="text"
 >
-  <Memo(ForwardRef(FileDownloadOffIcon))
-    sx={
-      {
-        "fontSize": "1.5em",
-        "mr": 1,
-      }
-    }
-  />
   Error processing...
-</ForwardRef(Fab)>
+</ForwardRef(Button)>
 `;
 
 exports[`The save pin action button will render for a pending duplicate error call 1`] = `
-<ForwardRef(Fab)
+<ForwardRef(Button)
   aria-label="Pin Image"
   color="success"
   disabled={true}
   onClick={[MockFunction]}
+  startIcon={
+    <Memo
+      sx={
+        {
+          "fontSize": "1.5em",
+          "mr": 1,
+        }
+      }
+    />
+  }
   sx={
     {
       "&:disabled": {
         "backgroundColor": "#aa9c9cd9",
         "color": "white",
-        "mb": 1,
       },
+      "borderRadius": 0,
+      "mt": 1,
     }
   }
-  variant="extended"
+  variant="text"
 >
-  <Memo(ForwardRef(FileDownloadOffIcon))
-    sx={
-      {
-        "fontSize": "1.5em",
-        "mr": 1,
-      }
-    }
-  />
   Processing...
-</ForwardRef(Fab)>
+</ForwardRef(Button)>
 `;
 
 exports[`The save pin action button will render for a pending preview that is loading 1`] = `
-<ForwardRef(Fab)
+<ForwardRef(Button)
   aria-label="Pin Image"
   color="success"
   disabled={true}
   onClick={[MockFunction]}
+  startIcon={
+    <Memo
+      sx={
+        {
+          "fontSize": "1.5em",
+          "mr": 1,
+        }
+      }
+    />
+  }
   sx={
     {
       "&:disabled": {
         "backgroundColor": "#aa9c9cd9",
         "color": "white",
-        "mb": 1,
       },
+      "borderRadius": 0,
+      "mt": 1,
     }
   }
-  variant="extended"
+  variant="text"
 >
-  <Memo(ForwardRef(FileDownloadOffIcon))
-    sx={
-      {
-        "fontSize": "1.5em",
-        "mr": 1,
-      }
-    }
-  />
   Image loading...
-</ForwardRef(Fab)>
+</ForwardRef(Button)>
 `;
 
 exports[`The save pin action button will render for an image and description eror 1`] = `
-<ForwardRef(Fab)
+<ForwardRef(Button)
   aria-label="Pin Image"
   color="success"
   disabled={true}
   onClick={[MockFunction]}
+  startIcon={
+    <Memo
+      sx={
+        {
+          "fontSize": "1.5em",
+          "mr": 1,
+        }
+      }
+    />
+  }
   sx={
     {
       "&:disabled": {
         "backgroundColor": "#f79f9fd9",
         "color": "white",
-        "mb": 1,
       },
+      "borderRadius": 0,
+      "mt": 1,
     }
   }
-  variant="extended"
+  variant="text"
 >
-  <Memo(ForwardRef(FileDownloadOffIcon))
-    sx={
-      {
-        "fontSize": "1.5em",
-        "mr": 1,
-      }
-    }
-  />
   Invalid image and description
-</ForwardRef(Fab)>
+</ForwardRef(Button)>
 `;
 
 exports[`The save pin action button will render for an image error only 1`] = `
-<ForwardRef(Fab)
+<ForwardRef(Button)
   aria-label="Pin Image"
   color="success"
   disabled={true}
   onClick={[MockFunction]}
+  startIcon={
+    <Memo
+      sx={
+        {
+          "fontSize": "1.5em",
+          "mr": 1,
+        }
+      }
+    />
+  }
   sx={
     {
       "&:disabled": {
         "backgroundColor": "#f79f9fd9",
         "color": "white",
-        "mb": 1,
       },
+      "borderRadius": 0,
+      "mt": 1,
     }
   }
-  variant="extended"
+  variant="text"
 >
-  <Memo(ForwardRef(FileDownloadOffIcon))
-    sx={
-      {
-        "fontSize": "1.5em",
-        "mr": 1,
-      }
-    }
-  />
   Invalid image
-</ForwardRef(Fab)>
+</ForwardRef(Button)>
 `;
 
 exports[`The save pin action button will render for no errors and ready to submit 1`] = `
-<ForwardRef(Fab)
+<ForwardRef(Button)
   aria-label="Pin Image"
   color="success"
   disabled={false}
   onClick={[MockFunction]}
+  startIcon={
+    <Memo
+      sx={
+        {
+          "fontSize": "1.5em",
+          "mr": 1,
+        }
+      }
+    />
+  }
   sx={
     {
       "&:disabled": {
         "backgroundColor": "success",
         "color": "white",
-        "mb": 1,
       },
+      "borderRadius": 0,
+      "mt": 1,
     }
   }
-  variant="extended"
+  variant="contained"
 >
-  <Memo(ForwardRef(SaveAltIcon))
-    sx={
-      {
-        "fontSize": "1.5em",
-        "mr": 1,
-      }
-    }
-  />
   Save pin
-</ForwardRef(Fab)>
+</ForwardRef(Button)>
 `;

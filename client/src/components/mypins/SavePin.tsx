@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import SaveAltIcon from '@mui/icons-material/SaveAlt';
-import Fab from '@mui/material/Fab';
+import Button from '@mui/material/Button';
 import FileDownloadOffIcon from '@mui/icons-material/FileDownloadOff';
 import RESTcall from '../../crud'; // pin CRUD
 
@@ -42,7 +42,7 @@ function SavePin({
   };
 
   useEffect(() => {
-    if (!isImageError && !isDescriptionError && isImageLoaded) {
+    if (!isImageError && isImageLoaded) {
       testForDuplicate(picPreview);
     }
   }, [isImageError, isImageLoaded]);
@@ -96,8 +96,13 @@ function SavePin({
       || testingForDuplicates.waiting
        || testingForDuplicates.error;
   return (
-    <Fab
-      variant="extended"
+    <Button
+      variant={isDisabled ? 'text' : 'contained'}
+      startIcon={
+        isDisabled
+          ? <FileDownloadOffIcon sx={{ mr: 1, fontSize: '1.5em' }} />
+          : <SaveAltIcon sx={{ mr: 1, fontSize: '1.5em' }} />
+      }
       aria-label="Pin Image"
       onClick={savePic}
       disabled={isDisabled}
@@ -106,14 +111,13 @@ function SavePin({
         '&:disabled': {
           backgroundColor: validation.color,
           color: 'white',
-          mb: 1,
         },
+        borderRadius: 0,
+        mt: 1,
       }}
     >
-      {!isDisabled && <SaveAltIcon sx={{ mr: 1, fontSize: '1.5em' }} />}
-      {isDisabled && <FileDownloadOffIcon sx={{ mr: 1, fontSize: '1.5em' }} />}
       {validation.text}
-    </Fab>
+    </Button>
   );
 }
 

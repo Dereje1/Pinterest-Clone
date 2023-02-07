@@ -172,14 +172,23 @@ class PinCreate extends Component<PinCreateProps, PinCreateState> {
               />
             )}
           />
-          <CardMedia
-            component="img"
-            image={picPreview === '' ? error : picPreview}
-            onError={this.onError}
-            onLoad={this.onLoad}
-            sx={{ objectFit: 'contain', height: 240 }}
-            id="new-pin-image"
-          />
+          <div style={{ display: 'flex', flexDirection: 'column', justifyContent: 'center' }}>
+            <CardMedia
+              component="img"
+              image={picPreview === '' ? error : picPreview}
+              onError={this.onError}
+              onLoad={this.onLoad}
+              sx={{ objectFit: 'contain', height: 240 }}
+              id="new-pin-image"
+            />
+            <SavePin
+              isImageError={isError}
+              isImageLoaded={isLoaded}
+              isDescriptionError={isDescriptionError}
+              picPreview={picPreview}
+              savePic={this.savePic}
+            />
+          </div>
           <CardActions>
             <div style={{
               display: 'flex',
@@ -227,13 +236,6 @@ class PinCreate extends Component<PinCreateProps, PinCreateState> {
                     />
                   )
               }
-              <SavePin
-                isImageError={isError}
-                isImageLoaded={isLoaded}
-                isDescriptionError={isDescriptionError}
-                picPreview={picPreview}
-                savePic={this.savePic}
-              />
             </div>
           </CardActions>
 
