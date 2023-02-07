@@ -65,7 +65,7 @@ function Profile() {
   });
 
   const pins = displaySetting === 'created' ? pinsOwned : pinsSaved;
-  if (!ready) return <div style={{ marginTop: 100 }}><Loading /></div>;
+  if (!ready) return <Loading marginTop={100} />;
 
   if (displayLogin) {
     return (

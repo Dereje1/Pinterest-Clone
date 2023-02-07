@@ -1,15 +1,9 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`The Mypins Component Mypins landing page will render bubbles until ready 1`] = `
-<div
-  style={
-    {
-      "marginTop": 100,
-    }
-  }
->
-  <Loading />
-</div>
+<Loading
+  marginTop={100}
+/>
 `;
 
 exports[`The Mypins Component Mypins landing page will render message if no pins created found 1`] = `

@@ -142,7 +142,7 @@ export class Mypins extends Component<MypinsProps, MypinsState> {
       ready, displaySetting,
     } = this.state;
     if (!authenticated) return null;
-    if (!ready) return <div style={{ marginTop: 100 }}><Loading /></div>;
+    if (!ready) return <Loading marginTop={100} />;
 
     const pins = pinList.filter((pin) => (displaySetting === 'created' ? Boolean(pin.owns) : Boolean(pin.hasSaved)));
     return (

@@ -3,6 +3,11 @@
 exports[`Loading... Will not render the loading bubbles 1`] = `
 <div
   id="loadingcontainer"
+  style={
+    {
+      "marginTop": 0,
+    }
+  }
 >
   <Memo(ForwardRef(DownloadDoneIcon)) />
 </div>
@@ -11,6 +16,11 @@ exports[`Loading... Will not render the loading bubbles 1`] = `
 exports[`Loading... Will render the loading bubbles 1`] = `
 <div
   id="loadingcontainer"
+  style={
+    {
+      "marginTop": 0,
+    }
+  }
 >
   <div
     className="bubbles A"

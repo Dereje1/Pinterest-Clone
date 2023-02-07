@@ -36,7 +36,7 @@ const App = (
   <Provider store={store}>
     <BrowserRouter>
       <ThemeProvider theme={theme}>
-        <Suspense fallback={<Loading />}>
+        <Suspense fallback={<Loading marginTop={100} />}>
           <Menu />
           <Switch>
             <Route path="/" exact component={Home} />

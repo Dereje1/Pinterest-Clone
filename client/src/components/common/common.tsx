@@ -19,11 +19,12 @@ export const getProviderIcons = ({ fontSize }: {fontSize: number}): providerIcon
 interface LoadingProps {
   imagesLoaded?: boolean,
   ready?: boolean
+  marginTop?: number
 }
 
-export function Loading({ imagesLoaded, ready }: LoadingProps) {
+export function Loading({ imagesLoaded, ready, marginTop = 0 }: LoadingProps) {
   return (
-    <div id="loadingcontainer">
+    <div id="loadingcontainer" style={{ marginTop }}>
       {
         imagesLoaded && ready ? <DownloadDoneIcon />
           : (
@@ -40,6 +41,7 @@ export function Loading({ imagesLoaded, ready }: LoadingProps) {
 Loading.defaultProps = {
   imagesLoaded: undefined,
   ready: undefined,
+  marginTop: undefined,
 };
 
 interface UserPinsSelectorProps {
