@@ -31,15 +31,18 @@ describe('The Menu component', () => {
     props = null;
     jest.clearAllMocks();
   });
-  test('will render for an authenticated user', () => {
+  test('will render for an authenticated user', async () => {
     const wrapper = shallow(<Menu {...props} />);
+    await Promise.resolve();
     const cover = wrapper.find('Cover');
+    expect(props.getUser).toHaveBeenCalledWith('/auth/profile');
     expect(cover.length).toBe(0);
     expect(toJson(wrapper)).toMatchSnapshot();
   });
 
-  test('will render for an open search bar', () => {
+  test('will render for an open search bar', async () => {
     const wrapper = shallow<Menu>(<Menu {...props} />);
+    await Promise.resolve();
     expect(wrapper.state().showSearch).toBe(false);
     const search: EnzymePropSelector = wrapper.find('Search');
     search.props().openSearch();
@@ -48,7 +51,7 @@ describe('The Menu component', () => {
     expect(wrapper.state().showSearch).toBe(false);
   });
 
-  test('will render for users authenticated as guest', () => {
+  test('will render for users authenticated as guest', async () => {
     const updatedProps = {
       ...props,
       user: {
@@ -57,12 +60,13 @@ describe('The Menu component', () => {
       },
     };
     const wrapper = shallow(<Menu {...updatedProps} />);
+    await Promise.resolve();
     wrapper.setState({ displaySignIn: true });
     const cover = wrapper.find('Cover');
     expect(cover.length).toBe(0);
     expect(toJson(wrapper)).toMatchSnapshot();
   });
-  test('will render the cover for non-authenticated users', () => {
+  test('will render the cover for non-authenticated users', async () => {
     const updatedProps = {
       ...props,
       user: {
@@ -72,17 +76,19 @@ describe('The Menu component', () => {
       },
     };
     const wrapper = shallow(<Menu {...updatedProps} />);
+    await Promise.resolve();
     const cover = wrapper.find('Cover');
     expect(cover.length).toBe(1);
   });
 
-  test('will render the collapsed menu', () => {
+  test('will render the collapsed menu', async () => {
     const wrapper = shallow(<Menu {...props} />);
+    await Promise.resolve();
     wrapper.setState({ menuIsCollapsed: true });
     expect(toJson(wrapper)).toMatchSnapshot();
   });
 
-  test('will toggle the sign-in modal for guest users', () => {
+  test('will toggle the sign-in modal for guest users', async () => {
     const updatedProps = {
       ...props,
       user: {
@@ -91,6 +97,7 @@ describe('The Menu component', () => {
       },
     };
     const wrapper = shallow<Menu>(<Menu {...updatedProps} />);
+    await Promise.resolve();
     expect(wrapper.state().displaySignIn).toBe(false);
     const signInButton: EnzymePropSelector = wrapper.find('Login');
     signInButton.props().showSignIn();

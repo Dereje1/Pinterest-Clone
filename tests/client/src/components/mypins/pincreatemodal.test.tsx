@@ -121,15 +121,11 @@ describe('The pin creation modal', () => {
     // turn upload switch on
     const cardHeader: EnzymePropSelector = wrapper.find('ForwardRef(CardHeader)');
     const uploadSwitch = cardHeader.props().action.props.control.props;
-
-    wrapper.setState({ isLoaded: true, isError: true });
     uploadSwitch.onChange();
     const instance = wrapper.instance() as PinCreate;
     // TODO: Fix is any declaration
     await instance.handleUploadedImage({ target: { files: ['a file'] } } as any);
     expect(wrapper.state().picPreview).toBe('data:image successfully encoded');
-    expect(wrapper.state().isError).toBe(false);
-    expect(wrapper.state().isLoaded).toBe(false);
   });
 
   test('will handle uploading image failures', async () => {

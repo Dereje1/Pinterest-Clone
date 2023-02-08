@@ -105,8 +105,6 @@ class PinCreate extends Component<PinCreateProps, PinCreateState> {
       if (value) {
         this.setState({
           picPreview: value,
-          isError: false,
-          isLoaded: false,
         });
       }
     } catch (_) {
@@ -118,7 +116,7 @@ class PinCreate extends Component<PinCreateProps, PinCreateState> {
     const target = (e.target as HTMLInputElement).files;
     if (target !== null) {
       const imgFile = target[0];
-      this.setState({ isLoaded: false }, () => this.encodeImage(imgFile));
+      this.setState({ picPreview: '' }, () => this.encodeImage(imgFile));
     }
   };
 

@@ -9,6 +9,7 @@ import Search from './search';
 import Cover from '../cover/cover';
 import SignIn from '../signin/signin';
 import CollapsibleMenu from './CollapsibleMenu';
+import { Loading } from '../common/common';
 import { userType } from '../../interfaces';
 import './menu.scss';
 
@@ -64,6 +65,7 @@ interface MenuState {
   menuIsCollapsed: boolean
   displaySignIn: boolean,
   showSearch: boolean,
+  ready: boolean
 }
 
 export class Menu extends React.Component<MenuProps, MenuState> {
@@ -74,16 +76,18 @@ export class Menu extends React.Component<MenuProps, MenuState> {
       menuIsCollapsed: window.innerWidth < 600, // test for screen size
       displaySignIn: false,
       showSearch: false,
+      ready: false,
     };
   }
 
-  componentDidMount() {
+  async componentDidMount() {
     console.log('Menu just Mounted');
     const { getUser: getUserStatus } = this.props;
-    getUserStatus('/auth/profile');
+    await getUserStatus('/auth/profile');
     this.setState(
       {
         menuIsCollapsed: window.innerWidth < 600,
+        ready: true,
       },
     );
   }
@@ -119,13 +123,14 @@ export class Menu extends React.Component<MenuProps, MenuState> {
   render() {
     // render cover/guest / logged in menu bar
     const {
-      showSearch,
+      showSearch, ready,
     } = this.state;
     const {
       user: { authenticated, username },
       updateSearch: searchUpdate,
       location: { pathname },
     } = this.props;
+    if (!ready) return <Loading />;
     if (!username) {
       // render cover
       document.body.classList.add('cover');
