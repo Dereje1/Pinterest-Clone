@@ -1,6 +1,9 @@
-/* eslint-disable import/no-import-module-exports */
+/* eslint-disable @typescript-eslint/ban-ts-comment */
 import { Router, Request } from 'express';
-import { PinnerType, genericResponseType } from './interfaces';
+import mongoose from 'mongoose';
+import {
+  PinnerType, genericResponseType,
+} from './interfaces';
 import {
   getUserProfile, filterPins, uploadImageToS3,
 } from './utils';
@@ -19,11 +22,7 @@ export const addPin = async (req: Request, res: genericResponseType) => {
     });
     const updatedPinInfo = {
       ...req.body,
-      owner: {
-        name: displayName,
-        service,
-        id: userId,
-      },
+      owner: mongoose.Types.ObjectId(userId),
       imgLink: newImgLink || originalImgLink,
       originalImgLink,
     };
@@ -45,7 +44,7 @@ export const addPin = async (req: Request, res: genericResponseType) => {
 export const getPins = async (req: Request, res: genericResponseType) => {
   const { userId, isAdmin } = getUserProfile(req.user as UserType);
   try {
-    const allPins = await pins.find({ isBroken: false }).exec();
+    const allPins = await pins.find({ isBroken: false }).populate('owner').exec();
     res.json(filterPins({ rawPins: allPins, userId, isAdmin }));
   } catch (error) {
     res.json(error);
@@ -54,12 +53,15 @@ export const getPins = async (req: Request, res: genericResponseType) => {
 
 export const getUserPins = async (req: Request, res: genericResponseType) => {
   const { userId, isAdmin } = getUserProfile(req.user as UserType);
+  const mongooseUserId = mongoose.Types.ObjectId(userId);
   try {
     if (isAdmin) {
       const allPins = await pins.find({ isBroken: false }).exec();
       return res.json({ profilePins: filterPins({ rawPins: allPins, userId, isAdmin }) });
     }
-    const profilePins = await pins.find({ $or: [{ 'owner.id': userId }, { 'savedBy.id': userId }] }).exec();
+    const profilePins = await pins.find({ $or: [{ owner: mongooseUserId }, { 'savedBy.id': userId }] })
+      .populate('owner')
+      .exec();
     return res.json({ profilePins: filterPins({ rawPins: profilePins, userId, isAdmin }) });
   } catch (error) {
     return res.json(error);
@@ -87,7 +89,7 @@ export const getProfilePins = async (
       savedPins: filterPins({ rawPins: savedPins, userId: loggedInUserid, isAdmin: false }),
       user: {
         service: user.service,
-        displayName: user.displayName,
+        displayName: user.displayName || '🚫',
       },
     });
   } catch (error) {
@@ -186,10 +188,11 @@ export const updateTags = async (req: Request, res: genericResponseType) => {
     userId, displayName, isAdmin,
   } = getUserProfile(req.user as UserType);
   const { pinID, tag, deleteId } = req.query;
+  const mongooseUserId = mongoose.Types.ObjectId(userId);
   try {
     const pin = await pins.findById(pinID).exec();
     if (!pin) return res.end();
-    if (pin.owner.id !== userId && !isAdmin) return res.end();
+    if (pin.owner !== mongooseUserId && !isAdmin) return res.end();
 
     let update;
     if (deleteId) {
@@ -216,7 +219,7 @@ export const deletePin = async (req: Request, res: genericResponseType) => {
   try {
     const pin = await pins.findById(pinID).exec();
     if (!pin) return res.end();
-    if (userId === pin.owner.id || isAdmin) {
+    if (userId === pin.owner.toString() || isAdmin) {
       const removedPin = await pins.findOneAndRemove(query).exec();
       await pinLinks.findOneAndRemove({ pin_id: pinID }).exec();
       console.log(`${displayName} deleted pin ${removedPin && removedPin.imgDescription}`);

@@ -2,12 +2,12 @@
 import mongoose from 'mongoose';
 import { PinnerType, commentType, tagType } from '../interfaces';
 
-export interface Pin extends mongoose.Document {
+export interface Pin {
   _id: string,
   imgDescription: string,
   imgLink: string,
   originalImgLink: string,
-  owner: { name: string, service: string, id: string },
+  owner: mongoose.Types.ObjectId,
   savedBy: PinnerType[],
   createdAt: string,
   comments: commentType[],
@@ -28,11 +28,7 @@ const tagSchema = new mongoose.Schema({
 });
 
 const pinSchema = new mongoose.Schema({
-  owner: {
-    name: { type: String, required: true },
-    service: { type: String, required: true },
-    id: { type: String, required: true },
-  },
+  owner: { type: mongoose.Schema.Types.ObjectId, ref: 'User' },
   imgDescription: { type: String, required: true },
   imgLink: { type: String, required: true },
   originalImgLink: { type: String, required: true },
