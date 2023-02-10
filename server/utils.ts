@@ -157,7 +157,7 @@ export const filterPins = ({ rawPins, userId, isAdmin }: filterTypes) => {
       imgLink: getCloudFrontLink(imgLink),
       owner: { name: owner.displayName || '🚫', userId: owner._id, service: owner.service },
       savedBy: savedNames,
-      owns: Boolean(userId && (userId === owner.id || isAdmin)),
+      owns: Boolean(userId && (userId === owner._id.toString() || isAdmin)),
       hasSaved: Boolean(userId && savedIds.includes(userId)),
       comments: modifiedComments,
       createdAt: pinCreatedAt,

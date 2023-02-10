@@ -11,7 +11,7 @@ describe('filtering pins before returning to client', () => {
     imgDescription: 'description',
     imgLink: 'https://stub',
     originalImgLink: 'https://stub-original',
-    owner: { name: 'tester', id: 'any id', service: 'twitter' },
+    owner: { displayName: 'tester', _id: 'any id', service: 'twitter' },
     savedBy: [{ id: 'any id', name: 'tester', service: 'twitter' }],
     createdAt: 'creation date',
     comments: [{
@@ -28,7 +28,7 @@ describe('filtering pins before returning to client', () => {
   test('Will filter the pins for the owner', () => {
     const rawPins = [{
       ...rawPinsStub,
-      owner: { name: 'tester', id: 'twitter test id', service: 'twitter' },
+      owner: { displayName: 'tester', _id: 'twitter test id', service: 'twitter' },
     }];
     expect(filterPins({ rawPins, userId: 'twitter test id', isAdmin: false })).toStrictEqual(
       [

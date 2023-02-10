@@ -56,7 +56,7 @@ export const getUserPins = async (req: Request, res: genericResponseType) => {
   const mongooseUserId = mongoose.Types.ObjectId(userId);
   try {
     if (isAdmin) {
-      const allPins = await pins.find({ isBroken: false }).exec();
+      const allPins = await pins.find({ isBroken: false }).populate('owner').exec();
       return res.json({ profilePins: filterPins({ rawPins: allPins, userId, isAdmin }) });
     }
     const profilePins = await pins.find({ $or: [{ owner: mongooseUserId }, { 'savedBy.id': userId }] })
@@ -188,12 +188,10 @@ export const updateTags = async (req: Request, res: genericResponseType) => {
     userId, displayName, isAdmin,
   } = getUserProfile(req.user as UserType);
   const { pinID, tag, deleteId } = req.query;
-  const mongooseUserId = mongoose.Types.ObjectId(userId);
   try {
     const pin = await pins.findById(pinID).exec();
     if (!pin) return res.end();
-    if (pin.owner !== mongooseUserId && !isAdmin) return res.end();
-
+    if (pin.owner.toString() !== userId && !isAdmin) return res.end();
     let update;
     if (deleteId) {
       const pinToUpdate = pin.tags.filter((t) => t._id.toString() !== deleteId);
