@@ -22,6 +22,7 @@ exports[`will render the form to add comments 1`] = `
     sx={
       {
         "caretColor": "black",
+        "marginTop": 2,
       }
     }
     type="text"
