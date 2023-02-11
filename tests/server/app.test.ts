@@ -1,15 +1,14 @@
 import request from 'supertest';
-// import app from '../../server/app';
+import app from '../../server/app';
 
 jest.mock('mongoose', () => ({
-  Schema: jest.fn().mockImplementation(() => ({ Types: { ObjectId: jest.fn() } })),
-  model: jest.fn(),
+  ...jest.requireActual('mongoose'),
   connect: jest.fn(),
   connection: {
     on: jest.fn(),
   },
 }));
 
-xtest('Will load wild card routes', async () => {
-  await request().get('/any');
+test('Will load wild card routes', async () => {
+  await request(app).get('/any');
 });

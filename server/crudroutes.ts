@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/ban-ts-comment */
 import { Router, Request } from 'express';
 import mongoose from 'mongoose';
 import { genericResponseType } from './interfaces';
