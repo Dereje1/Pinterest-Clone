@@ -16,11 +16,12 @@ describe('filtering pins before returning to client', () => {
     createdAt: 'creation date',
     comments: [{
       _id: 'comment-Id-1',
-      displayName: 'tester-google',
+      user: {
+        _id: 'commenter-userID',
+        displayName: 'tester-google',
+      },
       createdAt: 'today',
       comment: 'unit tests',
-      userId: 'commenter-userID',
-      service: 'twitter',
     }],
     tags: [{ _id: 'tag_id_1', tag: 'tag 1' }, { _id: 'tag_id_2', tag: 'tag 2' }],
   };

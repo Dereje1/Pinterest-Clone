@@ -15,8 +15,10 @@ const rawPinsStub = [{
   savedBy: [{ _id: 'google test id', displayName: 'tester-google', service: 'google' }],
   comments: [{
     _id: 'comment-Id-1',
-    userId: 'google test id',
-    displayName: 'tester-google',
+    user: {
+      _id: 'google test id',
+      displayName: 'tester-google',
+    },
     createdAt: 'today',
     comment: 'unit tests',
   }],
@@ -29,8 +31,10 @@ const rawPinsStub = [{
   savedBy: [{ _id: '5cad310f7672ca00146485a8', displayName: 'tester-twitter', service: 'twitter' }],
   comments: [{
     _id: 'comment-Id-1',
-    userId: 'google test id',
-    displayName: 'tester-google',
+    user: {
+      _id: 'google test id',
+      displayName: 'tester-google',
+    },
     createdAt: 'today',
     comment: 'unit tests',
   }],
@@ -43,8 +47,10 @@ const rawPinsStub = [{
   savedBy: [{ _id: 'another test id', displayName: 'tester-another', service: 'other-service' }],
   comments: [{
     _id: 'comment-Id-1',
-    userId: 'google test id',
-    displayName: 'tester-google',
+    user: {
+      _id: 'google test id',
+      displayName: 'tester-google',
+    },
     createdAt: 'today',
     comment: 'unit tests',
   }],

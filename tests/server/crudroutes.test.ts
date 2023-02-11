@@ -65,9 +65,7 @@ const setupMocks = (response: any = rawPinsStub, populate = true) => {
     pins.find = jest.fn().mockImplementation(
       () => ({
         populate: jest.fn().mockImplementation(() => ({
-          populate: jest.fn().mockImplementation(() => ({
-            exec: jest.fn().mockResolvedValue(response),
-          })),
+          exec: jest.fn().mockResolvedValue(response),
         })),
       }),
     );
@@ -119,9 +117,7 @@ describe('Retrieving pins for home page', () => {
     pins.find = jest.fn().mockImplementation(
       () => ({
         populate: jest.fn().mockImplementation(() => ({
-          populate: jest.fn().mockImplementation(() => ({
-            exec: jest.fn().mockRejectedValue(new Error('Mocked rejection')),
-          })),
+          exec: jest.fn().mockRejectedValue(new Error('Mocked rejection')),
         })),
       }),
     );
@@ -203,9 +199,7 @@ describe('Retrieving pins for user page', () => {
     pins.find = jest.fn().mockImplementation(
       () => ({
         populate: jest.fn().mockImplementation(() => ({
-          populate: jest.fn().mockImplementation(() => ({
-            exec: jest.fn().mockRejectedValue(new Error('Mocked rejection')),
-          })),
+          exec: jest.fn().mockRejectedValue(new Error('Mocked rejection')),
         })),
       }),
     );
@@ -426,9 +420,7 @@ describe('Pinning an image', () => {
     pins.findByIdAndUpdate = jest.fn().mockImplementation(
       () => ({
         populate: jest.fn().mockImplementation(() => ({
-          populate: jest.fn().mockImplementation(() => ({
-            exec: jest.fn().mockResolvedValue({ ...rawPinsStub[2], savedBy: newSavedBy }),
-          })),
+          exec: jest.fn().mockResolvedValue({ ...rawPinsStub[2], savedBy: newSavedBy }),
         })),
       }),
     );
@@ -482,9 +474,7 @@ describe('Pinning an image', () => {
     pins.findByIdAndUpdate = jest.fn().mockImplementation(
       () => ({
         populate: jest.fn().mockImplementation(() => ({
-          populate: jest.fn().mockImplementation(() => ({
-            exec: jest.fn().mockResolvedValue(null),
-          })),
+          exec: jest.fn().mockResolvedValue(null),
         })),
       }),
     );
@@ -643,9 +633,7 @@ describe('Unpinning an image', () => {
     pins.findByIdAndUpdate = jest.fn().mockImplementation(
       () => ({
         populate: jest.fn().mockImplementation(() => ({
-          populate: jest.fn().mockImplementation(() => ({
-            exec: jest.fn().mockResolvedValue({ ...rawPinsStub[1], savedBy: [] }),
-          })),
+          exec: jest.fn().mockResolvedValue({ ...rawPinsStub[1], savedBy: [] }),
         })),
       }),
     );
@@ -690,9 +678,7 @@ describe('Unpinning an image', () => {
     pins.findByIdAndUpdate = jest.fn().mockImplementation(
       () => ({
         populate: jest.fn().mockImplementation(() => ({
-          populate: jest.fn().mockImplementation(() => ({
-            exec: jest.fn().mockResolvedValue(null),
-          })),
+          exec: jest.fn().mockResolvedValue(null),
         })),
       }),
     );
@@ -736,19 +722,22 @@ describe('Adding a comment', () => {
   test('will add a comment to a pin', async () => {
     const newCommentResponseStub = {
       _id: 'comment-Id-2',
-      userId: 'mongo_twitter test id',
-      displayName: 'tester-twitter',
+      user: {
+        _id: 'mongo_twitter test id',
+        displayName: 'tester-twitter',
+      },
       createdAt: 'today',
       comment: 'a new comment',
     };
+
     pins.findByIdAndUpdate = jest.fn().mockImplementation(
       () => ({
-        exec: jest.fn().mockResolvedValue(
-          {
+        populate: jest.fn().mockImplementation(() => ({
+          exec: jest.fn().mockResolvedValue({
             ...rawPinsStub[2],
             comments: [...rawPinsStub[2].comments, newCommentResponseStub],
-          },
-        ),
+          }),
+        })),
       }),
     );
 
@@ -761,10 +750,8 @@ describe('Adding a comment', () => {
         $push:
                 {
                   comments: {
-                    userId: '5cad310f7672ca00146485a8',
-                    displayName: 'tester-twitter',
+                    user: Types.ObjectId('5cad310f7672ca00146485a8'),
                     comment: 'a new comment',
-                    service: 'twitter',
                   },
                 },
       },
@@ -803,7 +790,9 @@ describe('Adding a comment', () => {
   test('will end response if updatedpin not returned from db', async () => {
     pins.findByIdAndUpdate = jest.fn().mockImplementation(
       () => ({
-        exec: jest.fn().mockResolvedValue(null),
+        populate: jest.fn().mockImplementation(() => ({
+          exec: jest.fn().mockResolvedValue(null),
+        })),
       }),
     );
 
@@ -817,7 +806,9 @@ describe('Adding a comment', () => {
   test('will respond with error if PUT is rejected', async () => {
     pins.findByIdAndUpdate = jest.fn().mockImplementation(
       () => ({
-        exec: jest.fn().mockRejectedValue(new Error('Mocked rejection')),
+        populate: jest.fn().mockImplementation(() => ({
+          exec: jest.fn().mockRejectedValue(new Error('Mocked rejection')),
+        })),
       }),
     );
     await addComment(req as genericRequest, res);
@@ -935,7 +926,9 @@ describe('Updating tags for a pin', () => {
     );
     pins.findByIdAndUpdate = jest.fn().mockImplementation(
       () => ({
-        exec: jest.fn().mockResolvedValue({ ...rawPinsStub[1] }),
+        populate: jest.fn().mockImplementation(() => ({
+          exec: jest.fn().mockResolvedValue({ ...rawPinsStub[1] }),
+        })),
       }),
     );
     savedTags.create = jest.fn().mockResolvedValue([]);
@@ -971,7 +964,9 @@ describe('Updating tags for a pin', () => {
     );
     pins.findByIdAndUpdate = jest.fn().mockImplementation(
       () => ({
-        exec: jest.fn().mockResolvedValue({ ...rawPinsStub[1] }),
+        populate: jest.fn().mockImplementation(() => ({
+          exec: jest.fn().mockResolvedValue({ ...rawPinsStub[1] }),
+        })),
       }),
     );
     const mockedFindByIdAndUpdate = jest.mocked(pins.findByIdAndUpdate);
@@ -1047,7 +1042,9 @@ describe('Updating tags for a pin', () => {
     );
     pins.findByIdAndUpdate = jest.fn().mockImplementation(
       () => ({
-        exec: jest.fn().mockResolvedValue(null),
+        populate: jest.fn().mockImplementation(() => ({
+          exec: jest.fn().mockResolvedValue(null),
+        })),
       }),
     );
     savedTags.create = jest.fn().mockResolvedValue([]);
