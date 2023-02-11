@@ -12,7 +12,7 @@ const rawPinsStub = [{
   imgDescription: 'description-1',
   imgLink: 'https://stub-1',
   owner: { _id: '5cad310f7672ca00146485a8', displayName: 'tester-twitter', service: 'twitter' },
-  savedBy: [{ id: 'google test id', name: 'tester-google', service: 'google' }],
+  savedBy: [{ _id: 'google test id', displayName: 'tester-google', service: 'google' }],
   comments: [{
     _id: 'comment-Id-1',
     userId: 'google test id',
@@ -26,7 +26,7 @@ const rawPinsStub = [{
   imgDescription: 'description-2',
   imgLink: 'https://stub-2',
   owner: { _id: 'google test id', displayName: 'tester-google', service: 'google' },
-  savedBy: [{ id: '5cad310f7672ca00146485a8', name: 'tester-twitter', service: 'twitter' }],
+  savedBy: [{ _id: '5cad310f7672ca00146485a8', displayName: 'tester-twitter', service: 'twitter' }],
   comments: [{
     _id: 'comment-Id-1',
     userId: 'google test id',
@@ -40,7 +40,7 @@ const rawPinsStub = [{
   imgDescription: 'description-3',
   imgLink: 'https://stub-3',
   owner: { _id: 'another test id', displayName: 'tester-another', service: 'other-service' },
-  savedBy: [{ id: 'another test id', name: 'tester-another', service: 'other-service' }],
+  savedBy: [{ _id: 'another test id', displayName: 'tester-another', service: 'other-service' }],
   comments: [{
     _id: 'comment-Id-1',
     userId: 'google test id',

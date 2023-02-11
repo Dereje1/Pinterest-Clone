@@ -12,7 +12,7 @@ describe('filtering pins before returning to client', () => {
     imgLink: 'https://stub',
     originalImgLink: 'https://stub-original',
     owner: { displayName: 'tester', _id: 'any id', service: 'twitter' },
-    savedBy: [{ id: 'any id', name: 'tester', service: 'twitter' }],
+    savedBy: [{ _id: 'any id', displayName: 'tester', service: 'twitter' }],
     createdAt: 'creation date',
     comments: [{
       _id: 'comment-Id-1',
@@ -57,7 +57,7 @@ describe('filtering pins before returning to client', () => {
   test('Will filter the pins for the pinner/saver', () => {
     const rawPins = [{
       ...rawPinsStub,
-      savedBy: [{ id: 'twitter test id', name: 'tester', service: 'twitter' }],
+      savedBy: [{ _id: 'twitter test id', displayName: 'tester', service: 'twitter' }],
     }];
     expect(filterPins({ rawPins, userId: 'twitter test id', isAdmin: false })).toStrictEqual(
       [

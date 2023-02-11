@@ -65,7 +65,9 @@ const setupMocks = (response: any = rawPinsStub, populate = true) => {
     pins.find = jest.fn().mockImplementation(
       () => ({
         populate: jest.fn().mockImplementation(() => ({
-          exec: jest.fn().mockResolvedValue(response),
+          populate: jest.fn().mockImplementation(() => ({
+            exec: jest.fn().mockResolvedValue(response),
+          })),
         })),
       }),
     );
@@ -117,7 +119,9 @@ describe('Retrieving pins for home page', () => {
     pins.find = jest.fn().mockImplementation(
       () => ({
         populate: jest.fn().mockImplementation(() => ({
-          exec: jest.fn().mockRejectedValue(new Error('Mocked rejection')),
+          populate: jest.fn().mockImplementation(() => ({
+            exec: jest.fn().mockRejectedValue(new Error('Mocked rejection')),
+          })),
         })),
       }),
     );
@@ -168,12 +172,14 @@ describe('Retrieving pins for user page', () => {
 
   test('will retrieve pins for the profile page', async () => {
     const profilePinsRaw = rawPinsStub.filter((p) => p.owner._id === user._id
-            || p.savedBy.map((s) => s.id).includes(user._id));
+            || p.savedBy.map((s) => s._id).includes(user._id));
 
     setupMocks(profilePinsRaw);
     await getUserPins(req as genericRequest, res);
     expect(pins.find).toHaveBeenCalledTimes(1);
-    expect(pins.find).toHaveBeenCalledWith({ $or: [{ owner: Types.ObjectId(user._id) }, { 'savedBy.id': user._id }] });
+    expect(pins.find).toHaveBeenCalledWith({
+      $or: [{ owner: Types.ObjectId(user._id) }, { savedBy: Types.ObjectId(user._id) }],
+    });
     expect(res.json).toHaveBeenCalledWith({
       profilePins: allPinsResponse.filter((p) => p.owns || p.hasSaved),
     });
@@ -197,7 +203,9 @@ describe('Retrieving pins for user page', () => {
     pins.find = jest.fn().mockImplementation(
       () => ({
         populate: jest.fn().mockImplementation(() => ({
-          exec: jest.fn().mockRejectedValue(new Error('Mocked rejection')),
+          populate: jest.fn().mockImplementation(() => ({
+            exec: jest.fn().mockRejectedValue(new Error('Mocked rejection')),
+          })),
         })),
       }),
     );
@@ -412,11 +420,16 @@ describe('Pinning an image', () => {
   test('will pin an image', async () => {
     const newSavedBy = [
       ...rawPinsStub[2].savedBy,
-      { id: req.body.id, name: req.body.name, service: req.body.service },
+      { _id: req.body.id, displayName: req.body.name, service: req.body.service },
     ];
+
     pins.findByIdAndUpdate = jest.fn().mockImplementation(
       () => ({
-        exec: jest.fn().mockResolvedValue({ ...rawPinsStub[2], savedBy: newSavedBy }),
+        populate: jest.fn().mockImplementation(() => ({
+          populate: jest.fn().mockImplementation(() => ({
+            exec: jest.fn().mockResolvedValue({ ...rawPinsStub[2], savedBy: newSavedBy }),
+          })),
+        })),
       }),
     );
     mockedFindByIdAndUpdate = jest.mocked(pins.findByIdAndUpdate);
@@ -431,8 +444,8 @@ describe('Pinning an image', () => {
         $set:
                 {
                   savedBy: [
-                    { id: 'another test id', name: 'tester-another', service: 'other-service' },
-                    { id: '5cad310f7672ca00146485a8', name: 'tester-twitter', service: 'twitter' },
+                    { _id: 'another test id', displayName: 'tester-another', service: 'other-service' },
+                    Types.ObjectId(user._id),
                   ],
                 },
       },
@@ -440,7 +453,9 @@ describe('Pinning an image', () => {
     );
     expect(res.json).toHaveBeenCalledWith({
       ...allPinsResponse[2],
-      savedBy: newSavedBy.map(({ name, id, service }) => ({ name, userId: id, service })),
+      savedBy: newSavedBy.map(({ displayName, _id, service }) => (
+        { name: displayName, userId: _id, service }
+      )),
       hasSaved: true,
     });
     expect(res.end).toHaveBeenCalledTimes(0);
@@ -466,7 +481,11 @@ describe('Pinning an image', () => {
   test('will end response if updatedpin not returned from db', async () => {
     pins.findByIdAndUpdate = jest.fn().mockImplementation(
       () => ({
-        exec: jest.fn().mockResolvedValue(null),
+        populate: jest.fn().mockImplementation(() => ({
+          populate: jest.fn().mockImplementation(() => ({
+            exec: jest.fn().mockResolvedValue(null),
+          })),
+        })),
       }),
     );
     mockedFindByIdAndUpdate = jest.mocked(pins.findByIdAndUpdate);
@@ -623,12 +642,16 @@ describe('Unpinning an image', () => {
     const updatedReq = { ...req, params: { _id: '2' } };
     pins.findByIdAndUpdate = jest.fn().mockImplementation(
       () => ({
-        exec: jest.fn().mockResolvedValue({ ...rawPinsStub[1], savedBy: [] }),
+        populate: jest.fn().mockImplementation(() => ({
+          populate: jest.fn().mockImplementation(() => ({
+            exec: jest.fn().mockResolvedValue({ ...rawPinsStub[1], savedBy: [] }),
+          })),
+        })),
       }),
     );
     const mockedFindByIdAndUpdate = jest.mocked(pins.findByIdAndUpdate);
 
-    setupMocks(rawPinsStub[1]);
+    setupMocks({ ...rawPinsStub[1], savedBy: ['5cad310f7672ca00146485a8'] });
     await unpin(updatedReq as genericRequest, res);
     expect(pins.findById).toHaveBeenCalledTimes(1);
     expect(pins.findById).toHaveBeenCalledWith('2');
@@ -666,7 +689,11 @@ describe('Unpinning an image', () => {
     const updatedReq = { ...req, params: { _id: '2' } };
     pins.findByIdAndUpdate = jest.fn().mockImplementation(
       () => ({
-        exec: jest.fn().mockResolvedValue(null),
+        populate: jest.fn().mockImplementation(() => ({
+          populate: jest.fn().mockImplementation(() => ({
+            exec: jest.fn().mockResolvedValue(null),
+          })),
+        })),
       }),
     );
 
@@ -804,7 +831,7 @@ describe('Retrieving pins for a profile page', () => {
   beforeEach(() => {
     req = {
       params: {
-        userid: 'requestUserId',
+        userid: 'microsoft123',
       },
       user,
     };
@@ -819,12 +846,12 @@ describe('Retrieving pins for a profile page', () => {
   });
 
   test('will retrieve pins for the profile page', async () => {
-    setupMocks([], false);
+    setupMocks([]);
     await getProfilePins(req, res);
     expect(pins.find).toHaveBeenCalledTimes(2);
-    expect(pins.find).toHaveBeenNthCalledWith(1, { 'owner.id': 'requestUserId' });
-    expect(pins.find).toHaveBeenNthCalledWith(2, { 'savedBy.id': 'requestUserId' });
-    expect(users.findById).toHaveBeenCalledWith('requestUserId');
+    expect(pins.find).toHaveBeenNthCalledWith(1, { owner: Types.ObjectId('microsoft123') });
+    expect(pins.find).toHaveBeenNthCalledWith(2, { savedBy: Types.ObjectId('microsoft123') });
+    expect(users.findById).toHaveBeenCalledWith('microsoft123');
     expect(res.json).toHaveBeenCalledWith({
       createdPins: [],
       savedPins: [],
@@ -860,8 +887,7 @@ describe('Retrieving pins for a profile page', () => {
       ...req,
       user: {
         ...user,
-        _id: 'requestUserId',
-        displayName: 'tester-twitter',
+        _id: 'microsoft123',
       },
     };
     setupMocks([]);

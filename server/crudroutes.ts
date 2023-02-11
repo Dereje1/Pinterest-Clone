@@ -57,7 +57,7 @@ export const getUserPins = async (req: Request, res: genericResponseType) => {
   const mongooseUserId = mongoose.Types.ObjectId(userId);
   try {
     if (isAdmin) {
-      const allPins = await pins.find({ isBroken: false }).populate('owner').exec();
+      const allPins = await pins.find({ isBroken: false }).populate('owner').populate('savedBy').exec();
       return res.json({ profilePins: filterPins({ rawPins: allPins, userId, isAdmin }) });
     }
     const profilePins = await pins.find({
