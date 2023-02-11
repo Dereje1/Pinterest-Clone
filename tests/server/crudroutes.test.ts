@@ -1,5 +1,6 @@
 import nock from 'nock';
 import { Request } from 'express';
+import { Types } from 'mongoose';
 import {
   addPin,
   getPins,
@@ -59,12 +60,22 @@ const mockS3Instance = {
 jest.mock('aws-sdk', () => ({ S3: jest.fn(() => mockS3Instance) }));
 
 /* Mongoose mocks */
-const setupMocks = (response: any = rawPinsStub) => {
-  pins.find = jest.fn().mockImplementation(
-    () => ({
-      exec: jest.fn().mockResolvedValue(response),
-    }),
-  );
+const setupMocks = (response: any = rawPinsStub, populate = true) => {
+  if (populate) {
+    pins.find = jest.fn().mockImplementation(
+      () => ({
+        populate: jest.fn().mockImplementation(() => ({
+          exec: jest.fn().mockResolvedValue(response),
+        })),
+      }),
+    );
+  } else {
+    pins.find = jest.fn().mockImplementation(
+      () => ({
+        exec: jest.fn().mockResolvedValue(response),
+      }),
+    );
+  }
   pins.create = jest.fn().mockResolvedValue(response);
   pins.findById = jest.fn().mockImplementation(
     () => ({
@@ -105,7 +116,9 @@ describe('Retrieving pins for home page', () => {
   test('will respond with error if GET is rejected', async () => {
     pins.find = jest.fn().mockImplementation(
       () => ({
-        exec: jest.fn().mockRejectedValue(new Error('Mocked rejection')),
+        populate: jest.fn().mockImplementation(() => ({
+          exec: jest.fn().mockRejectedValue(new Error('Mocked rejection')),
+        })),
       }),
     );
     const reqUpdate = {
@@ -154,13 +167,15 @@ describe('Retrieving pins for user page', () => {
   });
 
   test('will retrieve pins for the profile page', async () => {
-    const profilePinsRaw = rawPinsStub.filter((p) => p.owner.id === user._id
-            || p.savedBy.map((s) => s.id).includes(user._id));
+    const profilePinsRaw = rawPinsStub.filter((p) => p.owner._id === user._id
+            || p.savedBy.map((s) => s._id).includes(user._id));
 
     setupMocks(profilePinsRaw);
     await getUserPins(req as genericRequest, res);
     expect(pins.find).toHaveBeenCalledTimes(1);
-    expect(pins.find).toHaveBeenCalledWith({ $or: [{ 'owner.id': user._id }, { 'savedBy.id': user._id }] });
+    expect(pins.find).toHaveBeenCalledWith({
+      $or: [{ owner: Types.ObjectId(user._id) }, { savedBy: Types.ObjectId(user._id) }],
+    });
     expect(res.json).toHaveBeenCalledWith({
       profilePins: allPinsResponse.filter((p) => p.owns || p.hasSaved),
     });
@@ -183,7 +198,9 @@ describe('Retrieving pins for user page', () => {
   test('will respond with error if GET is rejected', async () => {
     pins.find = jest.fn().mockImplementation(
       () => ({
-        exec: jest.fn().mockRejectedValue(new Error('Mocked rejection')),
+        populate: jest.fn().mockImplementation(() => ({
+          exec: jest.fn().mockRejectedValue(new Error('Mocked rejection')),
+        })),
       }),
     );
     const reqUpdate = {
@@ -244,6 +261,7 @@ describe('Adding a pin', () => {
     expect(pins.create).toHaveBeenCalledTimes(1);
     expect(pins.create).toHaveBeenCalledWith({
       ...req.body,
+      owner: Types.ObjectId(user._id),
       originalImgLink: req.body.imgLink,
       imgLink: 'https://s3-uploaded-location-stub-4',
       isBroken: false,
@@ -259,7 +277,7 @@ describe('Adding a pin', () => {
       Key: expect.any(String),
       Body: Buffer.from('Processed Image data'),
       ContentType: 'image/png',
-      Tagging: 'userId=mongo_twitter test id&name=tester-twitter&service=twitter',
+      Tagging: 'userId=5cad310f7672ca00146485a8&name=tester-twitter&service=twitter',
     });
   });
 
@@ -283,6 +301,7 @@ describe('Adding a pin', () => {
     expect(pins.create).toHaveBeenCalledTimes(1);
     expect(pins.create).toHaveBeenCalledWith({
       ...req.body,
+      owner: Types.ObjectId(user._id),
       originalImgLink: req.body.imgLink,
       imgLink: 'https://s3-uploaded-location-stub-4',
       isBroken: false,
@@ -293,7 +312,7 @@ describe('Adding a pin', () => {
       Key: expect.any(String),
       Body: Buffer.from('/stub-4-data-protocol/', 'base64'),
       ContentType: 'image/png',
-      Tagging: 'userId=mongo_twitter test id&name=tester-twitter&service=twitter',
+      Tagging: 'userId=5cad310f7672ca00146485a8&name=tester-twitter&service=twitter',
     });
   });
 
@@ -317,6 +336,7 @@ describe('Adding a pin', () => {
     expect(pins.create).toHaveBeenCalledTimes(1);
     expect(pins.create).toHaveBeenCalledWith({
       ...req.body,
+      owner: Types.ObjectId(user._id),
       originalImgLink: req.body.imgLink,
       imgLink: 'htt://stub-4',
       isBroken: false,
@@ -344,7 +364,10 @@ describe('Adding a pin', () => {
     await addPin(req as genericRequest, res);
     expect(pins.create).toHaveBeenCalledTimes(1);
     expect(pins.create).toHaveBeenCalledWith({
-      ...req.body, originalImgLink: req.body.imgLink, isBroken: false,
+      ...req.body,
+      owner: Types.ObjectId(user._id),
+      originalImgLink: req.body.imgLink,
+      isBroken: false,
     });
     expect(res.json).toHaveBeenCalledWith({ ...req.body });
   });
@@ -391,11 +414,14 @@ describe('Pinning an image', () => {
   test('will pin an image', async () => {
     const newSavedBy = [
       ...rawPinsStub[2].savedBy,
-      { id: req.body.id, name: req.body.name, service: req.body.service },
+      { _id: req.body.id, displayName: req.body.name, service: req.body.service },
     ];
+
     pins.findByIdAndUpdate = jest.fn().mockImplementation(
       () => ({
-        exec: jest.fn().mockResolvedValue({ ...rawPinsStub[2], savedBy: newSavedBy }),
+        populate: jest.fn().mockImplementation(() => ({
+          exec: jest.fn().mockResolvedValue({ ...rawPinsStub[2], savedBy: newSavedBy }),
+        })),
       }),
     );
     mockedFindByIdAndUpdate = jest.mocked(pins.findByIdAndUpdate);
@@ -410,8 +436,8 @@ describe('Pinning an image', () => {
         $set:
                 {
                   savedBy: [
-                    { id: 'another test id', name: 'tester-another', service: 'other-service' },
-                    { id: 'mongo_twitter test id', name: 'tester-twitter', service: 'twitter' },
+                    { _id: 'another test id', displayName: 'tester-another', service: 'other-service' },
+                    Types.ObjectId(user._id),
                   ],
                 },
       },
@@ -419,7 +445,9 @@ describe('Pinning an image', () => {
     );
     expect(res.json).toHaveBeenCalledWith({
       ...allPinsResponse[2],
-      savedBy: newSavedBy.map(({ name, id, service }) => ({ name, userId: id, service })),
+      savedBy: newSavedBy.map(({ displayName, _id, service }) => (
+        { name: displayName, userId: _id, service }
+      )),
       hasSaved: true,
     });
     expect(res.end).toHaveBeenCalledTimes(0);
@@ -445,7 +473,9 @@ describe('Pinning an image', () => {
   test('will end response if updatedpin not returned from db', async () => {
     pins.findByIdAndUpdate = jest.fn().mockImplementation(
       () => ({
-        exec: jest.fn().mockResolvedValue(null),
+        populate: jest.fn().mockImplementation(() => ({
+          exec: jest.fn().mockResolvedValue(null),
+        })),
       }),
     );
     mockedFindByIdAndUpdate = jest.mocked(pins.findByIdAndUpdate);
@@ -508,7 +538,7 @@ describe('Deleting an image', () => {
       }),
     );
 
-    setupMocks(rawPinsStub[0]);
+    setupMocks({ ...rawPinsStub[0], owner: user._id });
     await deletePin(req as genericRequest, res);
     expect(pins.findById).toHaveBeenCalledTimes(1);
     expect(pins.findById).toHaveBeenCalledWith('1');
@@ -524,7 +554,7 @@ describe('Deleting an image', () => {
     await deletePin(updatedReq as genericRequest, res);
     expect(pins.findById).toHaveBeenCalledTimes(1);
     expect(pins.findById).toHaveBeenCalledWith('2');
-    expect(res.json).toHaveBeenCalledWith(Error('Pin ID: 2 is not owned by user ID: mongo_twitter test id - delete operation cancelled!'));
+    expect(res.json).toHaveBeenCalledWith(Error('Pin ID: 2 is not owned by user ID: 5cad310f7672ca00146485a8 - delete operation cancelled!'));
   });
 
   test('will delete any image if the user is an admin', async () => {
@@ -602,12 +632,14 @@ describe('Unpinning an image', () => {
     const updatedReq = { ...req, params: { _id: '2' } };
     pins.findByIdAndUpdate = jest.fn().mockImplementation(
       () => ({
-        exec: jest.fn().mockResolvedValue({ ...rawPinsStub[1], savedBy: [] }),
+        populate: jest.fn().mockImplementation(() => ({
+          exec: jest.fn().mockResolvedValue({ ...rawPinsStub[1], savedBy: [] }),
+        })),
       }),
     );
     const mockedFindByIdAndUpdate = jest.mocked(pins.findByIdAndUpdate);
 
-    setupMocks(rawPinsStub[1]);
+    setupMocks({ ...rawPinsStub[1], savedBy: ['5cad310f7672ca00146485a8'] });
     await unpin(updatedReq as genericRequest, res);
     expect(pins.findById).toHaveBeenCalledTimes(1);
     expect(pins.findById).toHaveBeenCalledWith('2');
@@ -645,7 +677,9 @@ describe('Unpinning an image', () => {
     const updatedReq = { ...req, params: { _id: '2' } };
     pins.findByIdAndUpdate = jest.fn().mockImplementation(
       () => ({
-        exec: jest.fn().mockResolvedValue(null),
+        populate: jest.fn().mockImplementation(() => ({
+          exec: jest.fn().mockResolvedValue(null),
+        })),
       }),
     );
 
@@ -688,19 +722,22 @@ describe('Adding a comment', () => {
   test('will add a comment to a pin', async () => {
     const newCommentResponseStub = {
       _id: 'comment-Id-2',
-      userId: 'mongo_twitter test id',
-      displayName: 'tester-twitter',
+      user: {
+        _id: 'mongo_twitter test id',
+        displayName: 'tester-twitter',
+      },
       createdAt: 'today',
       comment: 'a new comment',
     };
+
     pins.findByIdAndUpdate = jest.fn().mockImplementation(
       () => ({
-        exec: jest.fn().mockResolvedValue(
-          {
+        populate: jest.fn().mockImplementation(() => ({
+          exec: jest.fn().mockResolvedValue({
             ...rawPinsStub[2],
             comments: [...rawPinsStub[2].comments, newCommentResponseStub],
-          },
-        ),
+          }),
+        })),
       }),
     );
 
@@ -713,10 +750,8 @@ describe('Adding a comment', () => {
         $push:
                 {
                   comments: {
-                    userId: 'mongo_twitter test id',
-                    displayName: 'tester-twitter',
+                    user: Types.ObjectId('5cad310f7672ca00146485a8'),
                     comment: 'a new comment',
-                    service: 'twitter',
                   },
                 },
       },
@@ -755,7 +790,9 @@ describe('Adding a comment', () => {
   test('will end response if updatedpin not returned from db', async () => {
     pins.findByIdAndUpdate = jest.fn().mockImplementation(
       () => ({
-        exec: jest.fn().mockResolvedValue(null),
+        populate: jest.fn().mockImplementation(() => ({
+          exec: jest.fn().mockResolvedValue(null),
+        })),
       }),
     );
 
@@ -769,7 +806,9 @@ describe('Adding a comment', () => {
   test('will respond with error if PUT is rejected', async () => {
     pins.findByIdAndUpdate = jest.fn().mockImplementation(
       () => ({
-        exec: jest.fn().mockRejectedValue(new Error('Mocked rejection')),
+        populate: jest.fn().mockImplementation(() => ({
+          exec: jest.fn().mockRejectedValue(new Error('Mocked rejection')),
+        })),
       }),
     );
     await addComment(req as genericRequest, res);
@@ -783,7 +822,7 @@ describe('Retrieving pins for a profile page', () => {
   beforeEach(() => {
     req = {
       params: {
-        userid: 'requestUserId',
+        userid: 'microsoft123',
       },
       user,
     };
@@ -801,9 +840,9 @@ describe('Retrieving pins for a profile page', () => {
     setupMocks([]);
     await getProfilePins(req, res);
     expect(pins.find).toHaveBeenCalledTimes(2);
-    expect(pins.find).toHaveBeenNthCalledWith(1, { 'owner.id': 'requestUserId' });
-    expect(pins.find).toHaveBeenNthCalledWith(2, { 'savedBy.id': 'requestUserId' });
-    expect(users.findById).toHaveBeenCalledWith('requestUserId');
+    expect(pins.find).toHaveBeenNthCalledWith(1, { owner: Types.ObjectId('microsoft123') });
+    expect(pins.find).toHaveBeenNthCalledWith(2, { savedBy: Types.ObjectId('microsoft123') });
+    expect(users.findById).toHaveBeenCalledWith('microsoft123');
     expect(res.json).toHaveBeenCalledWith({
       createdPins: [],
       savedPins: [],
@@ -839,8 +878,7 @@ describe('Retrieving pins for a profile page', () => {
       ...req,
       user: {
         ...user,
-        _id: 'requestUserId',
-        displayName: 'tester-twitter',
+        _id: 'microsoft123',
       },
     };
     setupMocks([]);
@@ -883,12 +921,14 @@ describe('Updating tags for a pin', () => {
     };
     pins.findById = jest.fn().mockImplementation(
       () => ({
-        exec: jest.fn().mockResolvedValue({ owner: { id: 'mongo_twitter test id' } }),
+        exec: jest.fn().mockResolvedValue({ owner: '5cad310f7672ca00146485a8' }),
       }),
     );
     pins.findByIdAndUpdate = jest.fn().mockImplementation(
       () => ({
-        exec: jest.fn().mockResolvedValue({ ...rawPinsStub[1] }),
+        populate: jest.fn().mockImplementation(() => ({
+          exec: jest.fn().mockResolvedValue({ ...rawPinsStub[1] }),
+        })),
       }),
     );
     savedTags.create = jest.fn().mockResolvedValue([]);
@@ -917,14 +957,16 @@ describe('Updating tags for a pin', () => {
     pins.findById = jest.fn().mockImplementation(
       () => ({
         exec: jest.fn().mockResolvedValue({
-          owner: { id: 'mongo_twitter test id' },
+          owner: '5cad310f7672ca00146485a8',
           tags: [{ _id: 12345 }, { _id: 123456 }],
         }),
       }),
     );
     pins.findByIdAndUpdate = jest.fn().mockImplementation(
       () => ({
-        exec: jest.fn().mockResolvedValue({ ...rawPinsStub[1] }),
+        populate: jest.fn().mockImplementation(() => ({
+          exec: jest.fn().mockResolvedValue({ ...rawPinsStub[1] }),
+        })),
       }),
     );
     const mockedFindByIdAndUpdate = jest.mocked(pins.findByIdAndUpdate);
@@ -995,12 +1037,14 @@ describe('Updating tags for a pin', () => {
     };
     pins.findById = jest.fn().mockImplementation(
       () => ({
-        exec: jest.fn().mockResolvedValue({ owner: { id: 'mongo_twitter test id' } }),
+        exec: jest.fn().mockResolvedValue({ owner: '5cad310f7672ca00146485a8' }),
       }),
     );
     pins.findByIdAndUpdate = jest.fn().mockImplementation(
       () => ({
-        exec: jest.fn().mockResolvedValue(null),
+        populate: jest.fn().mockImplementation(() => ({
+          exec: jest.fn().mockResolvedValue(null),
+        })),
       }),
     );
     savedTags.create = jest.fn().mockResolvedValue([]);

@@ -93,6 +93,7 @@ export class Mypins extends Component<MypinsProps, MypinsState> {
   async addPic(pinJSON: {imgDescription: string, imgLink: string | ArrayBuffer}) {
     // copy then add pin to db and then update client state (in that order)
     const { pinList } = this.state;
+    const { user: { displayName } } = this.props;
     this.setState({ ready: false });
     const newPin = await RESTcall({
       address: '/api/newpin',
@@ -103,6 +104,7 @@ export class Mypins extends Component<MypinsProps, MypinsState> {
       ...newPin,
       owns: true,
       hasSaved: false,
+      owner: { name: displayName },
     };
     this.setState({
       pinList: [...pinList, addedPin],

@@ -4,10 +4,9 @@ import { Transform as Stream } from 'stream';
 import AWS from 'aws-sdk';
 import {
   apiKeys,
-  PinType,
+  PopulatedPinType,
 } from './interfaces';
 import { UserType } from './models/user';
-import { allPinLinksType } from './models/pinlinks';
 
 export const getApiKeys = ():({
   keys: apiKeys
@@ -126,43 +125,52 @@ returns
 };
 */
 interface filterTypes {
-  rawPins: PinType[]
+   rawPins: PopulatedPinType[] | unknown
    userId: string | undefined
    isAdmin: boolean
 }
-export const filterPins = ({ rawPins, userId, isAdmin }: filterTypes) => rawPins.map((pin) => {
-  const {
-    _id: pinId,
-    imgDescription,
-    imgLink,
-    owner,
-    savedBy,
-    createdAt: pinCreatedAt,
-    comments,
-    tags,
-  } = pin;
-  const savedIds = savedBy.map((s) => s.id);
-  const savedNames = savedBy.map(({ name, id, service }) => ({ name, userId: id, service }));
-  const modifiedComments = comments.map(
-    ({
-      _id, displayName, comment, createdAt, userId: commentorUserId,
-    }) => ({
-      _id, displayName, comment, createdAt, userId: commentorUserId,
-    }),
-  );
-  return {
-    _id: pinId,
-    imgDescription,
-    imgLink: getCloudFrontLink(imgLink),
-    owner: { name: owner.name || '🚫', userId: owner.id, service: owner.service },
-    savedBy: savedNames,
-    owns: Boolean(userId && (userId === owner.id || isAdmin)),
-    hasSaved: Boolean(userId && savedIds.includes(userId)),
-    comments: modifiedComments,
-    createdAt: pinCreatedAt,
-    tags,
-  };
-});
+export const filterPins = ({ rawPins, userId, isAdmin }: filterTypes) => {
+  if (!(rawPins instanceof Array)) return [];
+  return rawPins.map((pin) => {
+    const {
+      _id: pinId,
+      imgDescription,
+      imgLink,
+      owner,
+      savedBy,
+      createdAt: pinCreatedAt,
+      comments,
+      tags,
+    } = pin as PopulatedPinType;
+    const savedIds = savedBy.map((s) => s._id);
+    const savedNames = savedBy.map(({
+      displayName, _id, service,
+    }) => ({ name: displayName, userId: _id, service }));
+    const modifiedComments = comments.map(
+      ({
+        _id, comment, createdAt, user,
+      }) => ({
+        _id,
+        displayName: user.displayName,
+        comment,
+        createdAt,
+        userId: user._id,
+      }),
+    );
+    return {
+      _id: pinId,
+      imgDescription,
+      imgLink: getCloudFrontLink(imgLink),
+      owner: { name: owner.displayName || '🚫', userId: owner._id, service: owner.service },
+      savedBy: savedNames,
+      owns: Boolean(userId && (userId === owner._id.toString() || isAdmin)),
+      hasSaved: Boolean(userId && savedIds.includes(userId)),
+      comments: modifiedComments,
+      createdAt: pinCreatedAt,
+      tags,
+    };
+  });
+};
 
 const validateURL = (string: string) => {
   try {

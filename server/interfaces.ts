@@ -1,3 +1,5 @@
+import { UserType } from './models/user';
+
 export interface apiKeys {
     twitterApiKeys: {
         consumerKey: string
@@ -15,27 +17,6 @@ export interface apiKeys {
         callbackURL: string
     } | null
 }
-export interface services {
-    twitter: {
-        displayName: string,
-        username: string,
-        id: string
-    }
-    google: {
-        displayName: string,
-        username: string,
-        id: string
-    }
-    github: {
-        displayName: string,
-        username: string,
-        id: string
-    }
-}
-
-export interface reqUser {
-    _doc?: services
-}
 
 export interface PinnerType {
     name: string,
@@ -45,11 +26,9 @@ export interface PinnerType {
 
 export interface commentType {
     _id: string
-    displayName: string
+    user: UserType
     comment: string
     createdAt: string
-    userId: string
-    service: string
 }
 
 export interface tagType {
@@ -57,13 +36,13 @@ export interface tagType {
     tag: string,
 }
 
-export interface PinType {
+export interface PopulatedPinType {
     _id: string,
     imgDescription: string,
     imgLink: string,
     originalImgLink: string,
-    owner: { name: string, service: string, id: string },
-    savedBy: PinnerType[],
+    owner: UserType,
+    savedBy: UserType[],
     createdAt: string,
     comments: commentType[],
     tags: tagType[],
@@ -73,17 +52,4 @@ export interface genericResponseType {
     json: (res: string | unknown) => void
     end: () => void
     redirect: (route: string) => void
-}
-
-export interface genericRequestType {
-    user: reqUser
-    logout: (cb: () => void) => void
-  }
-
-export interface newUserType {
-    userId: string,
-    token: string,
-    displayName: string,
-    username: string,
-    service: string,
 }

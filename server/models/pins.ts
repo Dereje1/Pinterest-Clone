@@ -1,26 +1,31 @@
 // mongoose shcema on what to store fror pins?
 import mongoose from 'mongoose';
-import { PinnerType, commentType, tagType } from '../interfaces';
+import { tagType } from '../interfaces';
 
-export interface Pin extends mongoose.Document {
+interface unPopulatedComment {
+  _id: mongoose.Types.ObjectId,
+  user: mongoose.Types.ObjectId,
+  comment: string,
+  createdAt: string,
+}
+
+export interface Pin {
   _id: string,
   imgDescription: string,
   imgLink: string,
   originalImgLink: string,
-  owner: { name: string, service: string, id: string },
-  savedBy: PinnerType[],
+  owner: mongoose.Types.ObjectId,
+  savedBy: mongoose.Types.ObjectId[],
   createdAt: string,
-  comments: commentType[],
+  comments: unPopulatedComment[],
   tags: tagType[],
 }
 
 const commentSchema = new mongoose.Schema({
-  displayName: { type: String, required: true },
-  service: { type: String, required: true },
-  userId: { type: String, required: true },
+  user: { type: mongoose.Schema.Types.ObjectId, ref: 'User' },
   comment: { type: String, required: true },
 }, {
-  timestamps: true, // timestamps options for subfields
+  timestamps: true,
 });
 
 const tagSchema = new mongoose.Schema({
@@ -28,20 +33,12 @@ const tagSchema = new mongoose.Schema({
 });
 
 const pinSchema = new mongoose.Schema({
-  owner: {
-    name: { type: String, required: true },
-    service: { type: String, required: true },
-    id: { type: String, required: true },
-  },
+  owner: { type: mongoose.Schema.Types.ObjectId, ref: 'User' },
   imgDescription: { type: String, required: true },
   imgLink: { type: String, required: true },
   originalImgLink: { type: String, required: true },
   savedBy: {
-    type: [{
-      name: { type: String, required: true },
-      service: { type: String, required: true },
-      id: { type: String, required: true },
-    }],
+    type: [{ type: mongoose.Schema.Types.ObjectId, ref: 'User' }],
     default: [],
   },
   comments: {

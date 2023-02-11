@@ -2,8 +2,7 @@ import request from 'supertest';
 import app from '../../server/app';
 
 jest.mock('mongoose', () => ({
-  Schema: jest.fn(),
-  model: jest.fn(),
+  ...jest.requireActual('mongoose'),
   connect: jest.fn(),
   connection: {
     on: jest.fn(),
