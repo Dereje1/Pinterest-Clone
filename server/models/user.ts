@@ -1,6 +1,7 @@
 import mongoose from 'mongoose';
 
-export interface UserType extends mongoose.Document {
+export interface UserType {
+    _id: string,
     userId: string,
     token: string,
     displayName: string | null,

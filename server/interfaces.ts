@@ -44,7 +44,7 @@ export interface PopulatedPinType {
     imgLink: string,
     originalImgLink: string,
     owner: UserType,
-    savedBy: PinnerType[],
+    savedBy: UserType[],
     createdAt: string,
     comments: commentType[],
     tags: tagType[],

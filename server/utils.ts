@@ -142,8 +142,10 @@ export const filterPins = ({ rawPins, userId, isAdmin }: filterTypes) => {
       comments,
       tags,
     } = pin as PopulatedPinType;
-    const savedIds = savedBy.map((s) => s.id);
-    const savedNames = savedBy.map(({ name, id, service }) => ({ name, userId: id, service }));
+    const savedIds = savedBy.map((s) => s._id);
+    const savedNames = savedBy.map(({
+      displayName, _id, service,
+    }) => ({ name: displayName, userId: _id, service }));
     const modifiedComments = comments.map(
       ({
         _id, displayName, comment, createdAt, userId: commentorUserId,
