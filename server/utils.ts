@@ -148,9 +148,13 @@ export const filterPins = ({ rawPins, userId, isAdmin }: filterTypes) => {
     }) => ({ name: displayName, userId: _id, service }));
     const modifiedComments = comments.map(
       ({
-        _id, displayName, comment, createdAt, userId: commentorUserId,
+        _id, comment, createdAt, user,
       }) => ({
-        _id, displayName, comment, createdAt, userId: commentorUserId,
+        _id,
+        displayName: user.displayName,
+        comment,
+        createdAt,
+        userId: user._id,
       }),
     );
     return {

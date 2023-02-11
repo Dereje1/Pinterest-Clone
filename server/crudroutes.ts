@@ -43,8 +43,7 @@ export const getPins = async (req: Request, res: genericResponseType) => {
   const { userId, isAdmin } = getUserProfile(req.user as UserType);
   try {
     const allPins = await pins.find({ isBroken: false })
-      .populate('owner')
-      .populate('savedBy')
+      .populate(['owner', 'savedBy', 'comments.user'])
       .exec();
     res.json(filterPins({ rawPins: allPins, userId, isAdmin }));
   } catch (error) {
@@ -57,14 +56,13 @@ export const getUserPins = async (req: Request, res: genericResponseType) => {
   const mongooseUserId = mongoose.Types.ObjectId(userId);
   try {
     if (isAdmin) {
-      const allPins = await pins.find({ isBroken: false }).populate('owner').populate('savedBy').exec();
+      const allPins = await pins.find({ isBroken: false }).populate(['owner', 'savedBy', 'comments.user']).exec();
       return res.json({ profilePins: filterPins({ rawPins: allPins, userId, isAdmin }) });
     }
     const profilePins = await pins.find({
       $or: [{ owner: mongooseUserId }, { savedBy: mongooseUserId }],
     })
-      .populate('owner')
-      .populate('savedBy')
+      .populate(['owner', 'savedBy', 'comments.user'])
       .exec();
     return res.json({ profilePins: filterPins({ rawPins: profilePins, userId, isAdmin }) });
   } catch (error) {
@@ -88,12 +86,10 @@ export const getProfilePins = async (
       return res.json({ redirect: '/pins' });
     }
     const createdPins = await pins.find({ owner: mongooseUserId })
-      .populate('owner')
-      .populate('savedBy')
+      .populate(['owner', 'savedBy', 'comments.user'])
       .exec();
     const savedPins = await pins.find({ savedBy: mongooseUserId })
-      .populate('owner')
-      .populate('savedBy')
+      .populate(['owner', 'savedBy', 'comments.user'])
       .exec();
     return res.json({
       createdPins: filterPins({ rawPins: createdPins, userId: loggedInUserid, isAdmin: false }),
@@ -133,8 +129,7 @@ export const pinImage = async (req: Request, res: genericResponseType) => {
       const modified = { new: true };
       // note: can use `updateOne` on retrieved pin but need an updated doc returned
       const updatedPin = await pins.findByIdAndUpdate(pinID, update, modified)
-        .populate('owner')
-        .populate('savedBy')
+        .populate(['owner', 'savedBy', 'comments.user'])
         .exec();
       if (!updatedPin) return res.end();
       const [filteredAndUpdatedPin] = filterPins({ rawPins: [updatedPin], userId, isAdmin });
@@ -158,8 +153,7 @@ export const unpin = async (req: Request, res: genericResponseType) => {
     const update = { $set: { savedBy: pinToUpdate } };
     const modified = { new: true };
     const updatedPin = await pins.findByIdAndUpdate(pinID, update, modified)
-      .populate('owner')
-      .populate('savedBy')
+      .populate(['owner', 'savedBy', 'comments.user'])
       .exec();
     if (!updatedPin) return res.end();
     const [filteredAndUpdatedPin] = filterPins({ rawPins: [updatedPin], userId, isAdmin });
@@ -172,20 +166,16 @@ export const unpin = async (req: Request, res: genericResponseType) => {
 
 export const addComment = async (req: Request, res: genericResponseType) => {
   const {
-    userId, displayName, service, isAdmin,
+    userId, displayName, isAdmin,
   } = getUserProfile(req.user as UserType);
   const pinID = req.params._id;
   const { comment } = req.body;
   try {
-    const commentPayload = {
-      userId,
-      displayName,
-      service,
-      comment,
-    };
-    const update = { $push: { comments: { ...commentPayload } } };
+    const update = { $push: { comments: { comment, user: mongoose.Types.ObjectId(userId) } } };
     const modified = { new: true };
-    const updatedPin = await pins.findByIdAndUpdate(pinID, update, modified).exec();
+    const updatedPin = await pins.findByIdAndUpdate(pinID, update, modified)
+      .populate(['owner', 'savedBy', 'comments.user'])
+      .exec();
     if (!updatedPin) return res.end();
     const [filteredAndUpdatedPin] = filterPins({ rawPins: [updatedPin], userId, isAdmin });
     console.log(`${displayName} commented on ${updatedPin.imgDescription}`);
@@ -212,7 +202,9 @@ export const updateTags = async (req: Request, res: genericResponseType) => {
       update = { $push: { tags: { tag } } };
       await savedTags.create({ tag });
     }
-    const updatedPin = await pins.findByIdAndUpdate(pinID, update, { new: true }).exec();
+    const updatedPin = await pins.findByIdAndUpdate(pinID, update, { new: true })
+      .populate(['owner', 'savedBy', 'comments.user'])
+      .exec();
     if (!updatedPin) return res.end();
     const [filteredAndUpdatedPin] = filterPins({ rawPins: [updatedPin], userId, isAdmin });
     console.log(`${displayName} ${deleteId ? 'deleted' : `added ${tag}`} tag on ${updatedPin.imgDescription}`);

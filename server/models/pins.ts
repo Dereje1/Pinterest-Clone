@@ -1,6 +1,13 @@
 // mongoose shcema on what to store fror pins?
 import mongoose from 'mongoose';
-import { commentType, tagType } from '../interfaces';
+import { tagType } from '../interfaces';
+
+interface unPopulatedComment {
+  _id: mongoose.Types.ObjectId,
+  user: mongoose.Types.ObjectId,
+  comment: string,
+  createdAt: string,
+}
 
 export interface Pin {
   _id: string,
@@ -10,17 +17,15 @@ export interface Pin {
   owner: mongoose.Types.ObjectId,
   savedBy: mongoose.Types.ObjectId[],
   createdAt: string,
-  comments: commentType[],
+  comments: unPopulatedComment[],
   tags: tagType[],
 }
 
 const commentSchema = new mongoose.Schema({
-  displayName: { type: String, required: true },
-  service: { type: String, required: true },
-  userId: { type: String, required: true },
+  user: { type: mongoose.Schema.Types.ObjectId, ref: 'User' },
   comment: { type: String, required: true },
 }, {
-  timestamps: true, // timestamps options for subfields
+  timestamps: true,
 });
 
 const tagSchema = new mongoose.Schema({

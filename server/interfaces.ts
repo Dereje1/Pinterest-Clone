@@ -26,11 +26,9 @@ export interface PinnerType {
 
 export interface commentType {
     _id: string
-    displayName: string
+    user: UserType
     comment: string
     createdAt: string
-    userId: string
-    service: string
 }
 
 export interface tagType {
