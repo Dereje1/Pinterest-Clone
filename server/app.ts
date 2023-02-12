@@ -5,7 +5,7 @@ import bodyParser from 'body-parser';
 import logger from 'morgan';
 import connectToDB from './models/db';
 import auth from './auth/index';
-import { router } from './crudroutes';
+import router from './crudroutes';
 
 interface Error {
   status?: number;

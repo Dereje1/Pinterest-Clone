@@ -1,3 +1,4 @@
+import { Request, Response } from 'express';
 import isloggedin from '../../../server/auth/isloggedin';
 
 describe('isLoggedIn middleware', () => {
@@ -9,7 +10,7 @@ describe('isLoggedIn middleware', () => {
       isAuthenticated: jest.fn(() => false),
     };
     const next = jest.fn();
-    const result = isloggedin(req as any, res as any, next);
+    const result = isloggedin(req as unknown as Request, res as unknown as Response, next);
     expect(res.json).toHaveBeenCalledWith({
       authenticated: false,
       displayName: null,
@@ -33,7 +34,7 @@ describe('isLoggedIn middleware', () => {
       isAuthenticated: jest.fn(() => true),
     };
     const next = jest.fn();
-    isloggedin(req as any, res as any, next);
+    isloggedin(req as unknown as Request, res as unknown as Response, next);
     expect(res.json).not.toHaveBeenCalled();
     expect(next).toHaveBeenCalledTimes(1);
   });
