@@ -34,7 +34,7 @@ exports[`The UserInfo component will render with change name form 1`] = `
       {
         "alignItems": "center",
         "display": "flex",
-        "height": 50,
+        "height": 75,
       }
     }
   >
@@ -90,7 +90,7 @@ exports[`The UserInfo component will render with display name 1`] = `
       {
         "alignItems": "center",
         "display": "flex",
-        "height": 50,
+        "height": 75,
       }
     }
   >

@@ -1,8 +1,7 @@
 import React from 'react';
-import { EnzymePropSelector, shallow } from 'enzyme';
+import { shallow } from 'enzyme';
 import toJson from 'enzyme-to-json';
 import UserInfo, { NameChangeForm } from '../../../../../client/src/components/mypins/UserInfo';
-import { pinsStub } from '../../../stub';
 
 describe('The UserInfo component', () => {
   let props;
@@ -84,7 +83,7 @@ describe('The NameChangeForm component', () => {
     const textField = wrapper.find('ForwardRef(TextField)');
     expect(textField.props().value).toBe('tester displayName');
     textField.props().onChange({ target: { value: 'new value' } });
-    const doneIcon = wrapper.find('Memo(ForwardRef(DoneIcon))');
+    const doneIcon = wrapper.find('ForwardRef(IconButton)').at(0);
     doneIcon.props().onClick();
     expect(props.submitNameChange).toHaveBeenCalledWith('new value');
   });
@@ -94,7 +93,7 @@ describe('The NameChangeForm component', () => {
     const textField = wrapper.find('ForwardRef(TextField)');
     expect(textField.props().value).toBe('tester displayName');
     textField.props().onChange({ target: { value: 'new value' } });
-    const cancelIcon = wrapper.find('Memo(ForwardRef(CancelIcon))');
+    const cancelIcon = wrapper.find('ForwardRef(IconButton)').at(1);
     cancelIcon.props().onClick('', true);
     expect(props.submitNameChange).toHaveBeenCalledWith('');
   });

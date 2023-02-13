@@ -41,29 +41,34 @@ export function NameChangeForm({ submitNameChange, oldDisplayName }: NameChangeF
   };
 
   return (
-    <div style={{ alignContent: 'flex-end' }}>
+    <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
       <TextField
         variant="standard"
         value={nameValue}
         onChange={({ target: { value } }) => setNameValue(value)}
         error={nameValue.trim().length > 15}
-        sx={{ width: 150 }}
+        sx={{ width: 150, mb: 1 }}
         InputProps={{
           inputProps: {
             style: { textAlign: 'center' },
           },
         }}
       />
-      <DoneIcon
-        color="success"
-        onClick={handleNameChange}
-        sx={{ cursor: 'pointer' }}
-      />
-      <CancelIcon
-        color="error"
-        onClick={(_) => handleNameChange(_, true)}
-        sx={{ cursor: 'pointer', ml: 1 }}
-      />
+      <div style={{
+        display: 'flex', justifyContent: 'space-around', width: 150,
+      }}
+      >
+        <IconButton onClick={handleNameChange}>
+          <DoneIcon
+            color="success"
+          />
+        </IconButton>
+        <IconButton onClick={(_) => handleNameChange(_, true)}>
+          <CancelIcon
+            color="error"
+          />
+        </IconButton>
+      </div>
     </div>
   );
 }
@@ -74,7 +79,10 @@ function UserInfo({
   const { service, displayName, username } = user;
   return (
     <div style={{
-      display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center',
+      display: 'flex',
+      flexDirection: 'column',
+      alignItems: 'center',
+      justifyContent: 'center',
     }}
     >
       <Avatar sx={{
@@ -86,7 +94,7 @@ function UserInfo({
       >
         {providerIcons[service as keyof providerIconsType].icon}
       </Avatar>
-      <div style={{ display: 'flex', alignItems: 'center', height: 50 }}>
+      <div style={{ display: 'flex', alignItems: 'center', height: 75 }}>
         {nameChangeFormIsShowing ? (
           <NameChangeForm
             submitNameChange={submitNameChange}
