@@ -1,12 +1,12 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`The Mypins Component Mypins landing page will render bubbles until ready 1`] = `
+exports[`The Mypins component landing page will render bubbles until ready 1`] = `
 <Loading
   marginTop={100}
 />
 `;
 
-exports[`The Mypins Component Mypins landing page will render message if no pins created found 1`] = `
+exports[`The Mypins component landing page will render message if no pins created found 1`] = `
 <Fragment>
   <div
     style={
@@ -22,7 +22,7 @@ exports[`The Mypins Component Mypins landing page will render message if no pins
       }
     }
   >
-    <GetUserInfo
+    <UserInfo
       nameChangeFormIsShowing={false}
       showNameChangeForm={[Function]}
       submitNameChange={[Function]}
@@ -96,7 +96,7 @@ exports[`The Mypins Component Mypins landing page will render message if no pins
 </Fragment>
 `;
 
-exports[`The Mypins Component Mypins landing page will render message if no pins saved found 1`] = `
+exports[`The Mypins component landing page will render message if no pins saved found 1`] = `
 <Fragment>
   <div
     style={
@@ -112,7 +112,7 @@ exports[`The Mypins Component Mypins landing page will render message if no pins
       }
     }
   >
-    <GetUserInfo
+    <UserInfo
       nameChangeFormIsShowing={false}
       showNameChangeForm={[Function]}
       submitNameChange={[Function]}
@@ -184,7 +184,7 @@ exports[`The Mypins Component Mypins landing page will render message if no pins
 </Fragment>
 `;
 
-exports[`The Mypins Component Mypins landing page will render pins if found 1`] = `
+exports[`The Mypins component landing page will render pins if found 1`] = `
 <Fragment>
   <div
     style={
@@ -200,7 +200,7 @@ exports[`The Mypins Component Mypins landing page will render pins if found 1`] 
       }
     }
   >
-    <GetUserInfo
+    <UserInfo
       nameChangeFormIsShowing={false}
       showNameChangeForm={[Function]}
       submitNameChange={[Function]}

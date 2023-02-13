@@ -23,6 +23,7 @@ export interface genericRequest extends Request{
       id: string
       comment: string
       picInPreview: string
+      newDisplayName: string
     } | undefined
     params: {
       _id: string

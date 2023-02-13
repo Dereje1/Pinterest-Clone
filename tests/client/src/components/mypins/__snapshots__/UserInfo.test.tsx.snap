@@ -1,0 +1,131 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`The UserInfo component will render with change name form 1`] = `
+<div
+  style={
+    {
+      "alignItems": "center",
+      "display": "flex",
+      "flexDirection": "column",
+      "justifyContent": "center",
+    }
+  }
+>
+  <ForwardRef(Avatar)
+    sx={
+      {
+        "bgcolor": "#1DA1F2",
+        "height": 52,
+        "mb": 2,
+        "width": 52,
+      }
+    }
+  >
+    <Memo(ForwardRef(TwitterIcon))
+      style={
+        {
+          "fontSize": 45,
+        }
+      }
+    />
+  </ForwardRef(Avatar)>
+  <div
+    style={
+      {
+        "alignItems": "center",
+        "display": "flex",
+        "height": 50,
+      }
+    }
+  >
+    <NameChangeForm
+      oldDisplayName="tester displayName"
+      submitNameChange={[MockFunction]}
+    />
+  </div>
+  <ForwardRef(Typography)
+    style={
+      {
+        "marginLeft": 15,
+        "marginTop": 4,
+      }
+    }
+  >
+    @tester username
+  </ForwardRef(Typography)>
+</div>
+`;
+
+exports[`The UserInfo component will render with display name 1`] = `
+<div
+  style={
+    {
+      "alignItems": "center",
+      "display": "flex",
+      "flexDirection": "column",
+      "justifyContent": "center",
+    }
+  }
+>
+  <ForwardRef(Avatar)
+    sx={
+      {
+        "bgcolor": "#1DA1F2",
+        "height": 52,
+        "mb": 2,
+        "width": 52,
+      }
+    }
+  >
+    <Memo(ForwardRef(TwitterIcon))
+      style={
+        {
+          "fontSize": 45,
+        }
+      }
+    />
+  </ForwardRef(Avatar)>
+  <div
+    style={
+      {
+        "alignItems": "center",
+        "display": "flex",
+        "height": 50,
+      }
+    }
+  >
+    <ForwardRef(Typography)
+      sx={
+        {
+          "paddingLeft": 8,
+        }
+      }
+      variant="h5"
+    >
+      tester displayName
+    </ForwardRef(Typography)>
+    <ForwardRef(IconButton)
+      onClick={[MockFunction]}
+      sx={
+        {
+          "ml": 2,
+        }
+      }
+    >
+      <Memo(ForwardRef(EditIcon))
+        fontSize="small"
+      />
+    </ForwardRef(IconButton)>
+  </div>
+  <ForwardRef(Typography)
+    style={
+      {
+        "marginLeft": 15,
+        "marginTop": 4,
+      }
+    }
+  >
+    @tester username
+  </ForwardRef(Typography)>
+</div>
+`;

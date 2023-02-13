@@ -4,8 +4,10 @@ import {
   addComment,
   unpin,
   updateTags,
+  updateDisplayName,
 } from '../../../server/controllers/put';
 import pins from '../../../server/models/pins'; // schema for pins
+import users from '../../../server/models/user';
 import savedTags from '../../../server/models/tags';
 import {
   user, rawPinsStub, allPinsResponse,
@@ -40,6 +42,7 @@ describe('Pinning an image', () => {
   });
   afterEach(() => {
     jest.restoreAllMocks();
+    res.end.mockClear();
   });
 
   test('will pin an image', async () => {
@@ -91,6 +94,13 @@ describe('Pinning an image', () => {
         exec: jest.fn().mockResolvedValue(null),
       }),
     );
+    pins.findByIdAndUpdate = jest.fn().mockImplementation(
+      () => ({
+        populate: jest.fn().mockImplementation(() => ({
+          exec: jest.fn().mockResolvedValue({}),
+        })),
+      }),
+    );
     mockedFindById = jest.mocked(pins.findById);
     await pinImage(req as genericRequest, res);
     expect(pins.findById).toHaveBeenCalledTimes(1);
@@ -121,7 +131,7 @@ describe('Pinning an image', () => {
   });
 
   test('will not pin an image if user has already pinned', async () => {
-    const newSavedBy = [...rawPinsStub[2].savedBy, { id: req.body.id, name: req.body.name }];
+    const newSavedBy = [...rawPinsStub[2].savedBy, req.user._id];
     setupMocks({ ...rawPinsStub[2], savedBy: newSavedBy });
     await pinImage(req as genericRequest, res);
     expect(pins.findById).toHaveBeenCalledTimes(1);
@@ -511,6 +521,68 @@ describe('Updating tags for a pin', () => {
       }),
     );
     await updateTags(req as genericRequest, res);
+    expect(res.json).toHaveBeenCalledWith(Error('Mocked rejection'));
+  });
+});
+
+describe('Updating a display name', () => {
+  let res;
+  const req = {
+    user,
+    body: {
+      newDisplayName: 'updated-display-name',
+    },
+  };
+  beforeEach(() => {
+    res = { json: jest.fn(), end: jest.fn() };
+    process.env = {
+      ...process.env,
+      ADMIN_USER_ID: 'xxx',
+    };
+  });
+  afterEach(() => {
+    jest.restoreAllMocks();
+  });
+
+  test('will update a display name', async () => {
+    const updateOne = jest.fn();
+    users.findById = jest.fn().mockImplementation(
+      () => ({
+        exec: jest.fn().mockResolvedValue({ updateOne }),
+      }),
+    );
+    const mockedFindById = jest.mocked(users.findById);
+    await updateDisplayName(req as genericRequest, res);
+    expect(users.findById).toHaveBeenCalledTimes(1);
+    expect(users.findById).toHaveBeenCalledWith('5cad310f7672ca00146485a8');
+    expect(updateOne).toHaveBeenCalledWith({ $set: { displayName: 'updated-display-name' } });
+    expect(res.end).toHaveBeenCalled();
+    mockedFindById.mockClear();
+  });
+
+  test('will not update if user not found', async () => {
+    const updateOne = jest.fn();
+    users.findById = jest.fn().mockImplementation(
+      () => ({
+        exec: jest.fn().mockResolvedValue(null),
+      }),
+    );
+    const mockedFindById = jest.mocked(users.findById);
+    await updateDisplayName(req as genericRequest, res);
+    expect(users.findById).toHaveBeenCalledTimes(1);
+    expect(users.findById).toHaveBeenCalledWith('5cad310f7672ca00146485a8');
+    expect(updateOne).not.toHaveBeenCalled();
+    expect(res.end).toHaveBeenCalled();
+    mockedFindById.mockClear();
+  });
+
+  test('will respond with error if PUT is rejected', async () => {
+    users.findById = jest.fn().mockImplementation(
+      () => ({
+        exec: jest.fn().mockRejectedValue(new Error('Mocked rejection')),
+      }),
+    );
+    await updateDisplayName(req as genericRequest, res);
     expect(res.json).toHaveBeenCalledWith(Error('Mocked rejection'));
   });
 });

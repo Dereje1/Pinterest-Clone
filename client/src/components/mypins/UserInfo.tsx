@@ -29,7 +29,7 @@ interface NameChangeFormProps {
     oldDisplayName: string | null,
   }
 
-function NameChangeForm({ submitNameChange, oldDisplayName }: NameChangeFormProps) {
+export function NameChangeForm({ submitNameChange, oldDisplayName }: NameChangeFormProps) {
   const [nameValue, setNameValue] = useState(oldDisplayName || '');
 
   const handleNameChange = (e: React.SyntheticEvent, isCancelled = false) => {
@@ -68,7 +68,7 @@ function NameChangeForm({ submitNameChange, oldDisplayName }: NameChangeFormProp
   );
 }
 
-function GetUserInfo({
+function UserInfo({
   user, nameChangeFormIsShowing, showNameChangeForm, submitNameChange,
 }: getUserInfoProps) {
   const { service, displayName, username } = user;
@@ -110,4 +110,4 @@ function GetUserInfo({
   );
 }
 
-export default GetUserInfo;
+export default UserInfo;

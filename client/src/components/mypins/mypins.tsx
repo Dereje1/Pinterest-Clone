@@ -14,7 +14,7 @@ import AddIcon from '@mui/icons-material/Add';
 
 import PinCreate from './pincreatemodal';
 import ImageBuild from '../imagebuild/Imagebuild';
-import GetUserInfo from './UserInfo';
+import UserInfo from './UserInfo';
 import RESTcall from '../../crud'; // pin CRUD
 import { Loading, UserPinsSelector } from '../common/common';
 import {
@@ -105,6 +105,7 @@ export class Mypins extends Component<MypinsProps, MypinsState> {
   pinForm() { // display pin creation modal
     this.setState({
       displayPinCreate: true,
+      nameChangeFormIsShowing: false,
     });
   }
 
@@ -148,8 +149,7 @@ export class Mypins extends Component<MypinsProps, MypinsState> {
           justifyContent: 'space-between',
         }}
         >
-          {/* {getUserInfo(user)} */}
-          <GetUserInfo
+          <UserInfo
             user={user}
             nameChangeFormIsShowing={nameChangeFormIsShowing}
             showNameChangeForm={() => this.setState(
