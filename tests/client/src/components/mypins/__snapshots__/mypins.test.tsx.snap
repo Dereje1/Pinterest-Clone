@@ -22,49 +22,20 @@ exports[`The Mypins Component Mypins landing page will render message if no pins
       }
     }
   >
-    <div
-      style={
+    <GetUserInfo
+      nameChangeFormIsShowing={false}
+      showNameChangeForm={[Function]}
+      submitNameChange={[Function]}
+      user={
         {
-          "alignItems": "center",
-          "display": "flex",
-          "flexDirection": "column",
-          "justifyContent": "center",
+          "authenticated": true,
+          "displayName": "tester displayName",
+          "service": "twitter",
+          "userId": "tester user Id",
+          "username": "tester username",
         }
       }
-    >
-      <ForwardRef(Avatar)
-        sx={
-          {
-            "bgcolor": "#1DA1F2",
-            "height": 52,
-            "mb": 2,
-            "width": 52,
-          }
-        }
-      >
-        <Memo(ForwardRef(TwitterIcon))
-          style={
-            {
-              "fontSize": 45,
-            }
-          }
-        />
-      </ForwardRef(Avatar)>
-      <ForwardRef(Typography)
-        variant="h4"
-      >
-        tester displayName
-      </ForwardRef(Typography)>
-      <ForwardRef(Typography)
-        style={
-          {
-            "marginLeft": 15,
-          }
-        }
-      >
-        @tester username
-      </ForwardRef(Typography)>
-    </div>
+    />
     <div
       style={
         {
@@ -141,49 +112,20 @@ exports[`The Mypins Component Mypins landing page will render message if no pins
       }
     }
   >
-    <div
-      style={
+    <GetUserInfo
+      nameChangeFormIsShowing={false}
+      showNameChangeForm={[Function]}
+      submitNameChange={[Function]}
+      user={
         {
-          "alignItems": "center",
-          "display": "flex",
-          "flexDirection": "column",
-          "justifyContent": "center",
+          "authenticated": true,
+          "displayName": "tester displayName",
+          "service": "twitter",
+          "userId": "tester user Id",
+          "username": "tester username",
         }
       }
-    >
-      <ForwardRef(Avatar)
-        sx={
-          {
-            "bgcolor": "#1DA1F2",
-            "height": 52,
-            "mb": 2,
-            "width": 52,
-          }
-        }
-      >
-        <Memo(ForwardRef(TwitterIcon))
-          style={
-            {
-              "fontSize": 45,
-            }
-          }
-        />
-      </ForwardRef(Avatar)>
-      <ForwardRef(Typography)
-        variant="h4"
-      >
-        tester displayName
-      </ForwardRef(Typography)>
-      <ForwardRef(Typography)
-        style={
-          {
-            "marginLeft": 15,
-          }
-        }
-      >
-        @tester username
-      </ForwardRef(Typography)>
-    </div>
+    />
     <div
       style={
         {
@@ -258,49 +200,20 @@ exports[`The Mypins Component Mypins landing page will render pins if found 1`] 
       }
     }
   >
-    <div
-      style={
+    <GetUserInfo
+      nameChangeFormIsShowing={false}
+      showNameChangeForm={[Function]}
+      submitNameChange={[Function]}
+      user={
         {
-          "alignItems": "center",
-          "display": "flex",
-          "flexDirection": "column",
-          "justifyContent": "center",
+          "authenticated": true,
+          "displayName": "tester displayName",
+          "service": "twitter",
+          "userId": "tester user Id",
+          "username": "tester username",
         }
       }
-    >
-      <ForwardRef(Avatar)
-        sx={
-          {
-            "bgcolor": "#1DA1F2",
-            "height": 52,
-            "mb": 2,
-            "width": 52,
-          }
-        }
-      >
-        <Memo(ForwardRef(TwitterIcon))
-          style={
-            {
-              "fontSize": 45,
-            }
-          }
-        />
-      </ForwardRef(Avatar)>
-      <ForwardRef(Typography)
-        variant="h4"
-      >
-        tester displayName
-      </ForwardRef(Typography)>
-      <ForwardRef(Typography)
-        style={
-          {
-            "marginLeft": 15,
-          }
-        }
-      >
-        @tester username
-      </ForwardRef(Typography)>
-    </div>
+    />
     <div
       style={
         {
