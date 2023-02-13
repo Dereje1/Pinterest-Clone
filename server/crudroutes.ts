@@ -6,7 +6,7 @@ import {
   getPins, getProfilePins, getTags, getUserPins,
 } from './controllers/get';
 import {
-  addComment, pinImage, unpin, updateTags,
+  addComment, pinImage, unpin, updateTags, updateDisplayName,
 } from './controllers/put';
 import deletePin from './controllers/delete';
 
@@ -40,6 +40,9 @@ router.put('/api/comment/:_id', isLoggedIn, addComment);
 
 // Adds/removes a tag from a pin
 router.put('/api/updateTags/', isLoggedIn, updateTags);
+
+// Update display name
+router.put('/api/updateDisplayName/', isLoggedIn, updateDisplayName);
 
 // deletes a pin if owned by user
 router.delete('/api/:_id', isLoggedIn, deletePin);

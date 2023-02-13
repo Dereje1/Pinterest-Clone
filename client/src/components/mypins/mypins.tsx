@@ -2,7 +2,7 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
-import Avatar from '@mui/material/Avatar';
+
 import Typography from '@mui/material/Typography';
 import Button from '@mui/material/Button';
 import Dialog from '@mui/material/Dialog';
@@ -11,43 +11,15 @@ import DialogTitle from '@mui/material/DialogTitle';
 import Box from '@mui/material/Box';
 import Fab from '@mui/material/Fab';
 import AddIcon from '@mui/icons-material/Add';
+
 import PinCreate from './pincreatemodal';
 import ImageBuild from '../imagebuild/Imagebuild';
+import GetUserInfo from './UserInfo';
 import RESTcall from '../../crud'; // pin CRUD
-import { getProviderIcons, Loading, UserPinsSelector } from '../common/common';
+import { Loading, UserPinsSelector } from '../common/common';
 import {
-  providerIconsType, userType, PinType,
+  userType, PinType,
 } from '../../interfaces';
-
-const providerIcons = getProviderIcons({ fontSize: 45 });
-
-interface getUserInfoProps {
-  service: string
-  displayName: string | null
-  username: string | null
-}
-const getUserInfo = ({ service, displayName, username }: getUserInfoProps) => (
-  <div style={{
-    display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center',
-  }}
-  >
-    <Avatar sx={{
-      mb: 2,
-      width: 52,
-      height: 52,
-      bgcolor: providerIcons[service as keyof providerIconsType].color,
-    }}
-    >
-      {providerIcons[service as keyof providerIconsType].icon}
-    </Avatar>
-    <Typography variant="h4">
-      {displayName}
-    </Typography>
-    <Typography style={{ marginLeft: 15 }}>
-      {service === 'google' ? username : `@${username}`}
-    </Typography>
-  </div>
-);
 
 interface MypinsProps {
   user: userType
@@ -60,6 +32,7 @@ interface MypinsState {
   deletableImgInfo: PinType | null,
   ready: boolean,
   displaySetting: string,
+  nameChangeFormIsShowing: boolean
 }
 
 export class Mypins extends Component<MypinsProps, MypinsState> {
@@ -73,6 +46,7 @@ export class Mypins extends Component<MypinsProps, MypinsState> {
       deletableImgInfo: null,
       ready: false,
       displaySetting: 'created',
+      nameChangeFormIsShowing: false,
     };
   }
 
@@ -87,6 +61,20 @@ export class Mypins extends Component<MypinsProps, MypinsState> {
       pinList: profilePins,
       ready: true,
     });
+  }
+
+  async handleNameChange(newName: string) {
+    const { user: { displayName } } = this.props;
+    if (newName.length > 15 || !newName.length || displayName === newName) {
+      this.setState({ nameChangeFormIsShowing: false });
+      return null;
+    }
+    await RESTcall({
+      address: '/api/updateDisplayName',
+      method: 'put',
+      payload: { newDisplayName: newName },
+    });
+    return window.location.reload();
   }
 
   // adds a new pin to the db
@@ -141,7 +129,7 @@ export class Mypins extends Component<MypinsProps, MypinsState> {
     const {
       displayPinCreate, showDeleteImageModal,
       deletableImgInfo, pinList,
-      ready, displaySetting,
+      ready, displaySetting, nameChangeFormIsShowing,
     } = this.state;
     if (!authenticated) return null;
     if (!ready) return <Loading marginTop={100} />;
@@ -160,7 +148,15 @@ export class Mypins extends Component<MypinsProps, MypinsState> {
           justifyContent: 'space-between',
         }}
         >
-          {getUserInfo(user)}
+          {/* {getUserInfo(user)} */}
+          <GetUserInfo
+            user={user}
+            nameChangeFormIsShowing={nameChangeFormIsShowing}
+            showNameChangeForm={() => this.setState(
+              { nameChangeFormIsShowing: true },
+            )}
+            submitNameChange={(newName) => this.handleNameChange(newName)}
+          />
           <div style={{ marginRight: 18 }}>
             <UserPinsSelector
               displaySetting={displaySetting}

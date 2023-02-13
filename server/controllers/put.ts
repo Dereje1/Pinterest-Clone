@@ -5,7 +5,7 @@ import {
   getUserProfile, filterPins,
 } from '../utils';
 import pins from '../models/pins';
-import { UserType } from '../models/user';
+import users, { UserType } from '../models/user';
 import savedTags from '../models/tags';
 
 export const pinImage = async (req: Request, res: genericResponseType) => {
@@ -103,6 +103,22 @@ export const updateTags = async (req: Request, res: genericResponseType) => {
     const [filteredAndUpdatedPin] = filterPins({ rawPins: [updatedPin], userId, isAdmin });
     console.log(`${displayName} ${deleteId ? 'deleted' : `added ${tag}`} tag on ${updatedPin.imgDescription}`);
     return res.json(filteredAndUpdatedPin);
+  } catch (error) {
+    return res.json(error);
+  }
+};
+
+export const updateDisplayName = async (req: Request, res: genericResponseType) => {
+  const {
+    userId, displayName,
+  } = getUserProfile(req.user as UserType);
+  const { newDisplayName } = req.body;
+  try {
+    const user = await users.findById(userId).exec();
+    const update = { $set: { displayName: newDisplayName } };
+    await user?.updateOne(update);
+    console.log(`${displayName} changed to ${newDisplayName}`);
+    return res.end();
   } catch (error) {
     return res.json(error);
   }

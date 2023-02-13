@@ -14,10 +14,12 @@ interface commentAddPayload { comment: string }
 
 interface duplicateCheckPayload { picInPreview: string | ArrayBuffer }
 
+interface nameChangePayload { newDisplayName: string }
+
 interface crudTypes {
   address: string
   method: string
-  payload: pinAddPayload | commentAddPayload | duplicateCheckPayload | undefined
+  payload: pinAddPayload | commentAddPayload | duplicateCheckPayload | nameChangePayload | undefined
 }
 
 export default async ({ address, method = 'get', payload }: crudTypes) => {
