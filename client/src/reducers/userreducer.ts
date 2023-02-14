@@ -12,6 +12,11 @@ const userStatusReducer = (state = { }, action: actionType) => {
       return action.payload;
     case 'SET_GUEST_STATUS':
       return action.payload;
+    case 'UPDATE_DISPLAY_NAME':
+      return {
+        ...state,
+        displayName: action.payload,
+      };
     default:
       return state;
   }

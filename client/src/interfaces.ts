@@ -40,6 +40,7 @@ export interface providersType {
 
 export interface userType {
     authenticated: boolean,
+    userId: string,
     userIp: string,
     username: string | null,
     displayName: string | null,

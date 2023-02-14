@@ -108,7 +108,7 @@ export const formatDate = (date: string) => {
   const [, day, mth, year] = new Date(date).toUTCString().split(' ');
   return `${day} ${mth} ${year}`;
 };
-
+// only good for a single populated pin
 export const updatePinList = (oldList: PinType[], newPin: PinType) => {
   const indexOfUpdate = oldList.findIndex((p) => p._id === newPin._id);
   return [
@@ -117,3 +117,30 @@ export const updatePinList = (oldList: PinType[], newPin: PinType) => {
     ...oldList.slice(indexOfUpdate + 1),
   ];
 };
+
+// used for on the fly change of display name in my pins page
+export const onTheFlyPinListNameChange = (
+  pinList: PinType[],
+  newName: string,
+  oldDisplayName: string | null,
+) => pinList.map((pin) => {
+  if (pin.owns) {
+    return {
+      ...pin,
+      owner: {
+        ...pin.owner,
+        name: newName,
+      },
+    };
+  }
+  const newSavedBy = pin.savedBy.map(
+    (pinner) => (pinner.name === oldDisplayName
+      ? { ...pinner, name: newName }
+      : pinner
+    ),
+  );
+  return {
+    ...pin,
+    savedBy: newSavedBy,
+  };
+});

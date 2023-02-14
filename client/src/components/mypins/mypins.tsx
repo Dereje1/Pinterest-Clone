@@ -16,13 +16,19 @@ import PinCreate from './pincreatemodal';
 import ImageBuild from '../imagebuild/Imagebuild';
 import UserInfo from './UserInfo';
 import RESTcall from '../../crud'; // pin CRUD
+import { updateDisplayName } from '../../actions/authentication';
 import { Loading, UserPinsSelector } from '../common/common';
+import { onTheFlyPinListNameChange } from '../../utils/utils';
 import {
   userType, PinType,
 } from '../../interfaces';
 
+const actionCreators = {
+  updateDisplayName,
+};
 interface MypinsProps {
   user: userType
+  updateDisplayName: (newName: string) => void
 }
 
 interface MypinsState {
@@ -64,24 +70,31 @@ export class Mypins extends Component<MypinsProps, MypinsState> {
   }
 
   async handleNameChange(newName: string) {
-    const { user: { displayName } } = this.props;
+    const { user: { displayName }, updateDisplayName: reduxUpdateDisplayName } = this.props;
+    const { pinList } = this.state;
     if (newName.length > 15 || !newName.length || displayName === newName) {
       this.setState({ nameChangeFormIsShowing: false });
       return null;
     }
+    this.setState({ ready: false });
     await RESTcall({
       address: '/api/updateDisplayName',
       method: 'put',
       payload: { newDisplayName: newName },
     });
-    return window.location.reload();
+    this.setState({
+      nameChangeFormIsShowing: false,
+      pinList: onTheFlyPinListNameChange(pinList, newName, displayName),
+      ready: true,
+    }, () => reduxUpdateDisplayName(newName));
+    return null;
   }
 
   // adds a new pin to the db
   async addPic(pinJSON: {imgDescription: string, imgLink: string | ArrayBuffer}) {
     // copy then add pin to db and then update client state (in that order)
     const { pinList } = this.state;
-    const { user: { displayName } } = this.props;
+    const { user: { displayName, service, userId } } = this.props;
     this.setState({ ready: false });
     const newPin = await RESTcall({
       address: '/api/newpin',
@@ -92,7 +105,7 @@ export class Mypins extends Component<MypinsProps, MypinsState> {
       ...newPin,
       owns: true,
       hasSaved: false,
-      owner: { name: displayName },
+      owner: { name: displayName, service, userId },
     };
     this.setState({
       pinList: [...pinList, addedPin],
@@ -128,9 +141,9 @@ export class Mypins extends Component<MypinsProps, MypinsState> {
   render() {
     const { user, user: { authenticated } } = this.props;
     const {
-      displayPinCreate, showDeleteImageModal,
-      deletableImgInfo, pinList,
-      ready, displaySetting, nameChangeFormIsShowing,
+      displayPinCreate, showDeleteImageModal, deletableImgInfo,
+      pinList, ready, displaySetting,
+      nameChangeFormIsShowing,
     } = this.state;
     if (!authenticated) return null;
     if (!ready) return <Loading marginTop={100} />;
@@ -276,4 +289,4 @@ export class Mypins extends Component<MypinsProps, MypinsState> {
 
 export const mapStateToProps = ({ user }:{user: userType}) => ({ user });
 
-export default connect(mapStateToProps)(Mypins);
+export default connect(mapStateToProps, actionCreators)(Mypins);

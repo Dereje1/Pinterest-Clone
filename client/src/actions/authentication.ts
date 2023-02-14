@@ -39,3 +39,8 @@ export const setGuest = (path: string) => async (dispatch: (action: dispatchType
     });
   }
 };
+
+export const updateDisplayName = (newName: string) => ({
+  type: 'UPDATE_DISPLAY_NAME',
+  payload: newName,
+});

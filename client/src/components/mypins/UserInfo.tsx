@@ -13,7 +13,7 @@ import {
 
 const providerIcons = getProviderIcons({ fontSize: 45 });
 
-interface getUserInfoProps {
+interface UserInfoProps {
   user:{
     service: string
     displayName: string | null
@@ -74,8 +74,11 @@ export function NameChangeForm({ submitNameChange, oldDisplayName }: NameChangeF
 }
 
 function UserInfo({
-  user, nameChangeFormIsShowing, showNameChangeForm, submitNameChange,
-}: getUserInfoProps) {
+  user,
+  nameChangeFormIsShowing,
+  showNameChangeForm,
+  submitNameChange,
+}: UserInfoProps) {
   const { service, displayName, username } = user;
   return (
     <div style={{
