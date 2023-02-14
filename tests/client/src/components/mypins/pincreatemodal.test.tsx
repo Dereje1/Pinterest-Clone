@@ -124,7 +124,10 @@ describe('The pin creation modal', () => {
     uploadSwitch.onChange();
     const instance = wrapper.instance() as PinCreate;
     // TODO: Fix is any declaration
-    await instance.handleUploadedImage({ target: { files: ['a file'] } } as any);
+    await instance.handleUploadedImage(
+      { target: { files: ['a file'] } } as unknown as React.SyntheticEvent<HTMLDivElement>,
+    );
+    wrapper.setState({ isError: false });
     expect(wrapper.state().picPreview).toBe('data:image successfully encoded');
   });
 
@@ -136,7 +139,9 @@ describe('The pin creation modal', () => {
     wrapper.setState({ isLoaded: true, isError: false, picPreview: 'stub_url' });
     const instance = wrapper.instance() as PinCreate;
     // TODO: Fix is any declaration
-    await instance.handleUploadedImage({ target: { files: ['a file'] } } as any);
+    await instance.handleUploadedImage(
+      { target: { files: ['a file'] } } as unknown as React.SyntheticEvent<HTMLDivElement>,
+    );
     expect(wrapper.state().picPreview).toBe('');
     expect(wrapper.state().isError).toBe(true);
     expect(wrapper.state().isLoaded).toBe(false);

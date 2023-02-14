@@ -22,6 +22,7 @@ describe('The Mypins component', () => {
         service: 'twitter',
         userId: 'tester user Id',
       },
+      updateDisplayName: jest.fn(),
     };
   });
   afterEach(() => {
@@ -162,6 +163,7 @@ describe('The ImageBuild subComponent', () => {
         service: 'twitter',
         userId: 'tester user Id',
       },
+      updateDisplayName: jest.fn(),
     };
   });
   afterEach(() => {
@@ -250,6 +252,7 @@ describe('The PinCreate sub-component', () => {
         service: 'twitter',
         userId: 'tester user Id',
       },
+      updateDisplayName: jest.fn(),
     };
   });
   afterEach(() => {
@@ -267,7 +270,7 @@ describe('The PinCreate sub-component', () => {
     expect(wrapper.state().pinList.length).toBe(3);
     expect(wrapper.state().pinList[2]).toStrictEqual({
       savedBy: [],
-      owner: { name: 'tester displayName' },
+      owner: { name: 'tester displayName', service: 'twitter', userId: 'tester user Id' },
       imgLink: 's3 new link',
       originalImgLink: 'original new link',
       imgDescription: 'new description',
@@ -300,6 +303,7 @@ describe('The UserInfo sub-component', () => {
         service: 'twitter',
         userId: 'tester user Id',
       },
+      updateDisplayName: jest.fn(),
     };
   });
   afterEach(() => {
@@ -317,33 +321,31 @@ describe('The UserInfo sub-component', () => {
   });
 
   test('will submit a name change', async () => {
-    const windowSpy = jest.spyOn(window, 'location', 'get');
-    const mockedReload = jest.fn();
-    windowSpy.mockReturnValue({
-      ...window.location,
-      reload: mockedReload,
-    });
-    const wrapper = shallow<Mypins>(<Mypins {...props} />);
+    const updatedProps = {
+      ...props,
+      user: {
+        ...props.user,
+        displayName: 'savedBy - id-2',
+      },
+    };
+    const wrapper = shallow<Mypins>(<Mypins {...updatedProps} />);
     await Promise.resolve();
     const getUserInfo: EnzymePropSelector = wrapper.find('UserInfo');
     getUserInfo.props().submitNameChange('New name');
     await Promise.resolve();
+    const [saved, owned] = wrapper.state().pinList;
     expect(mockedRESTcall).toHaveBeenCalledTimes(2);
     expect(mockedRESTcall).toHaveBeenNthCalledWith(2, {
       address: '/api/updateDisplayName',
       method: 'put',
       payload: { newDisplayName: 'New name' },
     });
-    expect(mockedReload).toHaveBeenCalled();
+    expect(owned.owner.name).toBe('New name');
+    expect(saved.savedBy[0].name).toBe('New name');
+    expect(props.updateDisplayName).toHaveBeenCalledWith('New name');
   });
 
   test('will not submit a name change if the new name is too long', async () => {
-    const windowSpy = jest.spyOn(window, 'location', 'get');
-    const mockedReload = jest.fn();
-    windowSpy.mockReturnValue({
-      ...window.location,
-      reload: mockedReload,
-    });
     const wrapper = shallow<Mypins>(<Mypins {...props} />);
     wrapper.setState({ nameChangeFormIsShowing: true });
     await Promise.resolve();
@@ -351,17 +353,10 @@ describe('The UserInfo sub-component', () => {
     getUserInfo.props().submitNameChange('New name Is very long');
     await Promise.resolve();
     expect(mockedRESTcall).toHaveBeenCalledTimes(1);
-    expect(mockedReload).not.toHaveBeenCalled();
     expect(wrapper.state().nameChangeFormIsShowing).toBe(false);
   });
 
   test('will not submit a name change if the new name is empty', async () => {
-    const windowSpy = jest.spyOn(window, 'location', 'get');
-    const mockedReload = jest.fn();
-    windowSpy.mockReturnValue({
-      ...window.location,
-      reload: mockedReload,
-    });
     const wrapper = shallow<Mypins>(<Mypins {...props} />);
     wrapper.setState({ nameChangeFormIsShowing: true });
     await Promise.resolve();
@@ -369,17 +364,10 @@ describe('The UserInfo sub-component', () => {
     getUserInfo.props().submitNameChange('');
     await Promise.resolve();
     expect(mockedRESTcall).toHaveBeenCalledTimes(1);
-    expect(mockedReload).not.toHaveBeenCalled();
     expect(wrapper.state().nameChangeFormIsShowing).toBe(false);
   });
 
   test('will not submit a name change if the new name has not changed', async () => {
-    const windowSpy = jest.spyOn(window, 'location', 'get');
-    const mockedReload = jest.fn();
-    windowSpy.mockReturnValue({
-      ...window.location,
-      reload: mockedReload,
-    });
     const wrapper = shallow<Mypins>(<Mypins {...props} />);
     wrapper.setState({ nameChangeFormIsShowing: true });
     await Promise.resolve();
@@ -387,7 +375,6 @@ describe('The UserInfo sub-component', () => {
     getUserInfo.props().submitNameChange('tester displayName');
     await Promise.resolve();
     expect(mockedRESTcall).toHaveBeenCalledTimes(1);
-    expect(mockedReload).not.toHaveBeenCalled();
     expect(wrapper.state().nameChangeFormIsShowing).toBe(false);
   });
 });

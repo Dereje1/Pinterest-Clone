@@ -59,6 +59,7 @@ export const reduxStub = {
   user: {
     authenticated: false,
     userIp: 'stub ip',
+    userId: 'stub id',
     username: null,
     displayName: null,
     providers: {
