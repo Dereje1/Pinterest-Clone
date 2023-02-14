@@ -44,7 +44,7 @@ export interface userType {
     userIp: string,
     username: string | null,
     displayName: string | null,
-    providers: providersType,
+    providers?: providersType,
     service: string
 }
 

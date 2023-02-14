@@ -58,16 +58,16 @@ export const pinsStub = [
 export const reduxStub = {
   search: { term: null, tagSearch: false },
   user: {
-    authenticated: false,
-    userIp: 'stub ip',
-    userId: 'stub id',
-    username: null,
-    displayName: null,
+    authenticated: true,
+    userId: 'a stub user id',
+    userIp: 'stub Ip',
+    username: 'stub username',
+    displayName: 'stub displayname',
+    service: 'twitter',
     providers: {
-      twitter: false,
+      twitter: true,
       google: true,
       github: true,
     },
-    service: 'stub service',
   },
 };

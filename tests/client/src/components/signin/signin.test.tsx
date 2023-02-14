@@ -9,7 +9,7 @@ import { SignIn } from '../../../../../client/src/components/signin/signin';
 jest.useFakeTimers();
 
 describe('The sign in component', () => {
-  let props;
+  let props: React.ComponentProps<typeof SignIn>;
   const focus = jest.fn();
   beforeEach(() => {
     jest.spyOn(React, 'createRef').mockImplementation(() => ({
@@ -19,12 +19,11 @@ describe('The sign in component', () => {
     }));
     props = {
       removeSignin: jest.fn(),
-      caller: 'menu',
     };
   });
 
   afterEach(() => {
-    props = null;
+    // props = null;
     jest.clearAllMocks();
     focus.mockClear();
   });

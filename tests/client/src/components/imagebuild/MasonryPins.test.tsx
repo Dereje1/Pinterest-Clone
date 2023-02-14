@@ -8,7 +8,7 @@ import MasonryPins from '../../../../../client/src/components/imagebuild/Masonry
 import { pinsStub } from '../../../stub';
 
 describe('The MasonryPins component', () => {
-  let props;
+  let props: React.ComponentProps<typeof MasonryPins>;
   beforeEach(() => {
     props = {
       pinImage: jest.fn(),
@@ -18,10 +18,6 @@ describe('The MasonryPins component', () => {
       onBrokenImage: jest.fn(),
       pins: pinsStub,
     };
-  });
-
-  afterEach(() => {
-    props = null;
   });
 
   test('will render....', () => {

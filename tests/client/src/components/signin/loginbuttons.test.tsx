@@ -8,23 +8,17 @@ import { LoginButtons, mapStateToProps, ProviderButton } from '../../../../../cl
 import { reduxStub } from '../../../stub';
 
 describe('The sign in component', () => {
-  let props;
+  let props: React.ComponentProps<typeof LoginButtons>;
   beforeEach(() => {
     props = {
       setGuest: jest.fn(),
       guest: jest.fn(),
-      user: {
-        providers: {
-          twitter: true,
-          google: true,
-          github: true,
-        },
-      },
+      user: { ...reduxStub.user },
     };
   });
 
   afterEach(() => {
-    props = null;
+    // props = null;
     jest.clearAllMocks();
   });
 
@@ -49,6 +43,7 @@ describe('The sign in component', () => {
     const updatedProps = {
       ...props,
       user: {
+        ...props.user,
         providers: {
           twitter: false,
           google: false,
@@ -63,7 +58,14 @@ describe('The sign in component', () => {
   test('will not render if no provider info', () => {
     const updatedProps = {
       ...props,
-      user: {},
+      user: {
+        authenticated: true,
+        userId: 'a stub user id',
+        userIp: 'stub Ip',
+        username: 'stub username',
+        displayName: 'stub displayname',
+        service: 'twitter',
+      },
     };
     const wrapper = shallow(<LoginButtons {...updatedProps} />);
     expect(wrapper.isEmptyRender()).toBe(true);
@@ -84,8 +86,8 @@ describe('The sign in component', () => {
 });
 
 describe('Provider buttons', () => {
-  let mockedAssign;
-  let preventDefault;
+  let mockedAssign: jest.Mock;
+  let preventDefault: jest.Mock;
   beforeEach(() => {
     const windowSpy = jest.spyOn(window, 'location', 'get');
     mockedAssign = jest.fn();

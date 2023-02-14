@@ -5,7 +5,7 @@ import React from 'react';
 import { EnzymePropSelector, shallow } from 'enzyme';
 import toJson from 'enzyme-to-json';
 import { PinZoom, StyledBadge } from '../../../../../client/src/components/modal/modalzoom';
-import { pinsStub } from '../../../stub';
+import { pinsStub, reduxStub } from '../../../stub';
 
 jest.useFakeTimers();
 
@@ -37,19 +37,7 @@ describe('The pin zoom modal', () => {
       pinImage: jest.fn(),
       deletePin: null,
       handleNewComment: jest.fn(),
-      user: {
-        authenticated: true,
-        userId: 'a stub user id',
-        userIp: 'stub Ip',
-        username: 'stub username',
-        displayName: 'stub displayname',
-        service: 'twitter',
-        providers: {
-          twitter: true,
-          google: true,
-          github: true,
-        },
-      },
+      user: { ...reduxStub.user },
       updateTags: jest.fn(),
     };
   });
