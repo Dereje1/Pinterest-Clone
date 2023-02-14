@@ -18,6 +18,7 @@ export const pinsStub = [
         comment: 'Test comment',
         displayName: 'tester-displayName',
         createdAt: '2021-07-28T16:30:48.572Z',
+        userId: 'Comment_User_Id_1',
       },
     ],
     tags: [{ _id: 'tag_id_1', tag: 'tag 1' }, { _id: 'tag_id_2', tag: 'tag 2' }],

@@ -124,7 +124,6 @@ export class PinZoom extends Component<PinZoomProps, PinZoomState> {
     const {
       commentsShowing, zoomClass,
     } = this.state;
-    const totalPins = (pinInformation.savedBy) ? pinInformation.savedBy.length : 0;
     const formattedDescription = getFormattedDescription(pinInformation.imgDescription);
     return (
       <>
@@ -152,7 +151,7 @@ export class PinZoom extends Component<PinZoomProps, PinZoomState> {
                       : <CommentOutlinedIcon style={{ fontSize: '1.7em' }} />}
                   </IconButton>
                 </StyledBadge>
-                <StyledBadge badgeContent={totalPins} color="secondary" showZero name="pin">
+                <StyledBadge badgeContent={pinInformation.savedBy.length} color="secondary" showZero name="pin">
                   <ModalActions
                     element={pinInformation}
                     pinImage={pinImage}

@@ -10,7 +10,7 @@ import { pinsStub } from '../../../stub';
 jest.useFakeTimers();
 
 describe('The pin zoom modal', () => {
-  let props;
+  let props: PinZoom['props'];
   const focus = jest.fn();
   beforeEach(() => {
     jest.spyOn(React, 'createRef').mockImplementation(() => ({
@@ -23,18 +23,12 @@ describe('The pin zoom modal', () => {
       },
     }));
     props = {
-      displayPinZoom: false,
-      // [picobject, overlay button type, last scroll distance]
       zoomInfo: {
         pin: pinsStub[0],
         parentDivStyle: {
           top: 10,
           imgWidth: '622.5px',
           parentWidth: 622.5,
-          pinnersSize: '2em',
-          subTitleSize: '1.2em',
-          titleSize: '2em',
-          dateSize: '0.6em',
           width: '90%',
           isNoFit: false,
         },
@@ -43,13 +37,24 @@ describe('The pin zoom modal', () => {
       pinImage: jest.fn(),
       deletePin: null,
       handleNewComment: jest.fn(),
-      user: { authenticated: true },
+      user: {
+        authenticated: true,
+        userId: 'a stub user id',
+        userIp: 'stub Ip',
+        username: 'stub username',
+        displayName: 'stub displayname',
+        service: 'twitter',
+        providers: {
+          twitter: true,
+          google: true,
+          github: true,
+        },
+      },
       updateTags: jest.fn(),
     };
   });
 
   afterEach(() => {
-    props = null;
     focus.mockClear();
   });
 
@@ -89,10 +94,6 @@ describe('The pin zoom modal', () => {
           top: 10,
           imgWidth: '622.5px',
           parentWidth: 830,
-          pinnersSize: '2em',
-          subTitleSize: '1.2em',
-          titleSize: '2em',
-          dateSize: '0.6em',
           width: '90%',
           isNoFit: false,
         },
@@ -136,14 +137,14 @@ describe('The pin zoom modal', () => {
     instance.close({} as React.SyntheticEvent, false);
   });
 
-  test('will set zero on badge content for pins icon if savedby is not defined', () => {
+  test('will set zero on badge content for pins icon if savedby is empty', () => {
     const updatedProps = {
       ...props,
       zoomInfo: {
         ...props.zoomInfo,
         pin: {
           ...pinsStub[0],
-          savedBy: undefined,
+          savedBy: [],
         },
       },
     };

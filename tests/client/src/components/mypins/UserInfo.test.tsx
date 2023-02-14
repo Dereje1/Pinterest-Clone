@@ -66,7 +66,7 @@ describe('The NameChangeForm component', () => {
     const wrapper = shallow(<NameChangeForm {...props} />);
     let textField = wrapper.find('ForwardRef(TextField)');
     expect(textField.props().value).toBe('tester displayName');
-    textField.props().onChange({ target: { value: 'new value' } });
+    textField.props().onChange?.({ target: { value: 'new value' } } as unknown as React.SyntheticEvent);
     textField = wrapper.find('ForwardRef(TextField)');
     expect(textField.props().value).toBe('new value');
   });
@@ -82,9 +82,9 @@ describe('The NameChangeForm component', () => {
     const wrapper = shallow(<NameChangeForm {...props} />);
     const textField = wrapper.find('ForwardRef(TextField)');
     expect(textField.props().value).toBe('tester displayName');
-    textField.props().onChange({ target: { value: 'new value' } });
+    textField.props().onChange?.({ target: { value: 'new value' } } as unknown as React.SyntheticEvent);
     const doneIcon = wrapper.find('ForwardRef(IconButton)').at(0);
-    doneIcon.props().onClick();
+    doneIcon.props().onClick?.('' as unknown as React.MouseEvent);
     expect(props.submitNameChange).toHaveBeenCalledWith('new value');
   });
 
@@ -92,9 +92,9 @@ describe('The NameChangeForm component', () => {
     const wrapper = shallow(<NameChangeForm {...props} />);
     const textField = wrapper.find('ForwardRef(TextField)');
     expect(textField.props().value).toBe('tester displayName');
-    textField.props().onChange({ target: { value: 'new value' } });
+    textField.props().onChange?.({ target: { value: 'new value' } } as unknown as React.SyntheticEvent);
     const cancelIcon = wrapper.find('ForwardRef(IconButton)').at(1);
-    cancelIcon.props().onClick('', true);
+    cancelIcon.props().onClick?.('' as unknown as React.MouseEvent);
     expect(props.submitNameChange).toHaveBeenCalledWith('');
   });
 });
