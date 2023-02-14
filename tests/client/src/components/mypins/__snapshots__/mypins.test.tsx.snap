@@ -29,10 +29,16 @@ exports[`The Mypins component landing page will render message if no pins create
       user={
         {
           "authenticated": true,
-          "displayName": "tester displayName",
+          "displayName": "stub displayname",
+          "providers": {
+            "github": true,
+            "google": true,
+            "twitter": true,
+          },
           "service": "twitter",
-          "userId": "tester user Id",
-          "username": "tester username",
+          "userId": "a stub user id",
+          "userIp": "stub Ip",
+          "username": "stub username",
         }
       }
     />
@@ -119,10 +125,16 @@ exports[`The Mypins component landing page will render message if no pins saved 
       user={
         {
           "authenticated": true,
-          "displayName": "tester displayName",
+          "displayName": "stub displayname",
+          "providers": {
+            "github": true,
+            "google": true,
+            "twitter": true,
+          },
           "service": "twitter",
-          "userId": "tester user Id",
-          "username": "tester username",
+          "userId": "a stub user id",
+          "userIp": "stub Ip",
+          "username": "stub username",
         }
       }
     />
@@ -207,10 +219,16 @@ exports[`The Mypins component landing page will render pins if found 1`] = `
       user={
         {
           "authenticated": true,
-          "displayName": "tester displayName",
+          "displayName": "stub displayname",
+          "providers": {
+            "github": true,
+            "google": true,
+            "twitter": true,
+          },
           "service": "twitter",
-          "userId": "tester user Id",
-          "username": "tester username",
+          "userId": "a stub user id",
+          "userIp": "stub Ip",
+          "username": "stub username",
         }
       }
     />
@@ -282,10 +300,16 @@ exports[`The Mypins component landing page will render pins if found 1`] = `
     user={
       {
         "authenticated": true,
-        "displayName": "tester displayName",
+        "displayName": "stub displayname",
+        "providers": {
+          "github": true,
+          "google": true,
+          "twitter": true,
+        },
         "service": "twitter",
-        "userId": "tester user Id",
-        "username": "tester username",
+        "userId": "a stub user id",
+        "userIp": "stub Ip",
+        "username": "stub username",
       }
     }
   />

@@ -11,18 +11,15 @@ jest.mock('../../../../../client/src/crud');
 const mockedRESTcall = jest.mocked(RESTcall);
 
 describe('The save pin action button', () => {
-  let props;
+  let props: React.ComponentProps<typeof SavePin>;
   beforeEach(() => {
     props = {
       isImageError: true,
       isDescriptionError: true,
-      isDuplicateError: false,
       isImageLoaded: true,
       savePic: jest.fn(),
+      picPreview: '',
     };
-  });
-  afterEach(() => {
-    props = null;
   });
 
   test('will render for a pending preview that is loading', () => {

@@ -12,24 +12,12 @@ jest.mock('../../../../../client/src/components/mypins/error.png', () => '/load-
 jest.useFakeTimers();
 
 describe('The pin creation modal', () => {
-  let props;
+  let props: React.ComponentProps<typeof PinCreate>;
   beforeEach(() => {
     props = {
-      userInfo: {
-        authenticated: true,
-        displayName: 'tester displayName',
-        username: 'tester username',
-        service: 'tester service',
-        userId: 'tester user Id',
-      },
-      message: true,
-      allPinLinks: [{ imgLink: 'https://duplicate.com' }],
       reset: jest.fn(),
       savePin: jest.fn(),
     };
-  });
-  afterEach(() => {
-    props = null;
   });
 
   test('will render for links to images', () => {

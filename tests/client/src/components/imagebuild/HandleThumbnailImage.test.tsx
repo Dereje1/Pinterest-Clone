@@ -1,13 +1,14 @@
 import React from 'react';
 import { shallow } from 'enzyme';
 import HandleThumbnailImage from '../../../../../client/src/components/imagebuild/HandleThumbnailImage';
+import { pinsStub } from '../../../stub';
 
 describe('Handling image action buttons', () => {
-  let props;
+  let props: React.ComponentProps<typeof HandleThumbnailImage>;
   beforeEach(() => {
     props = {
       element: {
-        hasSaved: false,
+        ...pinsStub[0],
       },
       pinImage: jest.fn(),
       deletePin: jest.fn(),
@@ -17,7 +18,7 @@ describe('Handling image action buttons', () => {
   test('will render the delete button on the user\'s page', () => {
     const updatedProps = {
       ...props,
-      pinImage: null,
+      pinImage: jest.fn(),
       element: {
         ...props.element,
         owns: true,
@@ -27,6 +28,7 @@ describe('Handling image action buttons', () => {
     wrapper.props().onClick();
     expect(wrapper.text()).toBe('Delete');
     expect(props.deletePin).toHaveBeenCalledWith({
+      ...props.element,
       hasSaved: false,
       owns: true,
     });
@@ -35,7 +37,7 @@ describe('Handling image action buttons', () => {
   test('will render the unpin button on the user\'s page', () => {
     const updatedProps = {
       ...props,
-      pinImage: null,
+      pinImage: jest.fn(),
       element: {
         ...props.element,
         owns: false,
@@ -46,6 +48,7 @@ describe('Handling image action buttons', () => {
     wrapper.props().onClick();
     expect(wrapper.text()).toBe('Unpin');
     expect(props.deletePin).toHaveBeenCalledWith({
+      ...props.element,
       hasSaved: true,
       owns: false,
     });
@@ -56,6 +59,7 @@ describe('Handling image action buttons', () => {
       ...props,
       deletePin: null,
       element: {
+        ...props.element,
         owns: true,
       },
     };
@@ -78,6 +82,7 @@ describe('Handling image action buttons', () => {
     wrapper.props().onClick();
     expect(wrapper.text()).toBe('Unpin');
     expect(updatedProps.pinImage).toHaveBeenCalledWith({
+      ...props.element,
       hasSaved: true,
       owns: false,
     });
@@ -97,6 +102,7 @@ describe('Handling image action buttons', () => {
     wrapper.props().onClick();
     expect(wrapper.text()).toBe(' Save');
     expect(props.pinImage).toHaveBeenCalledWith({
+      ...props.element,
       hasSaved: false,
       owns: false,
     });

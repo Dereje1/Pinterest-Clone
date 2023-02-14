@@ -4,7 +4,7 @@ import toJson from 'enzyme-to-json';
 import UserInfo, { NameChangeForm } from '../../../../../client/src/components/mypins/UserInfo';
 
 describe('The UserInfo component', () => {
-  let props;
+  let props: React.ComponentProps<typeof UserInfo>;
   beforeEach(() => {
     props = {
       user: {
@@ -16,10 +16,6 @@ describe('The UserInfo component', () => {
       nameChangeFormIsShowing: false,
       submitNameChange: jest.fn(),
     };
-  });
-
-  afterEach(() => {
-    props = null;
   });
 
   test('will render with display name', () => {
@@ -50,16 +46,12 @@ describe('The UserInfo component', () => {
 });
 
 describe('The NameChangeForm component', () => {
-  let props;
+  let props: React.ComponentProps<typeof NameChangeForm>;
   beforeEach(() => {
     props = {
       submitNameChange: jest.fn(),
       oldDisplayName: 'tester displayName',
     };
-  });
-
-  afterEach(() => {
-    props = null;
   });
 
   test('will control the value of the name change', () => {

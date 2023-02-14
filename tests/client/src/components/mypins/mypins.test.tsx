@@ -12,21 +12,14 @@ jest.mock('../../../../../client/src/crud');
 const mockedRESTcall = jest.mocked(RESTcall);
 
 describe('The Mypins component', () => {
-  let props;
+  let props: React.ComponentProps<typeof Mypins>;
   beforeEach(() => {
     props = {
-      user: {
-        authenticated: true,
-        displayName: 'tester displayName',
-        username: 'tester username',
-        service: 'twitter',
-        userId: 'tester user Id',
-      },
+      user: { ...reduxStub.user },
       updateDisplayName: jest.fn(),
     };
   });
   afterEach(() => {
-    props = null;
     mockedRESTcall.mockClear();
   });
 
@@ -153,21 +146,14 @@ describe('The Mypins component', () => {
 });
 
 describe('The ImageBuild subComponent', () => {
-  let props;
+  let props: React.ComponentProps<typeof Mypins>;
   beforeEach(() => {
     props = {
-      user: {
-        authenticated: true,
-        displayName: 'tester displayName',
-        username: 'tester username',
-        service: 'twitter',
-        userId: 'tester user Id',
-      },
+      user: { ...reduxStub.user },
       updateDisplayName: jest.fn(),
     };
   });
   afterEach(() => {
-    props = null;
     mockedRESTcall.mockClear();
   });
 
@@ -242,21 +228,14 @@ describe('The ImageBuild subComponent', () => {
 });
 
 describe('The PinCreate sub-component', () => {
-  let props;
+  let props: React.ComponentProps<typeof Mypins>;
   beforeEach(() => {
     props = {
-      user: {
-        authenticated: true,
-        displayName: 'tester displayName',
-        username: 'tester username',
-        service: 'twitter',
-        userId: 'tester user Id',
-      },
+      user: { ...reduxStub.user },
       updateDisplayName: jest.fn(),
     };
   });
   afterEach(() => {
-    props = null;
     mockedRESTcall.mockClear();
   });
 
@@ -270,7 +249,7 @@ describe('The PinCreate sub-component', () => {
     expect(wrapper.state().pinList.length).toBe(3);
     expect(wrapper.state().pinList[2]).toStrictEqual({
       savedBy: [],
-      owner: { name: 'tester displayName', service: 'twitter', userId: 'tester user Id' },
+      owner: { name: 'stub displayname', service: 'twitter', userId: 'a stub user id' },
       imgLink: 's3 new link',
       originalImgLink: 'original new link',
       imgDescription: 'new description',
@@ -293,21 +272,14 @@ describe('The PinCreate sub-component', () => {
 });
 
 describe('The UserInfo sub-component', () => {
-  let props;
+  let props: React.ComponentProps<typeof Mypins>;
   beforeEach(() => {
     props = {
-      user: {
-        authenticated: true,
-        displayName: 'tester displayName',
-        username: 'tester username',
-        service: 'twitter',
-        userId: 'tester user Id',
-      },
+      user: { ...reduxStub.user },
       updateDisplayName: jest.fn(),
     };
   });
   afterEach(() => {
-    props = null;
     mockedRESTcall.mockClear();
   });
 

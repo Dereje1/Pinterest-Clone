@@ -6,14 +6,21 @@ import { EnzymePropSelector, shallow } from 'enzyme';
 import toJson from 'enzyme-to-json';
 import ImageBuild from '../../../../../client/src/components/imagebuild/Imagebuild';
 import RESTcall from '../../../../../client/src/crud';
-import { pinsStub } from '../../../stub';
+import { pinsStub, reduxStub } from '../../../stub';
+import { PinType, PinnerType } from '../../../../../client/src/interfaces';
 
 jest.mock('../../../../../client/src/crud');
 const mockedRESTcall = jest.mocked(RESTcall);
 
 describe('The ImageBuild component', () => {
-  let props; let
-    parentDivStyleStub;
+  let props: React.ComponentProps<typeof ImageBuild>;
+  let parentDivStyleStub: {
+    imgWidth: string
+    parentWidth: number
+    isNoFit: boolean
+    top: number
+    width: string
+  };
   beforeEach(() => {
     props = {
       pinImage: true,
@@ -21,7 +28,7 @@ describe('The ImageBuild component', () => {
       pinList: pinsStub,
       displayBrokenImage: false,
       ready: true,
-      user: {},
+      user: { ...reduxStub.user },
     };
     parentDivStyleStub = {
       top: 10,
@@ -34,8 +41,6 @@ describe('The ImageBuild component', () => {
 
   afterEach(() => {
     mockedRESTcall.mockClear();
-    parentDivStyleStub = null;
-    props = null;
   });
 
   test('will render....', () => {
@@ -202,7 +207,11 @@ describe('The ImageBuild component', () => {
       parentDivStyle: { ...parentDivStyleStub },
     });
     // update pins list and assert that zoomed pin is gone
-    wrapper.setProps({ ...props, pinList: [pinsStub[0], pinsStub[2]] });
+    wrapper.setProps({
+      ...props,
+      pinList: [pinsStub[0], pinsStub[2]],
+      displayBrokenImage: true,
+    });
     pinZoom = wrapper.find('PinZoom');
     expect(pinZoom.isEmptyRender()).toBe(true);
   });
@@ -211,13 +220,13 @@ describe('The ImageBuild component', () => {
     const wrapper = shallow(<ImageBuild {...props} />);
     // await Promise.resolve();
     let masonry: EnzymePropSelector = wrapper.find('MasonryPins');
-    let imageToPin = masonry.props().pins.filter((p) => p._id === pinsStub[0]._id)[0];
-    let savedByNames = imageToPin.savedBy.map((s) => s.name);
+    let imageToPin = masonry.props().pins.filter((p: PinType) => p._id === pinsStub[0]._id)[0];
+    let savedByNames = imageToPin.savedBy.map((s: PinnerType) => s.name);
     expect(savedByNames.includes('tester displayName')).toBe(false);
     await masonry.props().pinImage(pinsStub[0]);
     masonry = wrapper.find('MasonryPins');
-    [imageToPin] = masonry.props().pins.filter((p) => p._id === pinsStub[0]._id);
-    savedByNames = imageToPin.savedBy.map((s) => s.name);
+    [imageToPin] = masonry.props().pins.filter((p: PinType) => p._id === pinsStub[0]._id);
+    savedByNames = imageToPin.savedBy.map((s: PinnerType) => s.name);
     expect(savedByNames.includes('tester displayName')).toBe(true);
     expect(mockedRESTcall).toHaveBeenCalledTimes(1);
     expect(mockedRESTcall.mock.calls).toEqual([
@@ -235,13 +244,13 @@ describe('The ImageBuild component', () => {
     const wrapper = shallow(<ImageBuild {...props} />);
     // await Promise.resolve();
     let masonry: EnzymePropSelector = wrapper.find('MasonryPins');
-    let imageToUnPin = masonry.props().pins.filter((p) => p._id === pinsStub[1]._id)[0];
-    let savedByNames = imageToUnPin.savedBy.map((s) => s.name);
+    let imageToUnPin = masonry.props().pins.filter((p: PinType) => p._id === pinsStub[1]._id)[0];
+    let savedByNames = imageToUnPin.savedBy.map((s: PinnerType) => s.name);
     expect(savedByNames.includes('savedBy - id-2git')).toBe(true);
     await masonry.props().pinImage(pinsStub[1]);
     masonry = wrapper.find('MasonryPins');
-    [imageToUnPin] = masonry.props().pins.filter((p) => p._id === pinsStub[1]._id);
-    savedByNames = imageToUnPin.savedBy.map((s) => s.name);
+    [imageToUnPin] = masonry.props().pins.filter((p: PinType) => p._id === pinsStub[1]._id);
+    savedByNames = imageToUnPin.savedBy.map((s: PinnerType) => s.name);
     expect(savedByNames.includes('savedBy - id-2git')).toBe(false);
     expect(mockedRESTcall).toHaveBeenCalledTimes(1);
     expect(mockedRESTcall.mock.calls).toEqual([
