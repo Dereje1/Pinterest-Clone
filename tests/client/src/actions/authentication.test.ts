@@ -2,7 +2,7 @@ import { getUser, setGuest } from '../../../../client/src/actions/authentication
 //
 jest.mock('../../../../client/src/crud');
 describe('authentication', () => {
-  let dispatch;
+  let dispatch: jest.Mock;
   beforeEach(() => {
     dispatch = jest.fn();
   });

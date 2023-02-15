@@ -23,7 +23,7 @@ jest.mock('react-redux', () => ({
 }));
 
 describe('The tags component', () => {
-  let props;
+  let props: React.ComponentProps<typeof Tags>;
   beforeEach(() => {
     props = {
       pinInformation: { ...pinsStub[0], owns: true },
@@ -31,10 +31,6 @@ describe('The tags component', () => {
       updateTags: jest.fn(),
       closePin: jest.fn(),
     };
-  });
-
-  afterEach(() => {
-    props = null;
   });
 
   test('will render with tags for owner', () => {

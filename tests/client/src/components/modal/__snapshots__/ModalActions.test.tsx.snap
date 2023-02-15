@@ -57,6 +57,7 @@ exports[`Handling zoomed image action buttons will render the delete button for 
 exports[`Handling zoomed image action buttons will render the disabled pin button for already owned images 1`] = `
 <ForwardRef(IconButton)
   aria-label="settings"
+  disableRipple={true}
   onClick={[Function]}
   onMouseDown={[Function]}
   style={
@@ -67,12 +68,12 @@ exports[`Handling zoomed image action buttons will render the disabled pin butto
 >
   <ForwardRef(Tooltip)
     placement="bottom"
-    title="Permanently delete image"
+    title="You own this image"
   >
-    <Memo(ForwardRef(DeleteForeverIcon))
+    <Memo(ForwardRef(PushPinIcon))
       style={
         {
-          "color": "#d12929",
+          "color": "#c50000",
           "fontSize": "2em",
         }
       }

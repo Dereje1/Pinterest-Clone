@@ -5,7 +5,7 @@ import Comments from '../../../../../client/src/components/modal/Comments';
 import { pinsStub } from '../../../stub';
 
 describe('The comments window', () => {
-  let props;
+  let props: React.ComponentProps<typeof Comments>;
   beforeEach(() => {
     props = {
       stylingProps: { width: 20, height: 30 },
@@ -16,10 +16,6 @@ describe('The comments window', () => {
       closePin: jest.fn(),
       updateTags: jest.fn(),
     };
-  });
-
-  afterEach(() => {
-    props = null;
   });
 
   test('will render with comments', () => {

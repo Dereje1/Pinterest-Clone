@@ -10,16 +10,10 @@ import {
 import { reduxStub } from '../../../stub';
 
 describe('The Menu component', () => {
-  let props;
+  let props: React.ComponentProps<typeof Menu>;
   beforeEach(() => {
     props = {
-      user: {
-        authenticated: true,
-        displayName: 'tester displayName',
-        username: 'tester username',
-        service: 'tester service',
-        userId: 'tester user Id',
-      },
+      user: { ...reduxStub.user },
       location: {
         pathname: '/',
       },
@@ -28,7 +22,6 @@ describe('The Menu component', () => {
     };
   });
   afterEach(() => {
-    props = null;
     jest.clearAllMocks();
   });
   test('will render for an authenticated user', async () => {
@@ -72,7 +65,7 @@ describe('The Menu component', () => {
       user: {
         ...props.user,
         authenticated: false,
-        username: undefined,
+        username: null,
       },
     };
     const wrapper = shallow(<Menu {...updatedProps} />);

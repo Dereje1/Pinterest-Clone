@@ -4,7 +4,7 @@ import toJson from 'enzyme-to-json';
 import TagsForm from '../../../../../client/src/components/modal/TagsForm';
 
 describe('The tags form component', () => {
-  let props;
+  let props: React.ComponentProps<typeof TagsForm>;
   beforeEach(() => {
     props = {
       addTag: jest.fn(),
@@ -12,10 +12,6 @@ describe('The tags form component', () => {
       suggestedTags: ['SUGGESTED TAG 1', 'SUGGESTED TAG 2'],
       exisitingTags: ['EXISTING TAG 1', 'EXISTING TAG 2'],
     };
-  });
-
-  afterEach(() => {
-    props = null;
   });
 
   test('will render', () => {

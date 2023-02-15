@@ -3,22 +3,17 @@ import { EnzymePropSelector, shallow } from 'enzyme';
 import { Home, mapStateToProps } from '../../../../../client/src/components/home/home';
 import RESTcall from '../../../../../client/src/crud';
 import { pinsStub, reduxStub } from '../../../stub';
+import { PinType } from '../../../../../client/src/interfaces';
 
 jest.mock('../../../../../client/src/crud');
 const mockedRESTcall = jest.mocked(RESTcall);
 
 describe('The Home Component', () => {
-  let props;
+  let props: React.ComponentProps<typeof Home>;
   beforeEach(() => {
     props = {
-      user: {
-        authenticated: true,
-        displayName: 'tester displayName',
-        username: 'tester username',
-        service: 'tester service',
-        userId: 'tester user Id',
-      },
-      search: { term: null },
+      user: { ...reduxStub.user },
+      search: { term: null, tagSearch: false },
     };
   });
   afterEach(() => {
@@ -41,7 +36,7 @@ describe('The Home Component', () => {
     await Promise.resolve();
     const imageBuild: EnzymePropSelector = wrapper.find('ImageBuild');
     const displayedPinList = imageBuild.props().pinList;
-    displayedPinList.sort((a, b) => a._id - b._id);
+    displayedPinList.sort((a: PinType, b: PinType) => Number(a._id) - Number(b._id));
     expect(displayedPinList).toStrictEqual(pinsStub);
     expect(mockedRESTcall).toHaveBeenCalledTimes(1);
     expect(mockedRESTcall).toHaveBeenCalledWith({ address: '/api/home', method: 'get', payload: undefined });
@@ -50,7 +45,7 @@ describe('The Home Component', () => {
   test('Will filter pins if matching search found for description', async () => {
     const updatedProps = {
       ...props,
-      search: { term: 'id-3' },
+      search: { term: 'id-3', tagSearch: false },
     };
     const wrapper = shallow<Home>(<Home {...updatedProps} />);
     await Promise.resolve();
@@ -62,7 +57,7 @@ describe('The Home Component', () => {
   test('Will filter pins if matching search found for tags', async () => {
     const updatedProps = {
       ...props,
-      search: { term: 'tag 2' },
+      search: { term: 'tag 2', tagSearch: false },
     };
     const wrapper = shallow(<Home {...updatedProps} />);
     await Promise.resolve();

@@ -15,7 +15,7 @@ jest.mock('react-redux', () => ({
 
 jest.useFakeTimers();
 describe('The search component', () => {
-  let props;
+  let props: React.ComponentProps<typeof Search>;
   beforeEach(() => {
     props = {
       searchUpdate: jest.fn(),
@@ -25,10 +25,6 @@ describe('The search component', () => {
       closeSearch: jest.fn(),
     };
     global.scrollTo = jest.fn();
-  });
-
-  afterEach(() => {
-    props = null;
   });
 
   test('Will not render anything if at /pins path', () => {

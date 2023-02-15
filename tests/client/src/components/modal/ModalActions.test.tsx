@@ -2,43 +2,39 @@ import React from 'react';
 import { EnzymePropSelector, shallow } from 'enzyme';
 import toJson from 'enzyme-to-json';
 import ModalActions from '../../../../../client/src/components/modal/ModalActions';
+import { pinsStub } from '../../../stub';
 
 describe('Handling zoomed image action buttons', () => {
-  let props;
+  let props: React.ComponentProps<typeof ModalActions>;
   beforeEach(() => {
     props = {
       element: {
+        ...pinsStub[0],
         hasSaved: false,
         owns: false,
       },
       pinImage: jest.fn(),
-      deletePin: jest.fn(),
+      deletePin: null,
       reset: jest.fn(),
     };
-  });
-
-  afterEach(() => {
-    props = null;
   });
 
   test('will render the delete button for owners', () => {
     const updatedProps = {
       ...props,
       element: {
+        ...props.element,
         hasSaved: false,
         owns: true,
       },
-      pinImage: null,
+      deletePin: jest.fn(),
     };
     const preventDefault = jest.fn();
     const wrapper = shallow(<ModalActions {...updatedProps} />);
     const iconButton: EnzymePropSelector = wrapper.find('ForwardRef(IconButton)');
     iconButton.props().onClick();
     iconButton.props().onMouseDown({ preventDefault });
-    expect(props.deletePin).toHaveBeenCalledWith({
-      hasSaved: false,
-      owns: true,
-    });
+    expect(updatedProps.deletePin).toHaveBeenCalledWith({ ...updatedProps.element });
     expect(preventDefault).toHaveBeenCalled();
     expect(props.reset).toHaveBeenCalled();
     expect(toJson(wrapper)).toMatchSnapshot();
@@ -48,18 +44,16 @@ describe('Handling zoomed image action buttons', () => {
     const updatedProps = {
       ...props,
       element: {
-        hasSaved: false,
+        ...props.element,
+        hasSaved: true,
         owns: false,
       },
-      pinImage: null,
+      deletePin: jest.fn(),
     };
     const wrapper = shallow(<ModalActions {...updatedProps} />);
     const iconButton: EnzymePropSelector = wrapper.find('ForwardRef(IconButton)');
     iconButton.props().onClick();
-    expect(props.deletePin).toHaveBeenCalledWith({
-      hasSaved: false,
-      owns: false,
-    });
+    expect(updatedProps.deletePin).toHaveBeenCalledWith({ ...updatedProps.element });
     expect(props.reset).toHaveBeenCalled();
     expect(toJson(wrapper)).toMatchSnapshot();
   });
@@ -69,6 +63,7 @@ describe('Handling zoomed image action buttons', () => {
       ...props,
       deletePin: null,
       element: {
+        ...props.element,
         hasSaved: true,
         owns: false,
       },
@@ -79,10 +74,7 @@ describe('Handling zoomed image action buttons', () => {
     const iconButton: EnzymePropSelector = wrapper.find('ForwardRef(IconButton)');
     iconButton.props().onClick();
     iconButton.props().onMouseDown({ preventDefault });
-    expect(props.pinImage).toHaveBeenCalledWith({
-      hasSaved: true,
-      owns: false,
-    });
+    expect(props.pinImage).toHaveBeenCalledWith({ ...updatedProps.element });
     expect(preventDefault).toHaveBeenCalled();
     expect(props.reset).not.toHaveBeenCalled();
     expect(toJson(wrapper)).toMatchSnapshot();
@@ -92,9 +84,11 @@ describe('Handling zoomed image action buttons', () => {
     const updatedProps = {
       ...props,
       element: {
+        ...props.element,
         hasSaved: false,
         owns: true,
       },
+      deletePin: null,
     };
     const wrapper = shallow(<ModalActions {...updatedProps} />);
     expect(toJson(wrapper)).toMatchSnapshot();
@@ -107,10 +101,7 @@ describe('Handling zoomed image action buttons', () => {
     const iconButton: EnzymePropSelector = wrapper.find('ForwardRef(IconButton)');
     iconButton.props().onClick();
     iconButton.props().onMouseDown({ preventDefault });
-    expect(props.pinImage).toHaveBeenCalledWith({
-      hasSaved: false,
-      owns: false,
-    });
+    expect(props.pinImage).toHaveBeenCalledWith({ ...props.element });
     expect(preventDefault).toHaveBeenCalled();
     expect(props.reset).not.toHaveBeenCalled();
     expect(toJson(wrapper)).toMatchSnapshot();
