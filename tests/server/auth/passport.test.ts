@@ -1,11 +1,12 @@
+import { PassportStatic } from 'passport';
 import { Profile } from 'passport-google-oauth';
 import user from '../../../server/models/user';
 import { processLogin, passportConfig } from '../../../server/auth/passportConfig';
 
 describe('Processing a login', () => {
-  let done;
-  let mockedFindOne;
-  let mockedCreate;
+  let done: jest.Mock;
+  let mockedFindOne: jest.Mock;
+  let mockedCreate: jest.Mock;
 
   const googleUserModel = {
     displayName: 'tester-google',
@@ -155,7 +156,7 @@ describe('Configuring passport', () => {
       TWITTER_CALLBACK: ' ',
     };
 
-    passportConfig(passport as any);
+    passportConfig(passport as unknown as PassportStatic);
     expect(passport.serializeUser).toHaveBeenCalledTimes(1);
     expect(passport.deserializeUser).toHaveBeenCalledTimes(1);
     expect(passport.use).toHaveBeenCalledTimes(1);
@@ -169,7 +170,7 @@ describe('Configuring passport', () => {
       GOOGLE_CLIENT_SECRET: '123',
       GOOGLE_CALLBACK: '123',
     };
-    passportConfig(passport as any);
+    passportConfig(passport as unknown as PassportStatic);
     expect(passport.serializeUser).toHaveBeenCalledTimes(1);
     expect(passport.deserializeUser).toHaveBeenCalledTimes(1);
     expect(passport.use).toHaveBeenCalledTimes(1);
@@ -184,7 +185,7 @@ describe('Configuring passport', () => {
       GITHUB_CLIENT_SECRET: '123',
       GITHUB_CALLBACK: '123',
     };
-    passportConfig(passport as any);
+    passportConfig(passport as unknown as PassportStatic);
     expect(passport.serializeUser).toHaveBeenCalledTimes(1);
     expect(passport.deserializeUser).toHaveBeenCalledTimes(1);
     expect(passport.use).toHaveBeenCalledTimes(1);
@@ -197,7 +198,7 @@ describe('Configuring passport', () => {
       GOOGLE_CLIENT_ID: undefined,
       GITHUB_CLIENT_ID: undefined,
     };
-    passportConfig(passport as any);
+    passportConfig(passport as unknown as PassportStatic);
     expect(passport.serializeUser).toHaveBeenCalledTimes(1);
     expect(passport.deserializeUser).toHaveBeenCalledTimes(1);
     expect(passport.use).not.toHaveBeenCalled();

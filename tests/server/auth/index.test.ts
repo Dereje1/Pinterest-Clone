@@ -6,7 +6,7 @@ test('Will initialize passport, set routes and use in the app', () => {
   const app = {
     use: mockedUse,
     get: jest.fn(),
-  } as any as Express;
+  } as unknown as Express;
 
   authConfig(app);
   const [[passportInitialize], [passportSession]] = mockedUse.mock.calls;

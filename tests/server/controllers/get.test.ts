@@ -1,3 +1,4 @@
+import { Response } from 'express';
 import { Types } from 'mongoose';
 import {
   getPins,
@@ -32,7 +33,9 @@ const setupMocks = (response: PopulatedPinType[] | unknown = rawPinsStub) => {
 };
 
 describe('Retrieving pins for home page', () => {
-  let res;
+  let res:{
+    json: jest.Mock,
+  };
   const req = {
     user,
   };
@@ -49,7 +52,7 @@ describe('Retrieving pins for home page', () => {
 
   test('will retrieve all pins for the home page', async () => {
     setupMocks();
-    await getPins(req as genericRequest, res);
+    await getPins(req as genericRequest, res as unknown as Response);
     expect(pins.find).toHaveBeenCalledTimes(1);
     expect(pins.find).toHaveBeenCalledWith({ isBroken: false });
     expect(res.json).toHaveBeenCalledWith(allPinsResponse);
@@ -69,14 +72,16 @@ describe('Retrieving pins for home page', () => {
       },
       user,
     };
-    await getPins(reqUpdate as genericRequest, res);
+    await getPins(reqUpdate as genericRequest, res as unknown as Response);
     expect(res.json).toHaveBeenCalledWith(Error('Mocked rejection'));
   });
 });
 
 describe('Retrieving pins for user page', () => {
-  let res;
-  let mockedFind;
+  let res:{
+    json: jest.Mock,
+  };
+  let mockedFind: jest.Mock;
   const req = {
     query: {
       type: 'all',
@@ -113,7 +118,7 @@ describe('Retrieving pins for user page', () => {
               || p.savedBy.map((s) => s._id).includes(user._id));
 
     setupMocks(profilePinsRaw);
-    await getUserPins(req as genericRequest, res);
+    await getUserPins(req as genericRequest, res as unknown as Response);
     expect(pins.find).toHaveBeenCalledTimes(1);
     expect(pins.find).toHaveBeenCalledWith({
       $or: [{ owner: Types.ObjectId(user._id) }, { savedBy: Types.ObjectId(user._id) }],
@@ -129,7 +134,7 @@ describe('Retrieving pins for user page', () => {
       ADMIN_USER_ID: 'twitter test id',
     };
     setupMocks();
-    await getUserPins(req as genericRequest, res);
+    await getUserPins(req as genericRequest, res as unknown as Response);
     expect(pins.find).toHaveBeenCalledTimes(1);
     expect(pins.find).toHaveBeenCalledWith({ isBroken: false });
     expect(res.json).toHaveBeenCalledWith({
@@ -151,21 +156,16 @@ describe('Retrieving pins for user page', () => {
       },
       user,
     };
-    await getUserPins(reqUpdate as genericRequest, res);
+    await getUserPins(reqUpdate as genericRequest, res as unknown as Response);
     expect(res.json).toHaveBeenCalledWith(Error('Mocked rejection'));
   });
 });
 
 describe('Retrieving pins for a profile page', () => {
-  let res;
-  let req;
+  let res:{
+    json: jest.Mock,
+  };
   beforeEach(() => {
-    req = {
-      params: {
-        userid: 'microsoft123',
-      },
-      user,
-    };
     res = { json: jest.fn() };
     process.env = {
       ...process.env,
@@ -177,8 +177,14 @@ describe('Retrieving pins for a profile page', () => {
   });
 
   test('will retrieve pins for the profile page', async () => {
+    const req = {
+      params: {
+        userid: 'microsoft123',
+      },
+      user,
+    };
     setupMocks([]);
-    await getProfilePins(req, res);
+    await getProfilePins(req as unknown as genericRequest, res as unknown as Response);
     expect(pins.find).toHaveBeenCalledTimes(2);
     expect(pins.find).toHaveBeenNthCalledWith(1, { owner: Types.ObjectId('microsoft123') });
     expect(pins.find).toHaveBeenNthCalledWith(2, { savedBy: Types.ObjectId('microsoft123') });
@@ -194,8 +200,10 @@ describe('Retrieving pins for a profile page', () => {
   });
 
   test('will redirect to home page, if requested profile can not be found', async () => {
-    req = {
-      ...req,
+    const req = {
+      params: {
+        userid: 'microsoft123',
+      },
       user: {
         ...user,
         userId: 'requestUserId',
@@ -207,34 +215,42 @@ describe('Retrieving pins for a profile page', () => {
         exec: jest.fn().mockResolvedValue(null),
       }),
     );
-    await getProfilePins(req, res);
+    await getProfilePins(req as unknown as genericRequest, res as unknown as Response);
     expect(res.json).toHaveBeenCalledWith({
       redirect: '/',
     });
   });
 
   test('will redirect to logged in user profile, if requested profile is same as logged in', async () => {
-    req = {
-      ...req,
+    const req = {
+      params: {
+        userid: 'microsoft123',
+      },
       user: {
         ...user,
         _id: 'microsoft123',
       },
     };
     setupMocks([]);
-    await getProfilePins(req, res);
+    await getProfilePins(req as unknown as genericRequest, res as unknown as Response);
     expect(res.json).toHaveBeenCalledWith({
       redirect: '/pins',
     });
   });
 
   test('will respond with redirect if GET is rejected', async () => {
+    const req = {
+      params: {
+        userid: 'microsoft123',
+      },
+      user,
+    };
     users.findById = jest.fn().mockImplementation(
       () => ({
         exec: jest.fn().mockRejectedValue(new Error('Mocked rejection')),
       }),
     );
-    await getProfilePins(req, res);
+    await getProfilePins(req as unknown as genericRequest, res as unknown as Response);
     expect(res.json).toHaveBeenCalledWith({
       redirect: '/',
     });
@@ -242,7 +258,9 @@ describe('Retrieving pins for a profile page', () => {
 });
 
 describe('Getting saved tags list', () => {
-  let res;
+  let res:{
+    json: jest.Mock,
+  };
   beforeEach(() => {
     res = { json: jest.fn() };
     process.env = {
@@ -263,7 +281,7 @@ describe('Getting saved tags list', () => {
         })),
       }),
     );
-    await getTags({} as genericRequest, res);
+    await getTags({} as genericRequest, res as unknown as Response);
     expect(savedTags.find).toHaveBeenCalledTimes(1);
     expect(distinct).toHaveBeenCalledWith('tag');
     expect(res.json).toHaveBeenCalledWith(['saved tags']);
@@ -278,7 +296,7 @@ describe('Getting saved tags list', () => {
         })),
       }),
     );
-    await getTags(req as genericRequest, res);
+    await getTags(req as genericRequest, res as unknown as Response);
     expect(res.json).toHaveBeenCalledWith(Error('Mocked rejection'));
   });
 });

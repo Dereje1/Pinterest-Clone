@@ -1,11 +1,20 @@
+import { Request, Response, Express } from 'express';
+import { PassportStatic } from 'passport';
 import {
   setAuthRoutes, getProfile, logOut, setGuest,
 } from '../../../server/auth/routes';
+import { UserType } from '../../../server/models/user';
 import { user } from '../stub';
 
 describe('Authentication routes', () => {
-  let req; let
-    res;
+  let req: {
+    user: UserType,
+    logout: jest.Mock
+  };
+  let res: {
+    json: jest.Mock,
+    redirect: jest.Mock
+  };
   beforeEach(() => {
     req = {
       user,
@@ -20,7 +29,7 @@ describe('Authentication routes', () => {
     jest.restoreAllMocks();
   });
   test('will get the profile for a user', () => {
-    getProfile(req, res);
+    getProfile(req as unknown as Request, res as unknown as Response);
     expect(res.json).toHaveBeenCalledWith({
       authenticated: true,
       userIp: expect.any(String),
@@ -33,7 +42,7 @@ describe('Authentication routes', () => {
   });
 
   test('will set a user as guest', () => {
-    setGuest(req, res);
+    setGuest(req as unknown as Request, res as unknown as Response);
     expect(res.json).toHaveBeenCalledWith({
       authenticated: false,
       userIp: expect.any(String),
@@ -48,7 +57,7 @@ describe('Authentication routes', () => {
   });
 
   test('will log a user out', () => {
-    logOut(req, res);
+    logOut(req as unknown as Request, res as unknown as Response);
     expect(req.logout).toHaveBeenCalled();
     const [[logoutCallback]] = req.logout.mock.calls;
     logoutCallback();
@@ -57,8 +66,12 @@ describe('Authentication routes', () => {
 });
 
 describe('The app will', () => {
-  let app; let
-    passport;
+  let app: {
+    get: jest.Mock
+  };
+  let passport: {
+    authenticate: jest.Mock
+  };
   beforeEach(() => {
     app = {
       get: jest.fn(),
@@ -72,7 +85,7 @@ describe('The app will', () => {
     jest.restoreAllMocks();
   });
   test('set the auth routes', () => {
-    setAuthRoutes(app, passport);
+    setAuthRoutes(app as unknown as Express, passport as unknown as PassportStatic);
     const allowedRoutes = app.get.mock.calls.map((r) => r[0]);
     expect(allowedRoutes).toEqual([
       '/auth/profile',

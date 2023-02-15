@@ -1,3 +1,4 @@
+import { Response } from 'express';
 import { Types } from 'mongoose';
 import {
   pinImage,
@@ -25,9 +26,12 @@ const setupMocks = (response: PopulatedPinType[] | unknown = rawPinsStub) => {
 };
 
 describe('Pinning an image', () => {
-  let res;
-  let mockedFindById;
-  let mockedFindByIdAndUpdate;
+  let res:{
+    json: jest.Mock,
+    end: jest.Mock
+  };
+  let mockedFindById: jest.Mock;
+  let mockedFindByIdAndUpdate: jest.Mock;
   const req = {
     user,
     body: {
@@ -60,7 +64,7 @@ describe('Pinning an image', () => {
     );
     mockedFindByIdAndUpdate = jest.mocked(pins.findByIdAndUpdate);
     setupMocks(rawPinsStub[2]);
-    await pinImage(req as genericRequest, res);
+    await pinImage(req as genericRequest, res as unknown as Response);
     expect(pins.findById).toHaveBeenCalledTimes(1);
     expect(pins.findById).toHaveBeenCalledWith('3');
     expect(pins.findByIdAndUpdate).toHaveBeenCalledTimes(1);
@@ -102,7 +106,7 @@ describe('Pinning an image', () => {
       }),
     );
     mockedFindById = jest.mocked(pins.findById);
-    await pinImage(req as genericRequest, res);
+    await pinImage(req as genericRequest, res as unknown as Response);
     expect(pins.findById).toHaveBeenCalledTimes(1);
     expect(pins.findById).toHaveBeenCalledWith('3');
     expect(pins.findByIdAndUpdate).not.toHaveBeenCalled();
@@ -121,7 +125,7 @@ describe('Pinning an image', () => {
     );
     mockedFindByIdAndUpdate = jest.mocked(pins.findByIdAndUpdate);
     setupMocks(rawPinsStub[2]);
-    await pinImage(req as genericRequest, res);
+    await pinImage(req as genericRequest, res as unknown as Response);
     expect(pins.findById).toHaveBeenCalledTimes(1);
     expect(pins.findById).toHaveBeenCalledWith('3');
     expect(pins.findByIdAndUpdate).toHaveBeenCalledTimes(1);
@@ -133,7 +137,7 @@ describe('Pinning an image', () => {
   test('will not pin an image if user has already pinned', async () => {
     const newSavedBy = [...rawPinsStub[2].savedBy, req.user._id];
     setupMocks({ ...rawPinsStub[2], savedBy: newSavedBy });
-    await pinImage(req as genericRequest, res);
+    await pinImage(req as genericRequest, res as unknown as Response);
     expect(pins.findById).toHaveBeenCalledTimes(1);
     expect(pins.findById).toHaveBeenCalledWith('3');
     expect(res.end).toHaveBeenCalledTimes(1);
@@ -145,13 +149,16 @@ describe('Pinning an image', () => {
         exec: jest.fn().mockRejectedValue(new Error('Mocked rejection')),
       }),
     );
-    await pinImage(req as genericRequest, res);
+    await pinImage(req as genericRequest, res as unknown as Response);
     expect(res.json).toHaveBeenCalledWith(Error('Mocked rejection'));
   });
 });
 
 describe('Unpinning an image', () => {
-  let res;
+  let res:{
+    json: jest.Mock,
+    end: jest.Mock
+  };
   const req = {
     user,
     params: { _id: '1' },
@@ -179,7 +186,7 @@ describe('Unpinning an image', () => {
     const mockedFindByIdAndUpdate = jest.mocked(pins.findByIdAndUpdate);
 
     setupMocks({ ...rawPinsStub[1], savedBy: ['5cad310f7672ca00146485a8'] });
-    await unpin(updatedReq as genericRequest, res);
+    await unpin(updatedReq as genericRequest, res as unknown as Response);
     expect(pins.findById).toHaveBeenCalledTimes(1);
     expect(pins.findById).toHaveBeenCalledWith('2');
     expect(pins.findByIdAndUpdate).toHaveBeenCalledTimes(1);
@@ -204,7 +211,7 @@ describe('Unpinning an image', () => {
       }),
     );
 
-    await unpin(req as genericRequest, res);
+    await unpin(req as genericRequest, res as unknown as Response);
     expect(pins.findById).toHaveBeenCalledTimes(1);
     expect(pins.findById).toHaveBeenCalledWith('1');
     expect(pins.findByIdAndUpdate).not.toHaveBeenCalled();
@@ -223,7 +230,7 @@ describe('Unpinning an image', () => {
     );
 
     setupMocks(rawPinsStub[1]);
-    await unpin(updatedReq as genericRequest, res);
+    await unpin(updatedReq as genericRequest, res as unknown as Response);
     expect(pins.findById).toHaveBeenCalledTimes(1);
     expect(pins.findById).toHaveBeenCalledWith('2');
     expect(pins.findByIdAndUpdate).toHaveBeenCalledTimes(1);
@@ -237,13 +244,16 @@ describe('Unpinning an image', () => {
         exec: jest.fn().mockRejectedValue(new Error('Mocked rejection')),
       }),
     );
-    await unpin(req as genericRequest, res);
+    await unpin(req as genericRequest, res as unknown as Response);
     expect(res.json).toHaveBeenCalledWith(Error('Mocked rejection'));
   });
 });
 
 describe('Adding a comment', () => {
-  let res;
+  let res:{
+    json: jest.Mock,
+    end: jest.Mock
+  };
   const req = {
     user,
     body: {
@@ -281,7 +291,7 @@ describe('Adding a comment', () => {
     );
 
     setupMocks(rawPinsStub[2]);
-    await addComment(req as genericRequest, res);
+    await addComment(req as genericRequest, res as unknown as Response);
     expect(pins.findByIdAndUpdate).toHaveBeenCalledTimes(1);
     expect(pins.findByIdAndUpdate).toHaveBeenCalledWith(
       '3',
@@ -336,7 +346,7 @@ describe('Adding a comment', () => {
     );
 
     setupMocks(rawPinsStub[2]);
-    await addComment(req as genericRequest, res);
+    await addComment(req as genericRequest, res as unknown as Response);
     expect(pins.findByIdAndUpdate).toHaveBeenCalledTimes(1);
     expect(res.json).not.toHaveBeenCalled();
     expect(res.end).toHaveBeenCalledTimes(1);
@@ -350,13 +360,16 @@ describe('Adding a comment', () => {
         })),
       }),
     );
-    await addComment(req as genericRequest, res);
+    await addComment(req as genericRequest, res as unknown as Response);
     expect(res.json).toHaveBeenCalledWith(Error('Mocked rejection'));
   });
 });
 
 describe('Updating tags for a pin', () => {
-  let res;
+  let res:{
+    json: jest.Mock,
+    end: jest.Mock
+  };
   beforeEach(() => {
     res = { json: jest.fn(), end: jest.fn() };
     process.env = {
@@ -386,7 +399,7 @@ describe('Updating tags for a pin', () => {
       }),
     );
     savedTags.create = jest.fn().mockResolvedValue([]);
-    await updateTags(req as genericRequest, res);
+    await updateTags(req as genericRequest, res as unknown as Response);
     expect(pins.findById).toHaveBeenCalledTimes(1);
     expect(pins.findById).toHaveBeenCalledWith('1');
     expect(pins.findByIdAndUpdate).toHaveBeenCalledTimes(1);
@@ -424,7 +437,7 @@ describe('Updating tags for a pin', () => {
       }),
     );
     const mockedFindByIdAndUpdate = jest.mocked(pins.findByIdAndUpdate);
-    await updateTags(req as genericRequest, res);
+    await updateTags(req as genericRequest, res as unknown as Response);
     expect(pins.findById).toHaveBeenCalledTimes(1);
     expect(pins.findById).toHaveBeenCalledWith('1');
     expect(pins.findByIdAndUpdate).toHaveBeenCalledTimes(1);
@@ -453,7 +466,7 @@ describe('Updating tags for a pin', () => {
       }),
     );
     savedTags.create = jest.fn().mockResolvedValue([]);
-    await updateTags(req as genericRequest, res);
+    await updateTags(req as genericRequest, res as unknown as Response);
     expect(pins.findById).toHaveBeenCalledTimes(1);
     expect(pins.findById).toHaveBeenCalledWith('1');
     expect(pins.findByIdAndUpdate).toHaveBeenCalledTimes(0);
@@ -476,7 +489,7 @@ describe('Updating tags for a pin', () => {
         exec: jest.fn().mockResolvedValue({ ...rawPinsStub[1] }),
       }),
     );
-    await updateTags(req as genericRequest, res);
+    await updateTags(req as genericRequest, res as unknown as Response);
     expect(pins.findById).toHaveBeenCalledTimes(1);
     expect(pins.findById).toHaveBeenCalledWith('1');
     expect(pins.findByIdAndUpdate).not.toHaveBeenCalled();
@@ -502,7 +515,7 @@ describe('Updating tags for a pin', () => {
       }),
     );
     savedTags.create = jest.fn().mockResolvedValue([]);
-    await updateTags(req as genericRequest, res);
+    await updateTags(req as genericRequest, res as unknown as Response);
     expect(pins.findById).toHaveBeenCalledTimes(1);
     expect(pins.findById).toHaveBeenCalledWith('1');
     expect(pins.findByIdAndUpdate).toHaveBeenCalledTimes(1);
@@ -520,13 +533,16 @@ describe('Updating tags for a pin', () => {
         exec: jest.fn().mockRejectedValue(new Error('Mocked rejection')),
       }),
     );
-    await updateTags(req as genericRequest, res);
+    await updateTags(req as genericRequest, res as unknown as Response);
     expect(res.json).toHaveBeenCalledWith(Error('Mocked rejection'));
   });
 });
 
 describe('Updating a display name', () => {
-  let res;
+  let res:{
+    json: jest.Mock,
+    end: jest.Mock
+  };
   const req = {
     user,
     body: {
@@ -552,7 +568,7 @@ describe('Updating a display name', () => {
       }),
     );
     const mockedFindById = jest.mocked(users.findById);
-    await updateDisplayName(req as genericRequest, res);
+    await updateDisplayName(req as genericRequest, res as unknown as Response);
     expect(users.findById).toHaveBeenCalledTimes(1);
     expect(users.findById).toHaveBeenCalledWith('5cad310f7672ca00146485a8');
     expect(updateOne).toHaveBeenCalledWith({ $set: { displayName: 'updated-display-name' } });
@@ -568,7 +584,7 @@ describe('Updating a display name', () => {
       }),
     );
     const mockedFindById = jest.mocked(users.findById);
-    await updateDisplayName(req as genericRequest, res);
+    await updateDisplayName(req as genericRequest, res as unknown as Response);
     expect(users.findById).toHaveBeenCalledTimes(1);
     expect(users.findById).toHaveBeenCalledWith('5cad310f7672ca00146485a8');
     expect(updateOne).not.toHaveBeenCalled();
@@ -582,7 +598,7 @@ describe('Updating a display name', () => {
         exec: jest.fn().mockRejectedValue(new Error('Mocked rejection')),
       }),
     );
-    await updateDisplayName(req as genericRequest, res);
+    await updateDisplayName(req as genericRequest, res as unknown as Response);
     expect(res.json).toHaveBeenCalledWith(Error('Mocked rejection'));
   });
 });

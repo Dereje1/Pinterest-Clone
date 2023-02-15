@@ -26,7 +26,7 @@ describe('Mongo db', () => {
     // eslint-disable-next-line @typescript-eslint/ban-ts-comment
     // @ts-ignore
     let connectionProcesses = mongoose.default.connection.on.mock.calls;
-    connectionProcesses = connectionProcesses.map((c) => c[0]);
+    connectionProcesses = connectionProcesses.map((c: string[]) => c[0]);
     expect(connectionProcesses).toEqual(['connected', 'error', 'disconnected']);
   });
 });

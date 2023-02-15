@@ -1,3 +1,4 @@
+import { Response } from 'express';
 import nock from 'nock';
 import { Types } from 'mongoose';
 import {
@@ -27,7 +28,9 @@ const setupMocks = (response: PopulatedPinType[] | unknown = rawPinsStub) => {
 };
 
 describe('Adding a pin', () => {
-  let res;
+  let res:{
+    json: jest.Mock,
+  };
   beforeEach(() => {
     process.env = {
       ...process.env,
@@ -69,7 +72,7 @@ describe('Adding a pin', () => {
       imgLink: 'https://stub-4',
       _id: 123,
     });
-    await addPin(req as genericRequest, res);
+    await addPin(req as genericRequest, res as unknown as Response);
     expect(pins.create).toHaveBeenCalledTimes(1);
     expect(pins.create).toHaveBeenCalledWith({
       ...req.body,
@@ -109,7 +112,7 @@ describe('Adding a pin', () => {
     };
     mockS3Instance.upload.mockClear();
     setupMocks({ ...req.body });
-    await addPin(req as genericRequest, res);
+    await addPin(req as genericRequest, res as unknown as Response);
     expect(pins.create).toHaveBeenCalledTimes(1);
     expect(pins.create).toHaveBeenCalledWith({
       ...req.body,
@@ -144,7 +147,7 @@ describe('Adding a pin', () => {
     };
     mockS3Instance.upload.mockClear();
     setupMocks({ ...req.body });
-    await addPin(req as genericRequest, res);
+    await addPin(req as genericRequest, res as unknown as Response);
     expect(pins.create).toHaveBeenCalledTimes(1);
     expect(pins.create).toHaveBeenCalledWith({
       ...req.body,
@@ -173,7 +176,7 @@ describe('Adding a pin', () => {
     };
 
     setupMocks({ ...req.body });
-    await addPin(req as genericRequest, res);
+    await addPin(req as genericRequest, res as unknown as Response);
     expect(pins.create).toHaveBeenCalledTimes(1);
     expect(pins.create).toHaveBeenCalledWith({
       ...req.body,
@@ -198,13 +201,15 @@ describe('Adding a pin', () => {
         imgLink: 'https://stub-4',
       },
     };
-    await addPin(req as genericRequest, res);
+    await addPin(req as genericRequest, res as unknown as Response);
     expect(res.json).toHaveBeenCalledWith(Error('Mocked rejection'));
   });
 });
 
 describe('Getting duplicate errors on new pin', () => {
-  let res;
+  let res:{
+    json: jest.Mock,
+  };
   const req = {
     body: {
       picInPreview: 'duplicate-link',
@@ -225,7 +230,7 @@ describe('Getting duplicate errors on new pin', () => {
         }]),
       }),
     );
-    await getDuplicateError(req as genericRequest, res);
+    await getDuplicateError(req as genericRequest, res as unknown as Response);
     expect(pinLinks.find).toHaveBeenCalledTimes(1);
     expect(pinLinks.find).toHaveBeenCalledWith({
       $or: [
@@ -243,7 +248,7 @@ describe('Getting duplicate errors on new pin', () => {
         exec: jest.fn().mockResolvedValue([]),
       }),
     );
-    await getDuplicateError(req as genericRequest, res);
+    await getDuplicateError(req as genericRequest, res as unknown as Response);
     expect(pinLinks.find).toHaveBeenCalledTimes(1);
     expect(res.json).toHaveBeenCalledWith({ duplicateError: false });
   });
@@ -254,7 +259,7 @@ describe('Getting duplicate errors on new pin', () => {
         exec: jest.fn().mockRejectedValue(new Error('Mocked rejection')),
       }),
     );
-    await getDuplicateError(req as genericRequest, res);
+    await getDuplicateError(req as genericRequest, res as unknown as Response);
     expect(res.json).toHaveBeenCalledWith(Error('Mocked rejection'));
   });
 });

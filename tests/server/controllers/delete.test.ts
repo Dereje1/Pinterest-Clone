@@ -1,3 +1,4 @@
+import { Response } from 'express';
 import deletePin from '../../../server/controllers/delete';
 import pins from '../../../server/models/pins'; // schema for pins
 import pinLinks from '../../../server/models/pinlinks'; // schema for pins
@@ -17,9 +18,12 @@ const setupMocks = (response: PopulatedPinType[] | unknown = rawPinsStub) => {
 };
 
 describe('Deleting an image', () => {
-  let res;
-  let mockedFindOneAndRemove;
-  let mockedFindById;
+  let res: {
+    json: jest.Mock,
+    end: jest.Mock
+  };
+  let mockedFindOneAndRemove: jest.Mock;
+  let mockedFindById: jest.Mock;
   const req = {
     user,
     params: { _id: '1' },
@@ -46,7 +50,7 @@ describe('Deleting an image', () => {
     );
 
     setupMocks({ ...rawPinsStub[0], owner: user._id });
-    await deletePin(req as genericRequest, res);
+    await deletePin(req as genericRequest, res as unknown as Response);
     expect(pins.findById).toHaveBeenCalledTimes(1);
     expect(pins.findById).toHaveBeenCalledWith('1');
     expect(pins.findOneAndRemove).toHaveBeenCalledTimes(1);
@@ -58,7 +62,7 @@ describe('Deleting an image', () => {
   test('will throw an error if user is not an owner', async () => {
     const updatedReq = { ...req, params: { _id: '2' } };
     setupMocks(rawPinsStub[1]);
-    await deletePin(updatedReq as genericRequest, res);
+    await deletePin(updatedReq as genericRequest, res as unknown as Response);
     expect(pins.findById).toHaveBeenCalledTimes(1);
     expect(pins.findById).toHaveBeenCalledWith('2');
     expect(res.json).toHaveBeenCalledWith(Error('Pin ID: 2 is not owned by user ID: 5cad310f7672ca00146485a8 - delete operation cancelled!'));
@@ -77,7 +81,7 @@ describe('Deleting an image', () => {
     );
 
     setupMocks(rawPinsStub[1]);
-    await deletePin(updatedReq as genericRequest, res);
+    await deletePin(updatedReq as genericRequest, res as unknown as Response);
     expect(pins.findById).toHaveBeenCalledTimes(1);
     expect(pins.findById).toHaveBeenCalledWith('2');
     expect(pins.findOneAndRemove).toHaveBeenCalledTimes(1);
@@ -98,7 +102,7 @@ describe('Deleting an image', () => {
         exec: jest.fn().mockResolvedValue(rawPinsStub[0]),
       }),
     );
-    await deletePin(req as genericRequest, res);
+    await deletePin(req as genericRequest, res as unknown as Response);
     expect(pins.findById).toHaveBeenCalledTimes(1);
     expect(pins.findById).toHaveBeenCalledWith('1');
     expect(pins.findOneAndRemove).toHaveBeenCalledTimes(0);
@@ -113,7 +117,7 @@ describe('Deleting an image', () => {
         exec: jest.fn().mockRejectedValue(new Error('Mocked rejection')),
       }),
     );
-    await deletePin(req as genericRequest, res);
+    await deletePin(req as genericRequest, res as unknown as Response);
     expect(res.json).toHaveBeenCalledWith(Error('Mocked rejection'));
   });
 });

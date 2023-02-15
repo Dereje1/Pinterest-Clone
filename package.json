@@ -12,7 +12,7 @@
     "lint": "./node_modules/.bin/eslint server client tests",
     "test": "jest --watch",
     "coverage": "jest --coverage",
-    "compileTS": "tsc -p ./client && tsc -p ./server --noEmit"
+    "compileTS": "tsc -p ./client && tsc -p ./server --noEmit && tsc -p ./tests/tsconfig.test.json"
   },
   "dependencies": {
     "@emotion/react": "^11.7.1",
@@ -72,6 +72,7 @@
     "@types/react": "^17.0.0",
     "@types/react-dom": "^17.0.0",
     "@types/react-router-dom": "^5.3.3",
+    "@types/supertest": "^2.0.12",
     "@typescript-eslint/eslint-plugin": "^5.49.0",
     "@typescript-eslint/parser": "^5.49.0",
     "@wojtekmaj/enzyme-adapter-react-17": "^0.8.0",
