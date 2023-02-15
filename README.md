@@ -22,23 +22,25 @@ These instructions will get you a copy of the project up and running on your loc
 >Create a new directory and initialize git
 
 ```
-$ mkdir Pinterest-Clone
-$ cd Pinterest-Clone
-$ git init
+mkdir Pinterest-Clone
+cd Pinterest-Clone
+git init
 ```
 >Pull from github and install packages
 
 ```
-$ git pull https://github.com/Dereje1/Pinterest-Clone.git
-$ npm install
+git pull https://github.com/Dereje1/Pinterest-Clone.git
+
+npm install
 ```
 
 >To run mongoDB locally with docker :
 
 In the root folder run
-`docker-compose up mongodb` and then use `mongodb://root:123456@localhost:27017` for `MONGOLAB_URI`
-in your `.env `file below, alternatively, you can get a connection string from mongodb Atlas after setting up your own db.
-
+```
+docker-compose up mongodb
+```
+Alternatively, you can get a connection string from mongodb Atlas after setting up your own db.
 
 >create .env files
 
@@ -46,7 +48,7 @@ In the root of the project create a .env file with the following contents
 ```
 
 SESSION_SECRET=<Secret for Express Session>
-MONGOLAB_URI=<Mongo Connection URI>
+MONGOLAB_URI=mongodb://root:123456@localhost:27017
 TWITTER_CONSUMER_KEY=< Get from Twitter Developer API >
 TWITTER_CONSUMER_SECRET=< Get from Twitter Developer API >
 TWITTER_CALLBACK=http://localhost:8080/auth/twitter/redirect
@@ -60,10 +62,12 @@ AWS_ACCESS_KEY_ID=< Get from AWS >
 AWS_SECRET_KEY=< Get from AWS >
 S3_BUCKET_NAME=< s3 bucket name for uploaded pins>
 NODE_ENV=<development|production>
+DEBUG=Pinterest-Clone:server
+DEBUG_COLORS=1
 ```
-Run development environment
+Run the development environment
 ```
-$ npm run dev
+npm run dev
 ```
 You can now go to `http://localhost:8080/` and see the project running in dev mode.
 

@@ -1,5 +1,6 @@
 import { Request } from 'express';
 import mongoose from 'mongoose';
+import debugg from 'debug';
 import { genericResponseType } from '../interfaces';
 import {
   getUserProfile, uploadImageToS3,
@@ -8,9 +9,12 @@ import pins from '../models/pins';
 import { UserType } from '../models/user';
 import pinLinks from '../models/pinlinks';
 
+const debug = debugg('Pinterest-Clone:server');
+
 export const addPin = async (req: Request, res: genericResponseType) => {
   const { displayName, userId, service } = getUserProfile(req.user as UserType);
   const { imgLink: originalImgLink } = req.body;
+  debug(`Creating new pin for userId -> ${userId}`);
   try {
     const newImgLink = await uploadImageToS3({
       originalImgLink, userId, displayName, service,
@@ -29,9 +33,10 @@ export const addPin = async (req: Request, res: genericResponseType) => {
       originalImgLink: addedpin.originalImgLink,
       cloudFrontLink: newImgLink ? `https://d1ttxrulihk8wq.cloudfront.net/${newImgLink.split('/')[4]}` : '',
     });
-    console.log(`${displayName} added pin ${addedpin.imgDescription}`);
+    debug(`${displayName} added pin ${addedpin.imgDescription}`);
     res.json(addedpin);
   } catch (error) {
+    debug(`Error creating new pin for userId -> ${userId}`);
     res.json(error);
   }
 };
@@ -48,6 +53,7 @@ export const getDuplicateError = async (req: Request, res: genericResponseType) 
     }).exec();
     return res.json({ duplicateError: Boolean(duplicateFound) });
   } catch (error) {
+    debug('Error looking for duplicates');
     return res.json(error);
   }
 };

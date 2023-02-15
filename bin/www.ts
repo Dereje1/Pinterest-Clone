@@ -9,13 +9,11 @@ require('dotenv').config();
 import http from 'http';
 import debugg from 'debug';
 
-process.env.DEBUG = 'Pinterest-Clone:server';
 const debug = debugg('Pinterest-Clone:server');
-// const http = require('http');
-
 const appPath = process.env.NODE_ENV === 'development' ? '../server/app' : '../app';
 // eslint-disable-next-line import/no-dynamic-require
 const app = require(appPath).default;
+
 /**
  * Normalize a port into a number, string, or false.
  */
@@ -81,12 +79,10 @@ const onError = (error: {syscall: string, code: string}) => {
 
 const onListening = () => {
   const addr = server.address();
-  if (addr) {
-    const bind = typeof addr === 'string'
-      ? `pipe ${addr}`
-      : `port ${addr.port}`;
-    debug(`Listening on ${bind}`);
-  }
+  const bind = typeof addr === 'string'
+    ? `pipe ${addr}`
+    : `port ${addr?.port}`;
+  debug(`Listening on ${bind}`);
 };
 
 /**

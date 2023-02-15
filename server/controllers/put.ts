@@ -1,5 +1,6 @@
 import { Request } from 'express';
 import mongoose from 'mongoose';
+import debugg from 'debug';
 import { genericResponseType } from '../interfaces';
 import {
   getUserProfile, filterPins,
@@ -8,12 +9,14 @@ import pins from '../models/pins';
 import users, { UserType } from '../models/user';
 import savedTags from '../models/tags';
 
+const debug = debugg('Pinterest-Clone:server');
+
 export const pinImage = async (req: Request, res: genericResponseType) => {
   const pinID = req.params._id;
   const {
     userId, displayName, isAdmin,
   } = getUserProfile(req.user as UserType);
-
+  debug(`Pinning image with id -> ${pinID} by userId -> ${userId}`);
   try {
     const pin = await pins.findById(pinID).exec();
     if (!pin) return res.end();
@@ -27,12 +30,13 @@ export const pinImage = async (req: Request, res: genericResponseType) => {
         .exec();
       if (!updatedPin) return res.end();
       const [filteredAndUpdatedPin] = filterPins({ rawPins: [updatedPin], userId, isAdmin });
-      console.log(`${displayName} pinned ${updatedPin.imgDescription}`);
+      debug(`${displayName} pinned ${updatedPin.imgDescription}`);
       return res.json(filteredAndUpdatedPin);
     }
-    console.log(`${displayName} has the pin - ${pin.imgDescription} already saved`);
+    debug(`${displayName} has the pin - ${pin.imgDescription} already saved`);
     return res.end();
   } catch (error) {
+    debug(`Error pinning image with id -> ${pinID} by userId -> ${userId}`);
     return res.json(error);
   }
 };
@@ -40,6 +44,7 @@ export const pinImage = async (req: Request, res: genericResponseType) => {
 export const unpin = async (req: Request, res: genericResponseType) => {
   const { userId, displayName, isAdmin } = getUserProfile(req.user as UserType);
   const pinID = req.params._id;
+  debug(`Unpinning image with id -> ${pinID} by userId -> ${userId}`);
   try {
     const pin = await pins.findById(pinID).exec();
     if (!pin) return res.end();
@@ -51,9 +56,10 @@ export const unpin = async (req: Request, res: genericResponseType) => {
       .exec();
     if (!updatedPin) return res.end();
     const [filteredAndUpdatedPin] = filterPins({ rawPins: [updatedPin], userId, isAdmin });
-    console.log(`${displayName} unpinned ${updatedPin.imgDescription}`);
+    debug(`${displayName} unpinned ${updatedPin.imgDescription}`);
     return res.json(filteredAndUpdatedPin);
   } catch (error) {
+    debug(`Error unpinning image with id -> ${pinID} by userId -> ${userId}`);
     return res.json(error);
   }
 };
@@ -64,6 +70,7 @@ export const addComment = async (req: Request, res: genericResponseType) => {
   } = getUserProfile(req.user as UserType);
   const pinID = req.params._id;
   const { comment } = req.body;
+  debug(`Adding comment for pin with id -> ${pinID} by userId -> ${userId}`);
   try {
     const update = { $push: { comments: { comment, user: mongoose.Types.ObjectId(userId) } } };
     const modified = { new: true };
@@ -72,9 +79,10 @@ export const addComment = async (req: Request, res: genericResponseType) => {
       .exec();
     if (!updatedPin) return res.end();
     const [filteredAndUpdatedPin] = filterPins({ rawPins: [updatedPin], userId, isAdmin });
-    console.log(`${displayName} commented on ${updatedPin.imgDescription}`);
+    debug(`${displayName} commented on ${updatedPin.imgDescription}`);
     return res.json(filteredAndUpdatedPin);
   } catch (error) {
+    debug(`Error adding comment for pin with id -> ${pinID} by userId -> ${userId}`);
     return res.json(error);
   }
 };
@@ -84,6 +92,7 @@ export const updateTags = async (req: Request, res: genericResponseType) => {
     userId, displayName, isAdmin,
   } = getUserProfile(req.user as UserType);
   const { pinID, tag, deleteId } = req.query;
+  debug(`Updating tags for pin with id -> ${pinID} by userId -> ${userId}`);
   try {
     const pin = await pins.findById(pinID).exec();
     if (!pin) return res.end();
@@ -101,9 +110,10 @@ export const updateTags = async (req: Request, res: genericResponseType) => {
       .exec();
     if (!updatedPin) return res.end();
     const [filteredAndUpdatedPin] = filterPins({ rawPins: [updatedPin], userId, isAdmin });
-    console.log(`${displayName} ${deleteId ? 'deleted' : `added ${tag}`} tag on ${updatedPin.imgDescription}`);
+    debug(`${displayName} ${deleteId ? 'deleted' : `added ${tag}`} tag on ${updatedPin.imgDescription}`);
     return res.json(filteredAndUpdatedPin);
   } catch (error) {
+    debug(`Error updating tags for pin with id -> ${pinID} by userId -> ${userId}`);
     return res.json(error);
   }
 };
@@ -113,13 +123,15 @@ export const updateDisplayName = async (req: Request, res: genericResponseType) 
     userId, displayName,
   } = getUserProfile(req.user as UserType);
   const { newDisplayName } = req.body;
+  debug(`Updating Display name for userId -> ${userId}`);
   try {
     const user = await users.findById(userId).exec();
     const update = { $set: { displayName: newDisplayName } };
     await user?.updateOne(update);
-    console.log(`${displayName} changed to ${newDisplayName}`);
+    debug(`${displayName} changed to ${newDisplayName}`);
     return res.end();
   } catch (error) {
+    debug(`Error updating Display name for userId -> ${userId}`);
     return res.json(error);
   }
 };
