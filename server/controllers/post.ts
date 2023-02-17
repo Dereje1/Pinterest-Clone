@@ -11,7 +11,7 @@ import pinLinks from '../models/pinlinks';
 
 const debug = debugg('Pinterest-Clone:server');
 
-export const addPin = async (req: Request, res: genericResponseType) => {
+const addPin = async (req: Request, res: genericResponseType) => {
   const { displayName, userId, service } = getUserProfile(req.user as UserType);
   const { imgLink: originalImgLink } = req.body;
   debug(`Creating new pin for userId -> ${userId}`);
@@ -41,19 +41,4 @@ export const addPin = async (req: Request, res: genericResponseType) => {
   }
 };
 
-export const getDuplicateError = async (req: Request, res: genericResponseType) => {
-  const { picInPreview } = req.body;
-  try {
-    const [duplicateFound] = await pinLinks.find({
-      $or: [
-        { imgLink: picInPreview },
-        { originalImgLink: picInPreview },
-        { cloudFrontLink: picInPreview },
-      ],
-    }).exec();
-    return res.json({ duplicateError: Boolean(duplicateFound) });
-  } catch (error) {
-    debug('Error looking for duplicates');
-    return res.json(error);
-  }
-};
+export default addPin;

@@ -30,7 +30,7 @@ function SavePin({
     try {
       const { duplicateError } = await RESTcall({
         address: '/api/getDuplicateError/',
-        method: 'post',
+        method: 'put',
         payload: { picInPreview },
       });
       setTestingForDuplicates({ waiting: false, error: false });

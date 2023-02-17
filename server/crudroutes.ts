@@ -1,21 +1,18 @@
 import { Router } from 'express';
 import isLoggedIn from './auth/isloggedin';
 // controllers
-import { addPin, getDuplicateError } from './controllers/post';
+import addPin from './controllers/post';
 import {
   getPins, getProfilePins, getTags, getUserPins,
 } from './controllers/get';
 import {
-  addComment, pinImage, unpin, updateTags, updateDisplayName,
+  addComment, pinImage, unpin, updateTags, updateDisplayName, getDuplicateError,
 } from './controllers/put';
 import deletePin from './controllers/delete';
 
 const router = Router();
 // adds a new pin to the db
 router.post('/api/newpin', isLoggedIn, addPin);
-
-// validates for duplicate errors on new pins
-router.post('/api/getDuplicateError/', isLoggedIn, getDuplicateError);
 
 // gets all pins for home page
 router.get('/api/home', getPins);
@@ -43,6 +40,9 @@ router.put('/api/updateTags/', isLoggedIn, updateTags);
 
 // Update display name
 router.put('/api/updateDisplayName/', isLoggedIn, updateDisplayName);
+
+// validates for duplicate errors on new pins
+router.put('/api/getDuplicateError/', isLoggedIn, getDuplicateError);
 
 // deletes a pin if owned by user
 router.delete('/api/:_id', isLoggedIn, deletePin);

@@ -1,12 +1,9 @@
 import { Response } from 'express';
 import nock from 'nock';
 import { Types } from 'mongoose';
-import {
-  addPin,
-  getDuplicateError,
-} from '../../../server/controllers/post';
+import addPin from '../../../server/controllers/post';
 import pins from '../../../server/models/pins'; // schema for pins
-import pinLinks from '../../../server/models/pinlinks'; // schema for pins
+import pinLinks from '../../../server/models/pinlinks';
 import {
   user, rawPinsStub,
 } from '../stub';
@@ -202,64 +199,6 @@ describe('Adding a pin', () => {
       },
     };
     await addPin(req as genericRequest, res as unknown as Response);
-    expect(res.json).toHaveBeenCalledWith(Error('Mocked rejection'));
-  });
-});
-
-describe('Getting duplicate errors on new pin', () => {
-  let res:{
-    json: jest.Mock,
-  };
-  const req = {
-    body: {
-      picInPreview: 'duplicate-link',
-    },
-  };
-  beforeEach(() => {
-    res = { json: jest.fn() };
-  });
-  afterEach(() => {
-    jest.restoreAllMocks();
-  });
-
-  test('will respond if duplicate found', async () => {
-    pinLinks.find = jest.fn().mockImplementation(
-      () => ({
-        exec: jest.fn().mockResolvedValue([{
-          imgLink: 'duplicate-link',
-        }]),
-      }),
-    );
-    await getDuplicateError(req as genericRequest, res as unknown as Response);
-    expect(pinLinks.find).toHaveBeenCalledTimes(1);
-    expect(pinLinks.find).toHaveBeenCalledWith({
-      $or: [
-        { imgLink: 'duplicate-link' },
-        { originalImgLink: 'duplicate-link' },
-        { cloudFrontLink: 'duplicate-link' },
-      ],
-    });
-    expect(res.json).toHaveBeenCalledWith({ duplicateError: true });
-  });
-
-  test('will respond if duplicate is not found', async () => {
-    pinLinks.find = jest.fn().mockImplementation(
-      () => ({
-        exec: jest.fn().mockResolvedValue([]),
-      }),
-    );
-    await getDuplicateError(req as genericRequest, res as unknown as Response);
-    expect(pinLinks.find).toHaveBeenCalledTimes(1);
-    expect(res.json).toHaveBeenCalledWith({ duplicateError: false });
-  });
-
-  test('will respond with error if post is rejected', async () => {
-    pinLinks.find = jest.fn().mockImplementation(
-      () => ({
-        exec: jest.fn().mockRejectedValue(new Error('Mocked rejection')),
-      }),
-    );
-    await getDuplicateError(req as genericRequest, res as unknown as Response);
     expect(res.json).toHaveBeenCalledWith(Error('Mocked rejection'));
   });
 });

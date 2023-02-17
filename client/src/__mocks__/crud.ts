@@ -67,7 +67,7 @@ const restMock = jest.fn().mockImplementation((...args) => {
     });
   } if (address.includes('/api/getTags') && method === 'get' && !payload) {
     return Promise.resolve(['TAG 3', 'TAG 4']);
-  } if (address.includes('/api/getDuplicateError') && method === 'post' && payload) {
+  } if (address.includes('/api/getDuplicateError') && method === 'put' && payload) {
     return Promise.resolve({ duplicateError: true });
   } if (address.includes('/api/updateDisplayName') && method === 'put') {
     return Promise.resolve();

@@ -8,6 +8,7 @@ import {
 import pins from '../models/pins';
 import users, { UserType } from '../models/user';
 import savedTags from '../models/tags';
+import pinLinks from '../models/pinlinks';
 
 const debug = debugg('Pinterest-Clone:server');
 
@@ -132,6 +133,23 @@ export const updateDisplayName = async (req: Request, res: genericResponseType) 
     return res.end();
   } catch (error) {
     debug(`Error updating Display name for userId -> ${userId}`);
+    return res.json(error);
+  }
+};
+
+export const getDuplicateError = async (req: Request, res: genericResponseType) => {
+  const { picInPreview } = req.body;
+  try {
+    const [duplicateFound] = await pinLinks.find({
+      $or: [
+        { imgLink: picInPreview },
+        { originalImgLink: picInPreview },
+        { cloudFrontLink: picInPreview },
+      ],
+    }).exec();
+    return res.json({ duplicateError: Boolean(duplicateFound) });
+  } catch (error) {
+    debug('Error looking for duplicates');
     return res.json(error);
   }
 };
