@@ -1,23 +1,5 @@
 import { UserType } from './models/user';
 
-export interface apiKeys {
-    twitterApiKeys: {
-        consumerKey: string
-        consumerSecret: string
-        callbackURL: string
-    } | null
-    googleApiKeys: {
-        clientID: string
-        clientSecret: string
-        callbackURL: string
-    } | null
-    githubApiKeys: {
-        clientID: string
-        clientSecret: string
-        callbackURL: string
-    } | null
-}
-
 export interface PinnerType {
     name: string,
     service: string,

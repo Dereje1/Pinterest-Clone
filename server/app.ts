@@ -3,9 +3,10 @@ import path from 'path';
 import cookieSession from 'cookie-session';
 import bodyParser from 'body-parser';
 import logger from 'morgan';
+import { auth } from 'passportbundle';
 import connectToDB from './models/db';
-import auth from './auth/index';
 import router from './crudroutes';
+import user from './models/user';
 
 interface Error {
   status?: number;
@@ -45,7 +46,7 @@ App.use((request: Request, response: Response, next: NextFunction) => {
 App.use(express.static(path.join(__dirname, '../client/public')));
 // connect to db and setup authentication / passport
 connectToDB();
-auth(App);
+auth(App, user);
 // get crud routes
 App.use(router);
 // serve webpack build client

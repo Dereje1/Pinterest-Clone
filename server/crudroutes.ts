@@ -1,5 +1,5 @@
 import { Router } from 'express';
-import isLoggedIn from './auth/isloggedin';
+import { isLoggedIn } from 'passportbundle';
 // controllers
 import addPin from './controllers/post';
 import {
