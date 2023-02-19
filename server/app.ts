@@ -46,7 +46,16 @@ App.use((request: Request, response: Response, next: NextFunction) => {
 App.use(express.static(path.join(__dirname, '../client/public')));
 // connect to db and setup authentication / passport
 connectToDB();
-auth(App, user);
+auth(
+  App,
+  user,
+  {
+    redirect: {
+      successRedirect: '/pins',
+      failureRedirect: '/',
+    },
+  },
+);
 // get crud routes
 App.use(router);
 // serve webpack build client
