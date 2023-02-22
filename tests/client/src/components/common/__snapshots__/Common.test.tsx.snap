@@ -5,7 +5,7 @@ exports[`Loading... Will not render the loading bubbles 1`] = `
   id="loadingcontainer"
   style={
     {
-      "marginTop": 0,
+      "marginTop": 100,
     }
   }
 >
@@ -18,7 +18,7 @@ exports[`Loading... Will render the loading bubbles 1`] = `
   id="loadingcontainer"
   style={
     {
-      "marginTop": 0,
+      "marginTop": 100,
     }
   }
 >

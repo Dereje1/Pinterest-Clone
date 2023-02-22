@@ -10,6 +10,7 @@ exports[`The pinners dialog will render 1`] = `
       },
     }
   }
+  disableAutoFocus={true}
   onClose={[MockFunction]}
   open={true}
 >
@@ -32,22 +33,7 @@ exports[`The pinners dialog will render 1`] = `
     }
   >
     <ForwardRef(ListItem)
-      component={
-        {
-          "$$typeof": Symbol(react.forward_ref),
-          "propTypes": {
-            "innerRef": [Function],
-            "onClick": [Function],
-            "replace": [Function],
-            "target": [Function],
-            "to": [Function],
-          },
-          "render": [Function],
-        }
-      }
       key="1"
-      onClick={[Function]}
-      to="/profile/1"
     >
       <ForwardRef(ListItemAvatar)>
         <ForwardRef(Avatar)
@@ -68,27 +54,20 @@ exports[`The pinners dialog will render 1`] = `
           />
         </ForwardRef(Avatar)>
       </ForwardRef(ListItemAvatar)>
-      <ForwardRef(ListItemText)
-        primary="savedBy - id-1"
+      <ProfileLink
+        authenticated={false}
+        closePin={[Function]}
+        displayLogin={[MockFunction]}
+        title={
+          <ForwardRef(ListItemText)
+            primary="savedBy - id-1"
+          />
+        }
+        userId="1"
       />
     </ForwardRef(ListItem)>
     <ForwardRef(ListItem)
-      component={
-        {
-          "$$typeof": Symbol(react.forward_ref),
-          "propTypes": {
-            "innerRef": [Function],
-            "onClick": [Function],
-            "replace": [Function],
-            "target": [Function],
-            "to": [Function],
-          },
-          "render": [Function],
-        }
-      }
       key="1"
-      onClick={[Function]}
-      to="/profile/1"
     >
       <ForwardRef(ListItemAvatar)>
         <ForwardRef(Avatar)
@@ -109,8 +88,16 @@ exports[`The pinners dialog will render 1`] = `
           />
         </ForwardRef(Avatar)>
       </ForwardRef(ListItemAvatar)>
-      <ForwardRef(ListItemText)
-        primary="savedBy - id-1"
+      <ProfileLink
+        authenticated={false}
+        closePin={[Function]}
+        displayLogin={[MockFunction]}
+        title={
+          <ForwardRef(ListItemText)
+            primary="savedBy - id-1"
+          />
+        }
+        userId="1"
       />
     </ForwardRef(ListItem)>
   </ForwardRef(List)>

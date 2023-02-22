@@ -39,6 +39,7 @@ describe('The pin zoom modal', () => {
       handleNewComment: jest.fn(),
       user: { ...reduxStub.user },
       updateTags: jest.fn(),
+      displayLogin: jest.fn(),
     };
   });
 
@@ -172,11 +173,10 @@ describe('The pin zoom modal', () => {
     const wrapper = shallow(<PinZoom {...props} />);
     const cardHeader: EnzymePropSelector = wrapper.find('ForwardRef(CardHeader)');
     const link = cardHeader.props().subheader.props.children[0].props;
-    link.onMouseDown({ preventDefault: jest.fn() });
-    link.onClick();
+    link.closePin();
     jest.advanceTimersByTime(500);
     await Promise.resolve();
-    expect(link.to).toBe('/profile/1');
+    expect(link.userId).toBe('1');
     expect(props.reset).toHaveBeenCalledTimes(1);
   });
 });

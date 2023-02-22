@@ -15,6 +15,7 @@ describe('The comments window', () => {
       toggleComments: jest.fn(),
       closePin: jest.fn(),
       updateTags: jest.fn(),
+      displayLogin: jest.fn(),
     };
   });
 

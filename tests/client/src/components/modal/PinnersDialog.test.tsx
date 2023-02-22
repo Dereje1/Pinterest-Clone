@@ -10,6 +10,8 @@ test('The pinners dialog will render', () => {
     open
     onCloseDialog={jest.fn()}
     onClosePin={jest.fn()}
+    displayLogin={jest.fn()}
+    authenticated={false}
   />);
   expect(toJson(wrapper)).toMatchSnapshot();
 });
@@ -22,9 +24,11 @@ test('will close the dialog and the pin on a profile link click', () => {
     open
     onCloseDialog={onCloseDialog}
     onClosePin={onClosePin}
+    displayLogin={jest.fn()}
+    authenticated={false}
   />);
-  const pinner: EnzymePropSelector = wrapper.find('ForwardRef(ListItem)').at(0);
-  pinner.props().onClick();
+  const pinner: EnzymePropSelector = wrapper.find('ProfileLink').at(0);
+  pinner.props().closePin();
   expect(onCloseDialog).toHaveBeenCalled();
   expect(onClosePin).toHaveBeenCalled();
 });

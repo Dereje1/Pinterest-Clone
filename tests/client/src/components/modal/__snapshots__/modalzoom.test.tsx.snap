@@ -100,27 +100,13 @@ exports[`The pin zoom modal will render 1`] = `
       }
       subheader={
         <React.Fragment>
-          <ForwardRef(Link)
-            component={
-              {
-                "$$typeof": Symbol(react.forward_ref),
-                "propTypes": {
-                  "innerRef": [Function],
-                  "onClick": [Function],
-                  "replace": [Function],
-                  "target": [Function],
-                  "to": [Function],
-                },
-                "render": [Function],
-              }
-            }
-            onClick={[Function]}
-            onMouseDown={[Function]}
-            to="/profile/1"
-            underline="none"
-          >
-            owner id-1
-          </ForwardRef(Link)>
+          <ProfileLink
+            authenticated={true}
+            closePin={[Function]}
+            displayLogin={[MockFunction]}
+            title="owner id-1"
+            userId="1"
+          />
           <br />
           <span
             style={

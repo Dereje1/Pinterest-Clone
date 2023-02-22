@@ -146,7 +146,7 @@ export class Mypins extends Component<MypinsProps, MypinsState> {
       nameChangeFormIsShowing,
     } = this.state;
     if (!authenticated) return null;
-    if (!ready) return <Loading marginTop={100} />;
+    if (!ready) return <Loading />;
 
     const pins = pinList.filter((pin) => (displaySetting === 'created' ? Boolean(pin.owns) : Boolean(pin.hasSaved)));
     return (

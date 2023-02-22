@@ -208,7 +208,7 @@ function ImageBuild({
           />
         )}
       </div>
-      <Loading imagesLoaded={imagesLoaded} ready={ready} />
+      <Loading imagesLoaded={imagesLoaded} ready={ready} marginTop={0} />
     </>
   );
 }

@@ -1,0 +1,49 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`The profile link component will render for a non authenticated user 1`] = `
+<ForwardRef(Link)
+  component={
+    {
+      "$$typeof": Symbol(react.forward_ref),
+      "propTypes": {
+        "innerRef": [Function],
+        "onClick": [Function],
+        "replace": [Function],
+        "target": [Function],
+        "to": [Function],
+      },
+      "render": [Function],
+    }
+  }
+  onClick={[Function]}
+  onMouseDown={[Function]}
+  to=""
+  underline="none"
+>
+  Link title
+</ForwardRef(Link)>
+`;
+
+exports[`The profile link component will render for an authenticated user 1`] = `
+<ForwardRef(Link)
+  component={
+    {
+      "$$typeof": Symbol(react.forward_ref),
+      "propTypes": {
+        "innerRef": [Function],
+        "onClick": [Function],
+        "replace": [Function],
+        "target": [Function],
+        "to": [Function],
+      },
+      "render": [Function],
+    }
+  }
+  onClick={[Function]}
+  onMouseDown={[Function]}
+  to="/profile/2"
+  underline="none"
+>
+  Link title
+</ForwardRef(Link)>
+`;

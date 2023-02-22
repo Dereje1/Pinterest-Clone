@@ -22,7 +22,7 @@ interface LoadingProps {
   marginTop?: number
 }
 
-export function Loading({ imagesLoaded, ready, marginTop = 0 }: LoadingProps) {
+export function Loading({ imagesLoaded, ready, marginTop = 100 }: LoadingProps) {
   return (
     <div id="loadingcontainer" style={{ marginTop }}>
       {

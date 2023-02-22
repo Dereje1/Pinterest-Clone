@@ -130,6 +130,7 @@ exports[`The ImageBuild component will render.... 1`] = `
   </div>
   <Loading
     imagesLoaded={false}
+    marginTop={0}
     ready={true}
   />
 </Fragment>

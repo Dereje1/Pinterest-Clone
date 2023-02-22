@@ -283,6 +283,30 @@ describe('The ImageBuild component', () => {
     expect(signIn.length).toBe(0);
   });
 
+  test('Can display the sign in component for non-authenticated (guest) users from a zoomed pin', async () => {
+    const updatedProps = {
+      ...props,
+      user: {
+        ...props.user,
+        authenticated: false,
+        username: 'Guest',
+      },
+    };
+    const wrapper = shallow(<ImageBuild {...updatedProps} />);
+    const masonry: EnzymePropSelector = wrapper.find('MasonryPins');
+    let pinZoom: EnzymePropSelector = wrapper.find('PinZoom');
+    expect(pinZoom.isEmptyRender()).toBe(true);
+    // zoom into pin
+    masonry.props().pinEnlarge({ target: { className: 'any', naturalWidth: 600, naturalHeight: 600 } }, pinsStub[1]);
+    pinZoom = wrapper.find('PinZoom');
+    expect(pinZoom.isEmptyRender()).toBe(false);
+    let signIn: EnzymePropSelector = wrapper.find('SignIn');
+    expect(signIn.length).toBe(0);
+    pinZoom.props().displayLogin();
+    signIn = wrapper.find('SignIn');
+    expect(signIn.length).toBe(1);
+  });
+
   test('will send query to update tags while pin is zoomed', async () => {
     const wrapper = shallow(<ImageBuild {...props} />);
     const masonry: EnzymePropSelector = wrapper.find('MasonryPins');
