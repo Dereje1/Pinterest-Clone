@@ -1,5 +1,4 @@
 import React from 'react';
-import { Link as RouterLink } from 'react-router-dom';
 import CardContent from '@mui/material/CardContent';
 import Typography from '@mui/material/Typography';
 import Fab from '@mui/material/Fab';
@@ -8,9 +7,9 @@ import Card from '@mui/material/Card';
 import StarBorderIcon from '@mui/icons-material/StarBorder';
 import CloseIcon from '@mui/icons-material/Close';
 import Avatar from '@mui/material/Avatar';
-import Link from '@mui/material/Link';
 import CommentForm from './CommentForm';
 import PinnersDialog from './PinnersDialog';
+import ProfileLink from './ProfileLink';
 import Tags from './Tags';
 import { formatDate } from '../../utils/utils';
 import { PinType } from '../../interfaces';
@@ -23,6 +22,7 @@ interface CommentsProps {
   toggleComments: () => void
   closePin: (_: React.SyntheticEvent, forceClose?: boolean) => void
   updateTags: (query: string) => void
+  displayLogin: () => void
 }
 
 function Comments({
@@ -33,6 +33,7 @@ function Comments({
   toggleComments,
   closePin,
   updateTags,
+  displayLogin,
 }: CommentsProps) {
   const [openCommentForm, setOpenCommentForm] = React.useState(false);
   const [openPinnersDialog, setOpenPinnersDialog] = React.useState(false);
@@ -165,18 +166,17 @@ function Comments({
             >
               <CardContent>
                 <div style={{ display: 'flex', alignItems: 'center' }}>
-                  <Link
-                    component={RouterLink}
-                    underline="none"
-                    to={
-                      `/profile/${userId}`
-                    }
-                    onClick={closePin}
-                  >
-                    <Typography variant="subtitle1" sx={{ color: '#4c62bc', fontWeight: 'bold' }}>
-                      {`${displayName}`}
-                    </Typography>
-                  </Link>
+                  <ProfileLink
+                    authenticated={authenticated}
+                    closePin={closePin}
+                    displayLogin={displayLogin}
+                    title={(
+                      <Typography variant="subtitle1" sx={{ color: '#4c62bc', fontWeight: 'bold' }}>
+                        {`${displayName}`}
+                      </Typography>
+                    )}
+                    userId={userId}
+                  />
                   <Typography color="text.secondary" sx={{ ml: 1, fontSize: 12 }}>
                     {`- ${formatDate(createdAt)}`}
                   </Typography>
@@ -191,6 +191,8 @@ function Comments({
         ))
       }
       <PinnersDialog
+        authenticated={authenticated}
+        displayLogin={displayLogin}
         open={openPinnersDialog}
         onCloseDialog={() => setOpenPinnersDialog(false)}
         pinnersList={pinInformation.savedBy}

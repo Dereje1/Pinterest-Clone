@@ -204,6 +204,7 @@ function ImageBuild({
             user={user}
             handleNewComment={handleNewComment}
             updateTags={handleTags}
+            displayLogin={() => setDisplayLogin(true)}
           />
         )}
       </div>

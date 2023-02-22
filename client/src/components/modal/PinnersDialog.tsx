@@ -1,5 +1,4 @@
 import * as React from 'react';
-import { Link } from 'react-router-dom';
 import Avatar from '@mui/material/Avatar';
 import List from '@mui/material/List';
 import ListItem from '@mui/material/ListItem';
@@ -8,6 +7,7 @@ import ListItemText from '@mui/material/ListItemText';
 import Dialog from '@mui/material/Dialog';
 import ListSubheader from '@mui/material/ListSubheader';
 import { getProviderIcons } from '../common/common';
+import ProfileLink from './ProfileLink';
 import { providerIconsType, PinnerType } from '../../interfaces';
 
 const providerIcons: providerIconsType = getProviderIcons({ fontSize: 20 });
@@ -17,6 +17,8 @@ interface PinnersDialogProps {
   onClosePin: (_: React.SyntheticEvent, forceClose?: boolean) => void
   open: boolean
   pinnersList: PinnerType[]
+  displayLogin: () => void
+  authenticated: boolean
 }
 
 function PinnersDialog({
@@ -24,12 +26,20 @@ function PinnersDialog({
   onClosePin,
   open,
   pinnersList,
+  authenticated,
+  displayLogin,
 }:PinnersDialogProps) {
+  const handleCose = (e: React.SyntheticEvent) => {
+    onCloseDialog();
+    onClosePin(e);
+  };
+
   return (
     <Dialog
       onClose={onCloseDialog}
       open={open}
       PaperProps={{ sx: { position: 'fixed', top: 0 } }}
+      disableAutoFocus
     >
       <List
         sx={{ pt: 0 }}
@@ -37,10 +47,7 @@ function PinnersDialog({
       >
         {pinnersList.map((pinner) => (
           <ListItem
-            onClick={(e) => { onCloseDialog(); onClosePin(e); }}
             key={pinner.userId}
-            component={Link}
-            to={`/profile/${pinner.userId}`}
           >
             <ListItemAvatar>
               <Avatar
@@ -53,7 +60,13 @@ function PinnersDialog({
                 {providerIcons[pinner.service as keyof providerIconsType].icon}
               </Avatar>
             </ListItemAvatar>
-            <ListItemText primary={pinner.name} />
+            <ProfileLink
+              authenticated={authenticated}
+              closePin={handleCose}
+              userId={pinner.userId}
+              title={<ListItemText primary={pinner.name} />}
+              displayLogin={displayLogin}
+            />
           </ListItem>
         ))}
       </List>

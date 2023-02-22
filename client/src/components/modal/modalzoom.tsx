@@ -1,6 +1,5 @@
 // displays pin zoom modal
 import React, { Component, createRef } from 'react';
-import { Link as RouterLink } from 'react-router-dom';
 /* MUI */
 import Card from '@mui/material/Card';
 import CardHeader from '@mui/material/CardHeader';
@@ -10,11 +9,11 @@ import Badge from '@mui/material/Badge';
 import IconButton from '@mui/material/IconButton';
 import CommentOutlinedIcon from '@mui/icons-material/CommentOutlined';
 import CommentIcon from '@mui/icons-material/Comment';
-import Link from '@mui/material/Link';
 import { styled } from '@mui/styles';
 /* local components and utility */
 import ModalActions from './ModalActions';
 import Comments from './Comments';
+import ProfileLink from './ProfileLink';
 import {
   delay, getFormattedDescription, formatDate,
 } from '../../utils/utils';
@@ -38,6 +37,7 @@ interface PinZoomProps {
     deletePin: ((pin: PinType) => void) | null
     handleNewComment: (newComment: string) => void
     updateTags: (query: string) => void
+    displayLogin: () => void
 }
 
 interface PinZoomState {
@@ -120,6 +120,7 @@ export class PinZoom extends Component<PinZoomProps, PinZoomState> {
       user: { authenticated },
       handleNewComment,
       updateTags,
+      displayLogin,
     } = this.props;
     const {
       commentsShowing, zoomClass,
@@ -164,17 +165,13 @@ export class PinZoom extends Component<PinZoomProps, PinZoomState> {
             title={formattedDescription}
             subheader={(
               <>
-                <Link
-                  component={RouterLink}
-                  underline="none"
-                  to={
-                    `/profile/${pinInformation.owner.userId}`
-                  }
-                  onMouseDown={(e) => e.preventDefault()}
-                  onClick={(e) => this.close(e, true)}
-                >
-                  {pinInformation.owner.name}
-                </Link>
+                <ProfileLink
+                  authenticated={authenticated}
+                  closePin={this.close}
+                  displayLogin={displayLogin}
+                  title={pinInformation.owner.name}
+                  userId={pinInformation.owner.userId}
+                />
                 <br />
                 <span style={{ marginLeft: 0 }}>
                   {formatDate(pinInformation.createdAt)}
@@ -211,6 +208,7 @@ export class PinZoom extends Component<PinZoomProps, PinZoomState> {
                   toggleComments={this.toggleComments}
                   closePin={(e: React.SyntheticEvent) => this.close(e, true)}
                   updateTags={updateTags}
+                  displayLogin={displayLogin}
                 />
               )}
           </CardContent>
