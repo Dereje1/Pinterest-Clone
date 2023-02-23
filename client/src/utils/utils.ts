@@ -54,7 +54,7 @@ export const getZoomedImageStyle = ({
     isNoFit = true;
   }
   return {
-    imgWidth: `${newWidth}px`,
+    imgWidth: newWidth,
     parentWidth,
     isNoFit,
   };

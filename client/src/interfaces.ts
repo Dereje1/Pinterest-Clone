@@ -61,7 +61,7 @@ export interface providerIconsType {
 export interface zoomedImageInfoType {
     pin: PinType
     parentDivStyle: {
-        imgWidth: string
+        imgWidth: number
         parentWidth: number
         isNoFit: boolean
         top: number

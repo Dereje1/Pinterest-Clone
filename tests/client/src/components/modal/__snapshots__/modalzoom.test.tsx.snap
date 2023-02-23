@@ -150,7 +150,7 @@ exports[`The pin zoom modal will render 1`] = `
           {
             "marginLeft": "auto",
             "marginRight": "auto",
-            "width": "622.5px",
+            "width": 622.5,
           }
         }
       />

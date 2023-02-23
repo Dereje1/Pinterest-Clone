@@ -27,7 +27,7 @@ describe('The pin zoom modal', () => {
         pin: pinsStub[0],
         parentDivStyle: {
           top: 10,
-          imgWidth: '622.5px',
+          imgWidth: 622.5,
           parentWidth: 622.5,
           width: '90%',
           isNoFit: false,
@@ -81,7 +81,7 @@ describe('The pin zoom modal', () => {
         pin: pinsStub[0],
         parentDivStyle: {
           top: 10,
-          imgWidth: '622.5px',
+          imgWidth: 622.5,
           parentWidth: 830,
           width: '90%',
           isNoFit: false,

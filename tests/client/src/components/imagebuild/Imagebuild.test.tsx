@@ -15,7 +15,7 @@ const mockedRESTcall = jest.mocked(RESTcall);
 describe('The ImageBuild component', () => {
   let props: React.ComponentProps<typeof ImageBuild>;
   let parentDivStyleStub: {
-    imgWidth: string
+    imgWidth: number
     parentWidth: number
     isNoFit: boolean
     top: number
@@ -32,7 +32,7 @@ describe('The ImageBuild component', () => {
     };
     parentDivStyleStub = {
       top: 10,
-      imgWidth: '598px',
+      imgWidth: 598,
       parentWidth: 598,
       width: '90%',
       isNoFit: false,

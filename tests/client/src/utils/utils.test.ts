@@ -22,7 +22,7 @@ describe('getting the zoomed image styling properties', () => {
     global.innerHeight = 667;
     const ans = getZoomedImageStyle({ naturalWidth: 600, naturalHeight: 600 });
     expect(ans).toEqual({
-      imgWidth: '367.5px',
+      imgWidth: 367.5,
       parentWidth: 367.5,
       isNoFit: true,
     });
@@ -33,7 +33,7 @@ describe('getting the zoomed image styling properties', () => {
     global.innerHeight = 1234;
     const ans = getZoomedImageStyle({ naturalWidth: 600, naturalHeight: 600 });
     expect(ans).toEqual({
-      imgWidth: '1064px',
+      imgWidth: 1064,
       parentWidth: 1064,
       isNoFit: false,
     });
@@ -44,7 +44,7 @@ describe('getting the zoomed image styling properties', () => {
     global.innerHeight = 1234;
     const ans = getZoomedImageStyle({ naturalWidth: 350, naturalHeight: 800 });
     expect(ans).toEqual({
-      imgWidth: '465.5px',
+      imgWidth: 465.5,
       parentWidth: 500,
       isNoFit: true,
     });
@@ -55,7 +55,7 @@ describe('getting the zoomed image styling properties', () => {
     global.innerHeight = 450;
     const ans = getZoomedImageStyle({ naturalWidth: 350, naturalHeight: 800 });
     expect(ans).toEqual({
-      imgWidth: '144.375px',
+      imgWidth: 144.375,
       parentWidth: 500,
       isNoFit: true,
     });
