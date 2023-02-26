@@ -61,6 +61,12 @@ exports[`The pinners dialog will render 1`] = `
         title={
           <ForwardRef(ListItemText)
             primary="savedBy - id-1"
+            primaryTypographyProps={
+              {
+                "color": "#3752ff",
+                "fontWeight": "bold",
+              }
+            }
           />
         }
         userId="1"
@@ -95,6 +101,12 @@ exports[`The pinners dialog will render 1`] = `
         title={
           <ForwardRef(ListItemText)
             primary="savedBy - id-1"
+            primaryTypographyProps={
+              {
+                "color": "#3752ff",
+                "fontWeight": "bold",
+              }
+            }
           />
         }
         userId="1"

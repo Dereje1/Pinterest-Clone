@@ -9,6 +9,7 @@ import Badge from '@mui/material/Badge';
 import IconButton from '@mui/material/IconButton';
 import CommentOutlinedIcon from '@mui/icons-material/CommentOutlined';
 import CommentIcon from '@mui/icons-material/Comment';
+import Typography from '@mui/material/Typography';
 import { styled } from '@mui/styles';
 /* local components and utility */
 import ModalActions from './ModalActions';
@@ -169,10 +170,13 @@ export class PinZoom extends Component<PinZoomProps, PinZoomState> {
                   authenticated={authenticated}
                   closePin={this.close}
                   displayLogin={displayLogin}
-                  title={pinInformation.owner.name}
+                  title={(
+                    <Typography sx={{ color: '#3752ff', fontWeight: 'bold', fontSize: '1.1em' }}>
+                      {`${pinInformation.owner.name}`}
+                    </Typography>
+                  )}
                   userId={pinInformation.owner.userId}
                 />
-                <br />
                 <span style={{ marginLeft: 0 }}>
                   {formatDate(pinInformation.createdAt)}
                 </span>

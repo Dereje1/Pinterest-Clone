@@ -172,7 +172,7 @@ exports[`The comments window will render with comments 1`] = `
             <ForwardRef(Typography)
               sx={
                 {
-                  "color": "#4c62bc",
+                  "color": "#3752ff",
                   "fontWeight": "bold",
                 }
               }

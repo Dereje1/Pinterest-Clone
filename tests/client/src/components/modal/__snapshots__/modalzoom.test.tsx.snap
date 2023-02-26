@@ -104,10 +104,21 @@ exports[`The pin zoom modal will render 1`] = `
             authenticated={true}
             closePin={[Function]}
             displayLogin={[MockFunction]}
-            title="owner id-1"
+            title={
+              <ForwardRef(Typography)
+                sx={
+                  {
+                    "color": "#3752ff",
+                    "fontSize": "1.1em",
+                    "fontWeight": "bold",
+                  }
+                }
+              >
+                owner id-1
+              </ForwardRef(Typography)>
+            }
             userId="1"
           />
-          <br />
           <span
             style={
               {

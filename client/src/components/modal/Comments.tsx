@@ -171,7 +171,7 @@ function Comments({
                     closePin={closePin}
                     displayLogin={displayLogin}
                     title={(
-                      <Typography variant="subtitle1" sx={{ color: '#4c62bc', fontWeight: 'bold' }}>
+                      <Typography variant="subtitle1" sx={{ color: '#3752ff', fontWeight: 'bold' }}>
                         {`${displayName}`}
                       </Typography>
                     )}

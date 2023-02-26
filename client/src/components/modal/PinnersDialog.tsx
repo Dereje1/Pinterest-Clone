@@ -64,7 +64,12 @@ function PinnersDialog({
               authenticated={authenticated}
               closePin={handleCose}
               userId={pinner.userId}
-              title={<ListItemText primary={pinner.name} />}
+              title={(
+                <ListItemText
+                  primary={pinner.name}
+                  primaryTypographyProps={{ color: '#3752ff', fontWeight: 'bold' }}
+                />
+              )}
               displayLogin={displayLogin}
             />
           </ListItem>
