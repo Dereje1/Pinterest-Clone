@@ -7,19 +7,12 @@ interface methods {
   delete: 'delete'
   get: 'get'
 }
-
-interface pinAddPayload { imgDescription: string, imgLink: string | ArrayBuffer }
-
-interface commentAddPayload { comment: string }
-
-interface duplicateCheckPayload { picInPreview: string | ArrayBuffer }
-
-interface nameChangePayload { newDisplayName: string }
-
 interface crudTypes {
   address: string
-  method: string
-  payload: pinAddPayload | commentAddPayload | duplicateCheckPayload | nameChangePayload | undefined
+  method?: keyof methods
+  payload?: {
+    [key: string]: string | ArrayBuffer
+  }
 }
 
 export default async ({ address, method = 'get', payload }: crudTypes) => {
@@ -27,7 +20,7 @@ export default async ({ address, method = 'get', payload }: crudTypes) => {
     const { data } = await axios[method as keyof methods](address, payload);
     return data;
   } catch (error) {
-    console.log(`An error occured making a REST call${error}`);
+    console.log(`An error occured making a ${method} REST call to -> ${address} error -> ${error}`);
     throw (error);
   }
 };

@@ -39,7 +39,7 @@ describe('The Home Component', () => {
     displayedPinList.sort((a: PinType, b: PinType) => Number(a._id) - Number(b._id));
     expect(displayedPinList).toStrictEqual(pinsStub);
     expect(mockedRESTcall).toHaveBeenCalledTimes(1);
-    expect(mockedRESTcall).toHaveBeenCalledWith({ address: '/api/home', method: 'get', payload: undefined });
+    expect(mockedRESTcall).toHaveBeenCalledWith({ address: '/api/home' });
   });
 
   test('Will filter pins if matching search found for description', async () => {

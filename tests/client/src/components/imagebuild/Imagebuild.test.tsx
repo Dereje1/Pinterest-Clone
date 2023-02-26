@@ -234,7 +234,6 @@ describe('The ImageBuild component', () => {
         {
           address: '/api/pin/1',
           method: 'put',
-          payload: undefined,
         },
       ],
     ]);
@@ -258,7 +257,6 @@ describe('The ImageBuild component', () => {
         {
           address: '/api/unpin/2',
           method: 'put',
-          payload: undefined,
         },
       ],
     ]);
@@ -321,7 +319,6 @@ describe('The ImageBuild component', () => {
     expect(mockedRESTcall).toHaveBeenCalledWith({
       address: '/api/updateTags/tag_query',
       method: 'put',
-      payload: undefined,
     });
     // assert that new comment is reflected in zoomed pin
     pinZoom = wrapper.find('PinZoom');

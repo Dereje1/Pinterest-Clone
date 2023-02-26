@@ -58,11 +58,7 @@ export class Mypins extends Component<MypinsProps, MypinsState> {
 
   async componentDidMount() {
     // get all pins and filter by owned and saved and then concatenate and set state
-    const { profilePins } = await RESTcall({
-      address: '/api/mypins',
-      method: 'get',
-      payload: undefined,
-    });
+    const { profilePins } = await RESTcall({ address: '/api/mypins' });
     this.setState({
       pinList: profilePins,
       ready: true,
@@ -133,7 +129,6 @@ export class Mypins extends Component<MypinsProps, MypinsState> {
       await RESTcall({
         address: owns ? `/api/${_id}` : `/api/unpin/${_id}`,
         method: owns ? 'delete' : 'put',
-        payload: undefined,
       });
     });
   }

@@ -27,11 +27,7 @@ export class Home extends Component<HomeProps, HomeState> {
   }
 
   async componentDidMount() {
-    const pinsFromDB = await RESTcall({
-      address: '/api/home',
-      method: 'get',
-      payload: undefined,
-    });
+    const pinsFromDB = await RESTcall({ address: '/api/home' });
     this.setState({
       pinList: shuffleImages([...pinsFromDB]),
       ready: true,

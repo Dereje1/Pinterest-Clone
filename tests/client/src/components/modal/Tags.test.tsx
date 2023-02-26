@@ -61,11 +61,7 @@ describe('The tags component', () => {
     await addTags.props().onClick();
     tagsForm = wrapper.find('TagsForm');
     expect(tagsForm.isEmptyRender()).toBe(false);
-    expect(mockedRESTcall).toHaveBeenCalledWith({
-      address: '/api/getTags',
-      method: 'get',
-      payload: undefined,
-    });
+    expect(mockedRESTcall).toHaveBeenCalledWith({ address: '/api/getTags' });
     expect(tagsForm.props().suggestedTags).toEqual(['TAG 3', 'TAG 4']);
     // trigger form close
     tagsForm.props().closeTagsForm();
@@ -81,11 +77,7 @@ describe('The tags component', () => {
     await addTags.props().onClick();
     const tagsForm: EnzymePropSelector = wrapper.find('TagsForm');
     expect(tagsForm.isEmptyRender()).toBe(false);
-    expect(mockedRESTcall).toHaveBeenCalledWith({
-      address: '/api/getTags',
-      method: 'get',
-      payload: undefined,
-    });
+    expect(mockedRESTcall).toHaveBeenCalledWith({ address: '/api/getTags' });
     expect(tagsForm.props().suggestedTags).toEqual([]);
   });
 
