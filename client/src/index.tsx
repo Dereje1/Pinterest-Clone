@@ -50,5 +50,3 @@ const App = (
 );
 // render routes
 render(App, document.getElementById('app'));
-
-export default store;
