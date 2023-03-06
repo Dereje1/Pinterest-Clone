@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import _ from 'lodash';
 import Paper from '@mui/material/Paper';
 import InputBase from '@mui/material/InputBase';
 import HighlightOffIcon from '@mui/icons-material/HighlightOff';
@@ -32,14 +33,24 @@ type FoundUsers = FoundUser[] | []
 function SearchUser({ closeSearch, displayLogin, authenticated }: SearchUsersProps) {
   const [searchVal, setSearchVal] = useState('');
   const [foundUsers, setFoundUsers] = useState([] as FoundUsers);
+  const [isLoading, setIsLoading] = useState(false);
 
   const handleSearch = async () => {
     if (searchVal.trim().length) {
       const data: FoundUsers = await RESTcall({ address: `/api/searchUser/${searchVal}` });
       setFoundUsers(data);
+      setIsLoading(false);
     } else {
       setFoundUsers([]);
+      setIsLoading(false);
     }
+  };
+
+  const onDebounceSearch = _.debounce(handleSearch, 1000);
+
+  const handleKeyUp = () => {
+    setIsLoading(true);
+    onDebounceSearch();
   };
 
   return (
@@ -65,8 +76,9 @@ function SearchUser({ closeSearch, displayLogin, authenticated }: SearchUsersPro
         disableClearable
         inputValue={searchVal}
         autoComplete
-        onInputChange={(_, value) => setSearchVal(value)}
-        onKeyUp={handleSearch}
+        onInputChange={(e, value) => setSearchVal(value)}
+        onKeyUp={handleKeyUp}
+        loading={isLoading}
         renderOption={
           (props, option) => (
             <ListItem
