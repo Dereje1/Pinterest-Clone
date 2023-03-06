@@ -4,10 +4,21 @@ import InputBase from '@mui/material/InputBase';
 import HighlightOffIcon from '@mui/icons-material/HighlightOff';
 import IconButton from '@mui/material/IconButton';
 import Autocomplete from '@mui/material/Autocomplete';
+import ListItem from '@mui/material/ListItem';
+import ListItemAvatar from '@mui/material/ListItemAvatar';
+import ListItemText from '@mui/material/ListItemText';
+import Avatar from '@mui/material/Avatar';
+import { getProviderIcons } from '../common/common';
+import ProfileLink from '../modal/ProfileLink';
+import { providerIconsType } from '../../interfaces';
 import RESTcall from '../../crud';
+
+const providerIcons: providerIconsType = getProviderIcons({ fontSize: 20 });
 
 interface SearchUsersProps {
   closeSearch: () => void
+  authenticated: boolean
+  displayLogin: () => void
 }
 
 interface FoundUser {
@@ -18,7 +29,7 @@ interface FoundUser {
 
 type FoundUsers = FoundUser[] | []
 
-function SearchUser({ closeSearch }: SearchUsersProps) {
+function SearchUser({ closeSearch, displayLogin, authenticated }: SearchUsersProps) {
   const [searchVal, setSearchVal] = useState('');
   const [foundUsers, setFoundUsers] = useState([] as FoundUsers);
 
@@ -58,23 +69,44 @@ function SearchUser({ closeSearch }: SearchUsersProps) {
         onKeyUp={handleSearch}
         renderOption={
           (props, option) => (
-            <li {...props} key={option._id}>
-              {option.displayName}
-            </li>
+            <ListItem
+              {...props}
+              key={option._id}
+            >
+              <ListItemAvatar>
+                <Avatar
+                  sx={{
+                    width: 26,
+                    height: 26,
+                    bgcolor: providerIcons[option.service as keyof providerIconsType].color,
+                  }}
+                >
+                  {providerIcons[option.service as keyof providerIconsType].icon}
+                </Avatar>
+              </ListItemAvatar>
+              <ProfileLink
+                authenticated={authenticated}
+                closePin={closeSearch}
+                userId={option._id}
+                title={(
+                  <ListItemText
+                    primary={option.displayName}
+                    primaryTypographyProps={{ color: '#3752ff', fontWeight: 'bold' }}
+                  />
+                )}
+                displayLogin={displayLogin}
+              />
+            </ListItem>
           )
         }
-        renderInput={(params) => {
-          const { InputLabelProps, InputProps, ...rest } = params;
-          return (
-            <InputBase
-              {...InputProps}
-              {...rest}
-              sx={{ width: '100%', height: '100%', marginLeft: 1 }}
-              placeholder="Search users..."
-              inputProps={{ ...params.inputProps }}
-            />
-          );
-        }}
+        renderInput={(params) => (
+          <InputBase
+            {...params.InputProps}
+            sx={{ width: '100%', height: '100%', marginLeft: 1 }}
+            placeholder="Search users..."
+            inputProps={{ ...params.inputProps }}
+          />
+        )}
       />
 
       <IconButton

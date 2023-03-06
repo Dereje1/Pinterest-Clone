@@ -5,6 +5,7 @@ import Typography from '@mui/material/Typography';
 import Avatar from '@mui/material/Avatar';
 import Box from '@mui/material/Box';
 import SearchIcon from '@mui/icons-material/Search';
+import IconButton from '@mui/material/IconButton';
 import ImageBuild from '../imagebuild/Imagebuild';
 import { Loading, getProviderIcons, UserPinsSelector } from '../common/common';
 import SignIn from '../signin/signin';
@@ -97,7 +98,14 @@ function Profile() {
         }}
         >
           {
-            displaySearch ? <SearchUsers closeSearch={() => setDisplaySearch(false)} />
+            displaySearch
+              ? (
+                <SearchUsers
+                  closeSearch={() => setDisplaySearch(false)}
+                  authenticated={loggedInUser.authenticated}
+                  displayLogin={() => setDisplayLogin(true)}
+                />
+              )
               : (
                 <>
                   <Typography
@@ -106,11 +114,11 @@ function Profile() {
                   >
                     PROFILE
                   </Typography>
-                  <SearchIcon
-                    onClick={() => setDisplaySearch(true)}
-                    sx={{ cursor: 'pointer', marginLeft: 2 }}
-                    fontSize="large"
-                  />
+                  <IconButton onClick={() => setDisplaySearch(true)} sx={{ ml: 2 }}>
+                    <SearchIcon
+                      fontSize="large"
+                    />
+                  </IconButton>
                 </>
               )
           }
