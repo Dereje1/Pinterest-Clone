@@ -7,6 +7,7 @@ import Box from '@mui/material/Box';
 import ImageBuild from '../imagebuild/Imagebuild';
 import { Loading, getProviderIcons, UserPinsSelector } from '../common/common';
 import SignIn from '../signin/signin';
+import SearchUsers from './SearchUsers';
 import RESTcall from '../../crud';
 import { providerIconsType, userType } from '../../interfaces';
 import error from '../mypins/error.png';
@@ -89,6 +90,7 @@ function Profile() {
         marginRight: 10,
       }}
       >
+        <SearchUsers />
         <Typography
           variant="h4"
           color="text.secondary"

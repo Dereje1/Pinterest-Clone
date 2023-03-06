@@ -3,7 +3,7 @@ import { isLoggedIn } from 'passportbundle';
 // controllers
 import addPin from './controllers/post';
 import {
-  getPins, getProfilePins, getTags, getUserPins,
+  getPins, getProfilePins, getTags, getUserPins, searchUsers,
 } from './controllers/get';
 import {
   addComment, pinImage, unpin, updateTags, updateDisplayName, getDuplicateError,
@@ -22,6 +22,9 @@ router.get('/api/mypins', isLoggedIn, getUserPins);
 
 // gets pins for a single user
 router.get('/api/userProfile/:userid', isLoggedIn, getProfilePins);
+
+// searchs users
+router.get('/api/searchUser/:search', isLoggedIn, searchUsers);
 
 // gets all used tags
 router.get('/api/getTags', isLoggedIn, getTags);
