@@ -5,7 +5,11 @@ import HighlightOffIcon from '@mui/icons-material/HighlightOff';
 import IconButton from '@mui/material/IconButton';
 import RESTcall from '../../crud';
 
-function SearchUser() {
+interface SearchUsersProps {
+  closeSearch: () => void
+}
+
+function SearchUser({ closeSearch }: SearchUsersProps) {
   const [searchVal, updateSearchVal] = useState('');
 
   const handleSearch = async () => {
@@ -27,12 +31,12 @@ function SearchUser() {
         marginBottom: 'auto',
       }}
       variant="elevation"
-      elevation={3}
+      elevation={2}
     >
       <InputBase
         sx={{ width: '100%', height: '100%', marginLeft: 1 }}
-        placeholder="Search..."
-        inputProps={{ 'aria-label': 'search' }}
+        placeholder="Search Users..."
+        inputProps={{ 'aria-label': 'search-users' }}
         onChange={(e) => updateSearchVal(e.target.value)}
         onKeyUp={handleSearch}
         value={searchVal}
@@ -44,9 +48,8 @@ function SearchUser() {
         sx={{
           p: '10px',
           cursor: 'pointer',
-          // visibility: searchVal ? 'visible' : 'hidden',
         }}
-        onClick={() => ({})}
+        onClick={closeSearch}
       >
         <HighlightOffIcon />
       </IconButton>

@@ -4,6 +4,7 @@ import { useSelector } from 'react-redux';
 import Typography from '@mui/material/Typography';
 import Avatar from '@mui/material/Avatar';
 import Box from '@mui/material/Box';
+import SearchIcon from '@mui/icons-material/Search';
 import ImageBuild from '../imagebuild/Imagebuild';
 import { Loading, getProviderIcons, UserPinsSelector } from '../common/common';
 import SignIn from '../signin/signin';
@@ -21,6 +22,7 @@ function Profile() {
   const [displaySetting, setDisplaySetting] = useState('created');
   const [displayLogin, setDisplayLogin] = useState(false);
   const [retrievedUser, setRetrievedUser] = useState({ service: 'twitter', displayName: '' });
+  const [displaySearch, setDisplaySearch] = useState(false);
 
   const { userInfo }:{userInfo: string} = useParams();
   const { pathname } = useLocation();
@@ -90,15 +92,31 @@ function Profile() {
         marginRight: 10,
       }}
       >
-        <SearchUsers />
-        <Typography
-          variant="h4"
-          color="text.secondary"
+        <div style={{
+          display: 'flex', alignItems: 'center', height: 100, marginBottom: 0,
+        }}
         >
-          PROFILE
-        </Typography>
+          {
+            displaySearch ? <SearchUsers closeSearch={() => setDisplaySearch(false)} />
+              : (
+                <>
+                  <Typography
+                    variant="h4"
+                    color="text.secondary"
+                  >
+                    PROFILE
+                  </Typography>
+                  <SearchIcon
+                    onClick={() => setDisplaySearch(true)}
+                    sx={{ cursor: 'pointer', marginLeft: 2 }}
+                    fontSize="large"
+                  />
+                </>
+              )
+          }
+        </div>
         <Avatar sx={{
-          bgcolor: providerIcons[retrievedUser.service as keyof providerIconsType].color, mt: 3,
+          bgcolor: providerIcons[retrievedUser.service as keyof providerIconsType].color, mt: 0,
         }}
         >
           {providerIcons[retrievedUser.service as keyof providerIconsType].icon}
