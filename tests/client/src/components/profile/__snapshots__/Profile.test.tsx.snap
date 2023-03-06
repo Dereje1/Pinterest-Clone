@@ -15,17 +15,40 @@ exports[`The profile page Will render for pins created by the user 1`] = `
       }
     }
   >
-    <ForwardRef(Typography)
-      color="text.secondary"
-      variant="h4"
+    <div
+      style={
+        {
+          "alignItems": "center",
+          "display": "flex",
+          "height": 100,
+          "marginBottom": 0,
+        }
+      }
     >
-      PROFILE
-    </ForwardRef(Typography)>
+      <ForwardRef(Typography)
+        color="text.secondary"
+        variant="h4"
+      >
+        PROFILE
+      </ForwardRef(Typography)>
+      <ForwardRef(IconButton)
+        onClick={[Function]}
+        sx={
+          {
+            "ml": 2,
+          }
+        }
+      >
+        <Memo(ForwardRef(SearchIcon))
+          fontSize="large"
+        />
+      </ForwardRef(IconButton)>
+    </div>
     <ForwardRef(Avatar)
       sx={
         {
           "bgcolor": "#1DA1F2",
-          "mt": 3,
+          "mt": 0,
         }
       }
     >
@@ -111,17 +134,40 @@ exports[`The profile page Will render for pins saved by the user 1`] = `
       }
     }
   >
-    <ForwardRef(Typography)
-      color="text.secondary"
-      variant="h4"
+    <div
+      style={
+        {
+          "alignItems": "center",
+          "display": "flex",
+          "height": 100,
+          "marginBottom": 0,
+        }
+      }
     >
-      PROFILE
-    </ForwardRef(Typography)>
+      <ForwardRef(Typography)
+        color="text.secondary"
+        variant="h4"
+      >
+        PROFILE
+      </ForwardRef(Typography)>
+      <ForwardRef(IconButton)
+        onClick={[Function]}
+        sx={
+          {
+            "ml": 2,
+          }
+        }
+      >
+        <Memo(ForwardRef(SearchIcon))
+          fontSize="large"
+        />
+      </ForwardRef(IconButton)>
+    </div>
     <ForwardRef(Avatar)
       sx={
         {
           "bgcolor": "#1DA1F2",
-          "mt": 3,
+          "mt": 0,
         }
       }
     >
@@ -212,17 +258,40 @@ exports[`The profile page Will render no image sign if user has not pinned or cr
       }
     }
   >
-    <ForwardRef(Typography)
-      color="text.secondary"
-      variant="h4"
+    <div
+      style={
+        {
+          "alignItems": "center",
+          "display": "flex",
+          "height": 100,
+          "marginBottom": 0,
+        }
+      }
     >
-      PROFILE
-    </ForwardRef(Typography)>
+      <ForwardRef(Typography)
+        color="text.secondary"
+        variant="h4"
+      >
+        PROFILE
+      </ForwardRef(Typography)>
+      <ForwardRef(IconButton)
+        onClick={[Function]}
+        sx={
+          {
+            "ml": 2,
+          }
+        }
+      >
+        <Memo(ForwardRef(SearchIcon))
+          fontSize="large"
+        />
+      </ForwardRef(IconButton)>
+    </div>
     <ForwardRef(Avatar)
       sx={
         {
           "bgcolor": "#1DA1F2",
-          "mt": 3,
+          "mt": 0,
         }
       }
     >
