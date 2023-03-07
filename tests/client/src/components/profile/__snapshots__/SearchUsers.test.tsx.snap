@@ -24,6 +24,7 @@ exports[`The Search users component will render the component 1`] = `
     id="free-solo-user-search"
     inputValue=""
     loading={false}
+    onChange={[Function]}
     onInputChange={[Function]}
     onKeyUp={[Function]}
     options={[]}

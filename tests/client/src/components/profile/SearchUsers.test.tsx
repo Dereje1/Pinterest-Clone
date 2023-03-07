@@ -1,4 +1,5 @@
 import React from 'react';
+import * as router from 'react-router-dom';
 import { shallow } from 'enzyme';
 import toJson from 'enzyme-to-json';
 import SearchUsers from '../../../../../client/src/components/profile/SearchUsers';
@@ -7,6 +8,11 @@ import RESTcall from '../../../../../client/src/crud';
 jest.mock('../../../../../client/src/crud');
 const mockedRESTcall = jest.mocked(RESTcall);
 jest.useFakeTimers();
+// Mock router hooks
+jest.mock('react-router-dom', () => ({
+  ...jest.requireActual('react-router-dom'), // use actual for all non-hook parts
+  useHistory: jest.fn(),
+}));
 
 describe('The Search users component', () => {
   let props: React.ComponentProps<typeof SearchUsers>;
@@ -108,5 +114,19 @@ describe('The Search users component', () => {
     expect(mockedRESTcall).toHaveBeenCalledTimes(0);
     expect(autoComplete.props().options).toEqual([]);
     expect(autoComplete.props().loading).toBe(false);
+  });
+
+  test('will update router history on selection of a user', () => {
+    const push = jest.fn();
+    const hist = router.useHistory();
+    jest
+      .spyOn(router, 'useHistory')
+      .mockImplementation(() => ({ ...hist, push }));
+
+    const wrapper = shallow(<SearchUsers {...props} />);
+    const autoComplete = wrapper.find({ id: 'free-solo-user-search' });
+    autoComplete.props().onChange({}, { _id: 'a_user_id' });
+    expect(props.closeSearch).toHaveBeenCalledTimes(1);
+    expect(push).toHaveBeenCalledWith('/profile/a_user_id');
   });
 });

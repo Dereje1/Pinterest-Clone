@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import _ from 'lodash';
+import { useHistory } from 'react-router-dom';
 import Paper from '@mui/material/Paper';
 import InputBase from '@mui/material/InputBase';
 import HighlightOffIcon from '@mui/icons-material/HighlightOff';
@@ -35,6 +36,8 @@ function SearchUser({ closeSearch, displayLogin, authenticated }: SearchUsersPro
   const [foundUsers, setFoundUsers] = useState([] as FoundUsers);
   const [isLoading, setIsLoading] = useState(false);
 
+  const history = useHistory();
+
   const handleSearch = async () => {
     if (searchVal.trim().length) {
       const data: FoundUsers = await RESTcall({ address: `/api/searchUser/${searchVal}` });
@@ -51,6 +54,11 @@ function SearchUser({ closeSearch, displayLogin, authenticated }: SearchUsersPro
   const handleKeyUp = () => {
     setIsLoading(true);
     onDebounceSearch();
+  };
+
+  const handleSelection = (e: React.SyntheticEvent, value: FoundUser) => {
+    closeSearch();
+    history.push(`/profile/${value._id}`);
   };
 
   return (
@@ -76,6 +84,7 @@ function SearchUser({ closeSearch, displayLogin, authenticated }: SearchUsersPro
         disableClearable
         inputValue={searchVal}
         onInputChange={(e, value) => setSearchVal(value)}
+        onChange={handleSelection}
         onKeyUp={handleKeyUp}
         loading={isLoading}
         renderOption={
