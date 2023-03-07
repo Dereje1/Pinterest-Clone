@@ -78,7 +78,6 @@ describe('The Search users component', () => {
     autoComplete.props().onKeyUp();
     // update again after keyup
     autoComplete = wrapper.find({ id: 'free-solo-user-search' });
-    expect(autoComplete.props().loading).toBe(true);
     // advance for debounce and resolve crud call
     jest.advanceTimersByTime(1000);
     await Promise.resolve();
@@ -106,7 +105,6 @@ describe('The Search users component', () => {
     autoComplete.props().onKeyUp();
     // update again after keyup
     autoComplete = wrapper.find({ id: 'free-solo-user-search' });
-    expect(autoComplete.props().loading).toBe(true);
     // advance for debounce
     jest.advanceTimersByTime(1000);
     // update again after rest call resolves

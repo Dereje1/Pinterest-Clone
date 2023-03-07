@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useMemo, useState } from 'react';
 import _ from 'lodash';
 import { useHistory } from 'react-router-dom';
 import Paper from '@mui/material/Paper';
@@ -49,12 +49,13 @@ function SearchUser({ closeSearch, displayLogin, authenticated }: SearchUsersPro
     }
   };
 
-  const onDebounceSearch = _.debounce(handleSearch, 1000);
+  useEffect(() => {
+    if (isLoading) {
+      handleSearch();
+    }
+  }, [isLoading]);
 
-  const handleKeyUp = () => {
-    setIsLoading(true);
-    onDebounceSearch();
-  };
+  const onDebounceSearch = useMemo(() => _.debounce(() => setIsLoading(true), 1000), []);
 
   const handleSelection = (e: React.SyntheticEvent, value: FoundUser) => {
     closeSearch();
@@ -85,7 +86,7 @@ function SearchUser({ closeSearch, displayLogin, authenticated }: SearchUsersPro
         inputValue={searchVal}
         onInputChange={(e, value) => setSearchVal(value)}
         onChange={handleSelection}
-        onKeyUp={handleKeyUp}
+        onKeyUp={onDebounceSearch}
         loading={isLoading}
         renderOption={
           (props, option) => (
