@@ -68,14 +68,13 @@ function SearchUser({ closeSearch, displayLogin, authenticated }: SearchUsersPro
       elevation={2}
     >
       <Autocomplete
-        id="free-solo-tags"
+        id="free-solo-user-search"
         freeSolo
         options={foundUsers}
         getOptionLabel={(option: FoundUser) => option.displayName}
         fullWidth
         disableClearable
         inputValue={searchVal}
-        autoComplete
         onInputChange={(e, value) => setSearchVal(value)}
         onKeyUp={handleKeyUp}
         loading={isLoading}

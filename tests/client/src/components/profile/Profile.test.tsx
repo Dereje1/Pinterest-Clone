@@ -41,6 +41,14 @@ describe('The profile page', () => {
     expect(toJson(wrapper)).toMatchSnapshot();
   });
 
+  test('Will render the search component', async () => {
+    const wrapper = shallow(<Profile />);
+    await Promise.resolve();
+    const searchIcon: EnzymePropSelector = wrapper.find('ForwardRef(IconButton)');
+    searchIcon.props().onClick();
+    expect(toJson(wrapper)).toMatchSnapshot();
+  });
+
   test('Will render for pins saved by the user', async () => {
     const wrapper = shallow(<Profile />);
     await Promise.resolve();
@@ -103,5 +111,22 @@ describe('The profile page', () => {
     const wrapper = shallow(<Profile />);
     await Promise.resolve();
     expect(wrapper.find('Loading').length).toBe(1);
+  });
+
+  test('Will close the display of the search component', async () => {
+    const wrapper = shallow(<Profile />);
+    await Promise.resolve();
+    let searchComponent: EnzymePropSelector = wrapper.find('SearchUser');
+    expect(searchComponent.length).toBe(0);
+    // toggle search component on
+    const searchIcon: EnzymePropSelector = wrapper.find('ForwardRef(IconButton)');
+    searchIcon.props().onClick();
+    searchComponent = wrapper.find('SearchUser');
+    expect(searchComponent.length).toBe(1);
+    // close search component
+    searchComponent.props().closeSearch();
+    searchComponent.props().displayLogin();
+    searchComponent = wrapper.find('SearchUser');
+    expect(searchComponent.length).toBe(0);
   });
 });

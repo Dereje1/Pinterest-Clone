@@ -5,6 +5,7 @@ import {
   getProfilePins,
   getTags,
   getUserPins,
+  searchUsers,
 } from '../../../server/controllers/get';
 import pins from '../../../server/models/pins'; // schema for pins
 import users from '../../../server/models/user'; // schema for pins
@@ -297,6 +298,52 @@ describe('Getting saved tags list', () => {
       }),
     );
     await getTags(req as genericRequest, res as unknown as Response);
+    expect(res.json).toHaveBeenCalledWith(Error('Mocked rejection'));
+  });
+});
+
+describe('Searching users', () => {
+  let res:{
+    json: jest.Mock,
+  };
+  beforeEach(() => {
+    res = { json: jest.fn() };
+  });
+  afterEach(() => {
+    jest.restoreAllMocks();
+  });
+
+  test('will get users', async () => {
+    const req = {
+      params: {
+        search: 'a user',
+      },
+      user,
+    };
+    users.find = jest.fn().mockImplementation(
+      () => ({
+        exec: jest.fn().mockResolvedValue([{ _id: 'test user id', displayName: 'test displayName', service: 'github' }]),
+      }),
+    );
+    await searchUsers(req as genericRequest, res as unknown as Response);
+    expect(users.find).toHaveBeenCalledTimes(1);
+    expect(users.find).toHaveBeenCalledWith({ displayName: /a user/gi });
+    expect(res.json).toHaveBeenCalledWith([{ _id: 'test user id', displayName: 'test displayName', service: 'github' }]);
+  });
+
+  test('will respond with error if get is rejected', async () => {
+    const req = {
+      params: {
+        search: 'a user',
+      },
+      user,
+    };
+    users.find = jest.fn().mockImplementation(
+      () => ({
+        exec: jest.fn().mockRejectedValue(new Error('Mocked rejection')),
+      }),
+    );
+    await searchUsers(req as genericRequest, res as unknown as Response);
     expect(res.json).toHaveBeenCalledWith(Error('Mocked rejection'));
   });
 });

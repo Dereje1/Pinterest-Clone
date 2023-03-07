@@ -27,6 +27,7 @@ export interface genericRequest extends Request{
     } | undefined
     params: {
       _id: string
+      search: string
     }
     isAuthenticated: () => boolean,
 }

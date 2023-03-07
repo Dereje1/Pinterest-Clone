@@ -1,0 +1,47 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`The Search users component will render the component 1`] = `
+<ForwardRef(Paper)
+  component="form"
+  elevation={2}
+  sx={
+    {
+      "alignItems": "center",
+      "display": "flex",
+      "marginBottom": "auto",
+      "marginTop": "auto",
+      "p": "2px 4px",
+      "width": 300,
+    }
+  }
+  variant="elevation"
+>
+  <ForwardRef(Autocomplete)
+    disableClearable={true}
+    freeSolo={true}
+    fullWidth={true}
+    getOptionLabel={[Function]}
+    id="free-solo-user-search"
+    inputValue=""
+    loading={false}
+    onInputChange={[Function]}
+    onKeyUp={[Function]}
+    options={[]}
+    renderInput={[Function]}
+    renderOption={[Function]}
+  />
+  <ForwardRef(IconButton)
+    id="clear-search"
+    onClick={[MockFunction]}
+    sx={
+      {
+        "cursor": "pointer",
+        "p": "10px",
+      }
+    }
+    type="button"
+  >
+    <Memo(ForwardRef(HighlightOffIcon)) />
+  </ForwardRef(IconButton)>
+</ForwardRef(Paper)>
+`;
