@@ -71,6 +71,12 @@ const restMock = jest.fn().mockImplementation((...args) => {
     return Promise.resolve({ duplicateError: true });
   } if (address.includes('/api/updateDisplayName') && method === 'put') {
     return Promise.resolve();
+  } if (address.includes('/api/searchUser') && method === 'get' && !payload) {
+    return Promise.resolve([{
+      displayName: 'test_displayName',
+      service: 'twitter',
+      _id: 'test_user_id',
+    }]);
   }
   return Promise.reject(new Error(`Requested method:${method} and path: ${address} not mocked!!`));
 });

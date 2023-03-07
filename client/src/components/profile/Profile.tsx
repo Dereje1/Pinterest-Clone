@@ -4,9 +4,12 @@ import { useSelector } from 'react-redux';
 import Typography from '@mui/material/Typography';
 import Avatar from '@mui/material/Avatar';
 import Box from '@mui/material/Box';
+import SearchIcon from '@mui/icons-material/Search';
+import IconButton from '@mui/material/IconButton';
 import ImageBuild from '../imagebuild/Imagebuild';
 import { Loading, getProviderIcons, UserPinsSelector } from '../common/common';
 import SignIn from '../signin/signin';
+import SearchUsers from './SearchUsers';
 import RESTcall from '../../crud';
 import { providerIconsType, userType } from '../../interfaces';
 import error from '../mypins/error.png';
@@ -20,6 +23,7 @@ function Profile() {
   const [displaySetting, setDisplaySetting] = useState('created');
   const [displayLogin, setDisplayLogin] = useState(false);
   const [retrievedUser, setRetrievedUser] = useState({ service: 'twitter', displayName: '' });
+  const [displaySearch, setDisplaySearch] = useState(false);
 
   const { userInfo }:{userInfo: string} = useParams();
   const { pathname } = useLocation();
@@ -89,14 +93,38 @@ function Profile() {
         marginRight: 10,
       }}
       >
-        <Typography
-          variant="h4"
-          color="text.secondary"
+        <div style={{
+          display: 'flex', alignItems: 'center', height: 100, marginBottom: 0,
+        }}
         >
-          PROFILE
-        </Typography>
+          {
+            displaySearch
+              ? (
+                <SearchUsers
+                  closeSearch={() => setDisplaySearch(false)}
+                  authenticated={loggedInUser.authenticated}
+                  displayLogin={() => setDisplayLogin(true)}
+                />
+              )
+              : (
+                <>
+                  <Typography
+                    variant="h4"
+                    color="text.secondary"
+                  >
+                    PROFILE
+                  </Typography>
+                  <IconButton onClick={() => setDisplaySearch(true)} sx={{ ml: 2 }}>
+                    <SearchIcon
+                      fontSize="large"
+                    />
+                  </IconButton>
+                </>
+              )
+          }
+        </div>
         <Avatar sx={{
-          bgcolor: providerIcons[retrievedUser.service as keyof providerIconsType].color, mt: 3,
+          bgcolor: providerIcons[retrievedUser.service as keyof providerIconsType].color, mt: 0,
         }}
         >
           {providerIcons[retrievedUser.service as keyof providerIconsType].icon}

@@ -93,3 +93,19 @@ export const getTags = async (req: Request, res: genericResponseType) => {
     res.json(error);
   }
 };
+
+export const searchUsers = async (req: Request, res: genericResponseType) => {
+  const searchVal = req.params.search;
+  const re = new RegExp(searchVal, 'gi');
+  try {
+    debug('Getting users');
+    const foundUsers = await users.find({ displayName: re }).exec();
+    const results = foundUsers.map(
+      ({ _id, displayName, service }) => ({ _id, displayName, service }),
+    );
+    res.json(results);
+  } catch (error) {
+    debug('Error getting users');
+    res.json(error);
+  }
+};

@@ -15,17 +15,40 @@ exports[`The profile page Will render for pins created by the user 1`] = `
       }
     }
   >
-    <ForwardRef(Typography)
-      color="text.secondary"
-      variant="h4"
+    <div
+      style={
+        {
+          "alignItems": "center",
+          "display": "flex",
+          "height": 100,
+          "marginBottom": 0,
+        }
+      }
     >
-      PROFILE
-    </ForwardRef(Typography)>
+      <ForwardRef(Typography)
+        color="text.secondary"
+        variant="h4"
+      >
+        PROFILE
+      </ForwardRef(Typography)>
+      <ForwardRef(IconButton)
+        onClick={[Function]}
+        sx={
+          {
+            "ml": 2,
+          }
+        }
+      >
+        <Memo(ForwardRef(SearchIcon))
+          fontSize="large"
+        />
+      </ForwardRef(IconButton)>
+    </div>
     <ForwardRef(Avatar)
       sx={
         {
           "bgcolor": "#1DA1F2",
-          "mt": 3,
+          "mt": 0,
         }
       }
     >
@@ -111,17 +134,40 @@ exports[`The profile page Will render for pins saved by the user 1`] = `
       }
     }
   >
-    <ForwardRef(Typography)
-      color="text.secondary"
-      variant="h4"
+    <div
+      style={
+        {
+          "alignItems": "center",
+          "display": "flex",
+          "height": 100,
+          "marginBottom": 0,
+        }
+      }
     >
-      PROFILE
-    </ForwardRef(Typography)>
+      <ForwardRef(Typography)
+        color="text.secondary"
+        variant="h4"
+      >
+        PROFILE
+      </ForwardRef(Typography)>
+      <ForwardRef(IconButton)
+        onClick={[Function]}
+        sx={
+          {
+            "ml": 2,
+          }
+        }
+      >
+        <Memo(ForwardRef(SearchIcon))
+          fontSize="large"
+        />
+      </ForwardRef(IconButton)>
+    </div>
     <ForwardRef(Avatar)
       sx={
         {
           "bgcolor": "#1DA1F2",
-          "mt": 3,
+          "mt": 0,
         }
       }
     >
@@ -212,17 +258,40 @@ exports[`The profile page Will render no image sign if user has not pinned or cr
       }
     }
   >
-    <ForwardRef(Typography)
-      color="text.secondary"
-      variant="h4"
+    <div
+      style={
+        {
+          "alignItems": "center",
+          "display": "flex",
+          "height": 100,
+          "marginBottom": 0,
+        }
+      }
     >
-      PROFILE
-    </ForwardRef(Typography)>
+      <ForwardRef(Typography)
+        color="text.secondary"
+        variant="h4"
+      >
+        PROFILE
+      </ForwardRef(Typography)>
+      <ForwardRef(IconButton)
+        onClick={[Function]}
+        sx={
+          {
+            "ml": 2,
+          }
+        }
+      >
+        <Memo(ForwardRef(SearchIcon))
+          fontSize="large"
+        />
+      </ForwardRef(IconButton)>
+    </div>
     <ForwardRef(Avatar)
       sx={
         {
           "bgcolor": "#1DA1F2",
-          "mt": 3,
+          "mt": 0,
         }
       }
     >
@@ -299,4 +368,110 @@ exports[`The profile page Will render signin for non-authenticated users 1`] = `
 <SignIn
   removeSignin={[Function]}
 />
+`;
+
+exports[`The profile page Will render the search component 1`] = `
+<Fragment>
+  <div
+    style={
+      {
+        "alignItems": "center",
+        "display": "flex",
+        "flexDirection": "column",
+        "justifyContent": "space-between",
+        "marginLeft": 10,
+        "marginRight": 10,
+        "marginTop": 60,
+      }
+    }
+  >
+    <div
+      style={
+        {
+          "alignItems": "center",
+          "display": "flex",
+          "height": 100,
+          "marginBottom": 0,
+        }
+      }
+    >
+      <SearchUser
+        authenticated={true}
+        closeSearch={[Function]}
+        displayLogin={[Function]}
+      />
+    </div>
+    <ForwardRef(Avatar)
+      sx={
+        {
+          "bgcolor": "#1DA1F2",
+          "mt": 0,
+        }
+      }
+    >
+      <Memo(ForwardRef(TwitterIcon))
+        style={
+          {
+            "fontSize": 25,
+          }
+        }
+      />
+    </ForwardRef(Avatar)>
+    <ForwardRef(Typography)
+      sx={
+        {
+          "mt": 3,
+        }
+      }
+      variant="h6"
+    >
+      stubName
+    </ForwardRef(Typography)>
+    <UserPinsSelector
+      displaySetting="created"
+      setDisplaySetting={[Function]}
+    />
+  </div>
+  <ImageBuild
+    deletePin={null}
+    pinImage={true}
+    pinList={
+      [
+        {
+          "_id": "3",
+          "comments": [],
+          "createdAt": "2020-12-25T00:00:00.000+00:00",
+          "hasSaved": false,
+          "imgDescription": "imgDescription id-3",
+          "imgLink": "imgLink id-3",
+          "owner": {
+            "name": "owner id-3",
+            "service": "github",
+            "userId": "3",
+          },
+          "owns": true,
+          "savedBy": [
+            {
+              "name": "savedBy - id-3",
+              "service": "google",
+              "userId": "3",
+            },
+            {
+              "name": "savedBy - id-3",
+              "service": "github",
+              "userId": "3",
+            },
+          ],
+          "tags": [],
+        },
+      ]
+    }
+    ready={true}
+    user={
+      {
+        "authenticated": true,
+      }
+    }
+  />
+</Fragment>
 `;
