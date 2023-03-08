@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { HTMLAttributes } from 'react';
 import { Link as RouterLink } from 'react-router-dom';
 import Link from '@mui/material/Link';
 import TwitterIcon from '@mui/icons-material/Twitter';
@@ -7,6 +7,9 @@ import GitHubIcon from '@mui/icons-material/GitHub';
 import DownloadDoneIcon from '@mui/icons-material/DownloadDone';
 import Button from '@mui/material/Button';
 import ButtonGroup from '@mui/material/ButtonGroup';
+import ListItem from '@mui/material/ListItem';
+import ListItemAvatar from '@mui/material/ListItemAvatar';
+import Avatar from '@mui/material/Avatar';
 import { providerIconsType } from '../../interfaces';
 import './common.scss';
 
@@ -99,3 +102,41 @@ export function ProfileLink({
     </Link>
   );
 }
+
+interface SingleUserListProps {
+  providerIcons: providerIconsType,
+  service: string,
+  profileLinkProps: ProfileLinkProps
+  additionalProps?: HTMLAttributes<HTMLLIElement>
+}
+
+export function SingleUserList({
+  providerIcons,
+  service,
+  profileLinkProps,
+  additionalProps,
+}: SingleUserListProps) {
+  return (
+    <ListItem
+      {...additionalProps}
+      key={profileLinkProps.userId}
+    >
+      <ListItemAvatar>
+        <Avatar
+          sx={{
+            width: 26,
+            height: 26,
+            bgcolor: providerIcons[service as keyof providerIconsType].color,
+          }}
+        >
+          {providerIcons[service as keyof providerIconsType].icon}
+        </Avatar>
+      </ListItemAvatar>
+      <ProfileLink {...profileLinkProps} />
+    </ListItem>
+  );
+}
+
+SingleUserList.defaultProps = {
+  additionalProps: undefined,
+};

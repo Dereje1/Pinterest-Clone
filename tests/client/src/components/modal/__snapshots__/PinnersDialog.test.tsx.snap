@@ -32,34 +32,14 @@ exports[`The pinners dialog will render 1`] = `
       }
     }
   >
-    <ForwardRef(ListItem)
+    <SingleUserList
       key="1"
-    >
-      <ForwardRef(ListItemAvatar)>
-        <ForwardRef(Avatar)
-          sx={
-            {
-              "bgcolor": "#4285F4",
-              "height": 26,
-              "width": 26,
-            }
-          }
-        >
-          <Memo(ForwardRef(GoogleIcon))
-            style={
-              {
-                "fontSize": 20,
-              }
-            }
-          />
-        </ForwardRef(Avatar)>
-      </ForwardRef(ListItemAvatar)>
-      <ProfileLink
-        authenticated={false}
-        closePin={[Function]}
-        displayLogin={[MockFunction]}
-        title={
-          <ForwardRef(ListItemText)
+      profileLinkProps={
+        {
+          "authenticated": false,
+          "closePin": [Function],
+          "displayLogin": [MockFunction],
+          "title": <ForwardRef(ListItemText)
             primary="savedBy - id-1"
             primaryTypographyProps={
               {
@@ -67,39 +47,54 @@ exports[`The pinners dialog will render 1`] = `
                 "fontWeight": "bold",
               }
             }
-          />
+          />,
+          "userId": "1",
         }
-        userId="1"
-      />
-    </ForwardRef(ListItem)>
-    <ForwardRef(ListItem)
-      key="1"
-    >
-      <ForwardRef(ListItemAvatar)>
-        <ForwardRef(Avatar)
-          sx={
-            {
-              "bgcolor": "#1d7b20",
-              "height": 26,
-              "width": 26,
-            }
-          }
-        >
-          <Memo(ForwardRef(GitHubIcon))
-            style={
-              {
-                "fontSize": 20,
+      }
+      providerIcons={
+        {
+          "github": {
+            "color": "#1d7b20",
+            "icon": <Memo
+              style={
+                {
+                  "fontSize": 20,
+                }
               }
-            }
-          />
-        </ForwardRef(Avatar)>
-      </ForwardRef(ListItemAvatar)>
-      <ProfileLink
-        authenticated={false}
-        closePin={[Function]}
-        displayLogin={[MockFunction]}
-        title={
-          <ForwardRef(ListItemText)
+            />,
+          },
+          "google": {
+            "color": "#4285F4",
+            "icon": <Memo
+              style={
+                {
+                  "fontSize": 20,
+                }
+              }
+            />,
+          },
+          "twitter": {
+            "color": "#1DA1F2",
+            "icon": <Memo
+              style={
+                {
+                  "fontSize": 20,
+                }
+              }
+            />,
+          },
+        }
+      }
+      service="google"
+    />
+    <SingleUserList
+      key="1"
+      profileLinkProps={
+        {
+          "authenticated": false,
+          "closePin": [Function],
+          "displayLogin": [MockFunction],
+          "title": <ForwardRef(ListItemText)
             primary="savedBy - id-1"
             primaryTypographyProps={
               {
@@ -107,11 +102,46 @@ exports[`The pinners dialog will render 1`] = `
                 "fontWeight": "bold",
               }
             }
-          />
+          />,
+          "userId": "1",
         }
-        userId="1"
-      />
-    </ForwardRef(ListItem)>
+      }
+      providerIcons={
+        {
+          "github": {
+            "color": "#1d7b20",
+            "icon": <Memo
+              style={
+                {
+                  "fontSize": 20,
+                }
+              }
+            />,
+          },
+          "google": {
+            "color": "#4285F4",
+            "icon": <Memo
+              style={
+                {
+                  "fontSize": 20,
+                }
+              }
+            />,
+          },
+          "twitter": {
+            "color": "#1DA1F2",
+            "icon": <Memo
+              style={
+                {
+                  "fontSize": 20,
+                }
+              }
+            />,
+          },
+        }
+      }
+      service="github"
+    />
   </ForwardRef(List)>
 </ForwardRef(Dialog)>
 `;

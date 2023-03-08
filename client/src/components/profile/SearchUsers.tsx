@@ -6,11 +6,8 @@ import InputBase from '@mui/material/InputBase';
 import HighlightOffIcon from '@mui/icons-material/HighlightOff';
 import IconButton from '@mui/material/IconButton';
 import Autocomplete from '@mui/material/Autocomplete';
-import ListItem from '@mui/material/ListItem';
-import ListItemAvatar from '@mui/material/ListItemAvatar';
 import ListItemText from '@mui/material/ListItemText';
-import Avatar from '@mui/material/Avatar';
-import { getProviderIcons, ProfileLink } from '../common/common';
+import { getProviderIcons, SingleUserList } from '../common/common';
 import { providerIconsType } from '../../interfaces';
 import RESTcall from '../../crud';
 
@@ -89,34 +86,22 @@ function SearchUser({ closeSearch, displayLogin, authenticated }: SearchUsersPro
         loading={isLoading}
         renderOption={
           (props, option) => (
-            <ListItem
-              {...props}
+            <SingleUserList
+              profileLinkProps={{
+                authenticated,
+                userId: option._id,
+                title: <ListItemText
+                  primary={option.displayName}
+                  primaryTypographyProps={{ color: '#3752ff', fontWeight: 'bold' }}
+                />,
+                closePin: closeSearch,
+                displayLogin,
+              }}
+              providerIcons={providerIcons}
               key={option._id}
-            >
-              <ListItemAvatar>
-                <Avatar
-                  sx={{
-                    width: 26,
-                    height: 26,
-                    bgcolor: providerIcons[option.service as keyof providerIconsType].color,
-                  }}
-                >
-                  {providerIcons[option.service as keyof providerIconsType].icon}
-                </Avatar>
-              </ListItemAvatar>
-              <ProfileLink
-                authenticated={authenticated}
-                closePin={closeSearch}
-                userId={option._id}
-                title={(
-                  <ListItemText
-                    primary={option.displayName}
-                    primaryTypographyProps={{ color: '#3752ff', fontWeight: 'bold' }}
-                  />
-                )}
-                displayLogin={displayLogin}
-              />
-            </ListItem>
+              service={option.service}
+              additionalProps={props}
+            />
           )
         }
         renderInput={(params) => (

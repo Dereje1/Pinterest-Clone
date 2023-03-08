@@ -81,3 +81,36 @@ exports[`The Profile Link will render for an authenticated user 1`] = `
   Link title
 </ForwardRef(Link)>
 `;
+
+exports[`The SingleUserList will render 1`] = `
+<ForwardRef(ListItem)
+  key="test userId"
+>
+  <ForwardRef(ListItemAvatar)>
+    <ForwardRef(Avatar)
+      sx={
+        {
+          "bgcolor": "#1d7b20",
+          "height": 26,
+          "width": 26,
+        }
+      }
+    >
+      <Memo(ForwardRef(GitHubIcon))
+        style={
+          {
+            "fontSize": 10,
+          }
+        }
+      />
+    </ForwardRef(Avatar)>
+  </ForwardRef(ListItemAvatar)>
+  <ProfileLink
+    authenticated={true}
+    closePin={[MockFunction]}
+    displayLogin={[MockFunction]}
+    title="test displayName"
+    userId="test userId"
+  />
+</ForwardRef(ListItem)>
+`;

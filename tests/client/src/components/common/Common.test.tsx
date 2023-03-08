@@ -1,7 +1,9 @@
 import React from 'react';
 import { EnzymePropSelector, shallow } from 'enzyme';
 import toJson from 'enzyme-to-json';
-import { Loading, UserPinsSelector, ProfileLink } from '../../../../../client/src/components/common/common';
+import {
+  Loading, UserPinsSelector, ProfileLink, SingleUserList, getProviderIcons,
+} from '../../../../../client/src/components/common/common';
 
 describe('Loading...', () => {
   test('Will render the loading bubbles', () => {
@@ -79,5 +81,22 @@ describe('The Profile Link', () => {
     expect(link.props().to).toBe('');
     expect(closePin).not.toHaveBeenCalled();
     expect(displayLogin).toHaveBeenCalledWith();
+  });
+});
+
+describe('The SingleUserList', () => {
+  test('will render', () => {
+    const wrapper = shallow(<SingleUserList
+      profileLinkProps={{
+        authenticated: true,
+        displayLogin: jest.fn(),
+        closePin: jest.fn(),
+        title: 'test displayName',
+        userId: 'test userId',
+      }}
+      providerIcons={getProviderIcons({ fontSize: 10 })}
+      service="github"
+    />);
+    expect(toJson(wrapper)).toMatchSnapshot();
   });
 });

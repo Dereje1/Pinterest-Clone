@@ -52,9 +52,9 @@ describe('The Search users component', () => {
       { _id: 'test user Id', service: 'twitter', displayName: 'test displayName' },
     );
     const optionLabel = autoComplete.props().getOptionLabel({ _id: 'test user Id', service: 'twitter', displayName: 'test displayName' });
-    expect(option.props.children[0].props.children.props.children.type.type.render.displayName).toBe('TwitterIcon');
-    expect(option.props.children[1].props.userId).toBe('test user Id');
-    expect(option.props.children[1].props.title.props.primary).toBe('test displayName');
+    expect(option.props.service).toBe('twitter');
+    expect(option.props.profileLinkProps.userId).toBe('test user Id');
+    expect(option.props.profileLinkProps.title.props.primary).toBe('test displayName');
     expect(optionLabel).toBe('test displayName');
   });
 

@@ -1,12 +1,9 @@
 import * as React from 'react';
-import Avatar from '@mui/material/Avatar';
 import List from '@mui/material/List';
-import ListItem from '@mui/material/ListItem';
-import ListItemAvatar from '@mui/material/ListItemAvatar';
-import ListItemText from '@mui/material/ListItemText';
 import Dialog from '@mui/material/Dialog';
 import ListSubheader from '@mui/material/ListSubheader';
-import { getProviderIcons, ProfileLink } from '../common/common';
+import ListItemText from '@mui/material/ListItemText';
+import { getProviderIcons, SingleUserList } from '../common/common';
 import { providerIconsType, PinnerType } from '../../interfaces';
 
 const providerIcons: providerIconsType = getProviderIcons({ fontSize: 20 });
@@ -45,33 +42,21 @@ function PinnersDialog({
         subheader={<ListSubheader sx={{ textAlign: 'center' }}>Pinners</ListSubheader>}
       >
         {pinnersList.map((pinner) => (
-          <ListItem
+          <SingleUserList
+            profileLinkProps={{
+              authenticated,
+              userId: pinner.userId,
+              title: <ListItemText
+                primary={pinner.name}
+                primaryTypographyProps={{ color: '#3752ff', fontWeight: 'bold' }}
+              />,
+              closePin: handleCose,
+              displayLogin,
+            }}
+            providerIcons={providerIcons}
             key={pinner.userId}
-          >
-            <ListItemAvatar>
-              <Avatar
-                sx={{
-                  width: 26,
-                  height: 26,
-                  bgcolor: providerIcons[pinner.service as keyof providerIconsType].color,
-                }}
-              >
-                {providerIcons[pinner.service as keyof providerIconsType].icon}
-              </Avatar>
-            </ListItemAvatar>
-            <ProfileLink
-              authenticated={authenticated}
-              closePin={handleCose}
-              userId={pinner.userId}
-              title={(
-                <ListItemText
-                  primary={pinner.name}
-                  primaryTypographyProps={{ color: '#3752ff', fontWeight: 'bold' }}
-                />
-              )}
-              displayLogin={displayLogin}
-            />
-          </ListItem>
+            service={pinner.service}
+          />
         ))}
       </List>
     </Dialog>
