@@ -14,7 +14,7 @@ import { styled } from '@mui/styles';
 /* local components and utility */
 import ModalActions from './ModalActions';
 import Comments from './Comments';
-import ProfileLink from './ProfileLink';
+import { ProfileLink } from '../common/common';
 import {
   delay, getFormattedDescription, formatDate,
 } from '../../utils/utils';

@@ -10,8 +10,7 @@ import ListItem from '@mui/material/ListItem';
 import ListItemAvatar from '@mui/material/ListItemAvatar';
 import ListItemText from '@mui/material/ListItemText';
 import Avatar from '@mui/material/Avatar';
-import { getProviderIcons } from '../common/common';
-import ProfileLink from '../modal/ProfileLink';
+import { getProviderIcons, ProfileLink } from '../common/common';
 import { providerIconsType } from '../../interfaces';
 import RESTcall from '../../crud';
 

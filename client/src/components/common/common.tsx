@@ -1,4 +1,6 @@
 import React from 'react';
+import { Link as RouterLink } from 'react-router-dom';
+import Link from '@mui/material/Link';
 import TwitterIcon from '@mui/icons-material/Twitter';
 import GoogleIcon from '@mui/icons-material/Google';
 import GitHubIcon from '@mui/icons-material/GitHub';
@@ -65,5 +67,35 @@ export function UserPinsSelector({ displaySetting, setDisplaySetting }: UserPins
         Pins saved
       </Button>
     </ButtonGroup>
+  );
+}
+
+interface ProfileLinkProps {
+  authenticated: boolean
+  userId: string
+  title: string | React.ReactElement
+  closePin: (_: React.SyntheticEvent, forceClose?: boolean) => void
+  displayLogin: () => void
+}
+
+export function ProfileLink({
+  authenticated,
+  userId,
+  title,
+  closePin,
+  displayLogin,
+}: ProfileLinkProps) {
+  return (
+    <Link
+      component={RouterLink}
+      underline="none"
+      to={
+        authenticated ? `/profile/${userId}` : ''
+      }
+      onMouseDown={(e) => e.preventDefault()}
+      onClick={(e) => (authenticated ? closePin(e, true) : displayLogin())}
+    >
+      {title}
+    </Link>
   );
 }
