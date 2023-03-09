@@ -31,29 +31,52 @@ function SearchUser({ closeSearch, displayLogin, authenticated }: SearchUsersPro
   const [searchVal, setSearchVal] = useState('');
   const [foundUsers, setFoundUsers] = useState([] as FoundUsers);
   const [isLoading, setIsLoading] = useState(false);
+  const [triggerSearch, setTriggerSearch] = useState(false);
 
   const history = useHistory();
 
   const handleSearch = async () => {
+    let data: FoundUsers = [];
     if (searchVal.trim().length) {
-      const data: FoundUsers = await RESTcall({ address: `/api/searchUser/${searchVal}` });
-      setFoundUsers(data);
-      setIsLoading(false);
-    } else {
-      setFoundUsers([]);
-      setIsLoading(false);
+      data = await RESTcall({ address: `/api/searchUser/${searchVal}` });
     }
+    // clear out input if no users found
+    if (!data.length) {
+      setSearchVal('');
+    }
+    setFoundUsers(data);
+    setTriggerSearch(false);
+    setIsLoading(false);
   };
 
   useEffect(() => {
-    if (isLoading) {
+    if (triggerSearch) {
       handleSearch();
     }
-  }, [isLoading]);
+  }, [triggerSearch]);
 
-  const onDebounceSearch = useMemo(() => _.debounce(() => setIsLoading(true), 1000), []);
+  const onDebounceSearch = useMemo(() => _.debounce(() => setTriggerSearch(true), 1000), []);
 
-  const handleSelection = (e: React.SyntheticEvent, value: FoundUser) => {
+  const handleKeyUp = (e: React.KeyboardEvent) => {
+    const { key } = e;
+    switch (key) {
+      case 'ArrowDown':
+        return;
+      case 'ArrowUp':
+        return;
+      default:
+        setFoundUsers([]);
+        setIsLoading(true);
+        onDebounceSearch();
+    }
+  };
+
+  const handleSelection = (e: React.SyntheticEvent, value: FoundUser, reason: string) => {
+    // disable create option on enter
+    if (reason === 'createOption') {
+      setSearchVal('');
+      return;
+    }
     closeSearch();
     history.push(`/profile/${value._id}`);
   };
@@ -76,14 +99,15 @@ function SearchUser({ closeSearch, displayLogin, authenticated }: SearchUsersPro
         id="free-solo-user-search"
         freeSolo
         options={foundUsers}
-        getOptionLabel={(option: FoundUser) => option.displayName}
+        getOptionLabel={(option: FoundUser) => option.displayName || ''}
         fullWidth
         disableClearable
         inputValue={searchVal}
         onInputChange={(e, value) => setSearchVal(value)}
         onChange={handleSelection}
-        onKeyUp={onDebounceSearch}
+        onKeyUp={handleKeyUp}
         loading={isLoading}
+        autoComplete
         renderOption={
           (props, option) => (
             <SingleUserList
@@ -109,7 +133,14 @@ function SearchUser({ closeSearch, displayLogin, authenticated }: SearchUsersPro
             {...params.InputProps}
             sx={{ width: '100%', height: '100%', marginLeft: 1 }}
             placeholder="Search users..."
-            inputProps={{ ...params.inputProps }}
+            inputProps={{
+              ...params.inputProps,
+              onKeyDown: (e) => {
+                if (e.key === 'Enter') {
+                  e.preventDefault();
+                }
+              },
+            }}
           />
         )}
       />

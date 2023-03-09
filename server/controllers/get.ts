@@ -77,7 +77,7 @@ export const getProfilePins = async (
       },
     });
   } catch (error) {
-    debug(`Error etting profile pins for profile -> ${userId} by user -> ${loggedInUserid}`);
+    debug(`Error getting profile pins for profile -> ${userId} by user -> ${loggedInUserid}`);
     // mongoose errors out on invalid ObjectIds sent -> redirect also in that case
     return res.json({ redirect: '/' });
   }
@@ -98,14 +98,14 @@ export const searchUsers = async (req: Request, res: genericResponseType) => {
   const searchVal = req.params.search;
   const re = new RegExp(searchVal, 'gi');
   try {
-    debug('Getting users');
+    debug(`Searching user displayNames with query -> ${re}`);
     const foundUsers = await users.find({ displayName: re }).exec();
     const results = foundUsers.map(
       ({ _id, displayName, service }) => ({ _id, displayName, service }),
     );
     res.json(results);
   } catch (error) {
-    debug('Error getting users');
+    debug(`Error searching users --> ${error}`);
     res.json(error);
   }
 };

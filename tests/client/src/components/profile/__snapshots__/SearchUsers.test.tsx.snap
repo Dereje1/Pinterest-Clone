@@ -17,6 +17,7 @@ exports[`The Search users component will render the component 1`] = `
   variant="elevation"
 >
   <ForwardRef(Autocomplete)
+    autoComplete={true}
     disableClearable={true}
     freeSolo={true}
     fullWidth={true}
