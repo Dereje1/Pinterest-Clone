@@ -103,19 +103,19 @@ export function ProfileLink({
   );
 }
 
-interface SingleUserListProps {
+interface UserListItemProps {
   providerIcons: providerIconsType,
   service: string,
   profileLinkProps: ProfileLinkProps
   additionalProps?: HTMLAttributes<HTMLLIElement>
 }
 
-export function SingleUserList({
+export function UserListItem({
   providerIcons,
   service,
   profileLinkProps,
   additionalProps,
-}: SingleUserListProps) {
+}: UserListItemProps) {
   return (
     <ListItem
       {...additionalProps}
@@ -137,6 +137,6 @@ export function SingleUserList({
   );
 }
 
-SingleUserList.defaultProps = {
+UserListItem.defaultProps = {
   additionalProps: undefined,
 };

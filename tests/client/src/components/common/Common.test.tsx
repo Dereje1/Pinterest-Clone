@@ -2,7 +2,7 @@ import React from 'react';
 import { EnzymePropSelector, shallow } from 'enzyme';
 import toJson from 'enzyme-to-json';
 import {
-  Loading, UserPinsSelector, ProfileLink, SingleUserList, getProviderIcons,
+  Loading, UserPinsSelector, ProfileLink, UserListItem, getProviderIcons,
 } from '../../../../../client/src/components/common/common';
 
 describe('Loading...', () => {
@@ -84,9 +84,9 @@ describe('The Profile Link', () => {
   });
 });
 
-describe('The SingleUserList', () => {
+describe('The UserListItem', () => {
   test('will render', () => {
-    const wrapper = shallow(<SingleUserList
+    const wrapper = shallow(<UserListItem
       profileLinkProps={{
         authenticated: true,
         displayLogin: jest.fn(),

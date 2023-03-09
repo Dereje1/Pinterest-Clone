@@ -3,7 +3,7 @@ import List from '@mui/material/List';
 import Dialog from '@mui/material/Dialog';
 import ListSubheader from '@mui/material/ListSubheader';
 import ListItemText from '@mui/material/ListItemText';
-import { getProviderIcons, SingleUserList } from '../common/common';
+import { getProviderIcons, UserListItem } from '../common/common';
 import { providerIconsType, PinnerType } from '../../interfaces';
 
 const providerIcons: providerIconsType = getProviderIcons({ fontSize: 20 });
@@ -42,7 +42,7 @@ function PinnersDialog({
         subheader={<ListSubheader sx={{ textAlign: 'center' }}>Pinners</ListSubheader>}
       >
         {pinnersList.map((pinner) => (
-          <SingleUserList
+          <UserListItem
             profileLinkProps={{
               authenticated,
               userId: pinner.userId,

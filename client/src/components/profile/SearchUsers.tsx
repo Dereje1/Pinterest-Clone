@@ -7,7 +7,7 @@ import HighlightOffIcon from '@mui/icons-material/HighlightOff';
 import IconButton from '@mui/material/IconButton';
 import Autocomplete from '@mui/material/Autocomplete';
 import ListItemText from '@mui/material/ListItemText';
-import { getProviderIcons, SingleUserList } from '../common/common';
+import { getProviderIcons, UserListItem } from '../common/common';
 import { providerIconsType } from '../../interfaces';
 import RESTcall from '../../crud';
 
@@ -110,7 +110,7 @@ function SearchUser({ closeSearch, displayLogin, authenticated }: SearchUsersPro
         autoComplete
         renderOption={
           (props, option) => (
-            <SingleUserList
+            <UserListItem
               profileLinkProps={{
                 authenticated,
                 userId: option._id,

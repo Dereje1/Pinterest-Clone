@@ -27,7 +27,7 @@ test('will close the dialog and the pin on a profile link click', () => {
     displayLogin={jest.fn()}
     authenticated={false}
   />);
-  const pinner: EnzymePropSelector = wrapper.find('SingleUserList').at(0);
+  const pinner: EnzymePropSelector = wrapper.find('UserListItem').at(0);
   pinner.props().profileLinkProps.closePin();
   expect(onCloseDialog).toHaveBeenCalled();
   expect(onClosePin).toHaveBeenCalled();

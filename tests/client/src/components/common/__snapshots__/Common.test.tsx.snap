@@ -82,7 +82,7 @@ exports[`The Profile Link will render for an authenticated user 1`] = `
 </ForwardRef(Link)>
 `;
 
-exports[`The SingleUserList will render 1`] = `
+exports[`The UserListItem will render 1`] = `
 <ForwardRef(ListItem)
   key="test userId"
 >
