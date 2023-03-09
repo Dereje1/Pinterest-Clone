@@ -56,13 +56,18 @@ describe('The Search users component', () => {
   test('will render a single option', () => {
     const wrapper = shallow(<SearchUsers {...props} />);
     const autoComplete = wrapper.find({ id: 'free-solo-user-search' });
-    const option = autoComplete.props().renderOption(
+    let option = autoComplete.props().renderOption(
       { },
       { _id: 'test user Id', service: 'twitter', displayName: 'test displayName' },
     );
     expect(option.props.service).toBe('twitter');
     expect(option.props.profileLinkProps.userId).toBe('test user Id');
     expect(option.props.profileLinkProps.title.props.primary).toBe('test displayName');
+    option = autoComplete.props().renderOption(
+      { },
+      'a string',
+    );
+    expect(option).toBe(null);
   });
 
   test('will get the option label', () => {
@@ -70,7 +75,7 @@ describe('The Search users component', () => {
     const autoComplete = wrapper.find({ id: 'free-solo-user-search' });
     let optionLabel = autoComplete.props().getOptionLabel({ _id: 'test user Id', service: 'twitter', displayName: 'test displayName' });
     expect(optionLabel).toBe('test displayName');
-    optionLabel = autoComplete.props().getOptionLabel({ _id: 'test user Id', service: 'twitter' });
+    optionLabel = autoComplete.props().getOptionLabel('a string');
     expect(optionLabel).toBe('');
   });
 

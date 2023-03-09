@@ -1,5 +1,5 @@
 // menu bar
-import React from 'react';
+import React, { ComponentType } from 'react';
 import { NavLink, withRouter } from 'react-router-dom';
 import { connect } from 'react-redux';
 import { compose } from 'redux';
@@ -157,4 +157,4 @@ export class Menu extends React.Component<MenuProps, MenuState> {
 export default compose(
   withRouter,
   connect(mapStateToProps, actionCreators),
-)(Menu);
+)(Menu) as ComponentType;

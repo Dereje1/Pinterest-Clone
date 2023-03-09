@@ -71,9 +71,9 @@ function SearchUser({ closeSearch, displayLogin, authenticated }: SearchUsersPro
     }
   };
 
-  const handleSelection = (e: React.SyntheticEvent, value: FoundUser, reason: string) => {
+  const handleSelection = (e: React.SyntheticEvent, value: FoundUser | string, reason: string) => {
     // disable create option on enter
-    if (reason === 'createOption') {
+    if (reason === 'createOption' || typeof value === 'string') {
       setSearchVal('');
       return;
     }
@@ -99,7 +99,10 @@ function SearchUser({ closeSearch, displayLogin, authenticated }: SearchUsersPro
         id="free-solo-user-search"
         freeSolo
         options={foundUsers}
-        getOptionLabel={(option: FoundUser) => option.displayName || ''}
+        getOptionLabel={(option) => {
+          if (typeof option === 'string') return '';
+          return option.displayName;
+        }}
         fullWidth
         disableClearable
         inputValue={searchVal}
@@ -110,22 +113,25 @@ function SearchUser({ closeSearch, displayLogin, authenticated }: SearchUsersPro
         autoComplete
         renderOption={
           (props, option) => (
-            <UserListItem
-              profileLinkProps={{
-                authenticated,
-                userId: option._id,
-                title: <ListItemText
-                  primary={option.displayName}
-                  primaryTypographyProps={{ color: '#3752ff', fontWeight: 'bold' }}
-                />,
-                closePin: closeSearch,
-                displayLogin,
-              }}
-              providerIcons={providerIcons}
-              key={option._id}
-              service={option.service}
-              additionalProps={props}
-            />
+            typeof option === 'string' ? null
+              : (
+                <UserListItem
+                  profileLinkProps={{
+                    authenticated,
+                    userId: option._id,
+                    title: <ListItemText
+                      primary={option.displayName}
+                      primaryTypographyProps={{ color: '#3752ff', fontWeight: 'bold' }}
+                    />,
+                    closePin: closeSearch,
+                    displayLogin,
+                  }}
+                  providerIcons={providerIcons}
+                  key={option._id}
+                  service={option.service}
+                  additionalProps={props}
+                />
+              )
           )
         }
         renderInput={(params) => (

@@ -6,7 +6,7 @@ import { userType } from '../interfaces';
 // and updates store
 interface dispatchType {
     type: string,
-    payload: userType
+    payload: userType | unknown
 }
 
 export const getUser = (path: string) => async (dispatch: (action: dispatchType) => void) => {
