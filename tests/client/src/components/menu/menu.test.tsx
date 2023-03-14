@@ -100,6 +100,18 @@ describe('The Menu component', () => {
     expect(wrapper.state().displaySignIn).toBe(false);
   });
 
+  test('will go to the Admin user page if users is selected from the extended menu', () => {
+    const wrapper = shallow(<ExpandedMenu pathname="/" />);
+    const usersLink: EnzymePropSelector = wrapper.find('NavLink').at(2);
+    expect(usersLink.props().to).toBe('/profile/63acc05f21481fa569a03b0b');
+  });
+
+  test('will stay on the same page if users is selected again from the extended menu', () => {
+    const wrapper = shallow(<ExpandedMenu pathname="/some_profile" />);
+    const usersLink: EnzymePropSelector = wrapper.find('NavLink').at(2);
+    expect(usersLink.props().to).toBe('/some_profile');
+  });
+
   test('will logout the user from the extended menu', () => {
     const windowSpy = jest.spyOn(window, 'location', 'get');
     const mockedAssign = jest.fn();
@@ -107,8 +119,8 @@ describe('The Menu component', () => {
       ...window.location,
       assign: mockedAssign,
     });
-    const wrapper = shallow(<ExpandedMenu />);
-    const logoutLink: EnzymePropSelector = wrapper.find('NavLink').at(2);
+    const wrapper = shallow(<ExpandedMenu pathname="/" />);
+    const logoutLink: EnzymePropSelector = wrapper.find('NavLink').at(3);
     logoutLink.props().onClick();
     expect(mockedAssign).toHaveBeenCalledWith('/auth/logout');
   });
@@ -129,7 +141,7 @@ describe('The Menu component', () => {
   });
 
   test('will render the auth menu', () => {
-    const wrapper = shallow(<ExpandedMenu />);
+    const wrapper = shallow(<ExpandedMenu pathname="/" />);
     expect(toJson(wrapper)).toMatchSnapshot();
   });
 });

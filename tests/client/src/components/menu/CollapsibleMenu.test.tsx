@@ -16,7 +16,19 @@ describe('The collapsible menu component', () => {
     expect(toJson(wrapper)).toMatchSnapshot();
   });
 
-  test('will logout the user from the extended menu', () => {
+  test('will go to the Admin user page if users is selected', () => {
+    const wrapper = shallow(<CollapsibleMenu pathname="/" />);
+    const usersLink: EnzymePropSelector = wrapper.find('ForwardRef(MenuItem)').at(2);
+    expect(usersLink.props().to).toBe('/profile/63acc05f21481fa569a03b0b');
+  });
+
+  test('will stay on the same page if users is selected again while on a profile page', () => {
+    const wrapper = shallow(<CollapsibleMenu pathname="/some_profile" />);
+    const usersLink: EnzymePropSelector = wrapper.find('ForwardRef(MenuItem)').at(2);
+    expect(usersLink.props().to).toBe('/some_profile');
+  });
+
+  test('will logout the user', () => {
     const windowSpy = jest.spyOn(window, 'location', 'get');
     const mockedAssign = jest.fn();
     windowSpy.mockReturnValue({
@@ -24,7 +36,7 @@ describe('The collapsible menu component', () => {
       assign: mockedAssign,
     });
     const wrapper = shallow(<CollapsibleMenu pathname="/" />);
-    const logoutLink: EnzymePropSelector = wrapper.find('ForwardRef(MenuItem)').at(2);
+    const logoutLink: EnzymePropSelector = wrapper.find('ForwardRef(MenuItem)').at(3);
     logoutLink.props().onClick();
     expect(mockedAssign).toHaveBeenCalledWith('/auth/logout');
   });

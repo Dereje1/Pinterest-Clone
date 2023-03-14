@@ -7,6 +7,7 @@ import ListItemText from '@mui/material/ListItemText';
 import MenuList from '@mui/material/MenuList';
 import MenuItem from '@mui/material/MenuItem';
 import HomeIcon from '@mui/icons-material/Home';
+import PeopleAltOutlinedIcon from '@mui/icons-material/PeopleAltOutlined';
 import AccountCircleIcon from '@mui/icons-material/AccountCircle';
 import LogoutIcon from '@mui/icons-material/Logout';
 import MenuIcon from '@mui/icons-material/Menu';
@@ -57,6 +58,20 @@ function CollapsibleMenu({ pathname }: {pathname: string}) {
             primaryTypographyProps={{ ...ListItemTextStyling }}
           >
             My Pins
+          </ListItemText>
+        </MenuItem>
+        <MenuItem
+          component={NavLink}
+          to={pathname.includes('profile') ? pathname : '/profile/63acc05f21481fa569a03b0b'}
+        >
+          <ListItemIcon>
+            <PeopleAltOutlinedIcon fontSize="medium" />
+          </ListItemIcon>
+          <ListItemText
+            primaryTypographyProps={{ ...ListItemTextStyling }}
+            sx={{ color: pathname.includes('profile') ? '#b20e0e' : '#5e6870' }}
+          >
+            Users
           </ListItemText>
         </MenuItem>
         <MenuItem onClick={() => window.location.assign('/auth/logout')}>

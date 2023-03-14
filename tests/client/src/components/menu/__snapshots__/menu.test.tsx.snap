@@ -15,7 +15,9 @@ exports[`The Menu component will render for an authenticated user 1`] = `
   <div
     className="items extended"
   >
-    <ExpandedMenu />
+    <ExpandedMenu
+      pathname="/"
+    />
   </div>
 </div>
 `;
@@ -68,8 +70,14 @@ exports[`The Menu component will render the auth menu 1`] = `
     My Pins
   </NavLink>
   <NavLink
+    to="/profile/63acc05f21481fa569a03b0b"
+  >
+    Users
+  </NavLink>
+  <NavLink
+    activeClassName="nothing"
     onClick={[Function]}
-    to="/another"
+    to="/"
   >
     Logout
   </NavLink>

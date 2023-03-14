@@ -125,6 +125,54 @@ exports[`The collapsible menu component will render for home 1`] = `
           </ForwardRef(ListItemText)>
         </ForwardRef(MenuItem)>
         <ForwardRef(MenuItem)
+          component={
+            {
+              "$$typeof": Symbol(react.forward_ref),
+              "propTypes": {
+                "activeClassName": [Function],
+                "activeStyle": [Function],
+                "aria-current": [Function],
+                "className": [Function],
+                "exact": [Function],
+                "innerRef": [Function],
+                "isActive": [Function],
+                "location": [Function],
+                "onClick": [Function],
+                "replace": [Function],
+                "sensitive": [Function],
+                "strict": [Function],
+                "style": [Function],
+                "target": [Function],
+                "to": [Function],
+              },
+              "render": [Function],
+            }
+          }
+          to="/profile/63acc05f21481fa569a03b0b"
+        >
+          <ForwardRef(ListItemIcon)>
+            <Memo(ForwardRef(PeopleAltOutlinedIcon))
+              fontSize="medium"
+            />
+          </ForwardRef(ListItemIcon)>
+          <ForwardRef(ListItemText)
+            primaryTypographyProps={
+              {
+                "fontSize": 20,
+                "fontWeight": "bold",
+                "marginLeft": 5,
+              }
+            }
+            sx={
+              {
+                "color": "#5e6870",
+              }
+            }
+          >
+            Users
+          </ForwardRef(ListItemText)>
+        </ForwardRef(MenuItem)>
+        <ForwardRef(MenuItem)
           onClick={[Function]}
         >
           <ForwardRef(ListItemIcon)>
@@ -277,6 +325,54 @@ exports[`The collapsible menu component will render for my pins 1`] = `
             }
           >
             My Pins
+          </ForwardRef(ListItemText)>
+        </ForwardRef(MenuItem)>
+        <ForwardRef(MenuItem)
+          component={
+            {
+              "$$typeof": Symbol(react.forward_ref),
+              "propTypes": {
+                "activeClassName": [Function],
+                "activeStyle": [Function],
+                "aria-current": [Function],
+                "className": [Function],
+                "exact": [Function],
+                "innerRef": [Function],
+                "isActive": [Function],
+                "location": [Function],
+                "onClick": [Function],
+                "replace": [Function],
+                "sensitive": [Function],
+                "strict": [Function],
+                "style": [Function],
+                "target": [Function],
+                "to": [Function],
+              },
+              "render": [Function],
+            }
+          }
+          to="/profile/63acc05f21481fa569a03b0b"
+        >
+          <ForwardRef(ListItemIcon)>
+            <Memo(ForwardRef(PeopleAltOutlinedIcon))
+              fontSize="medium"
+            />
+          </ForwardRef(ListItemIcon)>
+          <ForwardRef(ListItemText)
+            primaryTypographyProps={
+              {
+                "fontSize": 20,
+                "fontWeight": "bold",
+                "marginLeft": 5,
+              }
+            }
+            sx={
+              {
+                "color": "#5e6870",
+              }
+            }
+          >
+            Users
           </ForwardRef(ListItemText)>
         </ForwardRef(MenuItem)>
         <ForwardRef(MenuItem)

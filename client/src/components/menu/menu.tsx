@@ -42,12 +42,17 @@ export function Login({ showSignIn }:{showSignIn: () => void}) {
   );
 }
 
-export function ExpandedMenu() {
+export function ExpandedMenu({ pathname }:{pathname: string}) {
   return (
     <>
       <NavLink exact to="/">Home</NavLink>
       <NavLink exact to="/pins">My Pins</NavLink>
-      <NavLink to="/another" onClick={() => window.location.assign('/auth/logout')}>Logout</NavLink>
+      <NavLink
+        to={pathname.includes('profile') ? pathname : '/profile/63acc05f21481fa569a03b0b'}
+      >
+        Users
+      </NavLink>
+      <NavLink to="/" activeClassName="nothing" onClick={() => window.location.assign('/auth/logout')}>Logout</NavLink>
     </>
   );
 }
@@ -57,7 +62,7 @@ interface MenuProps {
   getUser: (path: string) => void
   updateSearch: () => void
   location: {
-    pathname: string
+    pathname: string,
   }
 }
 
@@ -73,7 +78,7 @@ export class Menu extends React.Component<MenuProps, MenuState> {
   constructor(props: MenuProps) {
     super(props);
     this.state = {
-      menuIsCollapsed: window.innerWidth < 600, // test for screen size
+      menuIsCollapsed: false,
       displaySignIn: false,
       showSearch: false,
       ready: false,
@@ -86,7 +91,7 @@ export class Menu extends React.Component<MenuProps, MenuState> {
     await getUserStatus('/auth/profile');
     this.setState(
       {
-        menuIsCollapsed: window.innerWidth < 600,
+        menuIsCollapsed: window.innerWidth < 750,
         ready: true,
       },
     );
@@ -104,7 +109,7 @@ export class Menu extends React.Component<MenuProps, MenuState> {
         ? <CollapsibleMenu pathname={pathname} />
         : (
           <div className="items extended">
-            <ExpandedMenu />
+            <ExpandedMenu pathname={pathname} />
           </div>
         );
     }
