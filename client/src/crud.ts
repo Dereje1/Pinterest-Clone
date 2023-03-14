@@ -7,7 +7,7 @@ interface methods {
   delete: 'delete'
   get: 'get'
 }
-interface crudTypes {
+interface RESTcallTypes {
   address: string
   method?: keyof methods
   payload?: {
@@ -15,7 +15,7 @@ interface crudTypes {
   }
 }
 
-export default async ({ address, method = 'get', payload }: crudTypes) => {
+export default async ({ address, method = 'get', payload }: RESTcallTypes) => {
   try {
     const { data } = await axios[method as keyof methods](address, payload);
     return data;
