@@ -77,6 +77,8 @@ const restMock = jest.fn().mockImplementation((...args) => {
       service: 'twitter',
       _id: 'test_user_id',
     }]);
+  } if (address.includes('/auth/logout') && method === 'get' && !payload) {
+    return Promise.resolve();
   }
   return Promise.reject(new Error(`Requested method:${method} and path: ${address} not mocked!!`));
 });
