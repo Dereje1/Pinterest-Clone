@@ -52,7 +52,7 @@ export function ExpandedMenu({ pathname }:{pathname: string}) {
       >
         Users
       </NavLink>
-      <NavLink to="/" activeClassName="nothing" onClick={() => window.location.assign('/auth/logout')}>Logout</NavLink>
+      <NavLink to="/logout">Logout</NavLink>
     </>
   );
 }

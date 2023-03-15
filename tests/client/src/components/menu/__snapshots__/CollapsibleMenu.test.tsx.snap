@@ -52,6 +52,7 @@ exports[`The collapsible menu component will render for home 1`] = `
               "render": [Function],
             }
           }
+          key="home"
           to="/"
         >
           <ForwardRef(ListItemIcon)>
@@ -100,6 +101,7 @@ exports[`The collapsible menu component will render for home 1`] = `
               "render": [Function],
             }
           }
+          key="myPins"
           to="/pins"
         >
           <ForwardRef(ListItemIcon)>
@@ -148,6 +150,7 @@ exports[`The collapsible menu component will render for home 1`] = `
               "render": [Function],
             }
           }
+          key="users"
           to="/profile/63acc05f21481fa569a03b0b"
         >
           <ForwardRef(ListItemIcon)>
@@ -173,7 +176,31 @@ exports[`The collapsible menu component will render for home 1`] = `
           </ForwardRef(ListItemText)>
         </ForwardRef(MenuItem)>
         <ForwardRef(MenuItem)
-          onClick={[Function]}
+          component={
+            {
+              "$$typeof": Symbol(react.forward_ref),
+              "propTypes": {
+                "activeClassName": [Function],
+                "activeStyle": [Function],
+                "aria-current": [Function],
+                "className": [Function],
+                "exact": [Function],
+                "innerRef": [Function],
+                "isActive": [Function],
+                "location": [Function],
+                "onClick": [Function],
+                "replace": [Function],
+                "sensitive": [Function],
+                "strict": [Function],
+                "style": [Function],
+                "target": [Function],
+                "to": [Function],
+              },
+              "render": [Function],
+            }
+          }
+          key="logout"
+          to="/logout"
         >
           <ForwardRef(ListItemIcon)>
             <Memo(ForwardRef(LogoutIcon))
@@ -255,6 +282,7 @@ exports[`The collapsible menu component will render for my pins 1`] = `
               "render": [Function],
             }
           }
+          key="home"
           to="/"
         >
           <ForwardRef(ListItemIcon)>
@@ -303,6 +331,7 @@ exports[`The collapsible menu component will render for my pins 1`] = `
               "render": [Function],
             }
           }
+          key="myPins"
           to="/pins"
         >
           <ForwardRef(ListItemIcon)>
@@ -351,6 +380,7 @@ exports[`The collapsible menu component will render for my pins 1`] = `
               "render": [Function],
             }
           }
+          key="users"
           to="/profile/63acc05f21481fa569a03b0b"
         >
           <ForwardRef(ListItemIcon)>
@@ -376,7 +406,31 @@ exports[`The collapsible menu component will render for my pins 1`] = `
           </ForwardRef(ListItemText)>
         </ForwardRef(MenuItem)>
         <ForwardRef(MenuItem)
-          onClick={[Function]}
+          component={
+            {
+              "$$typeof": Symbol(react.forward_ref),
+              "propTypes": {
+                "activeClassName": [Function],
+                "activeStyle": [Function],
+                "aria-current": [Function],
+                "className": [Function],
+                "exact": [Function],
+                "innerRef": [Function],
+                "isActive": [Function],
+                "location": [Function],
+                "onClick": [Function],
+                "replace": [Function],
+                "sensitive": [Function],
+                "strict": [Function],
+                "style": [Function],
+                "target": [Function],
+                "to": [Function],
+              },
+              "render": [Function],
+            }
+          }
+          key="logout"
+          to="/logout"
         >
           <ForwardRef(ListItemIcon)>
             <Memo(ForwardRef(LogoutIcon))

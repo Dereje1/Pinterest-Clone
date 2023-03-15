@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useMemo, useState } from 'react';
 import { NavLink } from 'react-router-dom';
 import Box from '@mui/material/Box';
 import Drawer from '@mui/material/Drawer';
@@ -13,6 +13,31 @@ import LogoutIcon from '@mui/icons-material/Logout';
 import MenuIcon from '@mui/icons-material/Menu';
 
 const ListItemTextStyling = { marginLeft: 5, fontSize: 20, fontWeight: 'bold' };
+
+const getMenuItems = (pathname: string) => ({
+  home: {
+    icon: <HomeIcon fontSize="medium" />,
+    to: '/',
+    display: 'Home',
+  },
+  myPins: {
+    icon: <AccountCircleIcon fontSize="medium" />,
+    to: '/pins',
+    display: 'My Pins',
+  },
+  users: {
+    icon: <PeopleAltOutlinedIcon fontSize="medium" />,
+    to: pathname.includes('profile') ? pathname : '/profile/63acc05f21481fa569a03b0b',
+    display: 'Users',
+  },
+  logout: {
+    icon: <LogoutIcon fontSize="medium" />,
+    to: '/logout',
+    display: 'Logout',
+  },
+});
+
+type menuItemsObject = ReturnType<typeof getMenuItems>;
 
 function CollapsibleMenu({ pathname }: {pathname: string}) {
   const [openDrawer, setOpenDrawer] = useState(false);
@@ -30,6 +55,11 @@ function CollapsibleMenu({ pathname }: {pathname: string}) {
     setOpenDrawer(!openDrawer);
   };
 
+  const menuItems: menuItemsObject = useMemo(
+    () => getMenuItems(pathname),
+    [pathname],
+  );
+
   const list = () => (
     <Box
       sx={{ width: 250 }}
@@ -38,53 +68,28 @@ function CollapsibleMenu({ pathname }: {pathname: string}) {
       onKeyDown={toggleDrawer}
     >
       <MenuList>
-        <MenuItem component={NavLink} to="/">
-          <ListItemIcon>
-            <HomeIcon fontSize="medium" />
-          </ListItemIcon>
-          <ListItemText
-            sx={{ color: pathname === '/' ? '#b20e0e' : '#5e6870' }}
-            primaryTypographyProps={{ ...ListItemTextStyling }}
-          >
-            Home
-          </ListItemText>
-        </MenuItem>
-        <MenuItem component={NavLink} to="/pins">
-          <ListItemIcon>
-            <AccountCircleIcon fontSize="medium" />
-          </ListItemIcon>
-          <ListItemText
-            sx={{ color: pathname === '/pins' ? '#b20e0e' : '#5e6870' }}
-            primaryTypographyProps={{ ...ListItemTextStyling }}
-          >
-            My Pins
-          </ListItemText>
-        </MenuItem>
-        <MenuItem
-          component={NavLink}
-          to={pathname.includes('profile') ? pathname : '/profile/63acc05f21481fa569a03b0b'}
-        >
-          <ListItemIcon>
-            <PeopleAltOutlinedIcon fontSize="medium" />
-          </ListItemIcon>
-          <ListItemText
-            primaryTypographyProps={{ ...ListItemTextStyling }}
-            sx={{ color: pathname.includes('profile') ? '#b20e0e' : '#5e6870' }}
-          >
-            Users
-          </ListItemText>
-        </MenuItem>
-        <MenuItem onClick={() => window.location.assign('/auth/logout')}>
-          <ListItemIcon>
-            <LogoutIcon fontSize="medium" />
-          </ListItemIcon>
-          <ListItemText
-            primaryTypographyProps={{ ...ListItemTextStyling }}
-            sx={{ color: '#5e6870' }}
-          >
-            Logout
-          </ListItemText>
-        </MenuItem>
+        {
+          Object.keys(menuItems).map((menu) => {
+            const menuItem = menu as keyof menuItemsObject;
+            return (
+              <MenuItem
+                component={NavLink}
+                to={menuItems[menuItem].to}
+                key={menu}
+              >
+                <ListItemIcon>
+                  {menuItems[menuItem].icon}
+                </ListItemIcon>
+                <ListItemText
+                  sx={{ color: pathname === menuItems[menuItem].to ? '#b20e0e' : '#5e6870' }}
+                  primaryTypographyProps={{ ...ListItemTextStyling }}
+                >
+                  {menuItems[menuItem].display}
+                </ListItemText>
+              </MenuItem>
+            );
+          })
+        }
       </MenuList>
     </Box>
   );

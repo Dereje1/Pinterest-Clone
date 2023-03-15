@@ -112,19 +112,6 @@ describe('The Menu component', () => {
     expect(usersLink.props().to).toBe('/some_profile');
   });
 
-  test('will logout the user from the extended menu', () => {
-    const windowSpy = jest.spyOn(window, 'location', 'get');
-    const mockedAssign = jest.fn();
-    windowSpy.mockReturnValue({
-      ...window.location,
-      assign: mockedAssign,
-    });
-    const wrapper = shallow(<ExpandedMenu pathname="/" />);
-    const logoutLink: EnzymePropSelector = wrapper.find('NavLink').at(3);
-    logoutLink.props().onClick();
-    expect(mockedAssign).toHaveBeenCalledWith('/auth/logout');
-  });
-
   test('will map redux state to props', () => {
     const mappedProps = mapStateToProps(reduxStub);
     expect(mappedProps).toEqual({ user: reduxStub.user });

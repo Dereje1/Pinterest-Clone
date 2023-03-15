@@ -31,6 +31,7 @@ const Menu = lazy(() => import('./components/menu/menu'));
 const Home = lazy(() => import('./components/home/home'));
 const Mypins = lazy(() => import('./components/mypins/mypins'));
 const Profile = lazy(() => import('./components/profile/Profile'));
+const LogOut = lazy(() => import('./components/signin/logout'));
 
 const App = (
   <Provider store={store}>
@@ -42,6 +43,7 @@ const App = (
             <Route path="/" exact component={Home} />
             <Route path="/pins" component={Mypins} />
             <Route path="/profile/:userInfo" component={Profile} />
+            <Route path="/logout" component={LogOut} />
           </Switch>
         </Suspense>
       </ThemeProvider>

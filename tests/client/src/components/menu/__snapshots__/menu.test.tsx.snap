@@ -75,9 +75,7 @@ exports[`The Menu component will render the auth menu 1`] = `
     Users
   </NavLink>
   <NavLink
-    activeClassName="nothing"
-    onClick={[Function]}
-    to="/"
+    to="/logout"
   >
     Logout
   </NavLink>

@@ -28,19 +28,6 @@ describe('The collapsible menu component', () => {
     expect(usersLink.props().to).toBe('/some_profile');
   });
 
-  test('will logout the user', () => {
-    const windowSpy = jest.spyOn(window, 'location', 'get');
-    const mockedAssign = jest.fn();
-    windowSpy.mockReturnValue({
-      ...window.location,
-      assign: mockedAssign,
-    });
-    const wrapper = shallow(<CollapsibleMenu pathname="/" />);
-    const logoutLink: EnzymePropSelector = wrapper.find('ForwardRef(MenuItem)').at(3);
-    logoutLink.props().onClick();
-    expect(mockedAssign).toHaveBeenCalledWith('/auth/logout');
-  });
-
   test('will toggle the drawer', () => {
     const wrapper = shallow(<CollapsibleMenu pathname="/" />);
     const menuIcon: EnzymePropSelector = wrapper.find('Memo(ForwardRef(MenuIcon))');
