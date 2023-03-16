@@ -9,6 +9,7 @@ import MenuItem from '@mui/material/MenuItem';
 import HomeIcon from '@mui/icons-material/Home';
 import PeopleAltOutlinedIcon from '@mui/icons-material/PeopleAltOutlined';
 import AccountCircleIcon from '@mui/icons-material/AccountCircle';
+import SearchIcon from '@mui/icons-material/Search';
 import LogoutIcon from '@mui/icons-material/Logout';
 import MenuIcon from '@mui/icons-material/Menu';
 
@@ -30,6 +31,11 @@ const getMenuItems = (pathname: string) => ({
     to: pathname.includes('profile') ? pathname : '/profile/63acc05f21481fa569a03b0b',
     display: 'Users',
   },
+  search: {
+    icon: <SearchIcon fontSize="medium" />,
+    to: '',
+    display: 'Search',
+  },
   logout: {
     icon: <LogoutIcon fontSize="medium" />,
     to: '/logout',
@@ -39,7 +45,14 @@ const getMenuItems = (pathname: string) => ({
 
 type menuItemsObject = ReturnType<typeof getMenuItems>;
 
-function CollapsibleMenu({ pathname }: {pathname: string}) {
+interface CollapsibleMenuProps {
+  pathname: string
+  menuClicked: (e: React.SyntheticEvent) => void
+}
+
+function CollapsibleMenu(
+  { pathname, menuClicked }: CollapsibleMenuProps,
+) {
   const [openDrawer, setOpenDrawer] = useState(false);
 
   const handleKeyDown = (event: React.KeyboardEvent) => {
@@ -76,6 +89,7 @@ function CollapsibleMenu({ pathname }: {pathname: string}) {
                 component={NavLink}
                 to={menuItems[menuItem].to}
                 key={menu}
+                onClick={menuClicked}
               >
                 <ListItemIcon>
                   {menuItems[menuItem].icon}

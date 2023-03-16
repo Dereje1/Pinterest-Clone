@@ -34,11 +34,6 @@ describe('The search component', () => {
     expect(props.closeSearch).toHaveBeenCalled();
   });
 
-  test('Will render only search Icon if not selected by the user', () => {
-    const wrapper = shallow(<Search {...props} />);
-    expect(toJson(wrapper)).toMatchSnapshot();
-  });
-
   test('Will render search bar if selected by the user', () => {
     const updatedProps = { ...props, isShowing: true };
     const wrapper = shallow(<Search {...updatedProps} />);

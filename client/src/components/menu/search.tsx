@@ -74,17 +74,7 @@ function Search({
   if (pathname !== '/') return null;
 
   if (!isShowing) {
-    return (
-      <div className="search">
-        <Tooltip title="Search by description, owner or tags" placement="bottom">
-          <SearchIcon
-            onClick={openSearch}
-            sx={{ cursor: 'pointer', justifySelf: 'flex-end' }}
-            fontSize="large"
-          />
-        </Tooltip>
-      </div>
-    );
+    return null;
   }
 
   return (
@@ -124,7 +114,7 @@ function Search({
         </IconButton>
         <InputBase
           sx={{ width: '100%', height: '100%', marginLeft: 1 }}
-          placeholder="Search..."
+          placeholder="Search by description, owner or tags..."
           inputProps={{ 'aria-label': 'search' }}
           onChange={handleSearch}
           value={searchVal}

@@ -54,6 +54,7 @@ exports[`The collapsible menu component will render for home 1`] = `
             }
           }
           key="home"
+          onClick={[MockFunction]}
           to="/"
         >
           <ForwardRef(ListItemIcon)>
@@ -103,6 +104,7 @@ exports[`The collapsible menu component will render for home 1`] = `
             }
           }
           key="myPins"
+          onClick={[MockFunction]}
           to="/pins"
         >
           <ForwardRef(ListItemIcon)>
@@ -152,6 +154,7 @@ exports[`The collapsible menu component will render for home 1`] = `
             }
           }
           key="users"
+          onClick={[MockFunction]}
           to="/profile/63acc05f21481fa569a03b0b"
         >
           <ForwardRef(ListItemIcon)>
@@ -200,7 +203,58 @@ exports[`The collapsible menu component will render for home 1`] = `
               "render": [Function],
             }
           }
+          key="search"
+          onClick={[MockFunction]}
+          to=""
+        >
+          <ForwardRef(ListItemIcon)>
+            <Memo(ForwardRef(SearchIcon))
+              fontSize="medium"
+            />
+          </ForwardRef(ListItemIcon)>
+          <ForwardRef(ListItemText)
+            primaryTypographyProps={
+              {
+                "fontSize": 20,
+                "fontWeight": "bold",
+                "marginLeft": 5,
+              }
+            }
+            sx={
+              {
+                "color": "#5e6870",
+              }
+            }
+          >
+            Search
+          </ForwardRef(ListItemText)>
+        </ForwardRef(MenuItem)>
+        <ForwardRef(MenuItem)
+          component={
+            {
+              "$$typeof": Symbol(react.forward_ref),
+              "propTypes": {
+                "activeClassName": [Function],
+                "activeStyle": [Function],
+                "aria-current": [Function],
+                "className": [Function],
+                "exact": [Function],
+                "innerRef": [Function],
+                "isActive": [Function],
+                "location": [Function],
+                "onClick": [Function],
+                "replace": [Function],
+                "sensitive": [Function],
+                "strict": [Function],
+                "style": [Function],
+                "target": [Function],
+                "to": [Function],
+              },
+              "render": [Function],
+            }
+          }
           key="logout"
+          onClick={[MockFunction]}
           to="/logout"
         >
           <ForwardRef(ListItemIcon)>
@@ -285,6 +339,7 @@ exports[`The collapsible menu component will render for my pins 1`] = `
             }
           }
           key="home"
+          onClick={[MockFunction]}
           to="/"
         >
           <ForwardRef(ListItemIcon)>
@@ -334,6 +389,7 @@ exports[`The collapsible menu component will render for my pins 1`] = `
             }
           }
           key="myPins"
+          onClick={[MockFunction]}
           to="/pins"
         >
           <ForwardRef(ListItemIcon)>
@@ -383,6 +439,7 @@ exports[`The collapsible menu component will render for my pins 1`] = `
             }
           }
           key="users"
+          onClick={[MockFunction]}
           to="/profile/63acc05f21481fa569a03b0b"
         >
           <ForwardRef(ListItemIcon)>
@@ -431,7 +488,58 @@ exports[`The collapsible menu component will render for my pins 1`] = `
               "render": [Function],
             }
           }
+          key="search"
+          onClick={[MockFunction]}
+          to=""
+        >
+          <ForwardRef(ListItemIcon)>
+            <Memo(ForwardRef(SearchIcon))
+              fontSize="medium"
+            />
+          </ForwardRef(ListItemIcon)>
+          <ForwardRef(ListItemText)
+            primaryTypographyProps={
+              {
+                "fontSize": 20,
+                "fontWeight": "bold",
+                "marginLeft": 5,
+              }
+            }
+            sx={
+              {
+                "color": "#5e6870",
+              }
+            }
+          >
+            Search
+          </ForwardRef(ListItemText)>
+        </ForwardRef(MenuItem)>
+        <ForwardRef(MenuItem)
+          component={
+            {
+              "$$typeof": Symbol(react.forward_ref),
+              "propTypes": {
+                "activeClassName": [Function],
+                "activeStyle": [Function],
+                "aria-current": [Function],
+                "className": [Function],
+                "exact": [Function],
+                "innerRef": [Function],
+                "isActive": [Function],
+                "location": [Function],
+                "onClick": [Function],
+                "replace": [Function],
+                "sensitive": [Function],
+                "strict": [Function],
+                "style": [Function],
+                "target": [Function],
+                "to": [Function],
+              },
+              "render": [Function],
+            }
+          }
           key="logout"
+          onClick={[MockFunction]}
           to="/logout"
         >
           <ForwardRef(ListItemIcon)>

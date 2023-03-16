@@ -13,6 +13,7 @@ exports[`The Menu component will render for an authenticated user 1`] = `
     searchUpdate={[MockFunction]}
   />
   <CollapsibleMenu
+    menuClicked={[Function]}
     pathname="/"
   />
 </div>

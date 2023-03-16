@@ -79,6 +79,13 @@ export class Menu extends React.Component<MenuProps, MenuState> {
     );
   }
 
+  handleMenuClick = (e: React.SyntheticEvent) => {
+    const target = e.target as HTMLSpanElement;
+    if (target.innerText === 'Search') {
+      this.setState({ showSearch: true });
+    }
+  };
+
   renderMenu = (authenticated: boolean) => {
     const {
       location: { pathname },
@@ -88,7 +95,10 @@ export class Menu extends React.Component<MenuProps, MenuState> {
     } = this.state;
     if (authenticated) {
       return (
-        <CollapsibleMenu pathname={pathname} />
+        <CollapsibleMenu
+          pathname={pathname}
+          menuClicked={this.handleMenuClick}
+        />
       );
     }
     return (
