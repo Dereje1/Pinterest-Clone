@@ -7,10 +7,12 @@ import toJson from 'enzyme-to-json';
 import * as redux from 'react-redux';
 import Search from '../../../../../client/src/components/menu/search';
 
+const mockdispatch = jest.fn();
 // Mock redux hooks
 jest.mock('react-redux', () => ({
   ...jest.requireActual('react-redux'), // use actual for all non-hook parts
   useSelector: jest.fn((() => ({ term: null, tagSearch: false }))),
+  useDispatch: jest.fn(() => mockdispatch),
 }));
 
 jest.useFakeTimers();
@@ -18,13 +20,16 @@ describe('The search component', () => {
   let props: React.ComponentProps<typeof Search>;
   beforeEach(() => {
     props = {
-      searchUpdate: jest.fn(),
       pathname: '/',
       isShowing: false,
       openSearch: jest.fn(),
       closeSearch: jest.fn(),
     };
     global.scrollTo = jest.fn();
+  });
+
+  afterEach(() => {
+    mockdispatch.mockClear();
   });
 
   test('Will not render anything if at /pins path', () => {
@@ -46,7 +51,10 @@ describe('The search component', () => {
     let searchInput: EnzymePropSelector = wrapper.find('ForwardRef(InputBase)');
     searchInput.props().onChange({ target: { value: 'abc' } });
     jest.advanceTimersByTime(1000);
-    expect(props.searchUpdate).toHaveBeenCalledWith('abc');
+    expect(mockdispatch).toHaveBeenCalledWith({
+      payload: { tagSearch: false, term: 'abc' },
+      type: 'UPDATE_SEARCH',
+    });
     searchInput = wrapper.find('ForwardRef(InputBase)');
     expect(searchInput.props().value).toBe('abc');
   });
@@ -57,7 +65,10 @@ describe('The search component', () => {
     // first call to change search terms
     searchInput.props().onChange({ target: { value: 'abc' } });
     jest.advanceTimersByTime(1000);
-    expect(props.searchUpdate).toHaveBeenNthCalledWith(1, 'abc');
+    expect(mockdispatch).toHaveBeenNthCalledWith(1, {
+      payload: { tagSearch: false, term: 'abc' },
+      type: 'UPDATE_SEARCH',
+    });
     searchInput = wrapper.find('ForwardRef(InputBase)');
     expect(searchInput.props().value).toBe('abc');
     // second call to clear search terms
@@ -65,7 +76,10 @@ describe('The search component', () => {
     clearButton.props().onClick();
     searchInput = wrapper.find('ForwardRef(InputBase)');
     expect(searchInput.props().value).toBe('');
-    expect(props.searchUpdate).toHaveBeenNthCalledWith(2, '');
+    expect(mockdispatch).toHaveBeenNthCalledWith(2, {
+      payload: { tagSearch: false, term: null },
+      type: 'UPDATE_SEARCH',
+    });
   });
 
   test('will clear the search in state and the redux store if arrow back is clicked', () => {
@@ -75,7 +89,10 @@ describe('The search component', () => {
     // first call to change search terms
     searchInput.props().onChange({ target: { value: 'abc' } });
     jest.advanceTimersByTime(1000);
-    expect(props.searchUpdate).toHaveBeenNthCalledWith(1, 'abc');
+    expect(mockdispatch).toHaveBeenNthCalledWith(1, {
+      payload: { tagSearch: false, term: 'abc' },
+      type: 'UPDATE_SEARCH',
+    });
     searchInput = wrapper.find('ForwardRef(InputBase)');
     expect(searchInput.props().value).toBe('abc');
     // second call to clear search terms
@@ -83,7 +100,10 @@ describe('The search component', () => {
     clearButton.props().onClick();
     searchInput = wrapper.find('ForwardRef(InputBase)');
     expect(searchInput.props().value).toBe('');
-    expect(props.searchUpdate).toHaveBeenNthCalledWith(2, '');
+    expect(mockdispatch).toHaveBeenNthCalledWith(2, {
+      payload: { tagSearch: false, term: null },
+      type: 'UPDATE_SEARCH',
+    });
   });
 
   test('Will keep search open with prev value if user comes back to home', () => {
@@ -110,9 +130,11 @@ describe('The search component', () => {
       .spyOn(redux, 'useSelector')
       .mockImplementationOnce(() => ({ term: 'tag search', tagSearch: true }));
     const wrapper = shallow(<Search {...props} isShowing />);
-    jest.advanceTimersByTime(1000);
     const searchInput = wrapper.find('ForwardRef(InputBase)');
-    expect(props.searchUpdate).toHaveBeenCalledWith('tag search');
+    expect(mockdispatch).toHaveBeenCalledWith({
+      payload: { tagSearch: false, term: 'tag search' },
+      type: 'UPDATE_SEARCH',
+    });
     expect(props.openSearch).toHaveBeenCalled();
     expect(searchInput.props().value).toBe('tag search');
     expect(global.scrollTo).toHaveBeenCalled();

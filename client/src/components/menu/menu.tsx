@@ -4,7 +4,6 @@ import { withRouter } from 'react-router-dom';
 import { connect } from 'react-redux';
 import { compose } from 'redux';
 import { getUser } from '../../actions/authentication';
-import updateSearch from '../../actions/search';
 import Search from './search';
 import Cover from '../cover/cover';
 import SignIn from '../signin/signin';
@@ -16,7 +15,6 @@ import './menu.scss';
 export const mapStateToProps = ({ user }: {user: userType}) => ({ user });
 const actionCreators = {
   getUser,
-  updateSearch,
 };
 
 export function Brand() {
@@ -45,7 +43,6 @@ export function Login({ showSignIn }:{showSignIn: () => void}) {
 interface MenuProps {
   user: userType
   getUser: (path: string) => void
-  updateSearch: () => void
   location: {
     pathname: string,
   }
@@ -69,7 +66,6 @@ export class Menu extends React.Component<MenuProps, MenuState> {
   }
 
   async componentDidMount() {
-    console.log('Menu just Mounted');
     const { getUser: getUserStatus } = this.props;
     await getUserStatus('/auth/profile');
     this.setState(
@@ -120,7 +116,6 @@ export class Menu extends React.Component<MenuProps, MenuState> {
     } = this.state;
     const {
       user: { authenticated, username },
-      updateSearch: searchUpdate,
       location: { pathname },
     } = this.props;
     if (!ready) return <Loading />;
@@ -137,7 +132,6 @@ export class Menu extends React.Component<MenuProps, MenuState> {
           isShowing={showSearch}
           openSearch={() => this.setState({ showSearch: true })}
           closeSearch={() => this.setState({ showSearch: false })}
-          searchUpdate={searchUpdate}
           pathname={pathname}
         />
         { !showSearch && this.renderMenu(authenticated)}

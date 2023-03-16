@@ -10,7 +10,6 @@ exports[`The Menu component will render for an authenticated user 1`] = `
     isShowing={false}
     openSearch={[Function]}
     pathname="/"
-    searchUpdate={[MockFunction]}
   />
   <CollapsibleMenu
     menuClicked={[Function]}
@@ -29,7 +28,6 @@ exports[`The Menu component will render for users authenticated as guest 1`] = `
     isShowing={false}
     openSearch={[Function]}
     pathname="/"
-    searchUpdate={[MockFunction]}
   />
   <Login
     showSignIn={[Function]}

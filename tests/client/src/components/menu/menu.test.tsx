@@ -18,7 +18,6 @@ describe('The Menu component', () => {
         pathname: '/',
       },
       getUser: jest.fn(),
-      updateSearch: jest.fn(),
     };
   });
   afterEach(() => {
@@ -31,6 +30,18 @@ describe('The Menu component', () => {
     expect(props.getUser).toHaveBeenCalledWith('/auth/profile');
     expect(cover.length).toBe(0);
     expect(toJson(wrapper)).toMatchSnapshot();
+  });
+
+  test('will open the search bar on search click of menu bar', async () => {
+    const wrapper = shallow<Menu>(<Menu {...props} />);
+    await Promise.resolve();
+    const cover = wrapper.find('Cover');
+    const collapsibleMenu: EnzymePropSelector = wrapper.find('CollapsibleMenu');
+    expect(wrapper.state().showSearch).toBe(false);
+    expect(props.getUser).toHaveBeenCalledWith('/auth/profile');
+    expect(cover.length).toBe(0);
+    collapsibleMenu.props().menuClicked({ target: { innerText: 'Search' } });
+    expect(wrapper.state().showSearch).toBe(true);
   });
 
   test('will render for an open search bar', async () => {

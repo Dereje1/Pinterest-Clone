@@ -1,19 +1,19 @@
-import React, { useEffect, useState, useLayoutEffect } from 'react';
+import React, {
+  useEffect, useState, useLayoutEffect, useMemo,
+} from 'react';
 import _ from 'lodash';
-import { useSelector } from 'react-redux';
+import { useSelector, useDispatch } from 'react-redux';
 import Paper from '@mui/material/Paper';
 import InputBase from '@mui/material/InputBase';
-import SearchIcon from '@mui/icons-material/Search';
-import Tooltip from '@mui/material/Tooltip';
 import HighlightOffIcon from '@mui/icons-material/HighlightOff';
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 import IconButton from '@mui/material/IconButton';
+import updateSearch from '../../actions/search';
 import { searchType } from '../../interfaces';
 
 interface SearchProps {
   pathname: string
   isShowing: boolean
-  searchUpdate: (val: string) => void
   openSearch: () => void
   closeSearch: () => void
 }
@@ -21,30 +21,38 @@ interface SearchProps {
 function Search({
   pathname,
   isShowing,
-  searchUpdate,
   openSearch,
   closeSearch,
 }: SearchProps) {
   const [searchVal, updateSearchVal] = useState('');
   const [scrollUp, setScrollUp] = useState(false);
+  const [triggerDispatch, setTriggerDispatch] = useState(false);
 
+  const dispatch = useDispatch();
   const { term, tagSearch } = useSelector(({ search }: {search: searchType}) => search);
 
-  const onDebounceSearch = _.debounce((
-    val: string,
-    reduxUpdate,
-  ) => reduxUpdate(val), 500);
+  const onDebounceSearch = useMemo(
+    () => _.debounce(() => setTriggerDispatch(true), 500),
+    [],
+  );
+
+  useEffect(() => {
+    if (triggerDispatch) {
+      dispatch(updateSearch(searchVal));
+      setTriggerDispatch(false);
+    }
+  }, [triggerDispatch]);
 
   const handleSearch = (e: React.SyntheticEvent) => {
     const target = e.target as HTMLTextAreaElement;
     const { value } = target;
     updateSearchVal(value);
-    onDebounceSearch(value, searchUpdate);
+    onDebounceSearch();
   };
 
   const clearSearch = () => {
     updateSearchVal('');
-    searchUpdate('');
+    dispatch(updateSearch(''));
   };
 
   useEffect(() => {
@@ -52,7 +60,7 @@ function Search({
       setScrollUp(true);
       openSearch();
       updateSearchVal(term);
-      onDebounceSearch(term, searchUpdate);
+      dispatch(updateSearch(term));
     }
     return () => {
       setScrollUp(false);
