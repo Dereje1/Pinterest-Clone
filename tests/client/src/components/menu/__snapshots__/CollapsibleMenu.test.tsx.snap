@@ -7,13 +7,14 @@ exports[`The collapsible menu component will render for home 1`] = `
     onClick={[Function]}
     sx={
       {
+        "cursor": "pointer",
         "marginLeft": 1,
-        "marginRight": 1,
+        "marginRight": 3,
       }
     }
   />
   <ForwardRef(Drawer)
-    anchor="top"
+    anchor="right"
     onClose={[Function]}
     open={false}
   >
@@ -237,13 +238,14 @@ exports[`The collapsible menu component will render for my pins 1`] = `
     onClick={[Function]}
     sx={
       {
+        "cursor": "pointer",
         "marginLeft": 1,
-        "marginRight": 1,
+        "marginRight": 3,
       }
     }
   />
   <ForwardRef(Drawer)
-    anchor="top"
+    anchor="right"
     onClose={[Function]}
     open={false}
   >

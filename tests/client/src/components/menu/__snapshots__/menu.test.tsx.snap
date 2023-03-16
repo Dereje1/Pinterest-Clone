@@ -12,13 +12,9 @@ exports[`The Menu component will render for an authenticated user 1`] = `
     pathname="/"
     searchUpdate={[MockFunction]}
   />
-  <div
-    className="items extended"
-  >
-    <ExpandedMenu
-      pathname="/"
-    />
-  </div>
+  <CollapsibleMenu
+    pathname="/"
+  />
 </div>
 `;
 
@@ -55,33 +51,6 @@ exports[`The Menu component will render the Login 1`] = `
 </div>
 `;
 
-exports[`The Menu component will render the auth menu 1`] = `
-<Fragment>
-  <NavLink
-    exact={true}
-    to="/"
-  >
-    Home
-  </NavLink>
-  <NavLink
-    exact={true}
-    to="/pins"
-  >
-    My Pins
-  </NavLink>
-  <NavLink
-    to="/profile/63acc05f21481fa569a03b0b"
-  >
-    Users
-  </NavLink>
-  <NavLink
-    to="/logout"
-  >
-    Logout
-  </NavLink>
-</Fragment>
-`;
-
 exports[`The Menu component will render the brand 1`] = `
 <div
   className="brand"
@@ -97,23 +66,5 @@ exports[`The Menu component will render the brand 1`] = `
     />
      Clone
   </a>
-</div>
-`;
-
-exports[`The Menu component will render the collapsed menu 1`] = `
-<div
-  className="menu"
->
-  <Brand />
-  <Search
-    closeSearch={[Function]}
-    isShowing={false}
-    openSearch={[Function]}
-    pathname="/"
-    searchUpdate={[MockFunction]}
-  />
-  <CollapsibleMenu
-    pathname="/"
-  />
 </div>
 `;

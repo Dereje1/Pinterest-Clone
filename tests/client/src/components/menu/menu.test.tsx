@@ -5,7 +5,7 @@ import React from 'react';
 import { EnzymePropSelector, shallow } from 'enzyme';
 import toJson from 'enzyme-to-json';
 import {
-  Menu, mapStateToProps, ExpandedMenu, Brand, Login,
+  Menu, mapStateToProps, Brand, Login,
 } from '../../../../../client/src/components/menu/menu';
 import { reduxStub } from '../../../stub';
 
@@ -74,13 +74,6 @@ describe('The Menu component', () => {
     expect(cover.length).toBe(1);
   });
 
-  test('will render the collapsed menu', async () => {
-    const wrapper = shallow(<Menu {...props} />);
-    await Promise.resolve();
-    wrapper.setState({ menuIsCollapsed: true });
-    expect(toJson(wrapper)).toMatchSnapshot();
-  });
-
   test('will toggle the sign-in modal for guest users', async () => {
     const updatedProps = {
       ...props,
@@ -100,18 +93,6 @@ describe('The Menu component', () => {
     expect(wrapper.state().displaySignIn).toBe(false);
   });
 
-  test('will go to the Admin user page if users is selected from the extended menu', () => {
-    const wrapper = shallow(<ExpandedMenu pathname="/" />);
-    const usersLink: EnzymePropSelector = wrapper.find('NavLink').at(2);
-    expect(usersLink.props().to).toBe('/profile/63acc05f21481fa569a03b0b');
-  });
-
-  test('will stay on the same page if users is selected again from the extended menu', () => {
-    const wrapper = shallow(<ExpandedMenu pathname="/some_profile" />);
-    const usersLink: EnzymePropSelector = wrapper.find('NavLink').at(2);
-    expect(usersLink.props().to).toBe('/some_profile');
-  });
-
   test('will map redux state to props', () => {
     const mappedProps = mapStateToProps(reduxStub);
     expect(mappedProps).toEqual({ user: reduxStub.user });
@@ -124,11 +105,6 @@ describe('The Menu component', () => {
 
   test('will render the Login', () => {
     const wrapper = shallow(<Login showSignIn={jest.fn()} />);
-    expect(toJson(wrapper)).toMatchSnapshot();
-  });
-
-  test('will render the auth menu', () => {
-    const wrapper = shallow(<ExpandedMenu pathname="/" />);
     expect(toJson(wrapper)).toMatchSnapshot();
   });
 });

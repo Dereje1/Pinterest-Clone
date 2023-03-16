@@ -16,6 +16,13 @@ describe('The collapsible menu component', () => {
     expect(toJson(wrapper)).toMatchSnapshot();
   });
 
+  test('will render with anchor as "top"', () => {
+    global.innerWidth = 749;
+    const wrapper = shallow(<CollapsibleMenu pathname="/" />);
+    const drawer: EnzymePropSelector = wrapper.find('ForwardRef(Drawer)');
+    expect(drawer.props().anchor).toBe('top');
+  });
+
   test('will go to the Admin user page if users is selected', () => {
     const wrapper = shallow(<CollapsibleMenu pathname="/" />);
     const usersLink: EnzymePropSelector = wrapper.find('ForwardRef(MenuItem)').at(2);

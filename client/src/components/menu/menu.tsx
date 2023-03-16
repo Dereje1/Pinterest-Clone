@@ -1,6 +1,6 @@
 // menu bar
 import React, { ComponentType } from 'react';
-import { NavLink, withRouter } from 'react-router-dom';
+import { withRouter } from 'react-router-dom';
 import { connect } from 'react-redux';
 import { compose } from 'redux';
 import { getUser } from '../../actions/authentication';
@@ -42,21 +42,6 @@ export function Login({ showSignIn }:{showSignIn: () => void}) {
   );
 }
 
-export function ExpandedMenu({ pathname }:{pathname: string}) {
-  return (
-    <>
-      <NavLink exact to="/">Home</NavLink>
-      <NavLink exact to="/pins">My Pins</NavLink>
-      <NavLink
-        to={pathname.includes('profile') ? pathname : '/profile/63acc05f21481fa569a03b0b'}
-      >
-        Users
-      </NavLink>
-      <NavLink to="/logout">Logout</NavLink>
-    </>
-  );
-}
-
 interface MenuProps {
   user: userType
   getUser: (path: string) => void
@@ -67,7 +52,6 @@ interface MenuProps {
 }
 
 interface MenuState {
-  menuIsCollapsed: boolean
   displaySignIn: boolean,
   showSearch: boolean,
   ready: boolean
@@ -78,7 +62,6 @@ export class Menu extends React.Component<MenuProps, MenuState> {
   constructor(props: MenuProps) {
     super(props);
     this.state = {
-      menuIsCollapsed: false,
       displaySignIn: false,
       showSearch: false,
       ready: false,
@@ -91,7 +74,6 @@ export class Menu extends React.Component<MenuProps, MenuState> {
     await getUserStatus('/auth/profile');
     this.setState(
       {
-        menuIsCollapsed: window.innerWidth < 750,
         ready: true,
       },
     );
@@ -102,16 +84,12 @@ export class Menu extends React.Component<MenuProps, MenuState> {
       location: { pathname },
     } = this.props;
     const {
-      menuIsCollapsed, displaySignIn,
+      displaySignIn,
     } = this.state;
     if (authenticated) {
-      return (menuIsCollapsed)
-        ? <CollapsibleMenu pathname={pathname} />
-        : (
-          <div className="items extended">
-            <ExpandedMenu pathname={pathname} />
-          </div>
-        );
+      return (
+        <CollapsibleMenu pathname={pathname} />
+      );
     }
     return (
       <>

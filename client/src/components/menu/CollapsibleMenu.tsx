@@ -93,16 +93,15 @@ function CollapsibleMenu({ pathname }: {pathname: string}) {
       </MenuList>
     </Box>
   );
-
   return (
     <div>
       <MenuIcon
         onClick={toggleDrawer}
         fontSize="large"
-        sx={{ marginLeft: 1, marginRight: 1 }}
+        sx={{ marginLeft: 1, marginRight: 3, cursor: 'pointer' }}
       />
       <Drawer
-        anchor="top"
+        anchor={window.innerWidth < 750 ? 'top' : 'right'}
         open={openDrawer}
         onClose={toggleDrawer}
       >
