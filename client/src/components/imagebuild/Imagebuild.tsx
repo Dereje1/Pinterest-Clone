@@ -9,20 +9,23 @@ import {
   initialDisplayPerScroll,
   updatePinList,
   getZoomedImageStyle,
+  getImageMetaData,
 } from '../../utils/utils';
-import { PinType, userType, zoomedImageInfoType } from '../../interfaces';
+import {
+  PinType, userType, zoomedImageInfoType,
+} from '../../interfaces';
 import './imagebuild.scss';
 import error from '../mypins/error.png';
 
 const PINS_DISPLAY_PER_SCROLL = 10;
 
 interface ImageBuildProps {
-    pinImage: boolean
-    deletePin: ((pin: PinType) => void) | null
-    pinList: PinType[]
-    displayBrokenImage?: boolean
-    ready: boolean
-    user: userType
+  pinImage: boolean
+  deletePin: ((pin: PinType) => void) | null
+  pinList: PinType[]
+  displayBrokenImage?: boolean
+  ready: boolean
+  user: userType
 }
 
 const initialLoadedPins: PinType[] = [];
@@ -119,7 +122,7 @@ function ImageBuild({
     }
   };
 
-  const togglePinImage = async ({ _id, hasSaved }:{_id: string, hasSaved: boolean}) => {
+  const togglePinImage = async ({ _id, hasSaved }: { _id: string, hasSaved: boolean }) => {
     const { username } = user;
     // can not do this unless logged in
     if (username === 'Guest') {
@@ -158,9 +161,11 @@ function ImageBuild({
       top: document.body.scrollTop,
       width: '90%',
     };
+    const loadedIndex = loadedPins.findIndex((loadedPin) => loadedPin._id === currentImg._id);
     setZoomedImageInfo({
       pin: currentImg,
       parentDivStyle,
+      loadedIndex,
     });
   };
 
@@ -169,9 +174,28 @@ function ImageBuild({
     setBatchSize(batchSize + PINS_DISPLAY_PER_SCROLL);
   };
 
+  const handleSwipe = async (newIndex: number) => {
+    if (newIndex < 0 || newIndex > (loadedPins.length - 1)) return;
+    if (zoomedImageInfo) {
+      const metadata = await getImageMetaData(loadedPins[newIndex].imgLink);
+      if (!metadata) return;
+      const { naturalWidth, naturalHeight } = metadata;
+      const parentDivStyle = {
+        ...getZoomedImageStyle({ naturalWidth, naturalHeight }),
+        top: document.body.scrollTop,
+        width: '90%',
+      };
+      setZoomedImageInfo({
+        parentDivStyle,
+        pin: loadedPins[newIndex],
+        loadedIndex: newIndex,
+      });
+    }
+  };
+
   return (
     <>
-      { displayLogin && (
+      {displayLogin && (
         <SignIn
           removeSignin={() => setDisplayLogin(false)}
         />
@@ -193,7 +217,7 @@ function ImageBuild({
             pins={activePins}
           />
         </InfiniteScroll>
-        { zoomedImageInfo && (
+        {zoomedImageInfo && (
           <PinZoom
             reset={() => setZoomedImageInfo(null)}
             zoomInfo={zoomedImageInfo}
@@ -203,6 +227,7 @@ function ImageBuild({
             handleNewComment={handleNewComment}
             updateTags={handleTags}
             displayLogin={() => setDisplayLogin(true)}
+            onSwipe={handleSwipe}
           />
         )}
       </div>

@@ -4,7 +4,6 @@ import React, { Component, createRef } from 'react';
 import Card from '@mui/material/Card';
 import CardHeader from '@mui/material/CardHeader';
 import { CardContent } from '@mui/material';
-import CardMedia from '@mui/material/CardMedia';
 import Badge from '@mui/material/Badge';
 import IconButton from '@mui/material/IconButton';
 import CommentOutlinedIcon from '@mui/icons-material/CommentOutlined';
@@ -14,6 +13,7 @@ import { styled } from '@mui/styles';
 /* local components and utility */
 import ModalActions from './ModalActions';
 import Comments from './Comments';
+import SwipableImage from './SwipableImage';
 import { ProfileLink } from '../common/common';
 import {
   delay, getFormattedDescription, formatDate,
@@ -39,6 +39,7 @@ interface PinZoomProps {
     handleNewComment: (newComment: string) => void
     updateTags: (query: string) => void
     displayLogin: () => void
+    onSwipe: (newIndex: number) => void
 }
 
 interface PinZoomState {
@@ -122,6 +123,8 @@ export class PinZoom extends Component<PinZoomProps, PinZoomState> {
       handleNewComment,
       updateTags,
       displayLogin,
+      zoomInfo,
+      onSwipe,
     } = this.props;
     const {
       commentsShowing, zoomClass,
@@ -192,16 +195,7 @@ export class PinZoom extends Component<PinZoomProps, PinZoomState> {
           }}
           >
             { !commentsShowing ? (
-              <CardMedia
-                component="img"
-                image={pinInformation.imgLink}
-                id="pin-zoom"
-                sx={{
-                  width: parentDivStyle.imgWidth,
-                  marginLeft: 'auto',
-                  marginRight: 'auto',
-                }}
-              />
+              <SwipableImage zoomInfo={zoomInfo} onSwipe={onSwipe} />
             )
               : (
                 <Comments

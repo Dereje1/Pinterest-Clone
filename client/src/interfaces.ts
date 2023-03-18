@@ -36,7 +36,7 @@ export interface providersType {
     twitter: boolean,
     google: boolean,
     github: boolean
-  }
+}
 
 export interface userType {
     authenticated: boolean,
@@ -54,9 +54,9 @@ export interface searchType {
 }
 
 export interface providerIconsType {
-    twitter: {icon: ReactElement, color: string},
-    google: {icon: ReactElement, color: string},
-    github: {icon: ReactElement, color: string}
+    twitter: { icon: ReactElement, color: string },
+    google: { icon: ReactElement, color: string },
+    github: { icon: ReactElement, color: string }
 }
 export interface zoomedImageInfoType {
     pin: PinType
@@ -66,5 +66,6 @@ export interface zoomedImageInfoType {
         isNoFit: boolean
         top: number
         width: string
-      }
+    }
+    loadedIndex: number
 }

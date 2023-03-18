@@ -144,3 +144,13 @@ export const onTheFlyPinListNameChange = (
     savedBy: newSavedBy,
   };
 });
+
+type ImageMetaDataType = { naturalHeight: number, naturalWidth: number}
+export const getImageMetaData = (src: string):Promise<ImageMetaDataType|null> => new Promise(
+  (resolve) => {
+    const img = new Image();
+    img.src = src;
+    img.onload = () => resolve({ naturalHeight: img.height, naturalWidth: img.width });
+    img.onerror = () => resolve(null);
+  },
+);
