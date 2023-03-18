@@ -21,12 +21,11 @@ const config = {
 function SwipableImage({ zoomInfo, onSwipe }: SwipableImageProps) {
   const { pin: pinInformation, parentDivStyle } = zoomInfo;
   const handlers = useSwipeable({
-    // onSwiped: (eventData) => console.log('User Swiped!', eventData),
     onSwipedLeft: () => onSwipe(zoomInfo.loadedIndex + 1),
     onSwipedRight: () => onSwipe(zoomInfo.loadedIndex - 1),
     ...config,
   });
-  console.log({ currentIndex: zoomInfo.loadedIndex });
+
   return (
     <CardMedia
       component="img"

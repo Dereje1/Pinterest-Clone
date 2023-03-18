@@ -1,0 +1,17 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`will render 1`] = `
+<ForwardRef(CardMedia)
+  component="img"
+  id="pin-zoom"
+  image="imgLink id-1"
+  onMouseDown={[Function]}
+  sx={
+    {
+      "marginLeft": "auto",
+      "marginRight": "auto",
+      "width": 622.5,
+    }
+  }
+/>
+`;

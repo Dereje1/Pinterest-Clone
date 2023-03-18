@@ -32,6 +32,7 @@ describe('The pin zoom modal', () => {
           width: '90%',
           isNoFit: false,
         },
+        loadedIndex: 0,
       },
       reset: jest.fn(),
       pinImage: jest.fn(),
@@ -40,6 +41,7 @@ describe('The pin zoom modal', () => {
       user: { ...reduxStub.user },
       updateTags: jest.fn(),
       displayLogin: jest.fn(),
+      onSwipe: jest.fn(),
     };
   });
 
@@ -86,6 +88,7 @@ describe('The pin zoom modal', () => {
           width: '90%',
           isNoFit: false,
         },
+        loadedIndex: 0,
       },
     };
     const wrapper = shallow<PinZoom>(<PinZoom {...updatedProps} />);

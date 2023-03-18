@@ -6,6 +6,7 @@ import { EnzymePropSelector, shallow } from 'enzyme';
 import toJson from 'enzyme-to-json';
 import ImageBuild from '../../../../../client/src/components/imagebuild/Imagebuild';
 import RESTcall from '../../../../../client/src/crud';
+import * as utils from '../../../../../client/src/utils/utils';
 import { pinsStub, reduxStub } from '../../../stub';
 import { PinType, PinnerType } from '../../../../../client/src/interfaces';
 
@@ -75,6 +76,7 @@ describe('The ImageBuild component', () => {
     expect(pinZoom.props().zoomInfo).toEqual({
       pin: pinsStub[1],
       parentDivStyle: { ...parentDivStyleStub },
+      loadedIndex: 1,
     });
   });
 
@@ -100,6 +102,7 @@ describe('The ImageBuild component', () => {
     expect(pinZoom.props().zoomInfo).toEqual({
       pin: pinsStub[1],
       parentDivStyle: { ...parentDivStyleStub },
+      loadedIndex: 1,
     });
     // re-fire again after pin is already zooomed
     masonry = wrapper.find('MasonryPins');
@@ -109,6 +112,7 @@ describe('The ImageBuild component', () => {
     expect(pinZoom.props().zoomInfo).toEqual({
       pin: pinsStub[1],
       parentDivStyle: { ...parentDivStyleStub },
+      loadedIndex: 1,
     });
   });
 
@@ -123,6 +127,7 @@ describe('The ImageBuild component', () => {
     expect(pinZoom.props().zoomInfo).toEqual({
       pin: pinsStub[1],
       parentDivStyle: { ...parentDivStyleStub },
+      loadedIndex: 1,
     });
     pinZoom.props().reset();
     pinZoom = wrapper.find('PinZoom');
@@ -176,6 +181,7 @@ describe('The ImageBuild component', () => {
     expect(pinZoom.props().zoomInfo).toEqual({
       pin: pinsStub[1],
       parentDivStyle: { ...parentDivStyleStub },
+      loadedIndex: 1,
     });
     // trigger a new comment
     await pinZoom.props().handleNewComment('tester comment');
@@ -205,6 +211,7 @@ describe('The ImageBuild component', () => {
     expect(pinZoom.props().zoomInfo).toEqual({
       pin: pinsStub[1],
       parentDivStyle: { ...parentDivStyleStub },
+      loadedIndex: 1,
     });
     // update pins list and assert that zoomed pin is gone
     wrapper.setProps({
@@ -323,5 +330,73 @@ describe('The ImageBuild component', () => {
     // assert that new comment is reflected in zoomed pin
     pinZoom = wrapper.find('PinZoom');
     expect(pinZoom.props().zoomInfo.pin).toEqual({ _id: '2', tags: [{ _id: 6, tag: 'tester tag' }] });
+  });
+
+  test('will handle swipes on zoomed image', async () => {
+    const mockedImageData = jest
+      .spyOn(utils, 'getImageMetaData')
+      .mockImplementationOnce(() => Promise.resolve({ naturalWidth: 100, naturalHeight: 100 }));
+    const wrapper = shallow(<ImageBuild {...props} />);
+    const masonry: EnzymePropSelector = wrapper.find('MasonryPins');
+    let pinZoom: EnzymePropSelector = wrapper.find('PinZoom');
+    expect(pinZoom.isEmptyRender()).toBe(true);
+    // zoom into pin
+    masonry.props().pinEnlarge({ target: { className: 'any', naturalWidth: 600, naturalHeight: 600 } }, pinsStub[1]);
+    pinZoom = wrapper.find('PinZoom');
+    // trigger a tag update
+    await pinZoom.props().onSwipe(2);
+    // assert that zoomed pin has new info refelected
+    pinZoom = wrapper.find('PinZoom');
+    expect(pinZoom.props().zoomInfo).toEqual({
+      pin: pinsStub[2],
+      parentDivStyle: { ...parentDivStyleStub },
+      loadedIndex: 2,
+    });
+    mockedImageData.mockClear();
+  });
+
+  test('will not swipe if index is out of bounds', async () => {
+    const mockedImageData = jest
+      .spyOn(utils, 'getImageMetaData')
+      .mockImplementationOnce(() => Promise.resolve({ naturalWidth: 100, naturalHeight: 100 }));
+    const wrapper = shallow(<ImageBuild {...props} />);
+    const masonry: EnzymePropSelector = wrapper.find('MasonryPins');
+    let pinZoom: EnzymePropSelector = wrapper.find('PinZoom');
+    expect(pinZoom.isEmptyRender()).toBe(true);
+    // zoom into pin
+    masonry.props().pinEnlarge({ target: { className: 'any', naturalWidth: 600, naturalHeight: 600 } }, pinsStub[1]);
+    pinZoom = wrapper.find('PinZoom');
+    // trigger a tag update
+    await pinZoom.props().onSwipe(3);
+    // assert that zoomed pin has new info refelected
+    pinZoom = wrapper.find('PinZoom');
+    expect(pinZoom.props().zoomInfo).toEqual({
+      pin: pinsStub[1],
+      parentDivStyle: { ...parentDivStyleStub },
+      loadedIndex: 1,
+    });
+    mockedImageData.mockReset();
+  });
+
+  test('will not swipe if metadata is not recieved', async () => {
+    jest
+      .spyOn(utils, 'getImageMetaData')
+      .mockImplementationOnce(() => Promise.resolve(null));
+    const wrapper = shallow(<ImageBuild {...props} />);
+    const masonry: EnzymePropSelector = wrapper.find('MasonryPins');
+    let pinZoom: EnzymePropSelector = wrapper.find('PinZoom');
+    expect(pinZoom.isEmptyRender()).toBe(true);
+    // zoom into pin
+    masonry.props().pinEnlarge({ target: { className: 'any', naturalWidth: 600, naturalHeight: 600 } }, pinsStub[1]);
+    pinZoom = wrapper.find('PinZoom');
+    // trigger a tag update
+    await pinZoom.props().onSwipe(2);
+    // assert that zoomed pin has new info refelected
+    pinZoom = wrapper.find('PinZoom');
+    expect(pinZoom.props().zoomInfo).toEqual({
+      pin: pinsStub[1],
+      parentDivStyle: { ...parentDivStyleStub },
+      loadedIndex: 1,
+    });
   });
 });
