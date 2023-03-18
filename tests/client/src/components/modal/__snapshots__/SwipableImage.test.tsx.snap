@@ -1,17 +1,70 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`will render 1`] = `
-<ForwardRef(CardMedia)
-  component="img"
-  id="pin-zoom"
-  image="imgLink id-1"
-  onMouseDown={[Function]}
-  sx={
-    {
-      "marginLeft": "auto",
-      "marginRight": "auto",
-      "width": 622.5,
+<Fragment>
+  <ForwardRef(CardMedia)
+    component="img"
+    id="pin-zoom"
+    image="imgLink id-1"
+    onMouseDown={[Function]}
+    sx={
+      {
+        "marginLeft": "auto",
+        "marginRight": "auto",
+        "width": 622.5,
+      }
     }
-  }
-/>
+  />
+  <ForwardRef(ImageListItemBar)
+    actionIcon={
+      <div
+        style={
+          {
+            "display": "flex",
+            "justifyContent": "space-around",
+            "width": "100%",
+          }
+        }
+      >
+        <ForwardRef(IconButton)
+          aria-label="info about imgDescription id-1"
+          onClick={[Function]}
+          onMouseDown={[Function]}
+          sx={
+            {
+              "color": "rgba(255, 255, 255, 1)",
+            }
+          }
+        >
+          <Memo />
+        </ForwardRef(IconButton)>
+        <ForwardRef(IconButton)
+          aria-label="info about imgDescription id-1"
+          onClick={[Function]}
+          onMouseDown={[Function]}
+          sx={
+            {
+              "color": "rgba(255, 255, 255, 1)",
+            }
+          }
+        >
+          <Memo />
+        </ForwardRef(IconButton)>
+      </div>
+    }
+    position="bottom"
+    sx={
+      {
+        "& .MuiImageListItemBar-actionIcon": {
+          "flexGrow": 1,
+        },
+        "& .MuiImageListItemBar-titleWrap": {
+          "display": "none",
+          "flexGrow": 0,
+        },
+        "background": "transparent",
+      }
+    }
+  />
+</Fragment>
 `;
