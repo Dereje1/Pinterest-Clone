@@ -29,16 +29,15 @@ function SwipableImage({ zoomInfo, onSlidePin, onSetImageMetaData }: SwipableIma
   const { pin: pinInformation, parentDivStyle } = zoomInfo;
 
   const [slideImage, setSlideImage] = useState(false as slideType);
-  const [imageFit, setImageFit] = useState('fill');
   const [showImageListItemBar, setShowImageListItemBar] = useState(false);
 
   useEffect(
     () => {
       if (slideImage === 'left') {
-        setImageFit('contain');
         onSlidePin(zoomInfo.loadedIndex - 1);
-      } else if (slideImage === 'right') {
-        setImageFit('contain');
+      }
+
+      if (slideImage === 'right') {
         onSlidePin(zoomInfo.loadedIndex + 1);
       }
 
@@ -76,7 +75,7 @@ function SwipableImage({ zoomInfo, onSlidePin, onSetImageMetaData }: SwipableIma
           height: parentDivStyle.imgHeight,
           marginLeft: 'auto',
           marginRight: 'auto',
-          objectFit: imageFit,
+          objectFit: 'contain',
           background: 'rgba(0, 0, 0, 0.1)',
         }}
         onLoad={onPinLoad}

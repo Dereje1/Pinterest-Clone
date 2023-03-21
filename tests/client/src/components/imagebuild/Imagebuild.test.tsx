@@ -370,4 +370,46 @@ describe('The ImageBuild component', () => {
       loadedIndex: 1,
     });
   });
+
+  test('will reset the parentdiv style for a given image', () => {
+    const wrapper = shallow(<ImageBuild {...props} />);
+    const masonry: EnzymePropSelector = wrapper.find('MasonryPins');
+    let pinZoom: EnzymePropSelector = wrapper.find('PinZoom');
+    expect(pinZoom.isEmptyRender()).toBe(true);
+    // zoom into pin
+    masonry.props().pinEnlarge({ target: { className: 'any', naturalWidth: 600, naturalHeight: 600 } }, pinsStub[1]);
+    pinZoom = wrapper.find('PinZoom');
+    // trigger a tag update
+    const ans = pinZoom.props().resetParentDivStyle({ naturalWidth: 200, naturalHeight: 400 });
+    // assert that zoomed pin has new info refelected
+    pinZoom = wrapper.find('PinZoom');
+    expect(ans).toEqual({
+      ...parentDivStyleStub, imgWidth: 299, parentWidth: 500, top: 10, isNoFit: true,
+    });
+    expect(pinZoom.props().zoomInfo).toEqual({
+      pin: pinsStub[1],
+      parentDivStyle: ans,
+      loadedIndex: 1,
+    });
+  });
+
+  test('will not reset the parentdiv style if no metadata given', () => {
+    const wrapper = shallow(<ImageBuild {...props} />);
+    const masonry: EnzymePropSelector = wrapper.find('MasonryPins');
+    let pinZoom: EnzymePropSelector = wrapper.find('PinZoom');
+    expect(pinZoom.isEmptyRender()).toBe(true);
+    // zoom into pin
+    masonry.props().pinEnlarge({ target: { className: 'any', naturalWidth: 600, naturalHeight: 600 } }, pinsStub[1]);
+    pinZoom = wrapper.find('PinZoom');
+    // trigger a tag update
+    const ans = pinZoom.props().resetParentDivStyle();
+    // assert that zoomed pin has new info refelected
+    pinZoom = wrapper.find('PinZoom');
+    expect(ans).toEqual(null);
+    expect(pinZoom.props().zoomInfo).toEqual({
+      pin: pinsStub[1],
+      parentDivStyle: { ...parentDivStyleStub },
+      loadedIndex: 1,
+    });
+  });
 });

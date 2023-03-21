@@ -192,6 +192,14 @@ describe('The pin zoom modal', () => {
     expect(link.userId).toBe('1');
     expect(props.reset).toHaveBeenCalledTimes(1);
   });
+
+  test('will set the image metadata in state', () => {
+    const wrapper = shallow<PinZoom>(<PinZoom {...props} />);
+    expect(wrapper.state().imgMetaData).toBe(null);
+    const img: EnzymePropSelector = wrapper.find('SwipableImage');
+    img.props().onSetImageMetaData('image metadata');
+    expect(wrapper.state().imgMetaData).toBe('image metadata');
+  });
 });
 
 describe('The styled badge', () => {

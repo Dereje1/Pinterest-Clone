@@ -24,11 +24,18 @@ const props: React.ComponentProps<typeof SwipableImage> = {
   onSetImageMetaData: jest.fn(),
 };
 
-test('will render', () => {
+test('will render without the list item bar', () => {
   const wrapper = shallow(<SwipableImage {...props} />);
   const img:EnzymePropSelector = wrapper.find('ForwardRef(CardMedia)');
-  expect(toJson(wrapper)).toMatchSnapshot();
   img.props().onMouseDown({ });
+  wrapper.props().onFocus();
+  expect(toJson(wrapper)).toMatchSnapshot();
+});
+
+test('will render with the list item bar', () => {
+  const wrapper = shallow(<SwipableImage {...props} />);
+  wrapper.props().onMouseOver();
+  expect(toJson(wrapper)).toMatchSnapshot();
 });
 
 test('will handle manual forward and backward clicks', () => {
@@ -41,6 +48,14 @@ test('will handle manual forward and backward clicks', () => {
   back.props.onMouseDown({ preventDefault: jest.fn() });
   next.props.onClick();
   next.props.onMouseDown({ preventDefault: jest.fn() });
+  wrapper.props().onMouseLeave();
   expect(props.onSlidePin).toHaveBeenCalledWith(-1);
   expect(props.onSlidePin).toHaveBeenCalledWith(1);
+});
+
+test('will send the image metadata on load', () => {
+  const wrapper = shallow(<SwipableImage {...props} />);
+  const img:EnzymePropSelector = wrapper.find('ForwardRef(CardMedia)');
+  img.props().onLoad({ target: { naturalWidth: 10, naturalHeight: 20 } });
+  expect(props.onSetImageMetaData).toHaveBeenCalledWith({ naturalWidth: 10, naturalHeight: 20 });
 });

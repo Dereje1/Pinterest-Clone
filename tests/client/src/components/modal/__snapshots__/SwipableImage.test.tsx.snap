@@ -1,6 +1,6 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`will render 1`] = `
+exports[`will render with the list item bar 1`] = `
 <div
   onFocus={[Function]}
   onMouseLeave={[Function]}
@@ -18,7 +18,89 @@ exports[`will render 1`] = `
         "height": 500,
         "marginLeft": "auto",
         "marginRight": "auto",
-        "objectFit": "fill",
+        "objectFit": "contain",
+        "width": 622.5,
+      }
+    }
+  />
+  <ForwardRef(ImageListItemBar)
+    actionIcon={
+      <div
+        id="actionbuttons"
+        style={
+          {
+            "display": "flex",
+            "justifyContent": "space-around",
+            "width": "100%",
+          }
+        }
+      >
+        <ForwardRef(IconButton)
+          aria-label="info about imgDescription id-1"
+          onClick={[Function]}
+          onMouseDown={[Function]}
+          sx={
+            {
+              "color": "rgba(255, 255, 255, 1)",
+            }
+          }
+        >
+          <Memo
+            fontSize="large"
+          />
+        </ForwardRef(IconButton)>
+        <ForwardRef(IconButton)
+          aria-label="info about imgDescription id-1"
+          onClick={[Function]}
+          onMouseDown={[Function]}
+          sx={
+            {
+              "color": "rgba(255, 255, 255, 1)",
+            }
+          }
+        >
+          <Memo
+            fontSize="large"
+          />
+        </ForwardRef(IconButton)>
+      </div>
+    }
+    position="bottom"
+    sx={
+      {
+        "& .MuiImageListItemBar-actionIcon": {
+          "flexGrow": 1,
+        },
+        "& .MuiImageListItemBar-titleWrap": {
+          "display": "none",
+          "flexGrow": 0,
+        },
+        "background": "rgba(0, 0, 0, 0.5)",
+      }
+    }
+  />
+</div>
+`;
+
+exports[`will render without the list item bar 1`] = `
+<div
+  onFocus={[Function]}
+  onMouseLeave={[Function]}
+  onMouseOver={[Function]}
+>
+  <ForwardRef(CardMedia)
+    component="img"
+    id="pin-zoom"
+    image="imgLink id-1"
+    onLoad={[Function]}
+    onMouseDown={[Function]}
+    sx={
+      {
+        "background": "rgba(0, 0, 0, 0.1)",
+        "height": 500,
+        "marginLeft": "auto",
+        "marginRight": "auto",
+        "objectFit": "contain",
         "width": 622.5,
       }
     }
