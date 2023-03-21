@@ -28,6 +28,7 @@ describe('The pin zoom modal', () => {
         parentDivStyle: {
           top: 10,
           imgWidth: 622.5,
+          imgHeight: 500,
           parentWidth: 622.5,
           width: '90%',
           isNoFit: false,
@@ -41,7 +42,15 @@ describe('The pin zoom modal', () => {
       user: { ...reduxStub.user },
       updateTags: jest.fn(),
       displayLogin: jest.fn(),
-      onSwipe: jest.fn(),
+      onSlidePin: jest.fn(),
+      resetParentDivStyle: jest.fn(() => ({
+        top: 10,
+        imgWidth: 622.5,
+        imgHeight: 500,
+        parentWidth: 830,
+        width: '90%',
+        isNoFit: false,
+      })),
     };
   });
 
@@ -84,6 +93,7 @@ describe('The pin zoom modal', () => {
         parentDivStyle: {
           top: 10,
           imgWidth: 622.5,
+          imgHeight: 500,
           parentWidth: 830,
           width: '90%',
           isNoFit: false,

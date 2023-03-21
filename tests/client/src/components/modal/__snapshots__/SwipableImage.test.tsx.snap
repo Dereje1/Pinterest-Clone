@@ -1,70 +1,27 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`will render 1`] = `
-<Fragment>
+<div
+  onFocus={[Function]}
+  onMouseLeave={[Function]}
+  onMouseOver={[Function]}
+>
   <ForwardRef(CardMedia)
     component="img"
     id="pin-zoom"
     image="imgLink id-1"
+    onLoad={[Function]}
     onMouseDown={[Function]}
     sx={
       {
+        "background": "rgba(0, 0, 0, 0.1)",
+        "height": 500,
         "marginLeft": "auto",
         "marginRight": "auto",
+        "objectFit": "fill",
         "width": 622.5,
       }
     }
   />
-  <ForwardRef(ImageListItemBar)
-    actionIcon={
-      <div
-        style={
-          {
-            "display": "flex",
-            "justifyContent": "space-around",
-            "width": "100%",
-          }
-        }
-      >
-        <ForwardRef(IconButton)
-          aria-label="info about imgDescription id-1"
-          onClick={[Function]}
-          onMouseDown={[Function]}
-          sx={
-            {
-              "color": "rgba(255, 255, 255, 1)",
-            }
-          }
-        >
-          <Memo />
-        </ForwardRef(IconButton)>
-        <ForwardRef(IconButton)
-          aria-label="info about imgDescription id-1"
-          onClick={[Function]}
-          onMouseDown={[Function]}
-          sx={
-            {
-              "color": "rgba(255, 255, 255, 1)",
-            }
-          }
-        >
-          <Memo />
-        </ForwardRef(IconButton)>
-      </div>
-    }
-    position="bottom"
-    sx={
-      {
-        "& .MuiImageListItemBar-actionIcon": {
-          "flexGrow": 1,
-        },
-        "& .MuiImageListItemBar-titleWrap": {
-          "display": "none",
-          "flexGrow": 0,
-        },
-        "background": "transparent",
-      }
-    }
-  />
-</Fragment>
+</div>
 `;

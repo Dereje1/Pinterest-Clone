@@ -154,11 +154,13 @@ exports[`The pin zoom modal will render 1`] = `
       }
     >
       <SwipableImage
-        onSwipe={[MockFunction]}
+        onSetImageMetaData={[Function]}
+        onSlidePin={[MockFunction]}
         zoomInfo={
           {
             "loadedIndex": 0,
             "parentDivStyle": {
+              "imgHeight": 500,
               "imgWidth": 622.5,
               "isNoFit": false,
               "parentWidth": 622.5,

@@ -21,7 +21,7 @@ import {
 import { PinType, userType, zoomedImageInfoType } from '../../interfaces';
 import './modal.scss';
 
-export const StyledBadge = styled(Badge)(({ name }:{ name: string}) => ({
+export const StyledBadge = styled(Badge)(({ name }: { name: string }) => ({
   '& .MuiBadge-badge': {
     right: name === 'pin' ? 32 : 43,
     top: name === 'pin' ? 17 : 13,
@@ -30,22 +30,28 @@ export const StyledBadge = styled(Badge)(({ name }:{ name: string}) => ({
   },
 }));
 
+type imgMetaDataType = {
+  naturalWidth: number
+  naturalHeight: number
+} | null
 interface PinZoomProps {
-    zoomInfo: zoomedImageInfoType,
-    user: userType
-    reset: () => void
-    pinImage: (pin: PinType) => void
-    deletePin: ((pin: PinType) => void) | null
-    handleNewComment: (newComment: string) => void
-    updateTags: (query: string) => void
-    displayLogin: () => void
-    onSwipe: (newIndex: number) => void
+  zoomInfo: zoomedImageInfoType,
+  user: userType
+  reset: () => void
+  pinImage: (pin: PinType) => void
+  deletePin: ((pin: PinType) => void) | null
+  handleNewComment: (newComment: string) => void
+  updateTags: (query: string) => void
+  displayLogin: () => void
+  onSlidePin: (newIndex: number) => void
+  resetParentDivStyle: (metadata: imgMetaDataType) => zoomedImageInfoType['parentDivStyle'] | null
 }
 
 interface PinZoomState {
-  commentsShowing: {width: number, height: number} | null
+  commentsShowing: { width: number, height: number } | null
   cancelBlur: boolean
   zoomClass: string
+  imgMetaData: imgMetaDataType
 }
 
 export class PinZoom extends Component<PinZoomProps, PinZoomState> {
@@ -58,6 +64,7 @@ export class PinZoom extends Component<PinZoomProps, PinZoomState> {
       commentsShowing: null,
       cancelBlur: false,
       zoomClass: 'zoom cshow',
+      imgMetaData: null,
     };
   }
 
@@ -92,26 +99,27 @@ export class PinZoom extends Component<PinZoomProps, PinZoomState> {
   };
 
   toggleComments = () => {
-    const { commentsShowing } = this.state;
-    const { zoomInfo: { parentDivStyle } } = this.props;
-    if (this.zoomedImage.current && !commentsShowing) {
+    const { commentsShowing, imgMetaData } = this.state;
+    const { resetParentDivStyle } = this.props;
+    const updatedDivStyle = resetParentDivStyle(imgMetaData);
+    if (this.zoomedImage.current && updatedDivStyle) {
       const { current: { clientHeight: cardHeight, children } } = this.zoomedImage;
       const [, image] = children;
       const { clientHeight: imageHeight } = image;
-      this.setState({
-        commentsShowing: {
-          width: parentDivStyle.parentWidth,
-          height: imageHeight + (window.innerHeight - cardHeight - 25),
-        },
-        cancelBlur: true,
-      });
-      return;
-    }
-    // need to reinstate focus for blur to work again
-    if (this.zoomedImage.current) {
+      if (!commentsShowing) {
+        this.setState({
+          commentsShowing: {
+            width: updatedDivStyle.parentWidth,
+            height: imageHeight + (window.innerHeight - cardHeight - 25),
+          },
+          cancelBlur: true,
+        });
+        return;
+      }
+      // need to reinstate focus for blur to work again
       this.zoomedImage.current.focus();
+      this.setState({ commentsShowing: null, cancelBlur: false });
     }
-    this.setState({ commentsShowing: null, cancelBlur: false });
   };
 
   render() {
@@ -124,7 +132,7 @@ export class PinZoom extends Component<PinZoomProps, PinZoomState> {
       updateTags,
       displayLogin,
       zoomInfo,
-      onSwipe,
+      onSlidePin,
     } = this.props;
     const {
       commentsShowing, zoomClass,
@@ -194,8 +202,12 @@ export class PinZoom extends Component<PinZoomProps, PinZoomState> {
             '&:last-child': { pb: 0 },
           }}
           >
-            { !commentsShowing ? (
-              <SwipableImage zoomInfo={zoomInfo} onSwipe={onSwipe} />
+            {!commentsShowing ? (
+              <SwipableImage
+                zoomInfo={zoomInfo}
+                onSlidePin={onSlidePin}
+                onSetImageMetaData={(m) => this.setState({ imgMetaData: m })}
+              />
             )
               : (
                 <Comments

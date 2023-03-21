@@ -9,7 +9,6 @@ import {
   initialDisplayPerScroll,
   updatePinList,
   getZoomedImageStyle,
-  getImageMetaData,
 } from '../../utils/utils';
 import {
   PinType, userType, zoomedImageInfoType,
@@ -152,7 +151,9 @@ function ImageBuild({
   // Zoom modal takes event and pic info and executes
   const pinEnlarge = (e: React.SyntheticEvent, currentImg: PinType) => {
     const target = e.target as HTMLImageElement;
-    const { naturalWidth, naturalHeight, className } = target;
+    const {
+      naturalWidth, naturalHeight, className,
+    } = target;
     // disregard for save/delete calls or if already zoomed
     if (className.includes('actionbutton') || zoomedImageInfo) return;
 
@@ -174,23 +175,39 @@ function ImageBuild({
     setBatchSize(batchSize + PINS_DISPLAY_PER_SCROLL);
   };
 
-  const handleSwipe = async (newIndex: number) => {
+  const handleSlide = (newIndex: number) => {
     if (newIndex < 0 || newIndex > (loadedPins.length - 1)) return;
     if (zoomedImageInfo) {
-      const metadata = await getImageMetaData(loadedPins[newIndex].imgLink);
-      if (!metadata) return;
-      const { naturalWidth, naturalHeight } = metadata;
-      const parentDivStyle = {
-        ...getZoomedImageStyle({ naturalWidth, naturalHeight }),
-        top: document.body.scrollTop,
-        width: '90%',
-      };
       setZoomedImageInfo({
-        parentDivStyle,
+        parentDivStyle: {
+          ...zoomedImageInfo.parentDivStyle,
+          ...getZoomedImageStyle({
+            naturalHeight: 0,
+            naturalWidth: 0,
+            getStatic: true,
+          }),
+        },
         pin: loadedPins[newIndex],
         loadedIndex: newIndex,
       });
     }
+  };
+
+  const resetParentDivStyle = (metadata:{
+    naturalWidth: number
+    naturalHeight: number
+  } | null) => {
+    if (!metadata || !zoomedImageInfo) return null;
+    const parentDivStyle = {
+      ...getZoomedImageStyle({ ...metadata }),
+      top: document.body.scrollTop,
+      width: '90%',
+    };
+    setZoomedImageInfo({
+      ...zoomedImageInfo,
+      parentDivStyle,
+    });
+    return parentDivStyle;
   };
 
   return (
@@ -227,7 +244,8 @@ function ImageBuild({
             handleNewComment={handleNewComment}
             updateTags={handleTags}
             displayLogin={() => setDisplayLogin(true)}
-            onSwipe={handleSwipe}
+            onSlidePin={handleSlide}
+            resetParentDivStyle={resetParentDivStyle}
           />
         )}
       </div>

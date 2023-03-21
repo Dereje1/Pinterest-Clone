@@ -33,7 +33,8 @@ export const getFilteredPins = (pinList: PinType[], search: string | null) => {
 export const getZoomedImageStyle = ({
   naturalWidth: imageWidth,
   naturalHeight: imageHeight,
-}:{naturalWidth: number, naturalHeight: number}) => {
+  getStatic = false,
+}:{naturalWidth: number, naturalHeight: number, getStatic?: boolean}) => {
   // dynamically resize image
   let { innerWidth, innerHeight } = window;
   // parameter for innerwidth/height adjustment with mobile consideration
@@ -42,6 +43,14 @@ export const getZoomedImageStyle = ({
   // minor x direction adjustment for padding too
   innerWidth -= (innerWidth * 0.02);
   let isNoFit = false;
+  if (getStatic) {
+    return {
+      imgWidth: innerWidth,
+      imgHeight: innerHeight,
+      parentWidth: innerWidth,
+      isNoFit,
+    };
+  }
   const ratio = Math.min(innerWidth / imageWidth, innerHeight / imageHeight);
   const newWidth = imageWidth * ratio;
   let parentWidth = newWidth;
@@ -55,6 +64,7 @@ export const getZoomedImageStyle = ({
   }
   return {
     imgWidth: newWidth,
+    imgHeight: newWidth * (imageHeight / imageWidth),
     parentWidth,
     isNoFit,
   };
@@ -144,13 +154,3 @@ export const onTheFlyPinListNameChange = (
     savedBy: newSavedBy,
   };
 });
-
-type ImageMetaDataType = { naturalHeight: number, naturalWidth: number}
-export const getImageMetaData = (src: string):Promise<ImageMetaDataType|null> => new Promise(
-  (resolve) => {
-    const img = new Image();
-    img.src = src;
-    img.onload = () => resolve({ naturalHeight: img.height, naturalWidth: img.width });
-    img.onerror = () => resolve(null);
-  },
-);

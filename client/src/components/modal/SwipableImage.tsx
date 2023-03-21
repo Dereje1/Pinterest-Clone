@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { useSwipeable } from 'react-swipeable';
 import CardMedia from '@mui/material/CardMedia';
 import ImageListItemBar from '@mui/material/ImageListItemBar';
@@ -8,8 +8,9 @@ import NavigateBeforetIcon from '@mui/icons-material/NavigateBefore';
 import { zoomedImageInfoType } from '../../interfaces';
 
 interface SwipableImageProps {
-    zoomInfo: zoomedImageInfoType,
-    onSwipe: (newIndex: number) => void
+  zoomInfo: zoomedImageInfoType,
+  onSlidePin: (newIndex: number) => void
+  onSetImageMetaData: (metaData: { naturalWidth: number, naturalHeight: number }) => void
 }
 
 const config = {
@@ -22,63 +23,106 @@ const config = {
   touchEventOptions: { passive: true }, // options for touch listeners (*See Details*)
 };
 
-function SwipableImage({ zoomInfo, onSwipe }: SwipableImageProps) {
+type slideType = 'left' | 'right' | false
+
+function SwipableImage({ zoomInfo, onSlidePin, onSetImageMetaData }: SwipableImageProps) {
   const { pin: pinInformation, parentDivStyle } = zoomInfo;
+
+  const [slideImage, setSlideImage] = useState(false as slideType);
+  const [imageFit, setImageFit] = useState('fill');
+  const [showImageListItemBar, setShowImageListItemBar] = useState(false);
+
+  useEffect(
+    () => {
+      if (slideImage === 'left') {
+        setImageFit('contain');
+        onSlidePin(zoomInfo.loadedIndex - 1);
+      } else if (slideImage === 'right') {
+        setImageFit('contain');
+        onSlidePin(zoomInfo.loadedIndex + 1);
+      }
+
+      return () => {
+        setSlideImage(false);
+      };
+    },
+    [slideImage],
+  );
+
+  const onPinLoad = (e: React.SyntheticEvent<HTMLImageElement>) => {
+    const target = e.target as HTMLImageElement;
+    const { naturalWidth, naturalHeight } = target;
+    onSetImageMetaData({ naturalWidth, naturalHeight });
+  };
+
   const handlers = useSwipeable({
-    onSwipedLeft: () => onSwipe(zoomInfo.loadedIndex + 1),
-    onSwipedRight: () => onSwipe(zoomInfo.loadedIndex - 1),
+    onSwipedLeft: () => setSlideImage('left'),
+    onSwipedRight: () => setSlideImage('right'),
     ...config,
   });
 
   return (
-    <>
+    <div
+      onMouseOver={() => setShowImageListItemBar(true)}
+      onMouseLeave={() => setShowImageListItemBar(false)}
+      onFocus={() => ({})}
+    >
       <CardMedia
         component="img"
         image={pinInformation.imgLink}
         id="pin-zoom"
         sx={{
           width: parentDivStyle.imgWidth,
+          height: parentDivStyle.imgHeight,
           marginLeft: 'auto',
           marginRight: 'auto',
+          objectFit: imageFit,
+          background: 'rgba(0, 0, 0, 0.1)',
         }}
+        onLoad={onPinLoad}
         {...handlers}
       />
-      <ImageListItemBar
-        position="bottom"
-        sx={
-          {
-            background: 'transparent',
-            '& .MuiImageListItemBar-titleWrap': {
-              flexGrow: 0,
-              display: 'none',
-            },
-            '& .MuiImageListItemBar-actionIcon': {
-              flexGrow: 1,
-            },
-          }
-        }
-        actionIcon={(
-          <div style={{ display: 'flex', justifyContent: 'space-around', width: '100%' }}>
-            <IconButton
-              sx={{ color: 'rgba(255, 255, 255, 1)' }}
-              aria-label={`info about ${pinInformation.imgDescription}`}
-              onClick={() => onSwipe(zoomInfo.loadedIndex - 1)}
-              onMouseDown={(e) => e.preventDefault()}
-            >
-              <NavigateBeforetIcon />
-            </IconButton>
-            <IconButton
-              sx={{ color: 'rgba(255, 255, 255, 1)' }}
-              aria-label={`info about ${pinInformation.imgDescription}`}
-              onClick={() => onSwipe(zoomInfo.loadedIndex + 1)}
-              onMouseDown={(e) => e.preventDefault()}
-            >
-              <NavigateNextIcon />
-            </IconButton>
-          </div>
-        )}
-      />
-    </>
+      {
+        showImageListItemBar && (
+          <ImageListItemBar
+            position="bottom"
+            sx={
+              {
+                background: 'rgba(0, 0, 0, 0.5)',
+                '& .MuiImageListItemBar-titleWrap': {
+                  flexGrow: 0,
+                  display: 'none',
+                },
+                '& .MuiImageListItemBar-actionIcon': {
+                  flexGrow: 1,
+                },
+              }
+            }
+            actionIcon={(
+              <div id="actionbuttons" style={{ display: 'flex', justifyContent: 'space-around', width: '100%' }}>
+                <IconButton
+                  sx={{ color: 'rgba(255, 255, 255, 1)' }}
+                  aria-label={`info about ${pinInformation.imgDescription}`}
+                  onClick={() => setSlideImage('left')}
+                  onMouseDown={(e) => e.preventDefault()}
+                >
+                  <NavigateBeforetIcon fontSize="large" />
+                </IconButton>
+                <IconButton
+                  sx={{ color: 'rgba(255, 255, 255, 1)' }}
+                  aria-label={`info about ${pinInformation.imgDescription}`}
+                  onClick={() => setSlideImage('right')}
+                  onMouseDown={(e) => e.preventDefault()}
+                >
+                  <NavigateNextIcon fontSize="large" />
+                </IconButton>
+              </div>
+            )}
+          />
+        )
+      }
+
+    </div>
   );
 }
 
