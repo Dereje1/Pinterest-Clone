@@ -11,7 +11,7 @@ import {
   getZoomedImageStyle,
 } from '../../utils/utils';
 import {
-  PinType, userType, zoomedImageInfoType,
+  PinType, userType, zoomedImageInfoType, imageMetadataType,
 } from '../../interfaces';
 import './imagebuild.scss';
 import error from '../mypins/error.png';
@@ -193,10 +193,7 @@ function ImageBuild({
     }
   };
 
-  const resetParentDivStyle = (metadata:{
-    naturalWidth: number
-    naturalHeight: number
-  } | null) => {
+  const resetParentDivStyle = (metadata: imageMetadataType | null) => {
     if (!metadata || !zoomedImageInfo) return null;
     const parentDivStyle = {
       ...getZoomedImageStyle({ ...metadata }),

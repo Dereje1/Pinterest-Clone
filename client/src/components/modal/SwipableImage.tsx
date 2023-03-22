@@ -5,12 +5,12 @@ import ImageListItemBar from '@mui/material/ImageListItemBar';
 import IconButton from '@mui/material/IconButton';
 import NavigateNextIcon from '@mui/icons-material/NavigateNext';
 import NavigateBeforetIcon from '@mui/icons-material/NavigateBefore';
-import { zoomedImageInfoType } from '../../interfaces';
+import { zoomedImageInfoType, imageMetadataType } from '../../interfaces';
 
 interface SwipableImageProps {
   zoomInfo: zoomedImageInfoType,
   onSlidePin: (newIndex: number) => void
-  onSetImageMetaData: (metaData: { naturalWidth: number, naturalHeight: number }) => void
+  onSetImageMetaData: (metaData: imageMetadataType) => void
 }
 
 const config = {

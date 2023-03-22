@@ -70,3 +70,8 @@ export interface zoomedImageInfoType {
     }
     loadedIndex: number
 }
+
+export interface imageMetadataType {
+    naturalWidth: number,
+    naturalHeight: number,
+}

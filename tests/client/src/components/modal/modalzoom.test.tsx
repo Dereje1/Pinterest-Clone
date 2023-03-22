@@ -17,9 +17,6 @@ describe('The pin zoom modal', () => {
       current: {
         focus,
         clientHeight: 50,
-        children: [{}, {
-          clientHeight: 25,
-        }],
       },
     }));
     props = {
@@ -107,7 +104,7 @@ describe('The pin zoom modal', () => {
     commentIcon = commentIcon.props().action.props.children[0].props.children.props;
     commentIcon.onClick();
     commentIcon.onMouseDown({ preventDefault: jest.fn() });
-    expect(wrapper.state().commentsShowing).toEqual({ height: 950, width: 830 });
+    expect(wrapper.state().commentsShowing).toEqual({ height: 1425, width: 830 });
     expect(wrapper.state().cancelBlur).toEqual(true);
     // toggle comment off
     commentIcon.onClick();

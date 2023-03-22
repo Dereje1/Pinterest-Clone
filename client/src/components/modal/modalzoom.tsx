@@ -18,7 +18,9 @@ import { ProfileLink } from '../common/common';
 import {
   delay, getFormattedDescription, formatDate,
 } from '../../utils/utils';
-import { PinType, userType, zoomedImageInfoType } from '../../interfaces';
+import {
+  PinType, userType, zoomedImageInfoType, imageMetadataType,
+} from '../../interfaces';
 import './modal.scss';
 
 export const StyledBadge = styled(Badge)(({ name }: { name: string }) => ({
@@ -30,10 +32,6 @@ export const StyledBadge = styled(Badge)(({ name }: { name: string }) => ({
   },
 }));
 
-type imgMetaDataType = {
-  naturalWidth: number
-  naturalHeight: number
-} | null
 interface PinZoomProps {
   zoomInfo: zoomedImageInfoType,
   user: userType
@@ -44,14 +42,14 @@ interface PinZoomProps {
   updateTags: (query: string) => void
   displayLogin: () => void
   onSlidePin: (newIndex: number) => void
-  resetParentDivStyle: (metadata: imgMetaDataType) => zoomedImageInfoType['parentDivStyle'] | null
+  resetParentDivStyle: (metadata: imageMetadataType | null) => zoomedImageInfoType['parentDivStyle'] | null
 }
 
 interface PinZoomState {
   commentsShowing: { width: number, height: number } | null
   cancelBlur: boolean
   zoomClass: string
-  imgMetaData: imgMetaDataType
+  imgMetaData: imageMetadataType | null
 }
 
 export class PinZoom extends Component<PinZoomProps, PinZoomState> {
@@ -103,14 +101,12 @@ export class PinZoom extends Component<PinZoomProps, PinZoomState> {
     const { resetParentDivStyle } = this.props;
     const updatedDivStyle = resetParentDivStyle(imgMetaData);
     if (this.zoomedImage.current && updatedDivStyle) {
-      const { current: { clientHeight: cardHeight, children } } = this.zoomedImage;
-      const [, image] = children;
-      const { clientHeight: imageHeight } = image;
+      const { current: { clientHeight: cardHeight } } = this.zoomedImage;
       if (!commentsShowing) {
         this.setState({
           commentsShowing: {
             width: updatedDivStyle.parentWidth,
-            height: imageHeight + (window.innerHeight - cardHeight - 25),
+            height: updatedDivStyle.imgHeight + (window.innerHeight - cardHeight - 25),
           },
           cancelBlur: true,
         });
