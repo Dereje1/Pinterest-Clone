@@ -10,6 +10,7 @@ exports[`The pin zoom modal will render 1`] = `
     onBlur={[Function]}
     sx={
       {
+        "background": "rgba(0, 0, 0, 0.7)",
         "top": 10,
         "width": 622.5,
       }
@@ -135,6 +136,11 @@ exports[`The pin zoom modal will render 1`] = `
           "fontWeight": "bold",
         }
       }
+      sx={
+        {
+          "background": "white",
+        }
+      }
       title="imgDescription ..."
       titleTypographyProps={
         {
@@ -160,6 +166,7 @@ exports[`The pin zoom modal will render 1`] = `
           {
             "loadedIndex": 0,
             "parentDivStyle": {
+              "border": 0,
               "imgHeight": 500,
               "imgWidth": 622.5,
               "isNoFit": false,

@@ -141,6 +141,7 @@ export class PinZoom extends Component<PinZoomProps, PinZoomState> {
           sx={{
             width: parentDivStyle.parentWidth,
             top: parentDivStyle.top,
+            background: commentsShowing ? '' : 'rgba(0, 0, 0, 0.7)',
           }}
           className={zoomClass}
           onBlur={this.close}
@@ -191,6 +192,9 @@ export class PinZoom extends Component<PinZoomProps, PinZoomState> {
             )}
             titleTypographyProps={{ fontWeight: 'bold' }}
             subheaderTypographyProps={{ fontWeight: 'bold' }}
+            sx={{
+              background: 'white',
+            }}
           />
           <CardContent sx={{
             background: parentDivStyle.isNoFit && !commentsShowing ? 'black' : '',

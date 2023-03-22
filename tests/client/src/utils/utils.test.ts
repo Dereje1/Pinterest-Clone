@@ -26,6 +26,7 @@ describe('getting the zoomed image styling properties', () => {
       imgHeight: 367.5,
       parentWidth: 367.5,
       isNoFit: true,
+      border: 0,
     });
   });
 
@@ -38,6 +39,7 @@ describe('getting the zoomed image styling properties', () => {
       imgHeight: 1064,
       parentWidth: 1064,
       isNoFit: false,
+      border: 0,
     });
   });
 
@@ -50,6 +52,7 @@ describe('getting the zoomed image styling properties', () => {
       imgHeight: 1064,
       parentWidth: 500,
       isNoFit: true,
+      border: 0,
     });
   });
 
@@ -62,6 +65,7 @@ describe('getting the zoomed image styling properties', () => {
       imgHeight: 330,
       parentWidth: 500,
       isNoFit: true,
+      border: 0,
     });
   });
 });

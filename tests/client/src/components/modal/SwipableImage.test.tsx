@@ -17,6 +17,7 @@ const props: React.ComponentProps<typeof SwipableImage> = {
       parentWidth: 622.5,
       width: '90%',
       isNoFit: false,
+      border: 0,
     },
     loadedIndex: 0,
   },

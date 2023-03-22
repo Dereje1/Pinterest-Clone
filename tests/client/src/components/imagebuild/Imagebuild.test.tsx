@@ -7,21 +7,14 @@ import toJson from 'enzyme-to-json';
 import ImageBuild from '../../../../../client/src/components/imagebuild/Imagebuild';
 import RESTcall from '../../../../../client/src/crud';
 import { pinsStub, reduxStub } from '../../../stub';
-import { PinType, PinnerType } from '../../../../../client/src/interfaces';
+import { PinType, PinnerType, zoomedImageInfoType } from '../../../../../client/src/interfaces';
 
 jest.mock('../../../../../client/src/crud');
 const mockedRESTcall = jest.mocked(RESTcall);
 
 describe('The ImageBuild component', () => {
   let props: React.ComponentProps<typeof ImageBuild>;
-  let parentDivStyleStub: {
-    imgWidth: number
-    imgHeight: number
-    parentWidth: number
-    isNoFit: boolean
-    top: number
-    width: string
-  };
+  let parentDivStyleStub: zoomedImageInfoType['parentDivStyle'];
   beforeEach(() => {
     props = {
       pinImage: true,
@@ -38,6 +31,7 @@ describe('The ImageBuild component', () => {
       parentWidth: 598,
       width: '90%',
       isNoFit: false,
+      border: 0,
     };
   });
 
@@ -347,7 +341,9 @@ describe('The ImageBuild component', () => {
     pinZoom = wrapper.find('PinZoom');
     expect(pinZoom.props().zoomInfo).toEqual({
       pin: pinsStub[2],
-      parentDivStyle: { ...parentDivStyleStub, imgWidth: 1003.52, parentWidth: 1003.52 },
+      parentDivStyle: {
+        ...parentDivStyleStub, imgWidth: 1003.52, parentWidth: 1003.52, border: 2,
+      },
       loadedIndex: 2,
     });
   });

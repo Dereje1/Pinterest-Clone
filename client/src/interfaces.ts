@@ -67,6 +67,7 @@ export interface zoomedImageInfoType {
         isNoFit: boolean
         top: number
         width: string
+        border: number
     }
     loadedIndex: number
 }

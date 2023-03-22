@@ -48,6 +48,7 @@ export const getZoomedImageStyle = ({
       imgWidth: innerWidth,
       imgHeight: innerHeight,
       parentWidth: innerWidth,
+      border: 2,
       isNoFit,
     };
   }
@@ -66,6 +67,7 @@ export const getZoomedImageStyle = ({
     imgWidth: newWidth,
     imgHeight: newWidth * (imageHeight / imageWidth),
     parentWidth,
+    border: 0,
     isNoFit,
   };
 };
