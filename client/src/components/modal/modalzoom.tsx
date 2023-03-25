@@ -101,12 +101,13 @@ export class PinZoom extends Component<PinZoomProps, PinZoomState> {
     const { resetParentDivStyle } = this.props;
     const updatedDivStyle = resetParentDivStyle(imgMetaData);
     if (this.zoomedImage.current && updatedDivStyle) {
-      const { current: { clientHeight: cardHeight } } = this.zoomedImage;
       if (!commentsShowing) {
+        const { current: { children } } = this.zoomedImage;
+        const [header] = children;
         this.setState({
           commentsShowing: {
             width: updatedDivStyle.parentWidth,
-            height: updatedDivStyle.imgHeight + (window.innerHeight - cardHeight - 25),
+            height: window.innerHeight - header.clientHeight - 25,
           },
           cancelBlur: true,
         });
