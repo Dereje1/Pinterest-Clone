@@ -25,6 +25,7 @@ exports[`The Mypins component landing page will render message if no pins create
       user={
         {
           "authenticated": true,
+          "createdAt": "stub join date",
           "displayName": "stub displayname",
           "providers": {
             "github": true,
@@ -121,6 +122,7 @@ exports[`The Mypins component landing page will render message if no pins saved 
       user={
         {
           "authenticated": true,
+          "createdAt": "stub join date",
           "displayName": "stub displayname",
           "providers": {
             "github": true,
@@ -215,6 +217,7 @@ exports[`The Mypins component landing page will render pins if found 1`] = `
       user={
         {
           "authenticated": true,
+          "createdAt": "stub join date",
           "displayName": "stub displayname",
           "providers": {
             "github": true,
@@ -296,6 +299,7 @@ exports[`The Mypins component landing page will render pins if found 1`] = `
     user={
       {
         "authenticated": true,
+        "createdAt": "stub join date",
         "displayName": "stub displayname",
         "providers": {
           "github": true,

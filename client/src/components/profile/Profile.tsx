@@ -7,7 +7,9 @@ import Box from '@mui/material/Box';
 import SearchIcon from '@mui/icons-material/Search';
 import IconButton from '@mui/material/IconButton';
 import ImageBuild from '../imagebuild/Imagebuild';
-import { Loading, getProviderIcons, UserPinsSelector } from '../common/common';
+import {
+  Loading, getProviderIcons, UserPinsSelector, UserJoinedDate,
+} from '../common/common';
 import SignIn from '../signin/signin';
 import SearchUsers from './SearchUsers';
 import RESTcall from '../../crud';
@@ -22,7 +24,7 @@ function Profile() {
   const [ready, setReady] = useState(false);
   const [displaySetting, setDisplaySetting] = useState('created');
   const [displayLogin, setDisplayLogin] = useState(false);
-  const [retrievedUser, setRetrievedUser] = useState({ service: 'twitter', displayName: '' });
+  const [retrievedUser, setRetrievedUser] = useState({ service: 'twitter', displayName: '', joined: '' });
   const [displaySearch, setDisplaySearch] = useState(false);
 
   const { userInfo }:{userInfo: string} = useParams();
@@ -130,6 +132,7 @@ function Profile() {
           {providerIcons[retrievedUser.service as keyof providerIconsType].icon}
         </Avatar>
         <Typography variant="h6" sx={{ mt: 3 }}>{retrievedUser.displayName}</Typography>
+        <UserJoinedDate dateJoined={retrievedUser.joined} />
         <UserPinsSelector
           displaySetting={displaySetting}
           setDisplaySetting={(val: string) => setDisplaySetting(val)}

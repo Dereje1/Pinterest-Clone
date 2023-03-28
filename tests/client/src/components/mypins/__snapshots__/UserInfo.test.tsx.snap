@@ -53,6 +53,9 @@ exports[`The UserInfo component will render with change name form 1`] = `
   >
     @tester username
   </ForwardRef(Typography)>
+  <UserJoinedDate
+    dateJoined="tester joined date"
+  />
 </div>
 `;
 
@@ -127,5 +130,8 @@ exports[`The UserInfo component will render with display name 1`] = `
   >
     @tester username
   </ForwardRef(Typography)>
+  <UserJoinedDate
+    dateJoined="tester joined date"
+  />
 </div>
 `;

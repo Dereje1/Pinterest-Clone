@@ -64,6 +64,7 @@ export const reduxStub = {
     username: 'stub username',
     displayName: 'stub displayname',
     service: 'twitter',
+    createdAt: 'stub join date',
     providers: {
       twitter: true,
       google: true,

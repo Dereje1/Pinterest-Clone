@@ -46,6 +46,7 @@ export interface userType {
     displayName: string | null,
     providers?: providersType,
     service: string
+    createdAt: string
 }
 
 export interface searchType {

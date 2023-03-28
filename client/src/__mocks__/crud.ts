@@ -57,7 +57,7 @@ const restMock = jest.fn().mockImplementation((...args) => {
       createdPins: [pinsStub[2]],
       savedPins: [pinsStub[1]],
       user: {
-        userId: 'stubId', service: 'twitter', displayName: 'stubName',
+        userId: 'stubId', service: 'twitter', displayName: 'stubName', joined: 'stub joined date',
       },
     });
   } if (address.includes('/api/updateTags') && method === 'put') {

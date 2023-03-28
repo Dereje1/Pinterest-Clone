@@ -10,10 +10,11 @@ import ButtonGroup from '@mui/material/ButtonGroup';
 import ListItem from '@mui/material/ListItem';
 import ListItemAvatar from '@mui/material/ListItemAvatar';
 import Avatar from '@mui/material/Avatar';
+import Typography from '@mui/material/Typography';
 import { providerIconsType } from '../../interfaces';
 import './common.scss';
 
-export const getProviderIcons = ({ fontSize }: {fontSize: number}): providerIconsType => (
+export const getProviderIcons = ({ fontSize }: { fontSize: number }): providerIconsType => (
   {
     twitter: { icon: <TwitterIcon style={{ fontSize }} />, color: '#1DA1F2' },
     google: { icon: <GoogleIcon style={{ fontSize }} />, color: '#4285F4' },
@@ -140,3 +141,20 @@ export function UserListItem({
 UserListItem.defaultProps = {
   additionalProps: undefined,
 };
+
+export function UserJoinedDate({
+  dateJoined,
+}: { dateJoined: string }) {
+  const formatDate = (d: string) => {
+    const [, mth, , year] = new Intl.DateTimeFormat('en-US', { dateStyle: 'full' }).format(new Date(d)).split(' ');
+    return `${mth} ${year}`;
+  };
+
+  return (
+    <Typography variant="subtitle2" sx={{ mt: 1 }}>
+      Joined
+      {' '}
+      {formatDate(dateJoined)}
+    </Typography>
+  );
+}

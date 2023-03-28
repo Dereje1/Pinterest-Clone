@@ -7,6 +7,7 @@ export interface UserType {
     displayName: string | null,
     username: string,
     service: string,
+    createdAt: string,
 }
 
 // define the schema for our user model

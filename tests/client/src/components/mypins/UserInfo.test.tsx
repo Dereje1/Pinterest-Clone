@@ -11,6 +11,7 @@ describe('The UserInfo component', () => {
         service: 'twitter',
         displayName: 'tester displayName',
         username: 'tester username',
+        createdAt: 'tester joined date',
       },
       showNameChangeForm: jest.fn(),
       nameChangeFormIsShowing: false,

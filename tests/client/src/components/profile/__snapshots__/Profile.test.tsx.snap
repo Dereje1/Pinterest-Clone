@@ -70,6 +70,9 @@ exports[`The profile page Will render for pins created by the user 1`] = `
     >
       stubName
     </ForwardRef(Typography)>
+    <UserJoinedDate
+      dateJoined="stub joined date"
+    />
     <UserPinsSelector
       displaySetting="created"
       setDisplaySetting={[Function]}
@@ -189,6 +192,9 @@ exports[`The profile page Will render for pins saved by the user 1`] = `
     >
       stubName
     </ForwardRef(Typography)>
+    <UserJoinedDate
+      dateJoined="stub joined date"
+    />
     <UserPinsSelector
       displaySetting="saved"
       setDisplaySetting={[Function]}
@@ -313,6 +319,9 @@ exports[`The profile page Will render no image sign if user has not pinned or cr
     >
       stubName
     </ForwardRef(Typography)>
+    <UserJoinedDate
+      dateJoined="stub joined date"
+    />
     <UserPinsSelector
       displaySetting="created"
       setDisplaySetting={[Function]}
@@ -427,6 +436,9 @@ exports[`The profile page Will render the search component 1`] = `
     >
       stubName
     </ForwardRef(Typography)>
+    <UserJoinedDate
+      dateJoined="stub joined date"
+    />
     <UserPinsSelector
       displaySetting="created"
       setDisplaySetting={[Function]}

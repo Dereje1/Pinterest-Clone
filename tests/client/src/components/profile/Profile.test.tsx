@@ -71,7 +71,7 @@ describe('The profile page', () => {
       createdPins: [],
       savedPins: [],
       user: {
-        userId: 'stubId', service: 'twitter', displayName: 'stubName',
+        userId: 'stubId', service: 'twitter', displayName: 'stubName', joined: 'stub joined date',
       },
     }));
     const wrapper = shallow(<Profile />);

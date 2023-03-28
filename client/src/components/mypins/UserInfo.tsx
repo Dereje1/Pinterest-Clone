@@ -6,7 +6,7 @@ import IconButton from '@mui/material/IconButton';
 import TextField from '@mui/material/TextField';
 import DoneIcon from '@mui/icons-material/Done';
 import CancelIcon from '@mui/icons-material/Cancel';
-import { getProviderIcons } from '../common/common';
+import { getProviderIcons, UserJoinedDate } from '../common/common';
 import {
   providerIconsType,
 } from '../../interfaces';
@@ -18,6 +18,7 @@ interface UserInfoProps {
     service: string
     displayName: string | null
     username: string | null
+    createdAt: string
   }
   showNameChangeForm: ()=> void
   nameChangeFormIsShowing: boolean
@@ -117,6 +118,7 @@ function UserInfo({
       <Typography style={{ marginLeft: 15, marginTop: 4 }}>
         {service === 'google' ? username : `@${username}`}
       </Typography>
+      <UserJoinedDate dateJoined={user.createdAt} />
     </div>
   );
 }

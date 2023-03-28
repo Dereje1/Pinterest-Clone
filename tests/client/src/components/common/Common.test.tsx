@@ -2,7 +2,7 @@ import React from 'react';
 import { EnzymePropSelector, shallow } from 'enzyme';
 import toJson from 'enzyme-to-json';
 import {
-  Loading, UserPinsSelector, ProfileLink, UserListItem, getProviderIcons,
+  Loading, UserPinsSelector, ProfileLink, UserListItem, getProviderIcons, UserJoinedDate,
 } from '../../../../../client/src/components/common/common';
 
 describe('Loading...', () => {
@@ -97,6 +97,13 @@ describe('The UserListItem', () => {
       providerIcons={getProviderIcons({ fontSize: 10 })}
       service="github"
     />);
+    expect(toJson(wrapper)).toMatchSnapshot();
+  });
+});
+
+describe('The user joined date component', () => {
+  test('will render', () => {
+    const wrapper = shallow(<UserJoinedDate dateJoined="1" />);
     expect(toJson(wrapper)).toMatchSnapshot();
   });
 });

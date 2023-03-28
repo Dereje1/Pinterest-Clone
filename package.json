@@ -32,7 +32,7 @@
     "lodash": "^4.17.21",
     "mongoose": "^5.12.12",
     "morgan": "~1.9.0",
-    "passportbundle": "latest",
+    "passportbundle": "^1.1.1",
     "react": "^17.0.0",
     "react-dom": "^17.0.0",
     "react-infinite-scroll-component": "^6.1.0",

@@ -65,6 +65,7 @@ describe('The sign in component', () => {
         username: 'stub username',
         displayName: 'stub displayname',
         service: 'twitter',
+        createdAt: 'stub join date',
       },
     };
     const wrapper = shallow(<LoginButtons {...updatedProps} />);

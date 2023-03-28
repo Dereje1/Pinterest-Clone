@@ -74,6 +74,7 @@ export const getProfilePins = async (
       user: {
         service: user.service,
         displayName: user.displayName || '🚫',
+        joined: user.createdAt,
       },
     });
   } catch (error) {
