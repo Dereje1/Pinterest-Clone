@@ -93,7 +93,8 @@ npm test
 * [MongoDB](https://www.mongodb.com/) - Database
 * [Express](https://expressjs.com/) - Node.js web application framework
 * [Material UI](https://mui.com/) - A library of React UI components that implements Google's Material Design.
-* [react-masonry-component](https://www.npmjs.com/package/react-masonry-component) - A React.js Masonry component.
+* [Google Cloud Vision API](https://cloud.google.com/vision/docs) - image labeling, face and landmark detection...
+* [...and more](https://github.com/Dereje1/Pinterest-Clone/blob/master/package.json)
 
 ## Authors
 
