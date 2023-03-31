@@ -3,8 +3,8 @@ import List from '@mui/material/List';
 import Dialog from '@mui/material/Dialog';
 import ListSubheader from '@mui/material/ListSubheader';
 import ListItemText from '@mui/material/ListItemText';
-import { getProviderIcons, UserListItem } from '../common/common';
-import { providerIconsType, PinnerType } from '../../interfaces';
+import { getProviderIcons, UserListItem } from '../../common/common';
+import { providerIconsType, PinnerType } from '../../../interfaces';
 
 const providerIcons: providerIconsType = getProviderIcons({ fontSize: 20 });
 

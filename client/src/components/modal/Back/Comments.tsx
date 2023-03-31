@@ -9,10 +9,10 @@ import CloseIcon from '@mui/icons-material/Close';
 import Avatar from '@mui/material/Avatar';
 import CommentForm from './CommentForm';
 import PinnersDialog from './PinnersDialog';
-import { ProfileLink } from '../common/common';
+import { ProfileLink } from '../../common/common';
 import Tags from './Tags';
-import { formatDate } from '../../utils/utils';
-import { PinType } from '../../interfaces';
+import { formatDate } from '../../../utils/utils';
+import { PinType } from '../../../interfaces';
 
 interface CommentsProps {
   stylingProps: {width: number, height: number}

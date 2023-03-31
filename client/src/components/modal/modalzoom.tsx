@@ -11,9 +11,9 @@ import CommentIcon from '@mui/icons-material/Comment';
 import Typography from '@mui/material/Typography';
 import { styled } from '@mui/styles';
 /* local components and utility */
-import ModalActions from './ModalActions';
-import Comments from './Comments';
-import SwipableImage from './SwipableImage';
+import ModalActions from './Front/ModalActions';
+import Comments from './Back/Comments';
+import SwipableImage from './Front/SwipableImage';
 import { ProfileLink } from '../common/common';
 import {
   delay, getFormattedDescription, formatDate,

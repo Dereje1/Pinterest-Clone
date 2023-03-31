@@ -1,7 +1,7 @@
 import React from 'react';
 import { EnzymePropSelector, shallow } from 'enzyme';
 import toJson from 'enzyme-to-json';
-import CommentForm from '../../../../../client/src/components/modal/CommentForm';
+import CommentForm from '../../../../../../client/src/components/modal/Back/CommentForm';
 
 test('will render the form to add comments', () => {
   const wrapper = shallow(

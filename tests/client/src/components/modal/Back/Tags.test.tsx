@@ -2,11 +2,11 @@ import React from 'react';
 import { EnzymePropSelector, shallow } from 'enzyme';
 import toJson from 'enzyme-to-json';
 import * as router from 'react-router-dom';
-import Tags, { ListItem } from '../../../../../client/src/components/modal/Tags';
-import { pinsStub } from '../../../stub';
-import RESTcall from '../../../../../client/src/crud';
+import Tags, { ListItem } from '../../../../../../client/src/components/modal/Back/Tags';
+import { pinsStub } from '../../../../stub';
+import RESTcall from '../../../../../../client/src/crud';
 
-jest.mock('../../../../../client/src/crud');
+jest.mock('../../../../../../client/src/crud');
 const mockedRESTcall = jest.mocked(RESTcall);
 
 const mockdispatch = jest.fn();

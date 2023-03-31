@@ -5,7 +5,7 @@ import ImageListItemBar from '@mui/material/ImageListItemBar';
 import IconButton from '@mui/material/IconButton';
 import NavigateNextIcon from '@mui/icons-material/NavigateNext';
 import NavigateBeforetIcon from '@mui/icons-material/NavigateBefore';
-import { zoomedImageInfoType, imageMetadataType } from '../../interfaces';
+import { zoomedImageInfoType, imageMetadataType } from '../../../interfaces';
 
 interface SwipableImageProps {
   zoomInfo: zoomedImageInfoType,

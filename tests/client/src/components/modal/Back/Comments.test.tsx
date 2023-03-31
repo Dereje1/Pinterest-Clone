@@ -1,8 +1,8 @@
 import React from 'react';
 import { EnzymePropSelector, shallow } from 'enzyme';
 import toJson from 'enzyme-to-json';
-import Comments from '../../../../../client/src/components/modal/Comments';
-import { pinsStub } from '../../../stub';
+import Comments from '../../../../../../client/src/components/modal/Back/Comments';
+import { pinsStub } from '../../../../stub';
 
 describe('The comments window', () => {
   let props: React.ComponentProps<typeof Comments>;

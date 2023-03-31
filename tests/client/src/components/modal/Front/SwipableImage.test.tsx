@@ -4,8 +4,8 @@
 import React from 'react';
 import { EnzymePropSelector, shallow } from 'enzyme';
 import toJson from 'enzyme-to-json';
-import SwipableImage from '../../../../../client/src/components/modal/SwipableImage';
-import { pinsStub } from '../../../stub';
+import SwipableImage from '../../../../../../client/src/components/modal/Front/SwipableImage';
+import { pinsStub } from '../../../../stub';
 
 const props: React.ComponentProps<typeof SwipableImage> = {
   zoomInfo: {

@@ -4,7 +4,7 @@ import PushPinIcon from '@mui/icons-material/PushPin';
 import PushPinOutlinedIcon from '@mui/icons-material/PushPinOutlined';
 import DeleteForeverIcon from '@mui/icons-material/DeleteForever';
 import Tooltip from '@mui/material/Tooltip';
-import { PinType } from '../../interfaces';
+import { PinType } from '../../../interfaces';
 
 interface GetActionProps{
   element: PinType

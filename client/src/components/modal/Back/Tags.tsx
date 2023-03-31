@@ -6,10 +6,10 @@ import Chip from '@mui/material/Chip';
 import Paper from '@mui/material/Paper';
 import IconButton from '@mui/material/IconButton';
 import TagIcon from '@mui/icons-material/Tag';
-import updateSearch from '../../actions/search';
+import updateSearch from '../../../actions/search';
 import TagsForm from './TagsForm';
-import RESTcall from '../../crud';
-import { PinType, tagType } from '../../interfaces';
+import RESTcall from '../../../crud';
+import { PinType, tagType } from '../../../interfaces';
 
 export const ListItem = styled('li')(({ theme }) => ({
   margin: theme.spacing(0.5),

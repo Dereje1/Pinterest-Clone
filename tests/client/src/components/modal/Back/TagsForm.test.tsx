@@ -1,7 +1,7 @@
 import React from 'react';
 import { EnzymePropSelector, shallow } from 'enzyme';
 import toJson from 'enzyme-to-json';
-import TagsForm from '../../../../../client/src/components/modal/TagsForm';
+import TagsForm from '../../../../../../client/src/components/modal/Back/TagsForm';
 
 describe('The tags form component', () => {
   let props: React.ComponentProps<typeof TagsForm>;
