@@ -19,3 +19,4 @@ nodemon.json
 /myscripts
 .DS_Store
 /server_build
+google_vision_api_key.json

@@ -123,12 +123,14 @@ function Comments({
             onClick={toggleComments}
           />
 
-          <Tags
-            commentFormIsOpen={openCommentForm}
-            updateTags={updateTags}
-            pinInformation={pinInformation}
-            closePin={closePin}
-          />
+          { !openCommentForm && (
+            <Tags
+              commentFormIsOpen={openCommentForm}
+              updateTags={updateTags}
+              pinInformation={pinInformation}
+              closePin={closePin}
+            />
+          )}
         </div>
       </div>
       {

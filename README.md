@@ -64,6 +64,7 @@ S3_BUCKET_NAME=< s3 bucket name for uploaded pins>
 NODE_ENV=<development|production>
 DEBUG=Pinterest-Clone:server
 DEBUG_COLORS=1
+GOOGLE_APPLICATION_CREDENTIALS=< service account key path for cloud vision api >
 ```
 Run the development environment
 ```

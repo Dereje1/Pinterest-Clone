@@ -254,6 +254,7 @@ describe('The PinCreate sub-component', () => {
       owns: true,
       hasSaved: false,
       createdAt: '2022-04-09T17:00:33.212Z',
+      tags: null,
     });
   });
 

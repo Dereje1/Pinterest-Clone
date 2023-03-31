@@ -102,6 +102,7 @@ export class Mypins extends Component<MypinsProps, MypinsState> {
       owns: true,
       hasSaved: false,
       owner: { name: displayName, service, userId },
+      tags: null,
     };
     this.setState({
       pinList: [...pinList, addedPin],

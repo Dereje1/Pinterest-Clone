@@ -22,7 +22,7 @@ interface TagsArrayProps {
   closePin: (_: React.SyntheticEvent, forceClose?: boolean) => void
 }
 
-const initialTags: tagType[] = [];
+const initialTags: tagType[] | null = [];
 
 function TagsArray({
   pinInformation,
@@ -72,7 +72,7 @@ function TagsArray({
     history.push('/');
   };
 
-  if (!commentFormIsOpen && openTagsForm) {
+  if (tagData && !commentFormIsOpen && openTagsForm) {
     return (
       <TagsForm
         closeTagsForm={() => setOpenTagsForm(false)}
@@ -97,7 +97,7 @@ function TagsArray({
         component="ul"
         elevation={0}
       >
-        {tagData.map((data) => (
+        {tagData && tagData.map((data) => (
           <ListItem key={data._id}>
             <Chip
               color="warning"
@@ -112,7 +112,7 @@ function TagsArray({
 
       </Paper>
       <div style={{ marginRight: 3 }}>
-        { owns && tagData.length < 6 && (
+        { owns && tagData && tagData.length < 6 && (
           <IconButton onClick={() => setOpenTagsForm(true)} disabled={commentFormIsOpen}>
             <TagIcon />
           </IconButton>
