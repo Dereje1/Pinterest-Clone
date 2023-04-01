@@ -23,8 +23,9 @@ const addVisionApiTags = async (addedpin: Pin) => {
     const labels = result.labelAnnotations;
     if (labels) {
       debug(`Adding tags for new pin -> ${addedpin.imgDescription} from vision api`);
-      const tags = labels.map((label) => ({ tag: label.description?.toUpperCase() }));
-      const update = { $set: { tags } };
+      const descriptions = labels.map((label) => (label.description?.toUpperCase()));
+      const tags = descriptions.map((description) => ({ tag: description }));
+      const update = { $set: { tags, visionApiTags: descriptions } };
       await pins.findByIdAndUpdate(addedpin._id, update);
       const newSavedTags: Promise<tagType>[] = [];
       tags.forEach((tag) => newSavedTags.push(savedTags.create(tag)));

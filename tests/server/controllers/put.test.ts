@@ -380,7 +380,7 @@ describe('Updating tags for a pin', () => {
     };
   });
   afterEach(() => {
-    jest.restoreAllMocks();
+    jest.resetAllMocks();
   });
 
   test('will add a tag to a pin', async () => {
@@ -455,6 +455,43 @@ describe('Updating tags for a pin', () => {
     );
     expect(res.json).toHaveBeenCalledWith({ ...allPinsResponse[1] });
     mockedFindByIdAndUpdate.mockClear();
+  });
+
+  test('will reset all tags for a pin', async () => {
+    const req = {
+      user,
+      query: { pinID: '1' },
+    };
+    pins.findById = jest.fn().mockImplementation(
+      () => ({
+        exec: jest.fn().mockResolvedValue({
+          owner: '5cad310f7672ca00146485a8',
+          visionApiTags: ['api-tag -A', 'api-tag -B'],
+        }),
+      }),
+    );
+    pins.findByIdAndUpdate = jest.fn().mockImplementation(
+      () => ({
+        populate: jest.fn().mockImplementation(() => ({
+          exec: jest.fn().mockResolvedValue({ ...rawPinsStub[1] }),
+        })),
+      }),
+    );
+    await updateTags(req as genericRequest, res as unknown as Response);
+    expect(pins.findById).toHaveBeenCalledTimes(1);
+    expect(pins.findById).toHaveBeenCalledWith('1');
+    expect(pins.findByIdAndUpdate).toHaveBeenCalledTimes(1);
+    expect(pins.findByIdAndUpdate).toHaveBeenCalledWith(
+      '1',
+      {
+        $set:
+                  {
+                    tags: [{ tag: 'api-tag -A' }, { tag: 'api-tag -B' }],
+                  },
+      },
+      { new: true },
+    );
+    expect(res.json).toHaveBeenCalledWith({ ...allPinsResponse[1] });
   });
 
   test('will end response if pin not found in db', async () => {

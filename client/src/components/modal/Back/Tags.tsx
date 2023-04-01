@@ -6,6 +6,8 @@ import Chip from '@mui/material/Chip';
 import Paper from '@mui/material/Paper';
 import IconButton from '@mui/material/IconButton';
 import TagIcon from '@mui/icons-material/Tag';
+import RestartAltIcon from '@mui/icons-material/RestartAlt';
+import Tooltip from '@mui/material/Tooltip';
 import updateSearch from '../../../actions/search';
 import TagsForm from './TagsForm';
 import RESTcall from '../../../crud';
@@ -66,6 +68,10 @@ function TagsArray({
     updateTags(`?pinID=${_id}&deleteId=${tagToDelete._id}`);
   };
 
+  const handleReset = () => {
+    updateTags(`?pinID=${_id}`);
+  };
+
   const handleTagClick = (e: React.SyntheticEvent, tag: string) => {
     closePin(e);
     dispatch(updateSearch(tag, true));
@@ -112,10 +118,19 @@ function TagsArray({
 
       </Paper>
       <div style={{ marginRight: 3 }}>
-        { owns && tagData && tagData.length < 6 && (
-          <IconButton onClick={() => setOpenTagsForm(true)} disabled={commentFormIsOpen}>
-            <TagIcon />
-          </IconButton>
+        { owns && tagData && tagData.length < 10 && (
+          <div style={{ display: 'flex' }}>
+            <Tooltip title="Add a tag manually">
+              <IconButton onClick={() => setOpenTagsForm(true)} disabled={commentFormIsOpen}>
+                <TagIcon />
+              </IconButton>
+            </Tooltip>
+            <Tooltip title="Reset vision API tags">
+              <IconButton onClick={handleReset} disabled={commentFormIsOpen}>
+                <RestartAltIcon />
+              </IconButton>
+            </Tooltip>
+          </div>
         )}
       </div>
     </div>

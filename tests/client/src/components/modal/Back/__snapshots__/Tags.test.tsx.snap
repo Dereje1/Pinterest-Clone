@@ -176,12 +176,34 @@ exports[`The tags component will render with tags for owner 1`] = `
       }
     }
   >
-    <ForwardRef(IconButton)
-      disabled={false}
-      onClick={[Function]}
+    <div
+      style={
+        {
+          "display": "flex",
+        }
+      }
     >
-      <Memo(ForwardRef(TagIcon)) />
-    </ForwardRef(IconButton)>
+      <ForwardRef(Tooltip)
+        title="Add a tag manually"
+      >
+        <ForwardRef(IconButton)
+          disabled={false}
+          onClick={[Function]}
+        >
+          <Memo(ForwardRef(TagIcon)) />
+        </ForwardRef(IconButton)>
+      </ForwardRef(Tooltip)>
+      <ForwardRef(Tooltip)
+        title="Reset vision API tags"
+      >
+        <ForwardRef(IconButton)
+          disabled={false}
+          onClick={[Function]}
+        >
+          <Memo(ForwardRef(RestartAltIcon)) />
+        </ForwardRef(IconButton)>
+      </ForwardRef(Tooltip)>
+    </div>
   </div>
 </div>
 `;

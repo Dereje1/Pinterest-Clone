@@ -19,6 +19,7 @@ export interface Pin {
   createdAt: string,
   comments: unPopulatedComment[],
   tags: tagType[],
+  visionApiTags: string[]
 }
 
 const commentSchema = new mongoose.Schema({
@@ -47,6 +48,10 @@ const pinSchema = new mongoose.Schema({
   },
   tags: {
     type: [tagSchema],
+    default: [],
+  },
+  visionApiTags: {
+    type: [String],
     default: [],
   },
   isBroken: { type: Boolean },

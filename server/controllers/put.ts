@@ -102,9 +102,14 @@ export const updateTags = async (req: Request, res: genericResponseType) => {
     if (deleteId) {
       const pinToUpdate = pin.tags.filter((t) => t._id.toString() !== deleteId);
       update = { $set: { tags: pinToUpdate } };
-    } else {
+    } else if (tag) {
       update = { $push: { tags: { tag } } };
       await savedTags.create({ tag });
+    } else {
+      // handle reset
+      const { visionApiTags } = pin;
+      const tags = visionApiTags.map((description) => ({ tag: description }));
+      update = { $set: { tags } };
     }
     const updatedPin = await pins.findByIdAndUpdate(pinID, update, { new: true })
       .populate(['owner', 'savedBy', 'comments.user'])

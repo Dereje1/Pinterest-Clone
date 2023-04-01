@@ -107,7 +107,12 @@ describe('Adding a pin', () => {
     expect(pins.findByIdAndUpdate).toHaveBeenCalledTimes(1);
     expect(pins.findByIdAndUpdate).toHaveBeenCalledWith(
       123,
-      { $set: { tags: [{ tag: 'TEST-LABEL-A' }, { tag: 'TEST-LABEL-B' }] } },
+      {
+        $set: {
+          tags: [{ tag: 'TEST-LABEL-A' }, { tag: 'TEST-LABEL-B' }],
+          visionApiTags: ['TEST-LABEL-A', 'TEST-LABEL-B'],
+        },
+      },
     );
     // assert for saving new labels
     await Promise.resolve();
@@ -153,7 +158,12 @@ describe('Adding a pin', () => {
     expect(pins.findByIdAndUpdate).toHaveBeenCalledTimes(1);
     expect(pins.findByIdAndUpdate).toHaveBeenCalledWith(
       123,
-      { $set: { tags: [{ tag: 'TEST-LABEL-A' }, { tag: 'TEST-LABEL-B' }] } },
+      {
+        $set: {
+          tags: [{ tag: 'TEST-LABEL-A' }, { tag: 'TEST-LABEL-B' }],
+          visionApiTags: ['TEST-LABEL-A', 'TEST-LABEL-B'],
+        },
+      },
     );
     // assert for saving new labels
     await Promise.resolve();
@@ -193,7 +203,12 @@ describe('Adding a pin', () => {
     expect(pins.findByIdAndUpdate).toHaveBeenCalledTimes(1);
     expect(pins.findByIdAndUpdate).toHaveBeenCalledWith(
       123,
-      { $set: { tags: [{ tag: 'TEST-LABEL-A' }, { tag: 'TEST-LABEL-B' }] } },
+      {
+        $set: {
+          tags: [{ tag: 'TEST-LABEL-A' }, { tag: 'TEST-LABEL-B' }],
+          visionApiTags: ['TEST-LABEL-A', 'TEST-LABEL-B'],
+        },
+      },
     );
     // assert for saving new labels
     await Promise.resolve();
@@ -231,7 +246,12 @@ describe('Adding a pin', () => {
     expect(pins.findByIdAndUpdate).toHaveBeenCalledTimes(1);
     expect(pins.findByIdAndUpdate).toHaveBeenCalledWith(
       123,
-      { $set: { tags: [{ tag: 'TEST-LABEL-A' }, { tag: 'TEST-LABEL-B' }] } },
+      {
+        $set: {
+          tags: [{ tag: 'TEST-LABEL-A' }, { tag: 'TEST-LABEL-B' }],
+          visionApiTags: ['TEST-LABEL-A', 'TEST-LABEL-B'],
+        },
+      },
     );
     // assert for saving new labels
     await Promise.resolve();

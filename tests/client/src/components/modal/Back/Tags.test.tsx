@@ -54,7 +54,7 @@ describe('The tags component', () => {
 
   test('will open and close the form to add tags', async () => {
     const wrapper = shallow(<Tags {...props} />);
-    const addTags: EnzymePropSelector = wrapper.find('ForwardRef(IconButton)');
+    const addTags: EnzymePropSelector = wrapper.find('ForwardRef(IconButton)').at(0);
     let tagsForm: EnzymePropSelector = wrapper.find('TagsForm');
     expect(tagsForm.isEmptyRender()).toBe(true);
     // trigger form show and test tags fetch
@@ -72,7 +72,7 @@ describe('The tags component', () => {
   test('will add no suggested tags if rest call is rejected', async () => {
     mockedRESTcall.mockImplementationOnce(() => Promise.reject());
     const wrapper = shallow(<Tags {...props} />);
-    const addTags: EnzymePropSelector = wrapper.find('ForwardRef(IconButton)');
+    const addTags: EnzymePropSelector = wrapper.find('ForwardRef(IconButton)').at(0);
     // trigger form show and add tag
     await addTags.props().onClick();
     const tagsForm: EnzymePropSelector = wrapper.find('TagsForm');
@@ -83,7 +83,7 @@ describe('The tags component', () => {
 
   test('will add a tag', () => {
     const wrapper = shallow(<Tags {...props} />);
-    const addTags: EnzymePropSelector = wrapper.find('ForwardRef(IconButton)');
+    const addTags: EnzymePropSelector = wrapper.find('ForwardRef(IconButton)').at(0);
     // trigger form show and add tag
     addTags.props().onClick();
     const tagsForm: EnzymePropSelector = wrapper.find('TagsForm');
@@ -97,6 +97,14 @@ describe('The tags component', () => {
     // trigger delete tag
     chip.props().onDelete();
     expect(props.updateTags).toHaveBeenCalledWith('?pinID=1&deleteId=tag_id_1');
+  });
+
+  test('will reset tags to vision api original tags', () => {
+    const wrapper = shallow(<Tags {...props} />);
+    const resetTags: EnzymePropSelector = wrapper.find('ForwardRef(IconButton)').at(1);
+    // trigger tag reset
+    resetTags.props().onClick();
+    expect(props.updateTags).toHaveBeenCalledWith('?pinID=1');
   });
 
   test('will search on tag click', () => {
