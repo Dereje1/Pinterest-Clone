@@ -348,7 +348,7 @@ describe('The ImageBuild component', () => {
     });
   });
 
-  test('will not swipe if index is out of bounds', () => {
+  test('will handle positive boundry conditions on swipe if index is out of bounds', () => {
     const wrapper = shallow(<ImageBuild {...props} />);
     const masonry: EnzymePropSelector = wrapper.find('MasonryPins');
     let pinZoom: EnzymePropSelector = wrapper.find('PinZoom');
@@ -361,9 +361,32 @@ describe('The ImageBuild component', () => {
     // assert that zoomed pin has new info refelected
     pinZoom = wrapper.find('PinZoom');
     expect(pinZoom.props().zoomInfo).toEqual({
-      pin: pinsStub[1],
-      parentDivStyle: { ...parentDivStyleStub },
-      loadedIndex: 1,
+      pin: pinsStub[0],
+      parentDivStyle: {
+        ...parentDivStyleStub, imgWidth: 1003.52, parentWidth: 1003.52, border: 2,
+      },
+      loadedIndex: 0,
+    });
+  });
+
+  test('will handle negative boundry conditions on swipe if index is out of bounds', () => {
+    const wrapper = shallow(<ImageBuild {...props} />);
+    const masonry: EnzymePropSelector = wrapper.find('MasonryPins');
+    let pinZoom: EnzymePropSelector = wrapper.find('PinZoom');
+    expect(pinZoom.isEmptyRender()).toBe(true);
+    // zoom into pin
+    masonry.props().pinEnlarge({ target: { className: 'any', naturalWidth: 600, naturalHeight: 600 } }, pinsStub[0]);
+    pinZoom = wrapper.find('PinZoom');
+    // trigger a tag update
+    pinZoom.props().onSlidePin(-1);
+    // assert that zoomed pin has new info refelected
+    pinZoom = wrapper.find('PinZoom');
+    expect(pinZoom.props().zoomInfo).toEqual({
+      pin: pinsStub[2],
+      parentDivStyle: {
+        ...parentDivStyleStub, imgWidth: 1003.52, parentWidth: 1003.52, border: 2,
+      },
+      loadedIndex: 2,
     });
   });
 

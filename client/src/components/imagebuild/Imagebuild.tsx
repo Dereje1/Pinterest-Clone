@@ -176,7 +176,10 @@ function ImageBuild({
   };
 
   const handleSlide = (newIndex: number) => {
-    if (newIndex < 0 || newIndex > (loadedPins.length - 1)) return;
+    let updatedIndex = newIndex;
+    // set for boundry conditions
+    if (updatedIndex < 0) updatedIndex = loadedPins.length - 1;
+    if (updatedIndex > (loadedPins.length - 1)) updatedIndex = 0;
     if (zoomedImageInfo) {
       setZoomedImageInfo({
         parentDivStyle: {
@@ -187,8 +190,8 @@ function ImageBuild({
             getStatic: true,
           }),
         },
-        pin: loadedPins[newIndex],
-        loadedIndex: newIndex,
+        pin: loadedPins[updatedIndex],
+        loadedIndex: updatedIndex,
       });
     }
   };
