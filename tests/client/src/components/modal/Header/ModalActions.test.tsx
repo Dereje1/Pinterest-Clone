@@ -1,7 +1,7 @@
 import React from 'react';
 import { EnzymePropSelector, shallow } from 'enzyme';
 import toJson from 'enzyme-to-json';
-import ModalActions from '../../../../../../client/src/components/modal/Front/ModalActions';
+import ModalActions from '../../../../../../client/src/components/modal/Header/ModalActions';
 import { pinsStub } from '../../../../stub';
 
 describe('Handling zoomed image action buttons', () => {

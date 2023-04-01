@@ -2,35 +2,16 @@
 import React, { Component, createRef } from 'react';
 /* MUI */
 import Card from '@mui/material/Card';
-import CardHeader from '@mui/material/CardHeader';
 import { CardContent } from '@mui/material';
-import Badge from '@mui/material/Badge';
-import IconButton from '@mui/material/IconButton';
-import CommentOutlinedIcon from '@mui/icons-material/CommentOutlined';
-import CommentIcon from '@mui/icons-material/Comment';
-import Typography from '@mui/material/Typography';
-import { styled } from '@mui/styles';
 /* local components and utility */
-import ModalActions from './Front/ModalActions';
+import ModalHeader from './Header/ModalHeader';
 import Comments from './Back/Comments';
 import SwipableImage from './Front/SwipableImage';
-import { ProfileLink } from '../common/common';
-import {
-  delay, getFormattedDescription, formatDate,
-} from '../../utils/utils';
+import { delay } from '../../utils/utils';
 import {
   PinType, userType, zoomedImageInfoType, imageMetadataType,
 } from '../../interfaces';
 import './modal.scss';
-
-export const StyledBadge = styled(Badge)(({ name }: { name: string }) => ({
-  '& .MuiBadge-badge': {
-    right: name === 'pin' ? 32 : 43,
-    top: name === 'pin' ? 17 : 13,
-    border: '2px solid grey',
-    padding: '0 4px',
-  },
-}));
 
 interface PinZoomProps {
   zoomInfo: zoomedImageInfoType,
@@ -134,7 +115,7 @@ export class PinZoom extends Component<PinZoomProps, PinZoomState> {
     const {
       commentsShowing, zoomClass,
     } = this.state;
-    const formattedDescription = getFormattedDescription(pinInformation.imgDescription);
+
     return (
       <>
         <div className="modal-overlay" />
@@ -149,53 +130,15 @@ export class PinZoom extends Component<PinZoomProps, PinZoomState> {
           ref={this.zoomedImage}
           tabIndex={0}
         >
-          <CardHeader
-            action={(
-              <>
-                <StyledBadge badgeContent={pinInformation.comments.length} color="primary" showZero name="comments">
-                  <IconButton
-                    onClick={this.toggleComments}
-                    onMouseDown={(e) => e.preventDefault()}
-                  >
-                    {commentsShowing
-                      ? <CommentIcon style={{ fontSize: '1.7em' }} />
-                      : <CommentOutlinedIcon style={{ fontSize: '1.7em' }} />}
-                  </IconButton>
-                </StyledBadge>
-                <StyledBadge badgeContent={pinInformation.savedBy.length} color="secondary" showZero name="pin">
-                  <ModalActions
-                    element={pinInformation}
-                    pinImage={pinImage}
-                    deletePin={deletePin}
-                    reset={this.close}
-                  />
-                </StyledBadge>
-              </>
-            )}
-            title={formattedDescription}
-            subheader={(
-              <>
-                <ProfileLink
-                  authenticated={authenticated}
-                  closePin={this.close}
-                  displayLogin={displayLogin}
-                  title={(
-                    <Typography sx={{ color: '#3752ff', fontWeight: 'bold', fontSize: '1.1em' }}>
-                      {`${pinInformation.owner.name}`}
-                    </Typography>
-                  )}
-                  userId={pinInformation.owner.userId}
-                />
-                <span style={{ marginLeft: 0 }}>
-                  {formatDate(pinInformation.createdAt)}
-                </span>
-              </>
-            )}
-            titleTypographyProps={{ fontWeight: 'bold' }}
-            subheaderTypographyProps={{ fontWeight: 'bold' }}
-            sx={{
-              background: 'white',
-            }}
+          <ModalHeader
+            authenticated={authenticated}
+            commentsShowing={Boolean(commentsShowing)}
+            pinInformation={pinInformation}
+            closePin={this.close}
+            deletePin={deletePin}
+            displayLogin={displayLogin}
+            pinImage={pinImage}
+            toggleComments={this.toggleComments}
           />
           <CardContent sx={{
             background: parentDivStyle.isNoFit && !commentsShowing ? 'black' : '',

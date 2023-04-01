@@ -1,0 +1,149 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`The Modal Header will render 1`] = `
+<ForwardRef(CardHeader)
+  action={
+    <React.Fragment>
+      <Styled(ForwardRef(Badge))
+        badgeContent={1}
+        color="primary"
+        name="comments"
+        showZero={true}
+      >
+        <ForwardRef(IconButton)
+          onClick={[MockFunction]}
+          onMouseDown={[Function]}
+        >
+          <Memo
+            style={
+              {
+                "fontSize": "1.7em",
+              }
+            }
+          />
+        </ForwardRef(IconButton)>
+      </Styled(ForwardRef(Badge))>
+      <Styled(ForwardRef(Badge))
+        badgeContent={2}
+        color="secondary"
+        name="pin"
+        showZero={true}
+      >
+        <GetAction
+          deletePin={[MockFunction]}
+          element={
+            {
+              "_id": "1",
+              "comments": [
+                {
+                  "_id": "Comment_id_1",
+                  "comment": "Test comment",
+                  "createdAt": "2021-07-28T16:30:48.572Z",
+                  "displayName": "tester-displayName",
+                  "userId": "Comment_User_Id_1",
+                },
+              ],
+              "createdAt": "2020-12-25T00:00:00.000+00:00",
+              "hasSaved": false,
+              "imgDescription": "imgDescription id-1",
+              "imgLink": "imgLink id-1",
+              "owner": {
+                "name": "owner id-1",
+                "service": "google",
+                "userId": "1",
+              },
+              "owns": false,
+              "savedBy": [
+                {
+                  "name": "savedBy - id-1",
+                  "service": "google",
+                  "userId": "1",
+                },
+                {
+                  "name": "savedBy - id-1",
+                  "service": "github",
+                  "userId": "1",
+                },
+              ],
+              "tags": [
+                {
+                  "_id": "tag_id_1",
+                  "tag": "tag 1",
+                },
+                {
+                  "_id": "tag_id_2",
+                  "tag": "tag 2",
+                },
+              ],
+            }
+          }
+          pinImage={[MockFunction]}
+          reset={[MockFunction]}
+        />
+      </Styled(ForwardRef(Badge))>
+    </React.Fragment>
+  }
+  subheader={
+    <React.Fragment>
+      <ProfileLink
+        authenticated={true}
+        closePin={[MockFunction]}
+        displayLogin={[MockFunction]}
+        title={
+          <ForwardRef(Typography)
+            sx={
+              {
+                "color": "#3752ff",
+                "fontSize": "1.1em",
+                "fontWeight": "bold",
+              }
+            }
+          >
+            owner id-1
+          </ForwardRef(Typography)>
+        }
+        userId="1"
+      />
+      <span
+        style={
+          {
+            "marginLeft": 0,
+          }
+        }
+      >
+        25 Dec 2020
+      </span>
+    </React.Fragment>
+  }
+  subheaderTypographyProps={
+    {
+      "fontWeight": "bold",
+    }
+  }
+  sx={
+    {
+      "background": "white",
+    }
+  }
+  title="imgDescription ..."
+  titleTypographyProps={
+    {
+      "fontWeight": "bold",
+    }
+  }
+/>
+`;
+
+exports[`The styled badge Will render for comments 1`] = `
+<ForwardRef(Badge)
+  className="ForwardRef(Badge)-root-1 ForwardRef(Badge)-root-3"
+  name="comments"
+/>
+`;
+
+exports[`The styled badge Will render for pins 1`] = `
+<ForwardRef(Badge)
+  className="ForwardRef(Badge)-root-1 ForwardRef(Badge)-root-2"
+  name="pin"
+/>
+`;
