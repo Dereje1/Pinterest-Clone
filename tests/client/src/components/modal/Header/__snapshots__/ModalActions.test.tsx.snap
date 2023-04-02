@@ -1,19 +1,19 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`Handling zoomed image action buttons will render the delete button for owners 1`] = `
-<ForwardRef(IconButton)
-  aria-label="settings"
-  onClick={[Function]}
-  onMouseDown={[Function]}
-  style={
-    {
-      "margin": "1vh",
-    }
-  }
+<ForwardRef(Tooltip)
+  placement="bottom"
+  title="Permanently delete image"
 >
-  <ForwardRef(Tooltip)
-    placement="bottom"
-    title="Permanently delete image"
+  <ForwardRef(IconButton)
+    aria-label="settings"
+    onClick={[Function]}
+    onMouseDown={[Function]}
+    style={
+      {
+        "margin": "1vh",
+      }
+    }
   >
     <Memo(ForwardRef(DeleteForeverIcon))
       style={
@@ -23,24 +23,24 @@ exports[`Handling zoomed image action buttons will render the delete button for 
         }
       }
     />
-  </ForwardRef(Tooltip)>
-</ForwardRef(IconButton)>
+  </ForwardRef(IconButton)>
+</ForwardRef(Tooltip)>
 `;
 
 exports[`Handling zoomed image action buttons will render the delete button for pinned images 1`] = `
-<ForwardRef(IconButton)
-  aria-label="settings"
-  onClick={[Function]}
-  onMouseDown={[Function]}
-  style={
-    {
-      "margin": "1vh",
-    }
-  }
+<ForwardRef(Tooltip)
+  placement="bottom"
+  title="Unpin image"
 >
-  <ForwardRef(Tooltip)
-    placement="bottom"
-    title="Unpin image"
+  <ForwardRef(IconButton)
+    aria-label="settings"
+    onClick={[Function]}
+    onMouseDown={[Function]}
+    style={
+      {
+        "margin": "1vh",
+      }
+    }
   >
     <Memo(ForwardRef(PushPinIcon))
       style={
@@ -50,25 +50,25 @@ exports[`Handling zoomed image action buttons will render the delete button for 
         }
       }
     />
-  </ForwardRef(Tooltip)>
-</ForwardRef(IconButton)>
+  </ForwardRef(IconButton)>
+</ForwardRef(Tooltip)>
 `;
 
 exports[`Handling zoomed image action buttons will render the disabled pin button for already owned images 1`] = `
-<ForwardRef(IconButton)
-  aria-label="settings"
-  disableRipple={true}
-  onClick={[Function]}
-  onMouseDown={[Function]}
-  style={
-    {
-      "margin": "1vh",
-    }
-  }
+<ForwardRef(Tooltip)
+  placement="bottom"
+  title="You own this image"
 >
-  <ForwardRef(Tooltip)
-    placement="bottom"
-    title="You own this image"
+  <ForwardRef(IconButton)
+    aria-label="settings"
+    disableRipple={true}
+    onClick={[Function]}
+    onMouseDown={[Function]}
+    style={
+      {
+        "margin": "1vh",
+      }
+    }
   >
     <Memo(ForwardRef(PushPinIcon))
       style={
@@ -78,24 +78,24 @@ exports[`Handling zoomed image action buttons will render the disabled pin butto
         }
       }
     />
-  </ForwardRef(Tooltip)>
-</ForwardRef(IconButton)>
+  </ForwardRef(IconButton)>
+</ForwardRef(Tooltip)>
 `;
 
 exports[`Handling zoomed image action buttons will render the pin button for unpinned images 1`] = `
-<ForwardRef(IconButton)
-  aria-label="settings"
-  onClick={[Function]}
-  onMouseDown={[Function]}
-  style={
-    {
-      "margin": "1vh",
-    }
-  }
+<ForwardRef(Tooltip)
+  placement="bottom"
+  title="Pin image"
 >
-  <ForwardRef(Tooltip)
-    placement="bottom"
-    title="Pin image"
+  <ForwardRef(IconButton)
+    aria-label="settings"
+    onClick={[Function]}
+    onMouseDown={[Function]}
+    style={
+      {
+        "margin": "1vh",
+      }
+    }
   >
     <Memo(ForwardRef(PushPinOutlinedIcon))
       style={
@@ -104,25 +104,25 @@ exports[`Handling zoomed image action buttons will render the pin button for unp
         }
       }
     />
-  </ForwardRef(Tooltip)>
-</ForwardRef(IconButton)>
+  </ForwardRef(IconButton)>
+</ForwardRef(Tooltip)>
 `;
 
 exports[`Handling zoomed image action buttons will render the unpin button for already pinned images 1`] = `
-<ForwardRef(IconButton)
-  aria-label="settings"
-  disableRipple={false}
-  onClick={[Function]}
-  onMouseDown={[Function]}
-  style={
-    {
-      "margin": "1vh",
-    }
-  }
+<ForwardRef(Tooltip)
+  placement="bottom"
+  title="Unpin this image"
 >
-  <ForwardRef(Tooltip)
-    placement="bottom"
-    title="Unpin this image"
+  <ForwardRef(IconButton)
+    aria-label="settings"
+    disableRipple={false}
+    onClick={[Function]}
+    onMouseDown={[Function]}
+    style={
+      {
+        "margin": "1vh",
+      }
+    }
   >
     <Memo(ForwardRef(PushPinIcon))
       style={
@@ -132,6 +132,6 @@ exports[`Handling zoomed image action buttons will render the unpin button for a
         }
       }
     />
-  </ForwardRef(Tooltip)>
-</ForwardRef(IconButton)>
+  </ForwardRef(IconButton)>
+</ForwardRef(Tooltip)>
 `;
