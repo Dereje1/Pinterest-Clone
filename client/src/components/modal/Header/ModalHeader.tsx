@@ -13,6 +13,21 @@ import {
   PinType, zoomedImageInfoType,
 } from '../../../interfaces';
 
+const fontStyles = {
+  description: {
+    fontWeight: { xs: 900 },
+    fontSize: { xs: '1.25rem', sm: '1.5rem', md: '1.75rem' },
+  },
+  owner: {
+    fontWeight: { xs: 900 },
+    fontSize: { xs: '1rem', sm: '1.25rem', md: '1.5rem' },
+  },
+  date: {
+    fontWeight: { xs: 600 },
+    fontSize: { xs: '0.75rem', sm: '1rem', md: '1.25rem' },
+  },
+};
+
 export const StyledBadge = styled(Badge)(({ name }: { name: string }) => ({
   '& .MuiBadge-badge': {
     right: name === 'pin' ? 32 : 43,
@@ -76,19 +91,19 @@ function ModalHeader({
             closePin={closePin}
             displayLogin={displayLogin}
             title={(
-              <Typography sx={{ color: '#3752ff', fontWeight: 'bold', fontSize: '1.1em' }}>
+              <Typography sx={{ color: '#3752ff', ...fontStyles.owner }} noWrap>
                 {`${pinInformation.owner.name}`}
               </Typography>
             )}
             userId={pinInformation.owner.userId}
           />
-          <span style={{ marginLeft: 0 }}>
+          <Typography sx={{ marginLeft: 0, ...fontStyles.date }}>
             {formatDate(pinInformation.createdAt)}
-          </span>
+          </Typography>
         </>
       )}
-      titleTypographyProps={{ fontWeight: 'bold' }}
-      subheaderTypographyProps={{ fontWeight: 'bold' }}
+      titleTypographyProps={{ ...fontStyles.description }}
+      subheaderTypographyProps={{ maxWidth: 300 }}
       sx={{
         background: 'white',
       }}
