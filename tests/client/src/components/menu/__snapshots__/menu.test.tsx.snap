@@ -4,13 +4,13 @@ exports[`The Menu component will render for an authenticated user 1`] = `
 <div
   className="menu"
 >
-  <Brand />
   <Search
     closeSearch={[Function]}
     isShowing={false}
     openSearch={[Function]}
     pathname="/"
   />
+  <Brand />
   <CollapsibleMenu
     menuClicked={[Function]}
     pathname="/"
@@ -22,13 +22,13 @@ exports[`The Menu component will render for users authenticated as guest 1`] = `
 <div
   className="menu"
 >
-  <Brand />
   <Search
     closeSearch={[Function]}
     isShowing={false}
     openSearch={[Function]}
     pathname="/"
   />
+  <Brand />
   <Login
     showSignIn={[Function]}
   />

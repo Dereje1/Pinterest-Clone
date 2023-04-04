@@ -89,17 +89,20 @@ export class Menu extends React.Component<MenuProps, MenuState> {
     const {
       displaySignIn,
     } = this.state;
-    if (authenticated) {
-      return (
-        <CollapsibleMenu
-          pathname={pathname}
-          menuClicked={this.handleMenuClick}
-        />
-      );
-    }
+
     return (
       <>
-        <Login showSignIn={() => this.setState({ displaySignIn: true })} />
+        <Brand />
+        {
+          authenticated ? (
+            <CollapsibleMenu
+              pathname={pathname}
+              menuClicked={this.handleMenuClick}
+            />
+          )
+            : <Login showSignIn={() => this.setState({ displaySignIn: true })} />
+        }
+
         {displaySignIn && (
           <SignIn
             removeSignin={() => this.setState({ displaySignIn: false })}
@@ -127,14 +130,13 @@ export class Menu extends React.Component<MenuProps, MenuState> {
     document.body.classList.remove('cover');
     return (
       <div className="menu">
-        {!showSearch && <Brand /> }
         <Search
           isShowing={showSearch}
           openSearch={() => this.setState({ showSearch: true })}
           closeSearch={() => this.setState({ showSearch: false })}
           pathname={pathname}
         />
-        { !showSearch && this.renderMenu(authenticated)}
+        {!showSearch && this.renderMenu(authenticated)}
       </div>
     );
   }
