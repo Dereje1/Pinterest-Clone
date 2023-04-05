@@ -40,7 +40,26 @@ exports[`The MasonryPins component will render.... 1`] = `
     <div
       className="description"
     >
-      imgDescription id-1
+      <ForwardRef(Typography)
+        sx={
+          {
+            "fontWeight": "bold",
+          }
+        }
+        variant="h6"
+      >
+        imgDescription id-1
+      </ForwardRef(Typography)>
+      <ForwardRef(Typography)
+        sx={
+          {
+            "fontWeight": "bold",
+          }
+        }
+        variant="h6"
+      >
+        📌 2
+      </ForwardRef(Typography)>
     </div>
     <HandleThumbnailImage
       deletePin={[MockFunction]}
@@ -121,7 +140,26 @@ exports[`The MasonryPins component will render.... 1`] = `
     <div
       className="description"
     >
-      imgDescription id-2
+      <ForwardRef(Typography)
+        sx={
+          {
+            "fontWeight": "bold",
+          }
+        }
+        variant="h6"
+      >
+        imgDescription id-2
+      </ForwardRef(Typography)>
+      <ForwardRef(Typography)
+        sx={
+          {
+            "fontWeight": "bold",
+          }
+        }
+        variant="h6"
+      >
+        📌 2
+      </ForwardRef(Typography)>
     </div>
     <HandleThumbnailImage
       deletePin={[MockFunction]}
@@ -190,7 +228,26 @@ exports[`The MasonryPins component will render.... 1`] = `
     <div
       className="description"
     >
-      imgDescription id-3
+      <ForwardRef(Typography)
+        sx={
+          {
+            "fontWeight": "bold",
+          }
+        }
+        variant="h6"
+      >
+        imgDescription id-3
+      </ForwardRef(Typography)>
+      <ForwardRef(Typography)
+        sx={
+          {
+            "fontWeight": "bold",
+          }
+        }
+        variant="h6"
+      >
+        📌 2
+      </ForwardRef(Typography)>
     </div>
     <HandleThumbnailImage
       deletePin={[MockFunction]}

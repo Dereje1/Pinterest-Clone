@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import Masonry from 'react-masonry-component';
+import { Typography } from '@mui/material';
 import HandleThumbnailImage from './HandleThumbnailImage';
 import { PinType } from '../../interfaces';
 
@@ -49,7 +50,8 @@ function MasonryPins({
               style={{ visibility: loadedImages.includes(element._id) ? 'visible' : 'hidden' }}
             />
             <div className="description">
-              {element.imgDescription}
+              <Typography variant="h6" sx={{ fontWeight: 'bold' }}>{`${element.imgDescription}`}</Typography>
+              <Typography variant="h6" sx={{ fontWeight: 'bold' }}>{`📌 ${element.savedBy.length}`}</Typography>
             </div>
             <HandleThumbnailImage
               element={element}
