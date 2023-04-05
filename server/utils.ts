@@ -143,7 +143,7 @@ Promise((resolve, reject) => {
 
   const request = https.request(url, (response) => {
     const data = new Stream();
-    response.on('data', (chunk: ArrayBuffer) => {
+    response.on('data', (chunk: Buffer) => {
       data.push(chunk);
     });
 
