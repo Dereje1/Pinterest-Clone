@@ -16,7 +16,6 @@ const providerIcons: providerIconsType = getProviderIcons({ fontSize: 20 });
 interface SearchUsersProps {
   closeSearch: () => void
   authenticated: boolean
-  displayLogin: () => void
 }
 
 interface FoundUser {
@@ -27,7 +26,7 @@ interface FoundUser {
 
 type FoundUsers = FoundUser[] | []
 
-function SearchUser({ closeSearch, displayLogin, authenticated }: SearchUsersProps) {
+function SearchUser({ closeSearch, authenticated }: SearchUsersProps) {
   const [searchVal, setSearchVal] = useState('');
   const [foundUsers, setFoundUsers] = useState([] as FoundUsers);
   const [isLoading, setIsLoading] = useState(false);
@@ -124,7 +123,7 @@ function SearchUser({ closeSearch, displayLogin, authenticated }: SearchUsersPro
                       primaryTypographyProps={{ color: '#3752ff', fontWeight: 'bold' }}
                     />,
                     closePin: closeSearch,
-                    displayLogin,
+                    displayLogin: () => null, // since an unauthenitaced user can not reach here
                   }}
                   providerIcons={providerIcons}
                   key={option._id}

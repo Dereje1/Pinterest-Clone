@@ -373,12 +373,6 @@ exports[`The profile page Will render no image sign if user has not pinned or cr
 </Fragment>
 `;
 
-exports[`The profile page Will render signin for non-authenticated users 1`] = `
-<SignIn
-  removeSignin={[Function]}
-/>
-`;
-
 exports[`The profile page Will render the search component 1`] = `
 <Fragment>
   <div
@@ -407,7 +401,6 @@ exports[`The profile page Will render the search component 1`] = `
       <SearchUser
         authenticated={true}
         closeSearch={[Function]}
-        displayLogin={[Function]}
       />
     </div>
     <ForwardRef(Avatar)

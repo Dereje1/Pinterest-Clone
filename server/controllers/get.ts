@@ -50,24 +50,25 @@ export const getProfilePins = async (
   req: Request,
   res: genericResponseType,
 ) => {
-  const userId = req.params.userid;
-  const mongooseUserId = mongoose.Types.ObjectId(userId);
   const { userId: loggedInUserid } = getUserProfile(req.user as UserType);
-  debug(`Getting profile pins for profile -> ${userId} by user -> ${loggedInUserid}`);
+  const requestedProfileId = req.params.userid;
   try {
-    const user = await users.findById(userId).exec();
+    const requestedProfileObjectId = mongoose.Types.ObjectId(requestedProfileId);
+    const user = await users.findById(requestedProfileObjectId).exec();
     if (!user) {
+      debug(`No user found for profile search -> ${requestedProfileId} by user -> ${loggedInUserid}, redirecting...`);
       return res.json({ redirect: '/' });
     }
-    if (loggedInUserid === userId) {
+    if (loggedInUserid === requestedProfileId) {
       return res.json({ redirect: '/pins' });
     }
-    const createdPins = await pins.find({ owner: mongooseUserId })
+    const createdPins = await pins.find({ owner: requestedProfileObjectId })
       .populate(['owner', 'savedBy', 'comments.user'])
       .exec();
-    const savedPins = await pins.find({ savedBy: mongooseUserId })
+    const savedPins = await pins.find({ savedBy: requestedProfileObjectId })
       .populate(['owner', 'savedBy', 'comments.user'])
       .exec();
+    debug(`Retrieved profile pins for profile -> ${requestedProfileId} by user -> ${loggedInUserid}`);
     return res.json({
       createdPins: filterPins({ rawPins: createdPins, userId: loggedInUserid, isAdmin: false }),
       savedPins: filterPins({ rawPins: savedPins, userId: loggedInUserid, isAdmin: false }),
@@ -78,7 +79,8 @@ export const getProfilePins = async (
       },
     });
   } catch (error) {
-    debug(`Error getting profile pins for profile -> ${userId} by user -> ${loggedInUserid}`);
+    debug(`Error getting profile pins for profile -> ${requestedProfileId} by user -> ${loggedInUserid}`);
+    console.log(error);
     // mongoose errors out on invalid ObjectIds sent -> redirect also in that case
     return res.json({ redirect: '/' });
   }

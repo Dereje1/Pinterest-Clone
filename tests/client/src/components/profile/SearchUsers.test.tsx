@@ -20,7 +20,6 @@ describe('The Search users component', () => {
     props = {
       authenticated: true,
       closeSearch: jest.fn(),
-      displayLogin: jest.fn(),
     };
   });
 

@@ -10,7 +10,6 @@ import ImageBuild from '../imagebuild/Imagebuild';
 import {
   Loading, getProviderIcons, UserPinsSelector, UserJoinedDate,
 } from '../common/common';
-import SignIn from '../signin/signin';
 import SearchUsers from './SearchUsers';
 import RESTcall from '../../crud';
 import { providerIconsType, userType } from '../../interfaces';
@@ -23,7 +22,6 @@ function Profile() {
   const [pinsSaved, setPinsSaved] = useState([]);
   const [ready, setReady] = useState(false);
   const [displaySetting, setDisplaySetting] = useState('created');
-  const [displayLogin, setDisplayLogin] = useState(false);
   const [retrievedUser, setRetrievedUser] = useState({ service: 'twitter', displayName: '', joined: '' });
   const [displaySearch, setDisplaySearch] = useState(false);
 
@@ -54,15 +52,16 @@ function Profile() {
   };
 
   useEffect(() => {
-    getProfileData();
-    setDisplaySetting('created');
+    if (loggedInUser.authenticated) {
+      getProfileData();
+      setDisplaySetting('created');
+    }
   }, [pathname]);
 
   useEffect(() => {
     const userObjectIsAvailable = Boolean(Object.keys(loggedInUser).length);
     if (userObjectIsAvailable && !loggedInUser.authenticated) {
-      setReady(true);
-      setDisplayLogin(true);
+      history.push('/');
     }
   }, [loggedInUser]);
 
@@ -72,16 +71,6 @@ function Profile() {
 
   const pins = displaySetting === 'created' ? pinsOwned : pinsSaved;
   if (!ready) return <Loading />;
-
-  if (displayLogin) {
-    return (
-      <SignIn
-        removeSignin={() => {
-          history.push('/');
-        }}
-      />
-    );
-  }
 
   return (
     <>
@@ -105,7 +94,6 @@ function Profile() {
                 <SearchUsers
                   closeSearch={() => setDisplaySearch(false)}
                   authenticated={loggedInUser.authenticated}
-                  displayLogin={() => setDisplayLogin(true)}
                 />
               )
               : (

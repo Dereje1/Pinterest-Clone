@@ -57,15 +57,6 @@ describe('The profile page', () => {
     expect(toJson(wrapper)).toMatchSnapshot();
   });
 
-  test('Will render signin for non-authenticated users', async () => {
-    // Mock redux hooks
-    jest
-      .spyOn(redux, 'useSelector')
-      .mockImplementationOnce(() => ({ authenticated: false }));
-    const wrapper = shallow(<Profile />);
-    expect(toJson(wrapper)).toMatchSnapshot();
-  });
-
   test('Will render no image sign if user has not pinned or created any', async () => {
     mockedRESTcall.mockImplementationOnce(() => Promise.resolve({
       createdPins: [],
@@ -100,9 +91,7 @@ describe('The profile page', () => {
     jest
       .spyOn(redux, 'useSelector')
       .mockImplementationOnce(() => ({ authenticated: false }));
-    const wrapper = shallow(<Profile />);
-    const signin: EnzymePropSelector = wrapper.find('SignIn');
-    signin.props().removeSignin();
+    shallow(<Profile />);
     expect(push).toHaveBeenCalledWith('/');
   });
 
@@ -125,7 +114,6 @@ describe('The profile page', () => {
     expect(searchComponent.length).toBe(1);
     // close search component
     searchComponent.props().closeSearch();
-    searchComponent.props().displayLogin();
     searchComponent = wrapper.find('SearchUser');
     expect(searchComponent.length).toBe(0);
   });

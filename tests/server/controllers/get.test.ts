@@ -189,7 +189,7 @@ describe('Retrieving pins for a profile page', () => {
     expect(pins.find).toHaveBeenCalledTimes(2);
     expect(pins.find).toHaveBeenNthCalledWith(1, { owner: Types.ObjectId('microsoft123') });
     expect(pins.find).toHaveBeenNthCalledWith(2, { savedBy: Types.ObjectId('microsoft123') });
-    expect(users.findById).toHaveBeenCalledWith('microsoft123');
+    expect(users.findById).toHaveBeenCalledWith(Types.ObjectId('microsoft123'));
     expect(res.json).toHaveBeenCalledWith({
       createdPins: [],
       savedPins: [],
