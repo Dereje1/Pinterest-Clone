@@ -82,8 +82,9 @@ export class Menu extends React.Component<MenuProps, MenuState> {
     }
   };
 
-  renderMenu = (authenticated: boolean) => {
+  renderMenu = () => {
     const {
+      user: { authenticated, service },
       location: { pathname },
     } = this.props;
     const {
@@ -98,6 +99,7 @@ export class Menu extends React.Component<MenuProps, MenuState> {
             <CollapsibleMenu
               pathname={pathname}
               menuClicked={this.handleMenuClick}
+              service={service}
             />
           )
             : <Login showSignIn={() => this.setState({ displaySignIn: true })} />
@@ -118,7 +120,7 @@ export class Menu extends React.Component<MenuProps, MenuState> {
       showSearch, ready,
     } = this.state;
     const {
-      user: { authenticated, username },
+      user: { username },
       location: { pathname },
     } = this.props;
     if (!ready) return <Loading />;
@@ -136,7 +138,7 @@ export class Menu extends React.Component<MenuProps, MenuState> {
           closeSearch={() => this.setState({ showSearch: false })}
           pathname={pathname}
         />
-        {!showSearch && this.renderMenu(authenticated)}
+        {!showSearch && this.renderMenu()}
       </div>
     );
   }

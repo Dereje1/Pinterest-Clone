@@ -57,7 +57,13 @@ exports[`The collapsible menu component will render for home 1`] = `
           onClick={[MockFunction]}
           to="/"
         >
-          <ForwardRef(ListItemIcon)>
+          <ForwardRef(ListItemIcon)
+            sx={
+              {
+                "color": "",
+              }
+            }
+          >
             <Memo(ForwardRef(HomeIcon))
               fontSize="medium"
             />
@@ -107,9 +113,19 @@ exports[`The collapsible menu component will render for home 1`] = `
           onClick={[MockFunction]}
           to="/pins"
         >
-          <ForwardRef(ListItemIcon)>
-            <Memo(ForwardRef(AccountCircleIcon))
-              fontSize="medium"
+          <ForwardRef(ListItemIcon)
+            sx={
+              {
+                "color": "#1DA1F2",
+              }
+            }
+          >
+            <Memo(ForwardRef(TwitterIcon))
+              style={
+                {
+                  "fontSize": 24,
+                }
+              }
             />
           </ForwardRef(ListItemIcon)>
           <ForwardRef(ListItemText)
@@ -126,7 +142,7 @@ exports[`The collapsible menu component will render for home 1`] = `
               }
             }
           >
-            My Pins
+            Profile
           </ForwardRef(ListItemText)>
         </ForwardRef(MenuItem)>
         <ForwardRef(MenuItem)
@@ -157,7 +173,13 @@ exports[`The collapsible menu component will render for home 1`] = `
           onClick={[MockFunction]}
           to="/profile/63acc05f21481fa569a03b0b"
         >
-          <ForwardRef(ListItemIcon)>
+          <ForwardRef(ListItemIcon)
+            sx={
+              {
+                "color": "",
+              }
+            }
+          >
             <Memo(ForwardRef(PeopleAltOutlinedIcon))
               fontSize="medium"
             />
@@ -207,7 +229,13 @@ exports[`The collapsible menu component will render for home 1`] = `
           onClick={[MockFunction]}
           to=""
         >
-          <ForwardRef(ListItemIcon)>
+          <ForwardRef(ListItemIcon)
+            sx={
+              {
+                "color": "",
+              }
+            }
+          >
             <Memo(ForwardRef(SearchIcon))
               fontSize="medium"
             />
@@ -257,7 +285,13 @@ exports[`The collapsible menu component will render for home 1`] = `
           onClick={[MockFunction]}
           to="/logout"
         >
-          <ForwardRef(ListItemIcon)>
+          <ForwardRef(ListItemIcon)
+            sx={
+              {
+                "color": "",
+              }
+            }
+          >
             <Memo(ForwardRef(LogoutIcon))
               fontSize="medium"
             />
@@ -342,7 +376,13 @@ exports[`The collapsible menu component will render for my pins 1`] = `
           onClick={[MockFunction]}
           to="/"
         >
-          <ForwardRef(ListItemIcon)>
+          <ForwardRef(ListItemIcon)
+            sx={
+              {
+                "color": "",
+              }
+            }
+          >
             <Memo(ForwardRef(HomeIcon))
               fontSize="medium"
             />
@@ -392,9 +432,19 @@ exports[`The collapsible menu component will render for my pins 1`] = `
           onClick={[MockFunction]}
           to="/pins"
         >
-          <ForwardRef(ListItemIcon)>
-            <Memo(ForwardRef(AccountCircleIcon))
-              fontSize="medium"
+          <ForwardRef(ListItemIcon)
+            sx={
+              {
+                "color": "#1DA1F2",
+              }
+            }
+          >
+            <Memo(ForwardRef(TwitterIcon))
+              style={
+                {
+                  "fontSize": 24,
+                }
+              }
             />
           </ForwardRef(ListItemIcon)>
           <ForwardRef(ListItemText)
@@ -411,7 +461,7 @@ exports[`The collapsible menu component will render for my pins 1`] = `
               }
             }
           >
-            My Pins
+            Profile
           </ForwardRef(ListItemText)>
         </ForwardRef(MenuItem)>
         <ForwardRef(MenuItem)
@@ -442,7 +492,13 @@ exports[`The collapsible menu component will render for my pins 1`] = `
           onClick={[MockFunction]}
           to="/profile/63acc05f21481fa569a03b0b"
         >
-          <ForwardRef(ListItemIcon)>
+          <ForwardRef(ListItemIcon)
+            sx={
+              {
+                "color": "",
+              }
+            }
+          >
             <Memo(ForwardRef(PeopleAltOutlinedIcon))
               fontSize="medium"
             />
@@ -492,7 +548,13 @@ exports[`The collapsible menu component will render for my pins 1`] = `
           onClick={[MockFunction]}
           to=""
         >
-          <ForwardRef(ListItemIcon)>
+          <ForwardRef(ListItemIcon)
+            sx={
+              {
+                "color": "",
+              }
+            }
+          >
             <Memo(ForwardRef(SearchIcon))
               fontSize="medium"
             />
@@ -542,7 +604,13 @@ exports[`The collapsible menu component will render for my pins 1`] = `
           onClick={[MockFunction]}
           to="/logout"
         >
-          <ForwardRef(ListItemIcon)>
+          <ForwardRef(ListItemIcon)
+            sx={
+              {
+                "color": "",
+              }
+            }
+          >
             <Memo(ForwardRef(LogoutIcon))
               fontSize="medium"
             />
