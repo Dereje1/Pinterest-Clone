@@ -56,7 +56,7 @@ function Profile() {
       getProfileData();
       setDisplaySetting('created');
     }
-  }, [pathname]);
+  }, [pathname, loggedInUser.authenticated]);
 
   useEffect(() => {
     const userObjectIsAvailable = Boolean(Object.keys(loggedInUser).length);
