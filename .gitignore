@@ -20,3 +20,4 @@ nodemon.json
 .DS_Store
 /server_build
 google_vision_api_key.json
+/client/dist

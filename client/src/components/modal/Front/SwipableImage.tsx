@@ -76,7 +76,6 @@ function SwipableImage({ zoomInfo, onSlidePin, onSetImageMetaData }: SwipableIma
           marginLeft: 'auto',
           marginRight: 'auto',
           objectFit: 'contain',
-          borderColor: 'black',
           border: parentDivStyle.border,
         }}
         onLoad={onPinLoad}

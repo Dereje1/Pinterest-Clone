@@ -15,7 +15,6 @@ exports[`will render with the list item bar 1`] = `
     sx={
       {
         "border": 0,
-        "borderColor": "black",
         "height": 500,
         "marginLeft": "auto",
         "marginRight": "auto",
@@ -98,7 +97,6 @@ exports[`will render without the list item bar 1`] = `
     sx={
       {
         "border": 0,
-        "borderColor": "black",
         "height": 500,
         "marginLeft": "auto",
         "marginRight": "auto",
