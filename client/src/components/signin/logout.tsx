@@ -9,9 +9,11 @@ function LogOut() {
   const dispatch = useDispatch();
 
   const logout = async () => {
-    await RESTcall({ address: '/auth/logout' });
-    dispatch(getUser('/auth/profile'));
-    history.replace('/');
+    // TODO: vite erroring out on axios rest call to auth/logout
+    // await RESTcall({ address: '/auth/logout' });
+    // dispatch(getUser('/auth/profile'));
+    // history.replace('/logout');
+    window.location.assign('/auth/logout');
   };
 
   useEffect(() => {

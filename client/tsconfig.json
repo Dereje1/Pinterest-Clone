@@ -1,24 +1,21 @@
 {
-    "compilerOptions": {
-        "outDir": "./dist/",        // path to output directory
-        "sourceMap": true,          // allow sourcemap support
-        "strictNullChecks": true,   // enable strict null checks as a best practice
-        "module": "ESNext",            // specify module code generation
-        "jsx": "react",             // use typescript to transpile jsx to js
-        "target": "es5",            // specify ECMAScript target version
-        "allowJs": true,             // allow a partial TypeScript and JavaScript codebase
-        "allowSyntheticDefaultImports": true,
-        "noImplicitAny": true,
-        "lib": ["dom", "esnext"],
-        "esModuleInterop": true,
-        "noImplicitThis": true,
-        "moduleResolution": "node",
-        "noEmitOnError": true,
-        "skipLibCheck": true,
-        "downlevelIteration": true,
-        "noEmit": true,
-        "strict": true
-    },
-    "include": [ "./src/", "index.d.ts"],
-    "compileOnSave": true
+  "compilerOptions": {
+    "target": "ESNext",
+    "useDefineForClassFields": true,
+    "lib": ["DOM", "DOM.Iterable", "ESNext"],
+    "allowJs": false,
+    "skipLibCheck": true,
+    "esModuleInterop": false,
+    "allowSyntheticDefaultImports": true,
+    "strict": true,
+    "forceConsistentCasingInFileNames": true,
+    "module": "ESNext",
+    "moduleResolution": "Node",
+    "resolveJsonModule": true,
+    "isolatedModules": true,
+    "noEmit": true,
+    "jsx": "react-jsx"
+  },
+  "include": ["src"],
+  "references": [{ "path": "./tsconfig.node.json" }]
 }
