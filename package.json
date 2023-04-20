@@ -5,14 +5,15 @@
   "scripts": {
     "start": "node ./server_build/bin/www",
     "build_server": "tsc -p ./server && tsc -p ./bin",
-    "build_client": "webpack --mode production",
+    "build_client": "vite build",
     "client": "vite",
     "server": "nodemon ./bin/www.ts",
     "dev": "concurrently --kill-others-on-fail \"npm run server\" \"npm run client\"",
     "lint": "./node_modules/.bin/eslint server client tests",
     "test": "jest --watch",
     "coverage": "jest --coverage",
-    "compileTS": "tsc -p ./client && tsc -p ./server --noEmit && tsc -p ./tests/tsconfig.test.json"
+    "compileTS": "tsc -p ./client && tsc -p ./server --noEmit && tsc -p ./tests/tsconfig.test.json",
+    "preview": "vite preview"
   },
   "dependencies": {
     "@emotion/react": "^11.7.1",

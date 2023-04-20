@@ -43,7 +43,7 @@ App.use((request: Request, response: Response, next: NextFunction) => {
   next();
 });
 // serve webpack build client
-App.use(express.static(path.join(__dirname, '../client/public')));
+App.use(express.static(path.join(__dirname, '../client/dist')));
 // connect to db and setup authentication / passport
 connectToDB();
 auth(
@@ -60,7 +60,7 @@ auth(
 App.use(router);
 // serve webpack build client
 App.get('*', (req: Request, res: Response) => {
-  res.sendFile(path.resolve(__dirname, '../client/public', 'index.html'));
+  res.sendFile(path.resolve(__dirname, '../client/dist', 'index.html'));
 });
 
 // catch 404 and forward to error handler
