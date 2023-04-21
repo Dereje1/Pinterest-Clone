@@ -14,7 +14,7 @@ import {
   PinType, userType, zoomedImageInfoType, imageMetadataType,
 } from '../../interfaces';
 import './imagebuild.scss';
-import error from '../mypins/error.png';
+import error from '../../../public/error.png';
 
 const PINS_DISPLAY_PER_SCROLL = 10;
 

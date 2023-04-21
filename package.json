@@ -5,7 +5,7 @@
   "scripts": {
     "start": "node ./server_build/bin/www",
     "build_server": "tsc -p ./server && tsc -p ./bin",
-    "build_client": "vite build",
+    "build_client": "tsc -p ./client && vite build",
     "client": "vite",
     "server": "nodemon ./bin/www.ts",
     "dev": "concurrently --kill-others-on-fail \"npm run server\" \"npm run client\"",

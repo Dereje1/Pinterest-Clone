@@ -13,7 +13,7 @@ import {
 import SearchUsers from './SearchUsers';
 import RESTcall from '../../crud';
 import { providerIconsType, userType } from '../../interfaces';
-import error from '../mypins/error.png';
+import error from '../../../public/error.png';
 
 const providerIcons = getProviderIcons({ fontSize: 25 });
 
