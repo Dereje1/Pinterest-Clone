@@ -43,7 +43,6 @@ function ImageBuild({
   const [imagesLoaded, setImagesLoaded] = useState(false);
   const [loadedPins, setLoadedPins] = useState(initialLoadedPins);
   const [activePins, setActivePins] = useState(initialLoadedPins);
-  const [scrollPosition, setScrollPosition] = useState(0);
   const [batchSize, setBatchSize] = useState(initialDisplayPerScroll());
   const [displayLogin, setDisplayLogin] = useState(false);
 
@@ -82,7 +81,6 @@ function ImageBuild({
     // only set state on first true loads
     if (imagesLoaded) return;
     setImagesLoaded(true);
-    setScrollPosition(document.body.scrollTop);
   };
 
   // img onError callback executes this function
@@ -159,7 +157,7 @@ function ImageBuild({
 
     const parentDivStyle = {
       ...getZoomedImageStyle({ naturalWidth, naturalHeight }),
-      top: document.body.scrollTop,
+      top: window.pageYOffset,
       width: '90%',
     };
     const loadedIndex = loadedPins.findIndex((loadedPin) => loadedPin._id === currentImg._id);
@@ -200,7 +198,7 @@ function ImageBuild({
     if (!metadata || !zoomedImageInfo) return null;
     const parentDivStyle = {
       ...getZoomedImageStyle({ ...metadata }),
-      top: document.body.scrollTop,
+      top: window.pageYOffset,
       width: '90%',
     };
     setZoomedImageInfo({
@@ -222,7 +220,6 @@ function ImageBuild({
           dataLength={activePins.length}
           next={nextScroll}
           hasMore={activePins.length < loadedPins.length}
-          initialScrollY={scrollPosition}
           loader={<div />}
         >
           <MasonryPins

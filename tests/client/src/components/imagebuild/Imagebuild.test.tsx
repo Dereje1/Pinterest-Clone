@@ -60,7 +60,7 @@ describe('The ImageBuild component', () => {
   });
 
   test('will call pinEnlarge for a single pin', () => {
-    document.body.scrollTop = 10;
+    global.pageYOffset = 10;
     const wrapper = shallow(<ImageBuild {...props} />);
     const masonry: EnzymePropSelector = wrapper.find('MasonryPins');
     let pinZoom: EnzymePropSelector = wrapper.find('PinZoom');
@@ -86,7 +86,7 @@ describe('The ImageBuild component', () => {
   });
 
   test('will dismiss pinEnlarge if pin already zoomed', () => {
-    document.body.scrollTop = 10;
+    global.pageYOffset = 10;
     const wrapper = shallow(<ImageBuild {...props} />);
     let masonry: EnzymePropSelector = wrapper.find('MasonryPins');
     let pinZoom: EnzymePropSelector = wrapper.find('PinZoom');
@@ -164,7 +164,7 @@ describe('The ImageBuild component', () => {
   });
 
   test('will update comments while pin is zoomed', async () => {
-    document.body.scrollTop = 10;
+    global.pageYOffset = 10;
     const wrapper: EnzymePropSelector = shallow(<ImageBuild {...props} />);
     const masonry: EnzymePropSelector = wrapper.find('MasonryPins');
     let pinZoom = wrapper.find('PinZoom');
@@ -194,7 +194,7 @@ describe('The ImageBuild component', () => {
   });
 
   test('will close pinzoom if zoomed pin disapears (ex. deleted from profile)', () => {
-    document.body.scrollTop = 10;
+    global.pageYOffset = 10;
     const wrapper = shallow(<ImageBuild {...props} />);
     const masonry: EnzymePropSelector = wrapper.find('MasonryPins');
     let pinZoom: EnzymePropSelector = wrapper.find('PinZoom');
