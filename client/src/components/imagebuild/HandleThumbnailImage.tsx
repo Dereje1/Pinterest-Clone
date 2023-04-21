@@ -3,35 +3,35 @@ import { PinType } from '../../interfaces';
 import './imagebuild.scss';
 
 interface HandleThumbnailImageProps {
-  element: PinType
+  pin: PinType
   pinImage: (pin: PinType) => void
   deletePin: ((pin: PinType) => void) | null
 }
 
-function HandleThumbnailImage({ element, pinImage, deletePin }: HandleThumbnailImageProps) {
+function HandleThumbnailImage({ pin, pinImage, deletePin }: HandleThumbnailImageProps) {
   /* For the logged in user's profile page */
   if (deletePin) {
     return (
       <button
         type="submit"
         className="actionbutton"
-        onClick={() => deletePin(element)}
+        onClick={() => deletePin(pin)}
       >
-        {element.owns ? 'Delete' : 'Unpin'}
+        {pin.owns ? 'Delete' : 'Unpin'}
       </button>
     );
   }
   /* For anything other than the logged in user's profile page */
-  if (element.owns) {
+  if (pin.owns) {
     return null;
   }
 
-  if (element.hasSaved) {
+  if (pin.hasSaved) {
     return (
       <button
         type="submit"
         className="actionbutton"
-        onClick={() => pinImage(element)}
+        onClick={() => pinImage(pin)}
       >
         Unpin
       </button>
@@ -42,7 +42,7 @@ function HandleThumbnailImage({ element, pinImage, deletePin }: HandleThumbnailI
     <button
       type="submit"
       className="actionbutton save"
-      onClick={() => pinImage(element)}
+      onClick={() => pinImage(pin)}
     >
       <i className="fa fa-thumb-tack" aria-hidden="true" />
       {' Save'}

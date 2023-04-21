@@ -65,7 +65,7 @@ describe('The ImageBuild component', () => {
     const masonry: EnzymePropSelector = wrapper.find('MasonryPins');
     let pinZoom: EnzymePropSelector = wrapper.find('PinZoom');
     expect(pinZoom.isEmptyRender()).toBe(true);
-    masonry.props().pinEnlarge({ target: { className: 'any', naturalWidth: 600, naturalHeight: 600 } }, pinsStub[1]);
+    masonry.props().pinEnlarge({ target: { className: 'image-format', naturalWidth: 600, naturalHeight: 600 } }, pinsStub[1]);
     pinZoom = wrapper.find('PinZoom');
     expect(pinZoom.isEmptyRender()).toBe(false);
     expect(pinZoom.props().zoomInfo).toEqual({
@@ -91,7 +91,7 @@ describe('The ImageBuild component', () => {
     let masonry: EnzymePropSelector = wrapper.find('MasonryPins');
     let pinZoom: EnzymePropSelector = wrapper.find('PinZoom');
     expect(pinZoom.isEmptyRender()).toBe(true);
-    masonry.props().pinEnlarge({ target: { className: 'any', naturalWidth: 600, naturalHeight: 600 } }, pinsStub[1]);
+    masonry.props().pinEnlarge({ target: { className: 'image-format', naturalWidth: 600, naturalHeight: 600 } }, pinsStub[1]);
     pinZoom = wrapper.find('PinZoom');
     expect(pinZoom.isEmptyRender()).toBe(false);
     expect(pinZoom.props().zoomInfo).toEqual({
@@ -101,7 +101,7 @@ describe('The ImageBuild component', () => {
     });
     // re-fire again after pin is already zooomed
     masonry = wrapper.find('MasonryPins');
-    masonry.props().pinEnlarge({ target: { className: 'any', naturalWidth: 600, naturalHeight: 600 } }, pinsStub[1]);
+    masonry.props().pinEnlarge({ target: { className: 'image-format', naturalWidth: 600, naturalHeight: 600 } }, pinsStub[1]);
     pinZoom = wrapper.find('PinZoom');
     // If not working second arg should have been 15
     expect(pinZoom.props().zoomInfo).toEqual({
@@ -116,7 +116,7 @@ describe('The ImageBuild component', () => {
     const masonry: EnzymePropSelector = wrapper.find('MasonryPins');
     let pinZoom: EnzymePropSelector = wrapper.find('PinZoom');
     expect(pinZoom.isEmptyRender()).toBe(true);
-    masonry.props().pinEnlarge({ target: { className: 'any', naturalWidth: 600, naturalHeight: 600 } }, pinsStub[1]);
+    masonry.props().pinEnlarge({ target: { className: 'image-format', naturalWidth: 600, naturalHeight: 600 } }, pinsStub[1]);
     pinZoom = wrapper.find('PinZoom');
     expect(pinZoom.isEmptyRender()).toBe(false);
     expect(pinZoom.props().zoomInfo).toEqual({
@@ -170,7 +170,7 @@ describe('The ImageBuild component', () => {
     let pinZoom = wrapper.find('PinZoom');
     expect(pinZoom.isEmptyRender()).toBe(true);
     // zoom into pin and assert pin has correct info
-    masonry.props().pinEnlarge({ target: { className: 'any', naturalWidth: 600, naturalHeight: 600 } }, pinsStub[1]);
+    masonry.props().pinEnlarge({ target: { className: 'image-format', naturalWidth: 600, naturalHeight: 600 } }, pinsStub[1]);
     pinZoom = wrapper.find('PinZoom');
     expect(pinZoom.isEmptyRender()).toBe(false);
     expect(pinZoom.props().zoomInfo).toEqual({
@@ -200,7 +200,7 @@ describe('The ImageBuild component', () => {
     let pinZoom: EnzymePropSelector = wrapper.find('PinZoom');
     expect(pinZoom.isEmptyRender()).toBe(true);
     // zoom into pin and assert pin has correct info
-    masonry.props().pinEnlarge({ target: { className: 'any', naturalWidth: 600, naturalHeight: 600 } }, pinsStub[1]);
+    masonry.props().pinEnlarge({ target: { className: 'image-format', naturalWidth: 600, naturalHeight: 600 } }, pinsStub[1]);
     pinZoom = wrapper.find('PinZoom');
     expect(pinZoom.isEmptyRender()).toBe(false);
     expect(pinZoom.props().zoomInfo).toEqual({
@@ -297,7 +297,7 @@ describe('The ImageBuild component', () => {
     let pinZoom: EnzymePropSelector = wrapper.find('PinZoom');
     expect(pinZoom.isEmptyRender()).toBe(true);
     // zoom into pin
-    masonry.props().pinEnlarge({ target: { className: 'any', naturalWidth: 600, naturalHeight: 600 } }, pinsStub[1]);
+    masonry.props().pinEnlarge({ target: { className: 'image-format', naturalWidth: 600, naturalHeight: 600 } }, pinsStub[1]);
     pinZoom = wrapper.find('PinZoom');
     expect(pinZoom.isEmptyRender()).toBe(false);
     let signIn: EnzymePropSelector = wrapper.find('SignIn');
@@ -313,7 +313,7 @@ describe('The ImageBuild component', () => {
     let pinZoom: EnzymePropSelector = wrapper.find('PinZoom');
     expect(pinZoom.isEmptyRender()).toBe(true);
     // zoom into pin
-    masonry.props().pinEnlarge({ target: { className: 'any', naturalWidth: 600, naturalHeight: 600 } }, pinsStub[1]);
+    masonry.props().pinEnlarge({ target: { className: 'image-format', naturalWidth: 600, naturalHeight: 600 } }, pinsStub[1]);
     pinZoom = wrapper.find('PinZoom');
     // trigger a tag update
     await pinZoom.props().updateTags('tag_query');
@@ -333,7 +333,7 @@ describe('The ImageBuild component', () => {
     let pinZoom: EnzymePropSelector = wrapper.find('PinZoom');
     expect(pinZoom.isEmptyRender()).toBe(true);
     // zoom into pin
-    masonry.props().pinEnlarge({ target: { className: 'any', naturalWidth: 600, naturalHeight: 600 } }, pinsStub[1]);
+    masonry.props().pinEnlarge({ target: { className: 'image-format', naturalWidth: 600, naturalHeight: 600 } }, pinsStub[1]);
     pinZoom = wrapper.find('PinZoom');
     // trigger a tag update
     pinZoom.props().onSlidePin(2);
@@ -354,7 +354,7 @@ describe('The ImageBuild component', () => {
     let pinZoom: EnzymePropSelector = wrapper.find('PinZoom');
     expect(pinZoom.isEmptyRender()).toBe(true);
     // zoom into pin
-    masonry.props().pinEnlarge({ target: { className: 'any', naturalWidth: 600, naturalHeight: 600 } }, pinsStub[1]);
+    masonry.props().pinEnlarge({ target: { className: 'image-format', naturalWidth: 600, naturalHeight: 600 } }, pinsStub[1]);
     pinZoom = wrapper.find('PinZoom');
     // trigger a tag update
     pinZoom.props().onSlidePin(3);
@@ -375,7 +375,7 @@ describe('The ImageBuild component', () => {
     let pinZoom: EnzymePropSelector = wrapper.find('PinZoom');
     expect(pinZoom.isEmptyRender()).toBe(true);
     // zoom into pin
-    masonry.props().pinEnlarge({ target: { className: 'any', naturalWidth: 600, naturalHeight: 600 } }, pinsStub[0]);
+    masonry.props().pinEnlarge({ target: { className: 'image-format', naturalWidth: 600, naturalHeight: 600 } }, pinsStub[0]);
     pinZoom = wrapper.find('PinZoom');
     // trigger a tag update
     pinZoom.props().onSlidePin(-1);
@@ -396,7 +396,7 @@ describe('The ImageBuild component', () => {
     let pinZoom: EnzymePropSelector = wrapper.find('PinZoom');
     expect(pinZoom.isEmptyRender()).toBe(true);
     // zoom into pin
-    masonry.props().pinEnlarge({ target: { className: 'any', naturalWidth: 600, naturalHeight: 600 } }, pinsStub[1]);
+    masonry.props().pinEnlarge({ target: { className: 'image-format', naturalWidth: 600, naturalHeight: 600 } }, pinsStub[1]);
     pinZoom = wrapper.find('PinZoom');
     // trigger a tag update
     const ans = pinZoom.props().resetParentDivStyle({ naturalWidth: 200, naturalHeight: 400 });
@@ -418,7 +418,7 @@ describe('The ImageBuild component', () => {
     let pinZoom: EnzymePropSelector = wrapper.find('PinZoom');
     expect(pinZoom.isEmptyRender()).toBe(true);
     // zoom into pin
-    masonry.props().pinEnlarge({ target: { className: 'any', naturalWidth: 600, naturalHeight: 600 } }, pinsStub[1]);
+    masonry.props().pinEnlarge({ target: { className: 'image-format', naturalWidth: 600, naturalHeight: 600 } }, pinsStub[1]);
     pinZoom = wrapper.find('PinZoom');
     // trigger a tag update
     const ans = pinZoom.props().resetParentDivStyle();

@@ -7,7 +7,7 @@ describe('Handling image action buttons', () => {
   let props: React.ComponentProps<typeof HandleThumbnailImage>;
   beforeEach(() => {
     props = {
-      element: {
+      pin: {
         ...pinsStub[0],
       },
       pinImage: jest.fn(),
@@ -19,8 +19,8 @@ describe('Handling image action buttons', () => {
     const updatedProps = {
       ...props,
       pinImage: jest.fn(),
-      element: {
-        ...props.element,
+      pin: {
+        ...props.pin,
         owns: true,
       },
     };
@@ -28,7 +28,7 @@ describe('Handling image action buttons', () => {
     wrapper.props().onClick();
     expect(wrapper.text()).toBe('Delete');
     expect(props.deletePin).toHaveBeenCalledWith({
-      ...props.element,
+      ...props.pin,
       hasSaved: false,
       owns: true,
     });
@@ -38,8 +38,8 @@ describe('Handling image action buttons', () => {
     const updatedProps = {
       ...props,
       pinImage: jest.fn(),
-      element: {
-        ...props.element,
+      pin: {
+        ...props.pin,
         owns: false,
         hasSaved: true,
       },
@@ -48,7 +48,7 @@ describe('Handling image action buttons', () => {
     wrapper.props().onClick();
     expect(wrapper.text()).toBe('Unpin');
     expect(props.deletePin).toHaveBeenCalledWith({
-      ...props.element,
+      ...props.pin,
       hasSaved: true,
       owns: false,
     });
@@ -58,8 +58,8 @@ describe('Handling image action buttons', () => {
     const updatedProps = {
       ...props,
       deletePin: null,
-      element: {
-        ...props.element,
+      pin: {
+        ...props.pin,
         owns: true,
       },
     };
@@ -72,8 +72,8 @@ describe('Handling image action buttons', () => {
       ...props,
       deletePin: null,
       pinImage: jest.fn(),
-      element: {
-        ...props.element,
+      pin: {
+        ...props.pin,
         owns: false,
         hasSaved: true,
       },
@@ -82,7 +82,7 @@ describe('Handling image action buttons', () => {
     wrapper.props().onClick();
     expect(wrapper.text()).toBe('Unpin');
     expect(updatedProps.pinImage).toHaveBeenCalledWith({
-      ...props.element,
+      ...props.pin,
       hasSaved: true,
       owns: false,
     });
@@ -92,8 +92,8 @@ describe('Handling image action buttons', () => {
     const updatedProps = {
       ...props,
       deletePin: null,
-      element: {
-        ...props.element,
+      pin: {
+        ...props.pin,
         owns: false,
         hasSaved: false,
       },
@@ -102,7 +102,7 @@ describe('Handling image action buttons', () => {
     wrapper.props().onClick();
     expect(wrapper.text()).toBe(' Save');
     expect(props.pinImage).toHaveBeenCalledWith({
-      ...props.element,
+      ...props.pin,
       hasSaved: false,
       owns: false,
     });

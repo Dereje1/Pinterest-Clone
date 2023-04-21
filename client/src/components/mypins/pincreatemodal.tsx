@@ -15,7 +15,7 @@ import DriveFolderUploadIcon from '@mui/icons-material/DriveFolderUpload';
 import Dialog from '@mui/material/Dialog';
 import DialogTitle from '@mui/material/DialogTitle';
 import SavePin from './SavePin';
-import error from '../../../public/error.png';
+import error from '../../assets/error.png';
 import {
   validateURL,
   getModalWidth,

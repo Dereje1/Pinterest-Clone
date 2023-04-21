@@ -14,7 +14,7 @@ import {
   PinType, userType, zoomedImageInfoType, imageMetadataType,
 } from '../../interfaces';
 import './imagebuild.scss';
-import error from '../../../public/error.png';
+import error from '../../assets/error.png';
 
 const PINS_DISPLAY_PER_SCROLL = 10;
 
@@ -152,8 +152,8 @@ function ImageBuild({
     const {
       naturalWidth, naturalHeight, className,
     } = target;
-    // disregard for save/delete calls or if already zoomed
-    if (className.includes('actionbutton') || zoomedImageInfo) return;
+    // disregard if not image clicked or if already zoomed
+    if (!className.includes('image-format') || zoomedImageInfo) return;
 
     const parentDivStyle = {
       ...getZoomedImageStyle({ naturalWidth, naturalHeight }),

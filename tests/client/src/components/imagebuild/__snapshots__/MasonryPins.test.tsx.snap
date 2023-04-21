@@ -63,7 +63,7 @@ exports[`The MasonryPins component will render.... 1`] = `
     </div>
     <HandleThumbnailImage
       deletePin={[MockFunction]}
-      element={
+      pin={
         {
           "_id": "1",
           "comments": [
@@ -163,7 +163,7 @@ exports[`The MasonryPins component will render.... 1`] = `
     </div>
     <HandleThumbnailImage
       deletePin={[MockFunction]}
-      element={
+      pin={
         {
           "_id": "2",
           "comments": [],
@@ -251,7 +251,7 @@ exports[`The MasonryPins component will render.... 1`] = `
     </div>
     <HandleThumbnailImage
       deletePin={[MockFunction]}
-      element={
+      pin={
         {
           "_id": "3",
           "comments": [],

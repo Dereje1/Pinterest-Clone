@@ -32,33 +32,33 @@ function MasonryPins({
       options={{ fitWidth: true }}
     >
       {
-        pins.map((element) => (
+        pins.map((pin) => (
           <div
-            key={element._id}
+            key={pin._id}
             role="button"
             className="image-box"
-            onClick={(e) => pinEnlarge(e, element)}
+            onClick={(e) => pinEnlarge(e, pin)}
             onKeyDown={() => ({})}
             tabIndex={0}
           >
             <img
-              alt={element.imgDescription}
-              onError={() => onBrokenImage(element._id)}
+              alt={pin.imgDescription}
+              onError={() => onBrokenImage(pin._id)}
               className="image-format"
-              src={element.imgLink}
-              onLoad={() => setLoadedImages([...loadedImages, element._id])}
-              style={{ visibility: loadedImages.includes(element._id) ? 'visible' : 'hidden' }}
+              src={pin.imgLink}
+              onLoad={() => setLoadedImages([...loadedImages, pin._id])}
+              style={{ visibility: loadedImages.includes(pin._id) ? 'visible' : 'hidden' }}
             />
             <div className="description">
-              <Typography variant="h6" sx={{ fontWeight: 'bold' }}>{`${element.imgDescription}`}</Typography>
-              <Typography variant="h6" sx={{ fontWeight: 'bold' }}>{`📌 ${element.savedBy.length}`}</Typography>
+              <Typography variant="h6" sx={{ fontWeight: 'bold' }}>{`${pin.imgDescription}`}</Typography>
+              <Typography variant="h6" sx={{ fontWeight: 'bold' }}>{`📌 ${pin.savedBy.length}`}</Typography>
             </div>
             <HandleThumbnailImage
-              element={element}
+              pin={pin}
               pinImage={pinImage}
               deletePin={deletePin}
             />
-            <div className="owner">{`${element.owner.name}`}</div>
+            <div className="owner">{`${pin.owner.name}`}</div>
           </div>
         ))
       }

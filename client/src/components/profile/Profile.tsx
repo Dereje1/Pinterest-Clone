@@ -13,9 +13,9 @@ import {
 import SearchUsers from './SearchUsers';
 import RESTcall from '../../crud';
 import { providerIconsType, userType } from '../../interfaces';
-import error from '../../../public/error.png';
+import error from '../../assets/error.png';
 
-const providerIcons = getProviderIcons({ fontSize: 25 });
+const providerIcons = getProviderIcons({ fontSize: 30 });
 
 function Profile() {
   const [pinsOwned, setPinsOwned] = useState([]);

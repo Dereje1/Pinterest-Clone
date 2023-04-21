@@ -87,8 +87,7 @@ export class Mypins extends Component<MypinsProps, MypinsState> {
   }
 
   // adds a new pin to the db
-  async addPic(pinJSON: {imgDescription: string, imgLink: string | ArrayBuffer}) {
-    // copy then add pin to db and then update client state (in that order)
+  async addPin(pinJSON: {imgDescription: string, imgLink: string | ArrayBuffer}) {
     const { pinList } = this.state;
     const { user: { displayName, service, userId } } = this.props;
     this.setState({ ready: false });
@@ -241,7 +240,7 @@ export class Mypins extends Component<MypinsProps, MypinsState> {
         {displayPinCreate && (
           <PinCreate
             reset={() => this.setState({ displayPinCreate: false })}
-            savePin={(pinJSON) => this.addPic(pinJSON)}
+            savePin={(pinJSON) => this.addPin(pinJSON)}
           />
         )}
         { showDeleteImageModal && (
