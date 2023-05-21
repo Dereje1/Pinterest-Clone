@@ -2,7 +2,7 @@ import React from 'react';
 import Button from '@mui/material/Button';
 import AccountCircleIcon from '@mui/icons-material/AccountCircle';
 import { connect } from 'react-redux';
-import { setGuest } from '../../actions/authentication';
+import { setGuest } from '../../redux/userSlice';
 import { getProviderIcons } from '../common/common';
 import { userType, providerIconsType, providersType } from '../../interfaces';
 import './loginbuttons.scss';

@@ -8,7 +8,7 @@ import IconButton from '@mui/material/IconButton';
 import TagIcon from '@mui/icons-material/Tag';
 import RestartAltIcon from '@mui/icons-material/RestartAlt';
 import Tooltip from '@mui/material/Tooltip';
-import updateSearch from '../../../actions/search';
+import { updateSearch } from '../../../redux/searchSlice';
 import TagsForm from './TagsForm';
 import RESTcall from '../../../crud';
 import { PinType, tagType } from '../../../interfaces';

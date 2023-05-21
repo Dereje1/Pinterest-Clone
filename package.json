@@ -22,6 +22,7 @@
     "@mui/icons-material": "^5.2.5",
     "@mui/material": "^5.10.17",
     "@mui/styles": "^5.3.0",
+    "@reduxjs/toolkit": "^1.9.5",
     "aws-sdk": "^2.1073.0",
     "axios": "latest",
     "body-parser": "^1.20.1",
@@ -42,7 +43,6 @@
     "react-router-dom": "^5.0.0",
     "react-swipeable": "^7.0.0",
     "redux": "^4.2.0",
-    "redux-thunk": "^2.2.0",
     "ts-node": "^10.9.1"
   },
   "devDependencies": {
@@ -52,7 +52,7 @@
     "@babel/plugin-transform-runtime": "^7.16.8",
     "@babel/preset-env": "^7.4.3",
     "@babel/preset-react": "^7.0.0",
-    "@babel/preset-typescript": "^7.18.6",    
+    "@babel/preset-typescript": "^7.18.6",
     "@types/cookie-session": "^2.0.44",
     "@types/debug": "^4.1.7",
     "@types/dotenv": "^8.2.0",
@@ -74,6 +74,7 @@
     "@types/supertest": "^2.0.12",
     "@typescript-eslint/eslint-plugin": "^5.49.0",
     "@typescript-eslint/parser": "^5.49.0",
+    "@vitejs/plugin-react-swc": "^3.0.0",
     "@wojtekmaj/enzyme-adapter-react-17": "^0.8.0",
     "babel-jest": "^29.0.0",
     "babel-polyfill": "^6.26.0",
@@ -94,7 +95,6 @@
     "supertest": "^6.2.3",
     "ts-jest": "^29.0.5",
     "typescript": "^4.9.4",
-    "@vitejs/plugin-react-swc": "^3.0.0",
     "vite": "^4.2.0"
   },
   "jest": {

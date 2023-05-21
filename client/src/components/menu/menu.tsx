@@ -3,7 +3,7 @@ import React, { ComponentType } from 'react';
 import { withRouter } from 'react-router-dom';
 import { connect } from 'react-redux';
 import { compose } from 'redux';
-import { getUser } from '../../actions/authentication';
+import { getUser } from '../../redux/userSlice';
 import Search from './search';
 import Cover from '../cover/cover';
 import SignIn from '../signin/signin';

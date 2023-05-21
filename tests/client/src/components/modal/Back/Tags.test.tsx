@@ -118,7 +118,7 @@ describe('The tags component', () => {
     const chip = wrapper.find({ label: 'TAG 1' });
     chip.props().onClick();
     expect(mockdispatch).toHaveBeenCalledWith({
-      type: 'UPDATE_SEARCH',
+      type: 'search/updateSearch',
       payload: {
         tagSearch: true,
         term: 'tag 1',

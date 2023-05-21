@@ -8,7 +8,7 @@ import InputBase from '@mui/material/InputBase';
 import HighlightOffIcon from '@mui/icons-material/HighlightOff';
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 import IconButton from '@mui/material/IconButton';
-import updateSearch from '../../actions/search';
+import { updateSearch } from '../../redux/searchSlice';
 import { searchType } from '../../interfaces';
 
 interface SearchProps {

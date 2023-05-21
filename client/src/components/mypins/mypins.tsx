@@ -16,7 +16,7 @@ import PinCreate from './pincreatemodal';
 import ImageBuild from '../imagebuild/Imagebuild';
 import UserInfo from './UserInfo';
 import RESTcall from '../../crud'; // pin CRUD
-import { updateDisplayName } from '../../actions/authentication';
+import { updateDisplayName } from '../../redux/userSlice';
 import { Loading, UserPinsSelector } from '../common/common';
 import { onTheFlyPinListNameChange } from '../../utils/utils';
 import {

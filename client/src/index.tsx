@@ -1,5 +1,3 @@
-import { applyMiddleware, createStore } from 'redux';
-import thunk from 'redux-thunk';
 import React, { lazy, Suspense } from 'react';
 import { render } from 'react-dom';
 import { Provider } from 'react-redux';
@@ -7,12 +5,9 @@ import { BrowserRouter, Route, Switch } from 'react-router-dom';
 import { ThemeProvider, createTheme } from '@mui/material/styles';
 import { Loading } from './components/common/common';
 // redux
-import reducers from './reducers/index';
+import { store } from './store';
 // css
 import './index.scss';
-// redux config (add logger to middleware here)
-const middleware = applyMiddleware(thunk);
-const store = createStore(reducers, middleware);
 // mui theme config
 const theme = createTheme({
   typography: {

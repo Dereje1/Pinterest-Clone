@@ -53,7 +53,7 @@ describe('The search component', () => {
     jest.advanceTimersByTime(1000);
     expect(mockdispatch).toHaveBeenCalledWith({
       payload: { tagSearch: false, term: 'abc' },
-      type: 'UPDATE_SEARCH',
+      type: 'search/updateSearch',
     });
     searchInput = wrapper.find('ForwardRef(InputBase)');
     expect(searchInput.props().value).toBe('abc');
@@ -67,7 +67,7 @@ describe('The search component', () => {
     jest.advanceTimersByTime(1000);
     expect(mockdispatch).toHaveBeenNthCalledWith(1, {
       payload: { tagSearch: false, term: 'abc' },
-      type: 'UPDATE_SEARCH',
+      type: 'search/updateSearch',
     });
     searchInput = wrapper.find('ForwardRef(InputBase)');
     expect(searchInput.props().value).toBe('abc');
@@ -78,7 +78,7 @@ describe('The search component', () => {
     expect(searchInput.props().value).toBe('');
     expect(mockdispatch).toHaveBeenNthCalledWith(2, {
       payload: { tagSearch: false, term: null },
-      type: 'UPDATE_SEARCH',
+      type: 'search/updateSearch',
     });
   });
 
@@ -91,7 +91,7 @@ describe('The search component', () => {
     jest.advanceTimersByTime(1000);
     expect(mockdispatch).toHaveBeenNthCalledWith(1, {
       payload: { tagSearch: false, term: 'abc' },
-      type: 'UPDATE_SEARCH',
+      type: 'search/updateSearch',
     });
     searchInput = wrapper.find('ForwardRef(InputBase)');
     expect(searchInput.props().value).toBe('abc');
@@ -102,7 +102,7 @@ describe('The search component', () => {
     expect(searchInput.props().value).toBe('');
     expect(mockdispatch).toHaveBeenNthCalledWith(2, {
       payload: { tagSearch: false, term: null },
-      type: 'UPDATE_SEARCH',
+      type: 'search/updateSearch',
     });
   });
 
@@ -133,7 +133,7 @@ describe('The search component', () => {
     const searchInput = wrapper.find('ForwardRef(InputBase)');
     expect(mockdispatch).toHaveBeenCalledWith({
       payload: { tagSearch: false, term: 'tag search' },
-      type: 'UPDATE_SEARCH',
+      type: 'search/updateSearch',
     });
     expect(props.openSearch).toHaveBeenCalled();
     expect(searchInput.props().value).toBe('tag search');
