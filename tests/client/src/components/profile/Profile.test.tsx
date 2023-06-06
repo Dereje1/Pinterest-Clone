@@ -7,7 +7,6 @@ import React from 'react';
 import { EnzymePropSelector, shallow } from 'enzyme';
 import toJson from 'enzyme-to-json';
 import Profile from '../../../../../client/src/components/profile/Profile';
-import * as redux from 'react-redux';
 import * as router from 'react-router-dom';
 import RESTcall from '../../../../../client/src/crud';
 
@@ -80,19 +79,6 @@ describe('The profile page', () => {
     shallow(<Profile />);
     await Promise.resolve();
     expect(push).toHaveBeenCalledWith('/serverresponse');
-  });
-
-  test('Will redirect to root if user chooses not to sign in', async () => {
-    const push = jest.fn();
-    const hist = router.useHistory();
-    jest
-      .spyOn(router, 'useHistory')
-      .mockImplementation(() => ({ ...hist, push }));
-    jest
-      .spyOn(redux, 'useSelector')
-      .mockImplementationOnce(() => ({ authenticated: false }));
-    shallow(<Profile />);
-    expect(push).toHaveBeenCalledWith('/');
   });
 
   test('Will not render loading if not ready or REST call is rejected', async () => {

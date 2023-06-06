@@ -53,6 +53,10 @@ export const getProfilePins = async (
   const { userId: loggedInUserid } = getUserProfile(req.user as UserType);
   const requestedProfileId = req.params.userid;
   try {
+    if (!loggedInUserid) {
+      debug(`Not authenticated : -> ${requestedProfileId} profile can not be retrieved, redirecting...`);
+      return res.json({ redirect: '/' });
+    }
     const requestedProfileObjectId = mongoose.Types.ObjectId(requestedProfileId);
     const user = await users.findById(requestedProfileObjectId).exec();
     if (!user) {

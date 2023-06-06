@@ -25,10 +25,10 @@ function Profile() {
   const [retrievedUser, setRetrievedUser] = useState({ service: 'twitter', displayName: '', joined: '' });
   const [displaySearch, setDisplaySearch] = useState(false);
 
-  const { userInfo }:{userInfo: string} = useParams();
+  const { userInfo }: { userInfo: string } = useParams();
   const { pathname } = useLocation();
   const history = useHistory();
-  const loggedInUser = useSelector(({ user }:{user: userType}) => user);
+  const loggedInUser = useSelector(({ user }: { user: userType }) => user);
 
   const getProfileData = async () => {
     try {
@@ -52,18 +52,9 @@ function Profile() {
   };
 
   useEffect(() => {
-    if (loggedInUser.authenticated) {
-      getProfileData();
-      setDisplaySetting('created');
-    }
-  }, [pathname, loggedInUser.authenticated]);
-
-  useEffect(() => {
-    const userObjectIsAvailable = Boolean(Object.keys(loggedInUser).length);
-    if (userObjectIsAvailable && !loggedInUser.authenticated) {
-      history.push('/');
-    }
-  }, [loggedInUser]);
+    getProfileData();
+    setDisplaySetting('created');
+  }, [pathname]);
 
   useLayoutEffect(() => {
     document.body.style.overflowY = 'scroll';
@@ -127,7 +118,7 @@ function Profile() {
         />
       </div>
 
-      { pins.length ? (
+      {pins.length ? (
         <ImageBuild
           pinImage
           deletePin={null}

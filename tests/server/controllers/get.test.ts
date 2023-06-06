@@ -200,6 +200,20 @@ describe('Retrieving pins for a profile page', () => {
     });
   });
 
+  test('will redirect to home page, if user is not logged in', async () => {
+    const req = {
+      params: {
+        userid: 'microsoft123',
+      },
+      user: undefined,
+    };
+    setupMocks([]);
+    await getProfilePins(req as unknown as genericRequest, res as unknown as Response);
+    expect(res.json).toHaveBeenCalledWith({
+      redirect: '/',
+    });
+  });
+
   test('will redirect to home page, if requested profile can not be found', async () => {
     const req = {
       params: {

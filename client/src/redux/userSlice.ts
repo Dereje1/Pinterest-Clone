@@ -15,7 +15,7 @@ const initialState: userType = {
 
 interface dispatchType {
   type: string,
-  payload: userType | unknown | Error
+  payload: userType | undefined
 }
 
 export const userSlice = createSlice({

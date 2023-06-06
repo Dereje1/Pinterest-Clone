@@ -21,7 +21,7 @@ router.get('/api/home', getPins);
 router.get('/api/mypins', isLoggedIn, getUserPins);
 
 // gets pins for a single user
-router.get('/api/userProfile/:userid', isLoggedIn, getProfilePins);
+router.get('/api/userProfile/:userid', getProfilePins);
 
 // searchs users
 router.get('/api/searchUser/:search', isLoggedIn, searchUsers);

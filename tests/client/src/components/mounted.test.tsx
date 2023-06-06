@@ -15,7 +15,7 @@ import { store } from '../../../../client/src/store';
 import Search from '../../../../client/src/components/menu/search';
 import Profile from '../../../../client/src/components/profile/Profile';
 
-xtest('Will render fully mounted search component wrapped in the redux provider without errors', () => {
+test('Will render fully mounted search component wrapped in the redux provider without errors', () => {
   const props = {
     searchUpdate: jest.fn(),
     pathname: '/',
@@ -30,7 +30,7 @@ xtest('Will render fully mounted search component wrapped in the redux provider 
   );
 });
 
-xtest('Will render fully mounted Profile component wrapped in the redux provider without errors', async () => {
+test('Will render fully mounted Profile component wrapped in the redux provider without errors', async () => {
   mount(
     <Provider store={store}>
       <MemoryRouter>
