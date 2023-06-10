@@ -6,14 +6,17 @@ import Card from '@mui/material/Card';
 import CardHeader from '@mui/material/CardHeader';
 import CardMedia from '@mui/material/CardMedia';
 import CardActions from '@mui/material/CardActions';
-import FormControlLabel from '@mui/material/FormControlLabel';
 import UploadFileIcon from '@mui/icons-material/UploadFile';
-import Switch from '@mui/material/Switch';
 import IconButton from '@mui/material/IconButton';
 import Button from '@mui/material/Button';
 import DriveFolderUploadIcon from '@mui/icons-material/DriveFolderUpload';
 import Dialog from '@mui/material/Dialog';
 import DialogTitle from '@mui/material/DialogTitle';
+import ToggleButton from '@mui/material/ToggleButton';
+import ToggleButtonGroup from '@mui/material/ToggleButtonGroup';
+import LinkIcon from '@mui/icons-material/Link';
+import PsychologyIcon from '@mui/icons-material/Psychology';
+
 import SavePin from './SavePin';
 import error from '../../assets/error.png';
 import {
@@ -32,7 +35,7 @@ interface PinCreateState {
   description: string
   isError: boolean
   isLoaded: boolean
-  upload: boolean
+  type: string
 }
 
 class PinCreate extends Component<PinCreateProps, PinCreateState> {
@@ -45,7 +48,7 @@ class PinCreate extends Component<PinCreateProps, PinCreateState> {
       description: '',
       isError: true,
       isLoaded: false,
-      upload: false,
+      type: 'link',
     };
   }
 
@@ -120,9 +123,56 @@ class PinCreate extends Component<PinCreateProps, PinCreateState> {
     }
   };
 
+  handleImageTypes = () => {
+    const { type, isError, picPreview } = this.state;
+
+    switch (type) {
+      case 'upload':
+        return (
+          <Button
+            variant="contained"
+            startIcon={<UploadFileIcon />}
+            sx={{ margin: '2.3vh' }}
+            component="label"
+            color={isError ? 'error' : 'secondary'}
+          >
+            {isError ? 'choose image' : 'replace image'}
+            <input hidden accept="image/*" type="file" onChange={this.handleUploadedImage} />
+          </Button>
+        );
+      case 'link':
+        return (
+          <TextField
+            id="pin-img-link"
+            label="Paste image address here http://..."
+            variant="standard"
+            onChange={this.processImage}
+            value={picPreview}
+            error={isError}
+            color="success"
+            style={{ margin: '1.5vh', width: '100%' }}
+          />
+        );
+      case 'AI':
+        return (
+          <Button
+            variant="contained"
+            startIcon={<PsychologyIcon />}
+            sx={{ margin: '2.3vh' }}
+            component="label"
+            color="info"
+          >
+            Generate Image
+          </Button>
+        );
+      default:
+        return null;
+    }
+  };
+
   render() {
     const {
-      description, isError, picPreview, isLoaded, upload,
+      description, isError, picPreview, isLoaded, type,
     } = this.state;
     const modalWidth = getModalWidth();
     const isDescriptionError = description.trim().length < 5;
@@ -139,7 +189,7 @@ class PinCreate extends Component<PinCreateProps, PinCreateState> {
         }}
       >
         <DialogTitle id="pin-create-dialog-title">
-          {`Create pin from ${upload ? 'file' : 'link'}`}
+          {`Create pin from ${type}`}
           <IconButton
             id="close-pin-create-modal"
             aria-label="settings"
@@ -158,16 +208,23 @@ class PinCreate extends Component<PinCreateProps, PinCreateState> {
 
           <CardHeader
             action={(
-              <FormControlLabel
-                control={(
-                  <Switch
-                    checked={upload}
-                    onChange={() => this.setState({ upload: !upload, picPreview: '' })}
-                  />
-                )}
-                label={<DriveFolderUploadIcon />}
+              <ToggleButtonGroup
+                value={type}
+                exclusive
+                onChange={(_, imgType) => (imgType ? this.setState({ type: imgType, picPreview: '' }) : null)}
+                aria-label="text alignment"
                 sx={{ marginRight: 80, color: '900' }}
-              />
+              >
+                <ToggleButton value="link" aria-label="link type">
+                  <LinkIcon />
+                </ToggleButton>
+                <ToggleButton value="upload" aria-label="upload type">
+                  <DriveFolderUploadIcon />
+                </ToggleButton>
+                <ToggleButton value="AI" aria-label="AI type">
+                  <PsychologyIcon />
+                </ToggleButton>
+              </ToggleButtonGroup>
             )}
           />
           <div style={{ display: 'flex', flexDirection: 'column', justifyContent: 'center' }}>
@@ -208,31 +265,7 @@ class PinCreate extends Component<PinCreateProps, PinCreateState> {
                 style={{ margin: '1.5vh', width: '100%' }}
               />
               {
-                upload
-                  ? (
-                    <Button
-                      variant="contained"
-                      startIcon={<UploadFileIcon />}
-                      sx={{ margin: '2.3vh' }}
-                      component="label"
-                      color={isError ? 'error' : 'secondary'}
-                    >
-                      {isError ? 'choose image' : 'replace image'}
-                      <input hidden accept="image/*" type="file" onChange={this.handleUploadedImage} />
-                    </Button>
-                  )
-                  : (
-                    <TextField
-                      id="pin-img-link"
-                      label="Paste image address here http://..."
-                      variant="standard"
-                      onChange={this.processImage}
-                      value={picPreview}
-                      error={isError}
-                      color="success"
-                      style={{ margin: '1.5vh', width: '100%' }}
-                    />
-                  )
+                this.handleImageTypes()
               }
             </div>
           </CardActions>
