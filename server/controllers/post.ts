@@ -2,6 +2,7 @@ import { Request } from 'express';
 import mongoose from 'mongoose';
 import debugg from 'debug';
 import vision from '@google-cloud/vision';
+import { Configuration, OpenAIApi } from 'openai';
 import { genericResponseType, tagType } from '../interfaces';
 import {
   getUserProfile, uploadImageToS3,
@@ -36,7 +37,7 @@ const addVisionApiTags = async (addedpin: Pin) => {
   }
 };
 
-const addPin = async (req: Request, res: genericResponseType) => {
+export const addPin = async (req: Request, res: genericResponseType) => {
   const { displayName, userId, service } = getUserProfile(req.user as UserType);
   const { imgLink: originalImgLink } = req.body;
   debug(`Creating new pin for userId -> ${userId}`);
@@ -65,6 +66,24 @@ const addPin = async (req: Request, res: genericResponseType) => {
     debug(`Error creating new pin for userId -> ${userId}`);
     res.json(error);
   }
+};
+
+export const generateAIimage = async (req: Request, res: genericResponseType) => {
+  const configuration = new Configuration({
+    organization: 'org-FtyC0IxZJnaJkvNlnh84eOBJ',
+    apiKey: process.env.OPENAI_API_KEY,
+  });
+
+  const { description } = req.body;
+
+  if (!description.trim().length) res.end();
+  const openai = new OpenAIApi(configuration);
+  const { data } = await openai.createImage({
+    prompt: description,
+    n: 1,
+    size: '1024x1024',
+  });
+  res.json(data);
 };
 
 export default addPin;

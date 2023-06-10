@@ -16,7 +16,7 @@ import ToggleButton from '@mui/material/ToggleButton';
 import ToggleButtonGroup from '@mui/material/ToggleButtonGroup';
 import LinkIcon from '@mui/icons-material/Link';
 import PsychologyIcon from '@mui/icons-material/Psychology';
-
+import RESTcall from '../../crud'; // pin CRUD
 import SavePin from './SavePin';
 import error from '../../assets/error.png';
 import {
@@ -123,6 +123,12 @@ class PinCreate extends Component<PinCreateProps, PinCreateState> {
     }
   };
 
+  handleAIimage = async () => {
+    const { description } = this.state;
+    const { data } = await RESTcall({ address: '/api/AIimage', method: 'post', payload: { description } });
+    this.setState({ picPreview: data[0].url });
+  };
+
   handleImageTypes = () => {
     const { type, isError, picPreview } = this.state;
 
@@ -161,6 +167,7 @@ class PinCreate extends Component<PinCreateProps, PinCreateState> {
             sx={{ margin: '2.3vh' }}
             component="label"
             color="info"
+            onClick={this.handleAIimage}
           >
             Generate Image
           </Button>
@@ -258,8 +265,15 @@ class PinCreate extends Component<PinCreateProps, PinCreateState> {
                 label="Description..."
                 variant="standard"
                 color="success"
-                onChange={({ target: { value } }) => value.trim().length <= 20
-     && this.setState({ description: value })}
+                onChange={({ target: { value } }) => {
+                  if (type === 'AI') {
+                    this.setState({ description: value });
+                    return;
+                  }
+                  if (value.trim().length <= 20) {
+                    this.setState({ description: value });
+                  }
+                }}
                 value={description}
                 error={!description || isDescriptionError}
                 style={{ margin: '1.5vh', width: '100%' }}
