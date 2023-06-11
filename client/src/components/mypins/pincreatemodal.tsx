@@ -89,11 +89,12 @@ class PinCreate extends Component<PinCreateProps, PinCreateState> {
 
   savePic = () => { // ready to save pin
     const { savePin } = this.props;
-    const { picPreview, description } = this.state;
+    const { picPreview, description, AIimageStatus } = this.state;
     // prepare JSON for POST api
     const pinJSON = {
       imgDescription: description,
       imgLink: picPreview,
+      AIgeneratedId: AIimageStatus._id,
     };
     // save into db and close modal
     savePin(pinJSON);

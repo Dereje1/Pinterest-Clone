@@ -28,6 +28,7 @@ export interface PopulatedPinType {
     createdAt: string,
     comments: commentType[],
     tags: tagType[],
+    AIgeneratedId: string | null
 }
 
 export interface genericResponseType {

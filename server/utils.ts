@@ -63,6 +63,8 @@ returns
     hasSaved: // boolean
     comments: // send comment id, display comment, and creation date
     createdDate: send full pin creation time stamp
+    tags: send full
+    AIgenerated: return true if AI generated
 };
 */
 interface filterTypes {
@@ -82,6 +84,7 @@ export const filterPins = ({ rawPins, userId, isAdmin }: filterTypes) => {
       createdAt: pinCreatedAt,
       comments,
       tags,
+      AIgeneratedId,
     } = pin as PopulatedPinType;
     const savedIds = savedBy.map((s) => s._id);
     const savedNames = savedBy.map(({
@@ -109,6 +112,7 @@ export const filterPins = ({ rawPins, userId, isAdmin }: filterTypes) => {
       comments: modifiedComments,
       createdAt: pinCreatedAt,
       tags,
+      AIgenerated: Boolean(AIgeneratedId),
     };
   });
 };
