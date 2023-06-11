@@ -16,6 +16,7 @@ import ToggleButton from '@mui/material/ToggleButton';
 import ToggleButtonGroup from '@mui/material/ToggleButtonGroup';
 import LinkIcon from '@mui/icons-material/Link';
 import PsychologyIcon from '@mui/icons-material/Psychology';
+import RestartAltIcon from '@mui/icons-material/RestartAlt';
 import RESTcall from '../../crud'; // pin CRUD
 import SavePin from './SavePin';
 import error from '../../assets/error.png';
@@ -184,17 +185,31 @@ class PinCreate extends Component<PinCreateProps, PinCreateState> {
         );
       case 'AI':
         return (
-          <Button
-            variant="contained"
-            startIcon={<PsychologyIcon />}
-            sx={{ margin: '2.3vh' }}
-            component="label"
-            color="info"
-            onClick={this.handleAIimage}
-            disabled={AIimageStatus.generatedImage || AIimageStatus.generatingImage}
-          >
-            {AIimageStatus.generatedImage ? 'Generated' : 'Generate Image'}
-          </Button>
+          <div style={{ display: 'flex' }}>
+            <Button
+              variant="contained"
+              startIcon={<PsychologyIcon />}
+              sx={{ margin: '2.3vh' }}
+              component="label"
+              color="info"
+              onClick={this.handleAIimage}
+              disabled={AIimageStatus.generatedImage || AIimageStatus.generatingImage}
+            >
+              {AIimageStatus.generatedImage ? 'Generated' : 'Generate Image'}
+            </Button>
+            <IconButton
+              onClick={() => this.setState({
+                AIimageStatus: {
+                  generatedImage: false,
+                  generatingImage: false,
+                },
+              })}
+              disabled={!AIimageStatus.generatedImage || AIimageStatus.generatingImage}
+              disableRipple
+            >
+              <RestartAltIcon />
+            </IconButton>
+          </div>
         );
       default:
         return null;
