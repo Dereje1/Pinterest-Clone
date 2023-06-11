@@ -17,6 +17,7 @@ import ToggleButtonGroup from '@mui/material/ToggleButtonGroup';
 import LinkIcon from '@mui/icons-material/Link';
 import PsychologyIcon from '@mui/icons-material/Psychology';
 import RestartAltIcon from '@mui/icons-material/RestartAlt';
+import Typography from '@mui/material/Typography';
 import RESTcall from '../../crud'; // pin CRUD
 import SavePin from './SavePin';
 import error from '../../assets/error.png';
@@ -29,6 +30,8 @@ import {
 interface PinCreateProps {
   reset: () => void
   savePin: (pinJSON: {imgDescription: string, imgLink: string | ArrayBuffer}) => void
+  totalAiGenratedImages: number
+  updateGeneratedImages: () => void
 }
 
 interface PinCreateState {
@@ -136,6 +139,7 @@ class PinCreate extends Component<PinCreateProps, PinCreateState> {
 
   handleAIimage = async () => {
     const { description, AIimageStatus } = this.state;
+    const { updateGeneratedImages } = this.props;
     this.setState({
       AIimageStatus: {
         ...AIimageStatus,
@@ -152,14 +156,14 @@ class PinCreate extends Component<PinCreateProps, PinCreateState> {
         generatedImage: true,
         generatingImage: false,
       },
-    });
+    }, updateGeneratedImages);
   };
 
   handleImageTypes = () => {
     const {
       type, isError, picPreview, AIimageStatus,
     } = this.state;
-
+    const { totalAiGenratedImages } = this.props;
     switch (type) {
       case 'upload':
         return (
@@ -189,7 +193,7 @@ class PinCreate extends Component<PinCreateProps, PinCreateState> {
         );
       case 'AI':
         return (
-          <div style={{ display: 'flex' }}>
+          <div style={{ display: 'flex', alignItems: 'center' }}>
             <Button
               variant="contained"
               startIcon={<PsychologyIcon />}
@@ -209,11 +213,19 @@ class PinCreate extends Component<PinCreateProps, PinCreateState> {
                   _id: null,
                 },
               })}
-              disabled={!AIimageStatus.generatedImage || AIimageStatus.generatingImage}
+              disabled={
+                !AIimageStatus.generatedImage
+                || AIimageStatus.generatingImage
+                || totalAiGenratedImages >= 5
+              }
               disableRipple
             >
               <RestartAltIcon />
             </IconButton>
+            <Typography>
+              {totalAiGenratedImages}
+              /5
+            </Typography>
           </div>
         );
       default:
@@ -225,6 +237,7 @@ class PinCreate extends Component<PinCreateProps, PinCreateState> {
     const {
       description, isError, picPreview, isLoaded, type, AIimageStatus,
     } = this.state;
+    const { totalAiGenratedImages } = this.props;
     const modalWidth = getModalWidth();
     const isDescriptionError = description.trim().length < 5;
     return (
@@ -272,7 +285,7 @@ class PinCreate extends Component<PinCreateProps, PinCreateState> {
                 <ToggleButton value="upload" aria-label="upload type">
                   <DriveFolderUploadIcon />
                 </ToggleButton>
-                <ToggleButton value="AI" aria-label="AI type">
+                <ToggleButton value="AI" aria-label="AI type" disabled={totalAiGenratedImages >= 5}>
                   <PsychologyIcon />
                 </ToggleButton>
               </ToggleButtonGroup>

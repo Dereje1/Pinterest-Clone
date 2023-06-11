@@ -8,6 +8,7 @@ import {
 import pins from '../models/pins';
 import users, { UserType } from '../models/user';
 import savedTags from '../models/tags';
+import aiGenerated from '../models/AI_generated';
 
 const debug = debugg('Pinterest-Clone:server');
 
@@ -39,7 +40,13 @@ export const getUserPins = async (req: Request, res: genericResponseType) => {
     })
       .populate(['owner', 'savedBy', 'comments.user'])
       .exec();
-    return res.json({ profilePins: filterPins({ rawPins: profilePins, userId, isAdmin }) });
+
+    const aiGeneratedByUser = await aiGenerated.find({ userId });
+
+    return res.json({
+      profilePins: filterPins({ rawPins: profilePins, userId, isAdmin }),
+      totalAiGenratedImages: aiGeneratedByUser.length,
+    });
   } catch (error) {
     debug(`Error getting user pins for userId -> ${userId}`);
     return res.json(error);
