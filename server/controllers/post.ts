@@ -11,6 +11,7 @@ import pins, { Pin } from '../models/pins';
 import { UserType } from '../models/user';
 import pinLinks from '../models/pinlinks';
 import savedTags from '../models/tags';
+import aiGenerated from '../models/AI_generated';
 
 const debug = debugg('Pinterest-Clone:server');
 
@@ -69,6 +70,7 @@ export const addPin = async (req: Request, res: genericResponseType) => {
 };
 
 export const generateAIimage = async (req: Request, res: genericResponseType) => {
+  const { userId } = getUserProfile(req.user as UserType);
   const configuration = new Configuration({
     organization: 'org-FtyC0IxZJnaJkvNlnh84eOBJ',
     apiKey: process.env.OPENAI_API_KEY,
@@ -78,17 +80,22 @@ export const generateAIimage = async (req: Request, res: genericResponseType) =>
 
   if (!description.trim().length) res.end();
   const openai = new OpenAIApi(configuration);
-  const { data: imageData } = await openai.createImage({
+  const { data: imageResponse } = await openai.createImage({
     prompt: description,
     n: 1,
     size: '1024x1024',
   });
-  const { data: imageTitle } = await openai.createCompletion({
+  const { data: titleResponse } = await openai.createCompletion({
     model: 'text-davinci-003',
-    prompt: `Generate a one or two word captivating title for this description: ${description}`,
+    prompt: `Create a concise and engaging title, consisting of one or two words, for the given description: ${description}`,
     max_tokens: 10,
   });
-  res.json({ imageData, imageTitle });
+  const { _id } = await aiGenerated.create({
+    userId,
+    description,
+    response: { imageResponse, titleResponse },
+  });
+  const [linkObject] = imageResponse.data;
+  const [titleObject] = titleResponse.choices;
+  res.json({ imgURL: linkObject.url, title: titleObject.text?.trim().replace(/[".]/g, ''), _id });
 };
-
-export default addPin;

@@ -40,6 +40,7 @@ interface PinCreateState {
   AIimageStatus: {
     generatedImage: boolean,
     generatingImage: boolean,
+    _id: string | null
   }
 }
 
@@ -57,6 +58,7 @@ class PinCreate extends Component<PinCreateProps, PinCreateState> {
       AIimageStatus: {
         generatedImage: false,
         generatingImage: false,
+        _id: null,
       },
     };
   }
@@ -133,18 +135,20 @@ class PinCreate extends Component<PinCreateProps, PinCreateState> {
   };
 
   handleAIimage = async () => {
-    const { description } = this.state;
+    const { description, AIimageStatus } = this.state;
     this.setState({
       AIimageStatus: {
+        ...AIimageStatus,
         generatedImage: false,
         generatingImage: true,
       },
     });
-    const { imageData, imageTitle } = await RESTcall({ address: '/api/AIimage', method: 'post', payload: { description } });
+    const { imgURL, title, _id } = await RESTcall({ address: '/api/AIimage', method: 'post', payload: { description } });
     this.setState({
-      picPreview: imageData.data[0].url,
-      description: imageTitle.choices[0].text.trim().replace(/[".]/g, ''),
+      picPreview: imgURL,
+      description: title,
       AIimageStatus: {
+        _id,
         generatedImage: true,
         generatingImage: false,
       },
@@ -202,6 +206,7 @@ class PinCreate extends Component<PinCreateProps, PinCreateState> {
                 AIimageStatus: {
                   generatedImage: false,
                   generatingImage: false,
+                  _id: null,
                 },
               })}
               disabled={!AIimageStatus.generatedImage || AIimageStatus.generatingImage}
