@@ -36,6 +36,10 @@ interface PinCreateState {
   isError: boolean
   isLoaded: boolean
   type: string
+  AIimageStatus: {
+    generatedImage: boolean,
+    generatingImage: boolean,
+  }
 }
 
 class PinCreate extends Component<PinCreateProps, PinCreateState> {
@@ -49,6 +53,10 @@ class PinCreate extends Component<PinCreateProps, PinCreateState> {
       isError: true,
       isLoaded: false,
       type: 'link',
+      AIimageStatus: {
+        generatedImage: false,
+        generatingImage: false,
+      },
     };
   }
 
@@ -125,12 +133,27 @@ class PinCreate extends Component<PinCreateProps, PinCreateState> {
 
   handleAIimage = async () => {
     const { description } = this.state;
-    const { data } = await RESTcall({ address: '/api/AIimage', method: 'post', payload: { description } });
-    this.setState({ picPreview: data[0].url });
+    this.setState({
+      AIimageStatus: {
+        generatedImage: false,
+        generatingImage: true,
+      },
+    });
+    const { imageData, imageTitle } = await RESTcall({ address: '/api/AIimage', method: 'post', payload: { description } });
+    this.setState({
+      picPreview: imageData.data[0].url,
+      description: imageTitle.choices[0].text.trim().replace(/[".]/g, ''),
+      AIimageStatus: {
+        generatedImage: true,
+        generatingImage: false,
+      },
+    });
   };
 
   handleImageTypes = () => {
-    const { type, isError, picPreview } = this.state;
+    const {
+      type, isError, picPreview, AIimageStatus,
+    } = this.state;
 
     switch (type) {
       case 'upload':
@@ -168,8 +191,9 @@ class PinCreate extends Component<PinCreateProps, PinCreateState> {
             component="label"
             color="info"
             onClick={this.handleAIimage}
+            disabled={AIimageStatus.generatedImage || AIimageStatus.generatingImage}
           >
-            Generate Image
+            {AIimageStatus.generatedImage ? 'Generated' : 'Generate Image'}
           </Button>
         );
       default:
@@ -179,7 +203,7 @@ class PinCreate extends Component<PinCreateProps, PinCreateState> {
 
   render() {
     const {
-      description, isError, picPreview, isLoaded, type,
+      description, isError, picPreview, isLoaded, type, AIimageStatus,
     } = this.state;
     const modalWidth = getModalWidth();
     const isDescriptionError = description.trim().length < 5;
@@ -262,8 +286,8 @@ class PinCreate extends Component<PinCreateProps, PinCreateState> {
             >
               <TextField
                 id="pin-description"
-                label="Description..."
-                variant="standard"
+                label={type === 'AI' ? 'Describe what you want in detail...' : 'Description...'}
+                variant={type === 'AI' ? 'outlined' : 'standard'}
                 color="success"
                 onChange={({ target: { value } }) => {
                   if (type === 'AI') {
@@ -277,6 +301,9 @@ class PinCreate extends Component<PinCreateProps, PinCreateState> {
                 value={description}
                 error={!description || isDescriptionError}
                 style={{ margin: '1.5vh', width: '100%' }}
+                disabled={AIimageStatus.generatedImage || AIimageStatus.generatingImage}
+                multiline={type === 'AI'}
+                maxRows={3}
               />
               {
                 this.handleImageTypes()

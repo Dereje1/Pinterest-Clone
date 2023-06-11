@@ -78,12 +78,17 @@ export const generateAIimage = async (req: Request, res: genericResponseType) =>
 
   if (!description.trim().length) res.end();
   const openai = new OpenAIApi(configuration);
-  const { data } = await openai.createImage({
+  const { data: imageData } = await openai.createImage({
     prompt: description,
     n: 1,
     size: '1024x1024',
   });
-  res.json(data);
+  const { data: imageTitle } = await openai.createCompletion({
+    model: 'text-davinci-003',
+    prompt: `Generate a one or two word captivating title for this description: ${description}`,
+    max_tokens: 10,
+  });
+  res.json({ imageData, imageTitle });
 };
 
 export default addPin;
