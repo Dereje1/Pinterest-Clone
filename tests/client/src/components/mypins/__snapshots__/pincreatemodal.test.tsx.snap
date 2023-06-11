@@ -50,21 +50,38 @@ exports[`The pin creation modal will render for links to images 1`] = `
   >
     <ForwardRef(CardHeader)
       action={
-        <ForwardRef(FormControlLabel)
-          control={
-            <ForwardRef(Switch)
-              checked={false}
-              onChange={[Function]}
-            />
-          }
-          label={<Memo />}
+        <ForwardRef(ToggleButtonGroup)
+          aria-label="text alignment"
+          exclusive={true}
+          onChange={[Function]}
           sx={
             {
               "color": "900",
               "marginRight": 80,
             }
           }
-        />
+          value="link"
+        >
+          <ForwardRef(ToggleButton)
+            aria-label="link type"
+            value="link"
+          >
+            <Memo />
+          </ForwardRef(ToggleButton)>
+          <ForwardRef(ToggleButton)
+            aria-label="upload type"
+            value="upload"
+          >
+            <Memo />
+          </ForwardRef(ToggleButton)>
+          <ForwardRef(ToggleButton)
+            aria-label="AI type"
+            disabled={false}
+            value="AI"
+          >
+            <Memo />
+          </ForwardRef(ToggleButton)>
+        </ForwardRef(ToggleButtonGroup)>
       }
     />
     <div
@@ -111,9 +128,12 @@ exports[`The pin creation modal will render for links to images 1`] = `
       >
         <ForwardRef(TextField)
           color="success"
+          disabled={false}
           error={true}
           id="pin-description"
           label="Description..."
+          maxRows={3}
+          multiline={false}
           onChange={[Function]}
           style={
             {
@@ -162,7 +182,7 @@ exports[`The pin creation modal will render for uploading images 1`] = `
   <ForwardRef(DialogTitle)
     id="pin-create-dialog-title"
   >
-    Create pin from file
+    Create pin from upload
     <ForwardRef(IconButton)
       aria-label="settings"
       id="close-pin-create-modal"
@@ -195,21 +215,38 @@ exports[`The pin creation modal will render for uploading images 1`] = `
   >
     <ForwardRef(CardHeader)
       action={
-        <ForwardRef(FormControlLabel)
-          control={
-            <ForwardRef(Switch)
-              checked={true}
-              onChange={[Function]}
-            />
-          }
-          label={<Memo />}
+        <ForwardRef(ToggleButtonGroup)
+          aria-label="text alignment"
+          exclusive={true}
+          onChange={[Function]}
           sx={
             {
               "color": "900",
               "marginRight": 80,
             }
           }
-        />
+          value="upload"
+        >
+          <ForwardRef(ToggleButton)
+            aria-label="link type"
+            value="link"
+          >
+            <Memo />
+          </ForwardRef(ToggleButton)>
+          <ForwardRef(ToggleButton)
+            aria-label="upload type"
+            value="upload"
+          >
+            <Memo />
+          </ForwardRef(ToggleButton)>
+          <ForwardRef(ToggleButton)
+            aria-label="AI type"
+            disabled={false}
+            value="AI"
+          >
+            <Memo />
+          </ForwardRef(ToggleButton)>
+        </ForwardRef(ToggleButtonGroup)>
       }
     />
     <div
@@ -256,9 +293,12 @@ exports[`The pin creation modal will render for uploading images 1`] = `
       >
         <ForwardRef(TextField)
           color="success"
+          disabled={false}
           error={true}
           id="pin-description"
           label="Description..."
+          maxRows={3}
+          multiline={false}
           onChange={[Function]}
           style={
             {

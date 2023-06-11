@@ -334,6 +334,7 @@ describe('Adding a comment', () => {
         },
       ],
       tags: [],
+      AIgenerated: false,
     });
     expect(res.end).toHaveBeenCalledTimes(0);
   });

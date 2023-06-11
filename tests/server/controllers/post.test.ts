@@ -1,7 +1,7 @@
 import { Response } from 'express';
 import nock from 'nock';
 import { Types } from 'mongoose';
-import addPin from '../../../server/controllers/post';
+import { addPin } from '../../../server/controllers/post';
 import pins from '../../../server/models/pins'; // schema for pins
 import pinLinks from '../../../server/models/pinlinks';
 import savedTags from '../../../server/models/tags';

@@ -17,6 +17,8 @@ describe('The pin creation modal', () => {
     props = {
       reset: jest.fn(),
       savePin: jest.fn(),
+      totalAiGenratedImages: 0,
+      updateGeneratedImages: jest.fn(),
     };
   });
 
@@ -30,10 +32,9 @@ describe('The pin creation modal', () => {
     const cardHeader: EnzymePropSelector = wrapper.find('ForwardRef(CardHeader)');
     let dialogTitle = wrapper.find('ForwardRef(DialogTitle)');
     expect(dialogTitle.text()).toBe('Create pin from link');
-    const uploadSwitch = cardHeader.props().action.props.control.props;
-    uploadSwitch.onChange();
+    cardHeader.props().action.props.onChange('', 'upload');
     dialogTitle = wrapper.find('ForwardRef(DialogTitle)');
-    expect(dialogTitle.text()).toBe('Create pin from file');
+    expect(dialogTitle.text()).toBe('Create pin from upload');
     expect(toJson(wrapper)).toMatchSnapshot();
   });
 
@@ -108,8 +109,7 @@ describe('The pin creation modal', () => {
     const wrapper = shallow<PinCreate>(<PinCreate {...props} />);
     // turn upload switch on
     const cardHeader: EnzymePropSelector = wrapper.find('ForwardRef(CardHeader)');
-    const uploadSwitch = cardHeader.props().action.props.control.props;
-    uploadSwitch.onChange();
+    cardHeader.props().action.props.onChange('', 'upload');
     const instance = wrapper.instance() as PinCreate;
     // TODO: Fix is any declaration
     await instance.handleUploadedImage(
@@ -149,6 +149,7 @@ describe('The pin creation modal', () => {
     expect(props.savePin).toHaveBeenCalledWith({
       imgDescription: 'abcde',
       imgLink: 'https://abc.com',
+      AIgeneratedId: null,
     });
     expect(wrapper.state()).toMatchObject({
       picPreview: '',

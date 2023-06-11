@@ -50,6 +50,7 @@ describe('filtering pins before returning to client', () => {
             userId: 'commenter-userID',
           }],
           tags: [{ _id: 'tag_id_1', tag: 'tag 1' }, { _id: 'tag_id_2', tag: 'tag 2' }],
+          AIgenerated: false,
         },
       ],
     );
@@ -79,6 +80,7 @@ describe('filtering pins before returning to client', () => {
             userId: 'commenter-userID',
           }],
           tags: [{ _id: 'tag_id_1', tag: 'tag 1' }, { _id: 'tag_id_2', tag: 'tag 2' }],
+          AIgenerated: false,
         },
       ],
     );
@@ -104,6 +106,7 @@ describe('filtering pins before returning to client', () => {
             userId: 'commenter-userID',
           }],
           tags: [{ _id: 'tag_id_1', tag: 'tag 1' }, { _id: 'tag_id_2', tag: 'tag 2' }],
+          AIgenerated: false,
         },
       ],
     );
@@ -133,6 +136,7 @@ describe('filtering pins before returning to client', () => {
             userId: 'commenter-userID',
           }],
           tags: [{ _id: 'tag_id_1', tag: 'tag 1' }, { _id: 'tag_id_2', tag: 'tag 2' }],
+          AIgenerated: false,
         },
       ],
     );
