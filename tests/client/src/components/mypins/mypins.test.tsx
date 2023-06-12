@@ -94,6 +94,7 @@ describe('The Mypins component', () => {
         createdAt: '',
         comments: [],
         tags: [],
+        AIgenerated: false,
       },
     });
     await Promise.resolve();
@@ -118,6 +119,7 @@ describe('The Mypins component', () => {
         createdAt: '',
         comments: [],
         tags: [],
+        AIgenerated: false,
       },
     });
     await Promise.resolve();
@@ -256,6 +258,16 @@ describe('The PinCreate sub-component', () => {
       createdAt: '2022-04-09T17:00:33.212Z',
       tags: null,
     });
+  });
+
+  test('will increment the total AI genrated images by the user', async () => {
+    const wrapper = shallow<Mypins>(<Mypins {...props} />);
+    await Promise.resolve();
+    wrapper.setState({ displayPinCreate: true });
+    const createPin: EnzymePropSelector = wrapper.find('PinCreate');
+    expect(wrapper.state().totalAiGenratedImages).toBe(2);
+    createPin.props().updateGeneratedImages();
+    expect(wrapper.state().totalAiGenratedImages).toBe(3);
   });
 
   test('will signal to reset the display of the pin creation modal', async () => {

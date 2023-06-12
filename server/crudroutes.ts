@@ -1,7 +1,7 @@
 import { Router } from 'express';
 import { isLoggedIn } from 'passportbundle';
 // controllers
-import addPin from './controllers/post';
+import { addPin, generateAIimage } from './controllers/post';
 import {
   getPins, getProfilePins, getTags, getUserPins, searchUsers,
 } from './controllers/get';
@@ -13,6 +13,9 @@ import deletePin from './controllers/delete';
 const router = Router();
 // adds a new pin to the db
 router.post('/api/newpin', isLoggedIn, addPin);
+
+// generate a new AI image
+router.post('/api/AIimage', isLoggedIn, generateAIimage);
 
 // gets all pins for home page
 router.get('/api/home', getPins);

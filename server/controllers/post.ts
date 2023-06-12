@@ -2,6 +2,7 @@ import { Request } from 'express';
 import mongoose from 'mongoose';
 import debugg from 'debug';
 import vision from '@google-cloud/vision';
+import { Configuration, OpenAIApi } from 'openai';
 import { genericResponseType, tagType } from '../interfaces';
 import {
   getUserProfile, uploadImageToS3,
@@ -10,6 +11,7 @@ import pins, { Pin } from '../models/pins';
 import { UserType } from '../models/user';
 import pinLinks from '../models/pinlinks';
 import savedTags from '../models/tags';
+import aiGenerated from '../models/AI_generated';
 
 const debug = debugg('Pinterest-Clone:server');
 
@@ -36,7 +38,7 @@ const addVisionApiTags = async (addedpin: Pin) => {
   }
 };
 
-const addPin = async (req: Request, res: genericResponseType) => {
+export const addPin = async (req: Request, res: genericResponseType) => {
   const { displayName, userId, service } = getUserProfile(req.user as UserType);
   const { imgLink: originalImgLink } = req.body;
   debug(`Creating new pin for userId -> ${userId}`);
@@ -67,4 +69,39 @@ const addPin = async (req: Request, res: genericResponseType) => {
   }
 };
 
-export default addPin;
+export const generateAIimage = async (req: Request, res: genericResponseType) => {
+  const { userId } = getUserProfile(req.user as UserType);
+  const configuration = new Configuration({
+    organization: 'org-FtyC0IxZJnaJkvNlnh84eOBJ',
+    apiKey: process.env.OPENAI_API_KEY,
+  });
+
+  const { description } = req.body;
+  try {
+    if (!description.trim().length) res.end();
+    const aiGeneratedByUser = await aiGenerated.find({ userId });
+    if (aiGeneratedByUser.length >= 5) res.end();
+    const openai = new OpenAIApi(configuration);
+    const { data: imageResponse } = await openai.createImage({
+      prompt: description,
+      n: 1,
+      size: '1024x1024',
+    });
+    const { data: titleResponse } = await openai.createCompletion({
+      model: 'text-davinci-003',
+      prompt: `Create a concise and engaging title, consisting of one or two words, for the given description: ${description}`,
+      max_tokens: 10,
+    });
+
+    const { _id } = await aiGenerated.create({
+      userId,
+      description,
+      response: { imageResponse, titleResponse },
+    });
+    const [linkObject] = imageResponse.data;
+    const [titleObject] = titleResponse.choices;
+    res.json({ imgURL: linkObject.url, title: titleObject.text?.trim().replace(/[".]/g, ''), _id });
+  } catch (error) {
+    res.json(error);
+  }
+};

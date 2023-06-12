@@ -38,7 +38,8 @@ interface MypinsState {
   deletableImgInfo: PinType | null,
   ready: boolean,
   displaySetting: string,
-  nameChangeFormIsShowing: boolean
+  nameChangeFormIsShowing: boolean,
+  totalAiGenratedImages: number,
 }
 
 export class Mypins extends Component<MypinsProps, MypinsState> {
@@ -53,15 +54,18 @@ export class Mypins extends Component<MypinsProps, MypinsState> {
       ready: false,
       displaySetting: 'created',
       nameChangeFormIsShowing: false,
+      totalAiGenratedImages: 0,
+
     };
   }
 
   async componentDidMount() {
     // get all pins and filter by owned and saved and then concatenate and set state
-    const { profilePins } = await RESTcall({ address: '/api/mypins' });
+    const { profilePins, totalAiGenratedImages } = await RESTcall({ address: '/api/mypins' });
     this.setState({
       pinList: profilePins,
       ready: true,
+      totalAiGenratedImages,
     });
   }
 
@@ -138,7 +142,7 @@ export class Mypins extends Component<MypinsProps, MypinsState> {
     const {
       displayPinCreate, showDeleteImageModal, deletableImgInfo,
       pinList, ready, displaySetting,
-      nameChangeFormIsShowing,
+      nameChangeFormIsShowing, totalAiGenratedImages,
     } = this.state;
     if (!authenticated) return null;
     if (!ready) return <Loading />;
@@ -241,6 +245,10 @@ export class Mypins extends Component<MypinsProps, MypinsState> {
           <PinCreate
             reset={() => this.setState({ displayPinCreate: false })}
             savePin={(pinJSON) => this.addPin(pinJSON)}
+            totalAiGenratedImages={totalAiGenratedImages}
+            updateGeneratedImages={() => this.setState({
+              totalAiGenratedImages: totalAiGenratedImages + 1,
+            })}
           />
         )}
         { showDeleteImageModal && (

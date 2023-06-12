@@ -19,7 +19,8 @@ export interface Pin {
   createdAt: string,
   comments: unPopulatedComment[],
   tags: tagType[],
-  visionApiTags: string[]
+  visionApiTags: string[],
+  AIgeneratedId: string | null
 }
 
 const commentSchema = new mongoose.Schema({
@@ -55,6 +56,7 @@ const pinSchema = new mongoose.Schema({
     default: [],
   },
   isBroken: { type: Boolean },
+  AIgeneratedId: { type: String || null },
 }, { timestamps: true });
 
 export default mongoose.model<Pin>('pin', pinSchema);

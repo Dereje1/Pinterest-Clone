@@ -24,6 +24,7 @@ export interface genericRequest extends Request{
       comment: string
       picInPreview: string
       newDisplayName: string
+      description: string
     } | undefined
     params: {
       _id: string

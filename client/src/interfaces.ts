@@ -30,6 +30,7 @@ export interface PinType {
     createdAt: string,
     comments: commentType[],
     tags: tagType[],
+    AIgenerated: boolean
 }
 
 export interface providersType {

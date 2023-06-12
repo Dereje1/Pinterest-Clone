@@ -1,10 +1,11 @@
 import { Response } from 'express';
 import nock from 'nock';
 import { Types } from 'mongoose';
-import addPin from '../../../server/controllers/post';
+import { addPin, generateAIimage } from '../../../server/controllers/post';
 import pins from '../../../server/models/pins'; // schema for pins
 import pinLinks from '../../../server/models/pinlinks';
 import savedTags from '../../../server/models/tags';
+import aiGenerated from '../../../server/models/AI_generated';
 import {
   user, rawPinsStub,
 } from '../stub';
@@ -28,6 +29,17 @@ const mockGvisionInstance = {
 };
 
 jest.mock('@google-cloud/vision', () => ({ ImageAnnotatorClient: jest.fn(() => mockGvisionInstance) }));
+
+/* Mock open ai api */
+const mockOpenAiInstance = {
+  createImage: jest.fn(() => Promise.resolve({ data: { data: [{ url: 'http:/stub-ai-image-url' }] } })),
+  createCompletion: jest.fn(() => Promise.resolve({ data: { choices: [{ text: 'stub-ai-title' }] } })),
+};
+
+jest.mock('openai', () => ({
+  OpenAIApi: jest.fn(() => mockOpenAiInstance),
+  Configuration: jest.fn(),
+}));
 
 /* Mongoose mocks */
 const setupMocks = (response: PopulatedPinType[] | unknown = rawPinsStub) => {
@@ -275,6 +287,81 @@ describe('Adding a pin', () => {
       },
     };
     await addPin(req as genericRequest, res as unknown as Response);
+    expect(res.json).toHaveBeenCalledWith(Error('Mocked rejection'));
+  });
+});
+
+describe('generating an AI image', () => {
+  let res:{
+    json: jest.Mock,
+    end: jest.Mock
+  };
+  beforeEach(() => {
+    res = { json: jest.fn(), end: jest.fn() };
+    aiGenerated.create = jest.fn().mockResolvedValue({ _id: 'stub_ai_mongoose_storage_ID' });
+    aiGenerated.find = jest.fn().mockResolvedValue([1, 2, 3]);
+  });
+  afterEach(() => {
+    jest.restoreAllMocks();
+  });
+
+  test('will make request to openAI to generate a new image', async () => {
+    const req = {
+      user,
+      body: {
+        description: 'open ai image creation prompt',
+      },
+    };
+    await generateAIimage(req as genericRequest, res as unknown as Response);
+    expect(mockOpenAiInstance.createImage).toHaveBeenCalledWith({
+      n: 1,
+      prompt: 'open ai image creation prompt',
+      size: '1024x1024',
+    });
+    expect(mockOpenAiInstance.createCompletion).toHaveBeenCalledWith({
+      max_tokens: 10,
+      model: 'text-davinci-003',
+      prompt: 'Create a concise and engaging title, consisting of one or two words, for the given description: open ai image creation prompt',
+    });
+    expect(res.json).toHaveBeenCalledWith({
+      imgURL: 'http:/stub-ai-image-url',
+      title: 'stub-ai-title',
+      _id: 'stub_ai_mongoose_storage_ID',
+    });
+  });
+
+  test('will end response if no prompt provided', async () => {
+    const req = {
+      user,
+      body: {
+        description: '',
+      },
+    };
+    await generateAIimage(req as genericRequest, res as unknown as Response);
+    expect(res.end).toHaveBeenCalled();
+  });
+
+  test('will end response if 5 or more AI generated images have been created by the user', async () => {
+    aiGenerated.find = jest.fn().mockResolvedValue([1, 2, 3, 4, 5]);
+    const req = {
+      user,
+      body: {
+        description: 'open ai image creation prompt',
+      },
+    };
+    await generateAIimage(req as genericRequest, res as unknown as Response);
+    expect(res.end).toHaveBeenCalled();
+  });
+
+  test('will respond with error if POST is rejected', async () => {
+    aiGenerated.create = jest.fn().mockRejectedValue(new Error('Mocked rejection'));
+    const req = {
+      user,
+      body: {
+        description: 'open ai image creation prompt',
+      },
+    };
+    await generateAIimage(req as genericRequest, res as unknown as Response);
     expect(res.json).toHaveBeenCalledWith(Error('Mocked rejection'));
   });
 });

@@ -11,6 +11,7 @@ import pins from '../../../server/models/pins'; // schema for pins
 import users from '../../../server/models/user'; // schema for pins
 import pinLinks from '../../../server/models/pinlinks'; // schema for pins
 import savedTags from '../../../server/models/tags';
+import aiGenerated from '../../../server/models/AI_generated';
 import {
   user, rawPinsStub, allPinsResponse,
 } from '../stub';
@@ -83,6 +84,7 @@ describe('Retrieving pins for user page', () => {
     json: jest.Mock,
   };
   let mockedFind: jest.Mock;
+  let mockedAigenerated: jest.Mock;
   const req = {
     query: {
       type: 'all',
@@ -107,11 +109,18 @@ describe('Retrieving pins for user page', () => {
         ]),
       }),
     );
+    aiGenerated.find = jest.fn().mockImplementation(
+      () => ({
+        exec: jest.fn().mockResolvedValue([]),
+      }),
+    );
     mockedFind = jest.mocked(pinLinks.find);
+    mockedAigenerated = jest.mocked(aiGenerated.find);
   });
   afterEach(() => {
     jest.restoreAllMocks();
     mockedFind.mockClear();
+    mockedAigenerated.mockClear();
   });
 
   test('will retrieve pins for the profile page', async () => {

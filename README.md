@@ -3,6 +3,8 @@
 ### A clone of the Pinterest application for educational purposes
 https://pinterest-clone-oct6.onrender.com/
 
+#### Use the app to generate images using a web link, upload your own images, or use OpenAI’s cutting-edge image generation technology.
+
 ![Screenshot (45)](https://github.com/Dereje1/Pinterest-Clone/assets/23533048/e5849734-ec10-4a32-ba0b-1230a8cfb489)
 
 # Getting Started
@@ -65,6 +67,7 @@ NODE_ENV=<development|production>
 DEBUG=Pinterest-Clone:server
 DEBUG_COLORS=1
 GOOGLE_APPLICATION_CREDENTIALS=< service account key path for cloud vision api >
+OPENAI_API_KEY=<Get from openAI>
 ```
 Run the development environment
 ```

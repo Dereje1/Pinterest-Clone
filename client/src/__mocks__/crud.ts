@@ -23,7 +23,7 @@ const restMock = jest.fn().mockImplementation((...args) => {
       comments: ['tester comment'],
     });
   } if (address.includes('/api/mypins') && method === 'get' && !payload) {
-    return Promise.resolve({ profilePins: [pinsStub[1], pinsStub[2]], allPinLinks: [] });
+    return Promise.resolve({ profilePins: [pinsStub[1], pinsStub[2]], totalAiGenratedImages: 2 });
   } if (address.includes('/api/') && method === 'delete') {
     return Promise.resolve([]);
   } if (address.includes('/api/newpin') && method === 'post') {
@@ -79,6 +79,12 @@ const restMock = jest.fn().mockImplementation((...args) => {
     }]);
   } if (address.includes('/auth/logout') && method === 'get' && !payload) {
     return Promise.resolve();
+  } if (address.includes('/api/AIimage') && method === 'post') {
+    return Promise.resolve({
+      imgURL: 'AI generated image url',
+      title: 'AI generated title',
+      _id: 'Ai_generated_ID',
+    });
   }
   return Promise.reject(new Error(`Requested method:${method} and path: ${address} not mocked!!`));
 });

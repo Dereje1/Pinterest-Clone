@@ -74,6 +74,7 @@ const allPinsResponse = [
       userId: 'google test id',
     }],
     tags: [{ _id: 'tag_id_1', tag: 'tag 1' }, { _id: 'tag_id_2', tag: 'tag 2' }],
+    AIgenerated: false,
   },
   {
     _id: '2',
@@ -91,6 +92,7 @@ const allPinsResponse = [
       userId: 'google test id',
     }],
     tags: [{ _id: 'tag_id_1', tag: 'tag 1' }],
+    AIgenerated: false,
   },
   {
     _id: '3',
@@ -108,6 +110,7 @@ const allPinsResponse = [
       userId: 'google test id',
     }],
     tags: [],
+    AIgenerated: false,
   },
 ];
 
