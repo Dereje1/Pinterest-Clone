@@ -77,25 +77,29 @@ export const generateAIimage = async (req: Request, res: genericResponseType) =>
   });
 
   const { description } = req.body;
+  try {
+    if (!description.trim().length) res.end();
+    const openai = new OpenAIApi(configuration);
+    const { data: imageResponse } = await openai.createImage({
+      prompt: description,
+      n: 1,
+      size: '1024x1024',
+    });
+    const { data: titleResponse } = await openai.createCompletion({
+      model: 'text-davinci-003',
+      prompt: `Create a concise and engaging title, consisting of one or two words, for the given description: ${description}`,
+      max_tokens: 10,
+    });
 
-  if (!description.trim().length) res.end();
-  const openai = new OpenAIApi(configuration);
-  const { data: imageResponse } = await openai.createImage({
-    prompt: description,
-    n: 1,
-    size: '1024x1024',
-  });
-  const { data: titleResponse } = await openai.createCompletion({
-    model: 'text-davinci-003',
-    prompt: `Create a concise and engaging title, consisting of one or two words, for the given description: ${description}`,
-    max_tokens: 10,
-  });
-  const { _id } = await aiGenerated.create({
-    userId,
-    description,
-    response: { imageResponse, titleResponse },
-  });
-  const [linkObject] = imageResponse.data;
-  const [titleObject] = titleResponse.choices;
-  res.json({ imgURL: linkObject.url, title: titleObject.text?.trim().replace(/[".]/g, ''), _id });
+    const { _id } = await aiGenerated.create({
+      userId,
+      description,
+      response: { imageResponse, titleResponse },
+    });
+    const [linkObject] = imageResponse.data;
+    const [titleObject] = titleResponse.choices;
+    res.json({ imgURL: linkObject.url, title: titleObject.text?.trim().replace(/[".]/g, ''), _id });
+  } catch (error) {
+    res.json(error);
+  }
 };

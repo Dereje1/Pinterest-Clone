@@ -7,9 +7,12 @@ import { EnzymePropSelector, shallow } from 'enzyme';
 import toJson from 'enzyme-to-json';
 import PinCreate from '../../../../../client/src/components/mypins/pincreatemodal';
 import * as utils from '../../../../../client/src/utils/utils';
+import RESTcall from '../../../../../client/src/crud';
 
 jest.mock('../../../../../client/src/components/mypins/error.png', () => '/load-error.png');
 jest.useFakeTimers();
+jest.mock('../../../../../client/src/crud');
+const mockedRESTcall = jest.mocked(RESTcall);
 
 describe('The pin creation modal', () => {
   let props: React.ComponentProps<typeof PinCreate>;
@@ -20,6 +23,10 @@ describe('The pin creation modal', () => {
       totalAiGenratedImages: 0,
       updateGeneratedImages: jest.fn(),
     };
+  });
+
+  afterEach(() => {
+    mockedRESTcall.mockClear();
   });
 
   test('will render for links to images', () => {
@@ -165,5 +172,105 @@ describe('The pin creation modal', () => {
     const color = closeButton.props().sx.color({ palette: { grey: { 50: 'palette color' } } });
     expect(props.reset).toHaveBeenCalledTimes(1);
     expect(color).toBe('palette color');
+  });
+
+  test('will render for generating AI images selection', () => {
+    const wrapper = shallow(<PinCreate {...props} />);
+    const cardHeader: EnzymePropSelector = wrapper.find('ForwardRef(CardHeader)');
+    let dialogTitle = wrapper.find('ForwardRef(DialogTitle)');
+    expect(dialogTitle.text()).toBe('Create pin from link');
+    cardHeader.props().action.props.onChange('', 'AI');
+    dialogTitle = wrapper.find('ForwardRef(DialogTitle)');
+    expect(dialogTitle.text()).toBe('Create pin from AI');
+    expect(toJson(wrapper)).toMatchSnapshot();
+  });
+
+  test('will generate AI images', async () => {
+    const wrapper = shallow<PinCreate>(<PinCreate {...props} />);
+    const cardHeader: EnzymePropSelector = wrapper.find('ForwardRef(CardHeader)');
+    cardHeader.props().action.props.onChange('', 'AI');
+    const textField: EnzymePropSelector = wrapper.find('ForwardRef(TextField)');
+    const generateButton: EnzymePropSelector = wrapper.find('ForwardRef(Button)');
+    // set the prompt
+    textField.props().onChange({ target: { value: 'A prompt to generate image' } });
+    // generate click
+    generateButton.props().onClick();
+    expect(mockedRESTcall).toHaveBeenCalledTimes(1);
+    expect(mockedRESTcall.mock.calls).toEqual([
+      [{
+        address: '/api/AIimage',
+        method: 'post',
+        payload: { description: 'A prompt to generate image' },
+      }],
+    ]);
+    expect(wrapper.state().AIimageStatus).toEqual({
+      _id: null,
+      generatedImage: false,
+      generatingImage: true,
+    });
+    expect(wrapper.state().picPreview).toEqual('');
+    expect(wrapper.state().description).toEqual('A prompt to generate image');
+    // resolve api call to endpoint
+    await Promise.resolve();
+    expect(wrapper.state().AIimageStatus).toEqual({
+      _id: 'Ai_generated_ID',
+      generatedImage: true,
+      generatingImage: false,
+    });
+    expect(wrapper.state().picPreview).toEqual('AI generated image url');
+    expect(wrapper.state().description).toEqual('AI generated title');
+    expect(props.updateGeneratedImages).toHaveBeenCalled();
+  });
+
+  test('will reset a generated image', async () => {
+    const wrapper = shallow<PinCreate>(<PinCreate {...props} />);
+    const cardHeader: EnzymePropSelector = wrapper.find('ForwardRef(CardHeader)');
+    cardHeader.props().action.props.onChange('', 'AI');
+    const textField: EnzymePropSelector = wrapper.find('ForwardRef(TextField)');
+    const generateButton: EnzymePropSelector = wrapper.find('ForwardRef(Button)');
+    // set the prompt
+    textField.props().onChange({ target: { value: 'A prompt to generate image' } });
+    // generate click
+    generateButton.props().onClick();
+    expect(mockedRESTcall).toHaveBeenCalledTimes(1);
+    expect(mockedRESTcall.mock.calls).toEqual([
+      [{
+        address: '/api/AIimage',
+        method: 'post',
+        payload: { description: 'A prompt to generate image' },
+      }],
+    ]);
+    expect(wrapper.state().AIimageStatus).toEqual({
+      _id: null,
+      generatedImage: false,
+      generatingImage: true,
+    });
+    // resolve api call to endpoint
+    await Promise.resolve();
+    expect(wrapper.state().AIimageStatus).toEqual({
+      _id: 'Ai_generated_ID',
+      generatedImage: true,
+      generatingImage: false,
+    });
+    const resetButton: EnzymePropSelector = wrapper.find('ForwardRef(IconButton)').at(1);
+    resetButton.props().onClick();
+    expect(wrapper.state().AIimageStatus).toEqual({
+      _id: null,
+      generatedImage: false,
+      generatingImage: false,
+    });
+  });
+
+  test('will apply exclusive selection for the toggle button group', () => {
+    const wrapper = shallow<PinCreate>(<PinCreate {...props} />);
+    const cardHeader: EnzymePropSelector = wrapper.find('ForwardRef(CardHeader)');
+    let dialogTitle = wrapper.find('ForwardRef(DialogTitle)');
+    expect(dialogTitle.text()).toBe('Create pin from link');
+    cardHeader.props().action.props.onChange('', null);
+    dialogTitle = wrapper.find('ForwardRef(DialogTitle)');
+    expect(dialogTitle.text()).toBe('Create pin from link');
+    // handles default case of switch/case
+    wrapper.setState({ type: 'any' });
+    expect(wrapper.instance().handleImageTypes()).toBe(null);
   });
 });

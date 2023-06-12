@@ -1,5 +1,190 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
+exports[`The pin creation modal will render for generating AI images selection 1`] = `
+<ForwardRef(Dialog)
+  open={true}
+  sx={
+    {
+      "& .MuiDialog-container": {
+        "& .MuiPaper-root": {
+          "maxWidth": 341.3333333333333,
+          "width": "100%",
+        },
+      },
+    }
+  }
+>
+  <ForwardRef(DialogTitle)
+    id="pin-create-dialog-title"
+  >
+    Create pin from AI
+    <ForwardRef(IconButton)
+      aria-label="settings"
+      id="close-pin-create-modal"
+      onClick={[Function]}
+      sx={
+        {
+          "color": [Function],
+          "position": "absolute",
+          "right": 8,
+          "top": 8,
+        }
+      }
+    >
+      <Memo(ForwardRef(CancelIcon))
+        style={
+          {
+            "color": "#3a1c1cde",
+            "fontSize": "1.5em",
+          }
+        }
+      />
+    </ForwardRef(IconButton)>
+  </ForwardRef(DialogTitle)>
+  <ForwardRef(Card)
+    sx={
+      {
+        "width": 341.3333333333333,
+      }
+    }
+  >
+    <ForwardRef(CardHeader)
+      action={
+        <ForwardRef(ToggleButtonGroup)
+          aria-label="text alignment"
+          exclusive={true}
+          onChange={[Function]}
+          sx={
+            {
+              "color": "900",
+              "marginRight": 80,
+            }
+          }
+          value="AI"
+        >
+          <ForwardRef(ToggleButton)
+            aria-label="link type"
+            value="link"
+          >
+            <Memo />
+          </ForwardRef(ToggleButton)>
+          <ForwardRef(ToggleButton)
+            aria-label="upload type"
+            value="upload"
+          >
+            <Memo />
+          </ForwardRef(ToggleButton)>
+          <ForwardRef(ToggleButton)
+            aria-label="AI type"
+            disabled={false}
+            value="AI"
+          >
+            <Memo />
+          </ForwardRef(ToggleButton)>
+        </ForwardRef(ToggleButtonGroup)>
+      }
+    />
+    <div
+      style={
+        {
+          "display": "flex",
+          "flexDirection": "column",
+          "justifyContent": "center",
+        }
+      }
+    >
+      <ForwardRef(CardMedia)
+        component="img"
+        id="new-pin-image"
+        image="/load-error.png"
+        onError={[Function]}
+        onLoad={[Function]}
+        sx={
+          {
+            "height": 240,
+            "objectFit": "contain",
+          }
+        }
+      />
+      <SavePin
+        isDescriptionError={true}
+        isImageError={true}
+        isImageLoaded={false}
+        picPreview=""
+        savePic={[Function]}
+      />
+    </div>
+    <ForwardRef(CardActions)>
+      <div
+        style={
+          {
+            "alignItems": "center",
+            "display": "flex",
+            "flexDirection": "column",
+            "justifyContent": "space-evenly",
+            "width": "100%",
+          }
+        }
+      >
+        <ForwardRef(TextField)
+          color="success"
+          disabled={false}
+          error={true}
+          id="pin-description"
+          label="Describe what you want in detail..."
+          maxRows={3}
+          multiline={true}
+          onChange={[Function]}
+          style={
+            {
+              "margin": "1.5vh",
+              "width": "100%",
+            }
+          }
+          value=""
+          variant="outlined"
+        />
+        <div
+          style={
+            {
+              "alignItems": "center",
+              "display": "flex",
+            }
+          }
+        >
+          <ForwardRef(Button)
+            color="info"
+            component="label"
+            disabled={false}
+            onClick={[Function]}
+            startIcon={<Memo />}
+            sx={
+              {
+                "margin": "2.3vh",
+              }
+            }
+            variant="contained"
+          >
+            Generate Image
+          </ForwardRef(Button)>
+          <ForwardRef(IconButton)
+            disableRipple={true}
+            disabled={true}
+            onClick={[Function]}
+          >
+            <Memo(ForwardRef(RestartAltIcon)) />
+          </ForwardRef(IconButton)>
+          <ForwardRef(Typography)>
+            0
+            /5
+          </ForwardRef(Typography)>
+        </div>
+      </div>
+    </ForwardRef(CardActions)>
+  </ForwardRef(Card)>
+</ForwardRef(Dialog)>
+`;
+
 exports[`The pin creation modal will render for links to images 1`] = `
 <ForwardRef(Dialog)
   open={true}

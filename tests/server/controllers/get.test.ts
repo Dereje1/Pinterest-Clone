@@ -120,6 +120,7 @@ describe('Retrieving pins for user page', () => {
   afterEach(() => {
     jest.restoreAllMocks();
     mockedFind.mockClear();
+    mockedAigenerated.mockClear();
   });
 
   test('will retrieve pins for the profile page', async () => {
