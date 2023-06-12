@@ -299,6 +299,7 @@ describe('generating an AI image', () => {
   beforeEach(() => {
     res = { json: jest.fn(), end: jest.fn() };
     aiGenerated.create = jest.fn().mockResolvedValue({ _id: 'stub_ai_mongoose_storage_ID' });
+    aiGenerated.find = jest.fn().mockResolvedValue([1, 2, 3]);
   });
   afterEach(() => {
     jest.restoreAllMocks();
@@ -334,6 +335,18 @@ describe('generating an AI image', () => {
       user,
       body: {
         description: '',
+      },
+    };
+    await generateAIimage(req as genericRequest, res as unknown as Response);
+    expect(res.end).toHaveBeenCalled();
+  });
+
+  test('will end response if 5 or more AI generated images have been created by the user', async () => {
+    aiGenerated.find = jest.fn().mockResolvedValue([1, 2, 3, 4, 5]);
+    const req = {
+      user,
+      body: {
+        description: 'open ai image creation prompt',
       },
     };
     await generateAIimage(req as genericRequest, res as unknown as Response);

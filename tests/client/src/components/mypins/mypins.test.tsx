@@ -94,6 +94,7 @@ describe('The Mypins component', () => {
         createdAt: '',
         comments: [],
         tags: [],
+        AIgenerated: false,
       },
     });
     await Promise.resolve();
@@ -118,6 +119,7 @@ describe('The Mypins component', () => {
         createdAt: '',
         comments: [],
         tags: [],
+        AIgenerated: false,
       },
     });
     await Promise.resolve();

@@ -33,6 +33,7 @@ exports[`The Modal Header will render 1`] = `
           deletePin={[MockFunction]}
           element={
             {
+              "AIgenerated": false,
               "_id": "1",
               "comments": [
                 {
@@ -111,23 +112,32 @@ exports[`The Modal Header will render 1`] = `
         }
         userId="1"
       />
-      <ForwardRef(Typography)
-        sx={
+      <div
+        style={
           {
-            "fontSize": {
-              "md": "1.25rem",
-              "sm": "1rem",
-              "xs": "0.75rem",
-            },
-            "fontWeight": {
-              "xs": 600,
-            },
-            "marginLeft": 0,
+            "alignItems": "center",
+            "display": "flex",
           }
         }
       >
-        25 Dec 2020
-      </ForwardRef(Typography)>
+        <ForwardRef(Typography)
+          sx={
+            {
+              "fontSize": {
+                "md": "1.25rem",
+                "sm": "1rem",
+                "xs": "0.75rem",
+              },
+              "fontWeight": {
+                "xs": 600,
+              },
+              "marginLeft": 0,
+            }
+          }
+        >
+          25 Dec 2020
+        </ForwardRef(Typography)>
+      </div>
     </React.Fragment>
   }
   subheaderTypographyProps={
@@ -140,7 +150,7 @@ exports[`The Modal Header will render 1`] = `
       "background": "white",
     }
   }
-  title="imgDescription ..."
+  title="imgDescription id-1"
   titleTypographyProps={
     {
       "fontSize": {

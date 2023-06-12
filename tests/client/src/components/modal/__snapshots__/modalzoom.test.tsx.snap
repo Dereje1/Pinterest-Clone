@@ -26,6 +26,7 @@ exports[`The pin zoom modal will render 1`] = `
       pinImage={[MockFunction]}
       pinInformation={
         {
+          "AIgenerated": false,
           "_id": "1",
           "comments": [
             {
@@ -99,6 +100,7 @@ exports[`The pin zoom modal will render 1`] = `
               "width": "90%",
             },
             "pin": {
+              "AIgenerated": false,
               "_id": "1",
               "comments": [
                 {

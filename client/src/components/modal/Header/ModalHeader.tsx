@@ -6,6 +6,7 @@ import IconButton from '@mui/material/IconButton';
 import CommentOutlinedIcon from '@mui/icons-material/CommentOutlined';
 import CommentIcon from '@mui/icons-material/Comment';
 import Typography from '@mui/material/Typography';
+import PsychologyIcon from '@mui/icons-material/Psychology';
 import ModalActions from './ModalActions';
 import { ProfileLink } from '../../common/common';
 import { formatDate, getFormattedDescription } from '../../../utils/utils';
@@ -97,9 +98,14 @@ function ModalHeader({
             )}
             userId={pinInformation.owner.userId}
           />
-          <Typography sx={{ marginLeft: 0, ...fontStyles.date }}>
-            {formatDate(pinInformation.createdAt)}
-          </Typography>
+          <div style={{ display: 'flex', alignItems: 'center' }}>
+            <Typography sx={{ marginLeft: 0, ...fontStyles.date }}>
+              {formatDate(pinInformation.createdAt)}
+            </Typography>
+            {
+              pinInformation.AIgenerated && <PsychologyIcon sx={{ color: 'green', ml: 1, ...fontStyles.date }} />
+            }
+          </div>
         </>
       )}
       titleTypographyProps={{ ...fontStyles.description }}

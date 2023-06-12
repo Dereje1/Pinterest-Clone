@@ -72,7 +72,7 @@ export const getZoomedImageStyle = ({
   };
 };
 
-export const getFormattedDescription = (imgDescription: string) => (imgDescription.length > 15 ? `${imgDescription.slice(0, 15)}...` : imgDescription);
+export const getFormattedDescription = (imgDescription: string) => (imgDescription.length > 20 ? `${imgDescription.slice(0, 20)}...` : imgDescription);
 
 // eslint-disable-next-line no-promise-executor-return
 export const delay = (ms: number) => new Promise((resolve) => setTimeout(resolve, ms));

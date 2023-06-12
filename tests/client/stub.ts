@@ -22,6 +22,7 @@ export const pinsStub = [
       },
     ],
     tags: [{ _id: 'tag_id_1', tag: 'tag 1' }, { _id: 'tag_id_2', tag: 'tag 2' }],
+    AIgenerated: false,
   },
   {
     _id: '2',
@@ -37,6 +38,7 @@ export const pinsStub = [
     createdAt: '2020-12-25T00:00:00.000+00:00',
     comments: [],
     tags: [{ _id: 'tag_id_1', tag: 'tag 1' }],
+    AIgenerated: false,
   },
   {
     _id: '3',
@@ -52,6 +54,7 @@ export const pinsStub = [
     createdAt: '2020-12-25T00:00:00.000+00:00',
     comments: [],
     tags: [],
+    AIgenerated: false,
   },
 ];
 
