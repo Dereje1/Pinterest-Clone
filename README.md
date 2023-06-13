@@ -98,7 +98,7 @@ npm test
 * [Express](https://expressjs.com/) - Node.js web application framework
 * [Material UI](https://mui.com/) - A library of React UI components that implements Google's Material Design.
 * [Google Cloud Vision API](https://cloud.google.com/vision/docs) - image labeling, face and landmark detection...
-* [...and more](https://github.com/Dereje1/Pinterest-Clone/blob/master/package.json#L18)
+* [...and more](https://github.com/Dereje1/Pinterest-Clone/blob/master/package.json)
 
 ## Authors
 

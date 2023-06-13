@@ -24,10 +24,10 @@ const addVisionApiTags = async (addedpin: Pin) => {
     const [result] = await client.labelDetection(addedpin.imgLink);
     const labels = result.labelAnnotations;
     if (labels) {
-      debug(`Adding tags for new pin -> ${addedpin.imgDescription} from vision api`);
       const descriptions = labels.map((label) => (label.description?.toUpperCase()));
       const tags = descriptions.map((description) => ({ tag: description }));
       const update = { $set: { tags, visionApiTags: descriptions } };
+      debug(`Adding tags -> ${descriptions} for new pin -> ${addedpin.imgDescription} from vision api`);
       await pins.findByIdAndUpdate(addedpin._id, update);
       const newSavedTags: Promise<tagType>[] = [];
       tags.forEach((tag) => newSavedTags.push(savedTags.create(tag)));
@@ -82,6 +82,7 @@ export const generateAIimage = async (req: Request, res: genericResponseType) =>
     const aiGeneratedByUser = await aiGenerated.find({ userId });
     if (aiGeneratedByUser.length >= 5) res.end();
     const openai = new OpenAIApi(configuration);
+    debug(`UserId -> ${userId} Generating AI image and title for -> ${description} from openAI`);
     const { data: imageResponse } = await openai.createImage({
       prompt: description,
       n: 1,

@@ -38,10 +38,10 @@ describe('The pin creation modal', () => {
     const wrapper = shallow(<PinCreate {...props} />);
     const cardHeader: EnzymePropSelector = wrapper.find('ForwardRef(CardHeader)');
     let dialogTitle = wrapper.find('ForwardRef(DialogTitle)');
-    expect(dialogTitle.text()).toBe('Create pin from link');
+    expect(dialogTitle.text()).toBe('Create pin: Web link');
     cardHeader.props().action.props.onChange('', 'upload');
     dialogTitle = wrapper.find('ForwardRef(DialogTitle)');
-    expect(dialogTitle.text()).toBe('Create pin from upload');
+    expect(dialogTitle.text()).toBe('Create pin: File/device');
     expect(toJson(wrapper)).toMatchSnapshot();
   });
 
@@ -178,10 +178,10 @@ describe('The pin creation modal', () => {
     const wrapper = shallow(<PinCreate {...props} />);
     const cardHeader: EnzymePropSelector = wrapper.find('ForwardRef(CardHeader)');
     let dialogTitle = wrapper.find('ForwardRef(DialogTitle)');
-    expect(dialogTitle.text()).toBe('Create pin from link');
+    expect(dialogTitle.text()).toBe('Create pin: Web link');
     cardHeader.props().action.props.onChange('', 'AI');
     dialogTitle = wrapper.find('ForwardRef(DialogTitle)');
-    expect(dialogTitle.text()).toBe('Create pin from AI');
+    expect(dialogTitle.text()).toBe('Create pin: AI');
     expect(toJson(wrapper)).toMatchSnapshot();
   });
 
@@ -208,7 +208,7 @@ describe('The pin creation modal', () => {
       generatedImage: false,
       generatingImage: true,
     });
-    expect(wrapper.state().picPreview).toEqual('');
+    expect(wrapper.state().picPreview).toEqual('/load-error.png');
     expect(wrapper.state().description).toEqual('A prompt to generate image');
     // resolve api call to endpoint
     await Promise.resolve();
@@ -265,12 +265,12 @@ describe('The pin creation modal', () => {
     const wrapper = shallow<PinCreate>(<PinCreate {...props} />);
     const cardHeader: EnzymePropSelector = wrapper.find('ForwardRef(CardHeader)');
     let dialogTitle = wrapper.find('ForwardRef(DialogTitle)');
-    expect(dialogTitle.text()).toBe('Create pin from link');
+    expect(dialogTitle.text()).toBe('Create pin: Web link');
     cardHeader.props().action.props.onChange('', null);
     dialogTitle = wrapper.find('ForwardRef(DialogTitle)');
-    expect(dialogTitle.text()).toBe('Create pin from link');
+    expect(dialogTitle.text()).toBe('Create pin: Web link');
     // handles default case of switch/case
-    wrapper.setState({ type: 'any' });
+    cardHeader.props().action.props.onChange('', 'any');
     expect(wrapper.instance().handleImageTypes()).toBe(null);
   });
 });

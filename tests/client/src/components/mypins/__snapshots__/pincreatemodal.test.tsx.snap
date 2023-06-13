@@ -17,7 +17,7 @@ exports[`The pin creation modal will render for generating AI images selection 1
   <ForwardRef(DialogTitle)
     id="pin-create-dialog-title"
   >
-    Create pin from AI
+    Create pin: AI
     <ForwardRef(IconButton)
       aria-label="settings"
       id="close-pin-create-modal"
@@ -121,6 +121,7 @@ exports[`The pin creation modal will render for generating AI images selection 1
             "alignItems": "center",
             "display": "flex",
             "flexDirection": "column",
+            "height": "25vh",
             "justifyContent": "space-evenly",
             "width": "100%",
           }
@@ -133,6 +134,7 @@ exports[`The pin creation modal will render for generating AI images selection 1
           id="pin-description"
           label="Describe what you want in detail..."
           maxRows={3}
+          minRows={3}
           multiline={true}
           onChange={[Function]}
           style={
@@ -202,7 +204,7 @@ exports[`The pin creation modal will render for links to images 1`] = `
   <ForwardRef(DialogTitle)
     id="pin-create-dialog-title"
   >
-    Create pin from link
+    Create pin: Web link
     <ForwardRef(IconButton)
       aria-label="settings"
       id="close-pin-create-modal"
@@ -306,6 +308,7 @@ exports[`The pin creation modal will render for links to images 1`] = `
             "alignItems": "center",
             "display": "flex",
             "flexDirection": "column",
+            "height": "25vh",
             "justifyContent": "space-evenly",
             "width": "100%",
           }
@@ -318,6 +321,7 @@ exports[`The pin creation modal will render for links to images 1`] = `
           id="pin-description"
           label="Description..."
           maxRows={3}
+          minRows={3}
           multiline={false}
           onChange={[Function]}
           style={
@@ -367,7 +371,7 @@ exports[`The pin creation modal will render for uploading images 1`] = `
   <ForwardRef(DialogTitle)
     id="pin-create-dialog-title"
   >
-    Create pin from upload
+    Create pin: File/device
     <ForwardRef(IconButton)
       aria-label="settings"
       id="close-pin-create-modal"
@@ -471,6 +475,7 @@ exports[`The pin creation modal will render for uploading images 1`] = `
             "alignItems": "center",
             "display": "flex",
             "flexDirection": "column",
+            "height": "25vh",
             "justifyContent": "space-evenly",
             "width": "100%",
           }
@@ -483,6 +488,7 @@ exports[`The pin creation modal will render for uploading images 1`] = `
           id="pin-description"
           label="Description..."
           maxRows={3}
+          minRows={3}
           multiline={false}
           onChange={[Function]}
           style={

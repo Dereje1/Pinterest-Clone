@@ -21,6 +21,7 @@ import Typography from '@mui/material/Typography';
 import RESTcall from '../../crud'; // pin CRUD
 import SavePin from './SavePin';
 import error from '../../assets/error.png';
+import loading from '../../assets/giphy.gif';
 import {
   validateURL,
   getModalWidth,
@@ -39,13 +40,19 @@ interface PinCreateState {
   description: string
   isError: boolean
   isLoaded: boolean
-  type: string
+  mediaType: 'link' | 'upload' | 'AI'
   AIimageStatus: {
     generatedImage: boolean,
     generatingImage: boolean,
     _id: string | null
   }
 }
+
+const mediaTypeInfo = {
+  link: 'Web link',
+  upload: 'File/device',
+  AI: 'AI',
+};
 
 class PinCreate extends Component<PinCreateProps, PinCreateState> {
 
@@ -57,7 +64,7 @@ class PinCreate extends Component<PinCreateProps, PinCreateState> {
       description: '',
       isError: true,
       isLoaded: false,
-      type: 'link',
+      mediaType: 'link',
       AIimageStatus: {
         generatedImage: false,
         generatingImage: false,
@@ -113,7 +120,9 @@ class PinCreate extends Component<PinCreateProps, PinCreateState> {
     const target = e.target as HTMLMediaElement;
     this.setState({
       isLoaded: true,
-      isError: target.currentSrc === `${window.location.origin}${error}`,
+      isError:
+      target.currentSrc === `${window.location.origin}${error}`
+      || target.currentSrc === `${window.location.origin}${loading}`,
     });
   };
 
@@ -147,6 +156,7 @@ class PinCreate extends Component<PinCreateProps, PinCreateState> {
         generatedImage: false,
         generatingImage: true,
       },
+      picPreview: loading,
     });
     const { imgURL, title, _id } = await RESTcall({ address: '/api/AIimage', method: 'post', payload: { description } });
     this.setState({
@@ -162,10 +172,10 @@ class PinCreate extends Component<PinCreateProps, PinCreateState> {
 
   handleImageTypes = () => {
     const {
-      type, isError, picPreview, AIimageStatus,
+      mediaType, isError, picPreview, AIimageStatus,
     } = this.state;
     const { totalAiGenratedImages } = this.props;
-    switch (type) {
+    switch (mediaType) {
       case 'upload':
         return (
           <Button
@@ -236,7 +246,7 @@ class PinCreate extends Component<PinCreateProps, PinCreateState> {
 
   render() {
     const {
-      description, isError, picPreview, isLoaded, type, AIimageStatus,
+      description, isError, picPreview, isLoaded, mediaType, AIimageStatus,
     } = this.state;
     const { totalAiGenratedImages } = this.props;
     const modalWidth = getModalWidth();
@@ -254,7 +264,7 @@ class PinCreate extends Component<PinCreateProps, PinCreateState> {
         }}
       >
         <DialogTitle id="pin-create-dialog-title">
-          {`Create pin from ${type}`}
+          {`Create pin: ${mediaTypeInfo[mediaType]}`}
           <IconButton
             id="close-pin-create-modal"
             aria-label="settings"
@@ -274,9 +284,9 @@ class PinCreate extends Component<PinCreateProps, PinCreateState> {
           <CardHeader
             action={(
               <ToggleButtonGroup
-                value={type}
+                value={mediaType}
                 exclusive
-                onChange={(_, imgType) => (imgType ? this.setState({ type: imgType, picPreview: '' }) : null)}
+                onChange={(_, imgType) => (imgType ? this.setState({ mediaType: imgType, picPreview: '' }) : null)}
                 aria-label="text alignment"
                 sx={{ marginRight: 80, color: '900' }}
               >
@@ -316,15 +326,16 @@ class PinCreate extends Component<PinCreateProps, PinCreateState> {
               justifyContent: 'space-evenly',
               alignItems: 'center',
               width: '100%',
+              height: '25vh',
             }}
             >
               <TextField
                 id="pin-description"
-                label={type === 'AI' ? 'Describe what you want in detail...' : 'Description...'}
-                variant={type === 'AI' ? 'outlined' : 'standard'}
+                label={mediaType === 'AI' ? 'Describe what you want in detail...' : 'Description...'}
+                variant={mediaType === 'AI' ? 'outlined' : 'standard'}
                 color="success"
                 onChange={({ target: { value } }) => {
-                  if (type === 'AI') {
+                  if (mediaType === 'AI') {
                     this.setState({ description: value });
                     return;
                   }
@@ -336,7 +347,8 @@ class PinCreate extends Component<PinCreateProps, PinCreateState> {
                 error={!description || isDescriptionError}
                 style={{ margin: '1.5vh', width: '100%' }}
                 disabled={AIimageStatus.generatedImage || AIimageStatus.generatingImage}
-                multiline={type === 'AI'}
+                multiline={mediaType === 'AI'}
+                minRows={3}
                 maxRows={3}
               />
               {
