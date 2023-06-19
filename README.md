@@ -11,13 +11,17 @@ https://pinterest-clone-oct6.onrender.com/
 ## A) Local
 These instructions will get you a copy of the project up and running on your local machine for development and testing purposes.
 
-### Prerequisites
+### Tools
 
 | Prerequisite                                | Version |
 | ------------------------------------------- | ------- |
 | [Node.js](http://nodejs.org) /  npm (comes with Node)  | `~ ^18.3.0` / `~^8.19.3` |
 | [Git](https://git-scm.com/downloads) | `~ ^2` |
-| [Docker Desktop](https://www.docker.com/products/docker-desktop/) (optional) | `~ ^4.4.2` |
+
+| Optional                                | Version |
+| ------------------------------------------- | ------- |
+| [Docker Desktop](https://www.docker.com/products/docker-desktop/) | `~ ^4.4.2` |
+| [MongoDB Compass](https://www.mongodb.com/products/compass) | `~ ^1.0.0` |
 
 ### Installing
 
@@ -85,11 +89,32 @@ docker-compose up
 * Note: MONGOLAB_URI is already incorporated in the local docker setup and is not needed for your env file if fully running with docker.
 <br/>
 
-# Testing
+# Testing & Build
+## Testing
 ```
 npm test
 ```
 
+```
+npm run coverage
+```
+## Lint
+```
+npm run lint
+```
+
+## Compile TS
+```
+npm run compileTS
+```
+## Build
+```
+npm run build_server && npm run build_client
+```
+## Run
+```
+npm start
+```
 ## Built With
 
 * [Node.js](https://nodejs.org/) - JavaScript runtime
