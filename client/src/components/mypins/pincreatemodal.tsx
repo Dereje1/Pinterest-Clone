@@ -46,6 +46,7 @@ interface PinCreateState {
     generatingImage: boolean,
     _id: string | null
   }
+  imgKey: number
 }
 
 const mediaTypeInfo = {
@@ -54,22 +55,26 @@ const mediaTypeInfo = {
   AI: 'AI',
 };
 
+const initialState = {
+  picPreview: '', // on erroneous image links
+  description: '',
+  isError: true,
+  isLoaded: false,
+  AIimageStatus: {
+    generatedImage: false,
+    generatingImage: false,
+    _id: null,
+  },
+  imgKey: 0,
+};
 class PinCreate extends Component<PinCreateProps, PinCreateState> {
 
   constructor(props: PinCreateProps) {
     super(props);
     // initialize modal show state to false
     this.state = {
-      picPreview: '', // on erroneous image links
-      description: '',
-      isError: true,
-      isLoaded: false,
+      ...initialState,
       mediaType: 'link',
-      AIimageStatus: {
-        generatedImage: false,
-        generatingImage: false,
-        _id: null,
-      },
     };
   }
 
@@ -117,12 +122,14 @@ class PinCreate extends Component<PinCreateProps, PinCreateState> {
   };
 
   onLoad = (e: React.SyntheticEvent<HTMLDivElement>) => {
+    const { imgKey } = this.state;
     const target = e.target as HTMLMediaElement;
     this.setState({
       isLoaded: true,
       isError:
       target.currentSrc === `${window.location.origin}${error}`
       || target.currentSrc === `${window.location.origin}${loading}`,
+      imgKey: imgKey + 1,
     });
   };
 
@@ -218,6 +225,7 @@ class PinCreate extends Component<PinCreateProps, PinCreateState> {
             </Button>
             <IconButton
               onClick={() => this.setState({
+                ...initialState,
                 AIimageStatus: {
                   generatedImage: false,
                   generatingImage: false,
@@ -246,7 +254,7 @@ class PinCreate extends Component<PinCreateProps, PinCreateState> {
 
   render() {
     const {
-      description, isError, picPreview, isLoaded, mediaType, AIimageStatus,
+      description, isError, picPreview, isLoaded, mediaType, AIimageStatus, imgKey,
     } = this.state;
     const { totalAiGenratedImages } = this.props;
     const modalWidth = getModalWidth();
@@ -286,7 +294,9 @@ class PinCreate extends Component<PinCreateProps, PinCreateState> {
               <ToggleButtonGroup
                 value={mediaType}
                 exclusive
-                onChange={(_, imgType) => (imgType ? this.setState({ mediaType: imgType, picPreview: '' }) : null)}
+                onChange={(_, imgType) => (imgType
+                  ? this.setState({ ...initialState, mediaType: imgType, imgKey: imgKey + 1 })
+                  : null)}
                 aria-label="text alignment"
                 sx={{ marginRight: 80, color: '900' }}
               >
@@ -304,6 +314,7 @@ class PinCreate extends Component<PinCreateProps, PinCreateState> {
           />
           <div style={{ display: 'flex', flexDirection: 'column', justifyContent: 'center' }}>
             <CardMedia
+              key={imgKey}
               component="img"
               image={picPreview === '' ? error : picPreview}
               onError={this.onError}

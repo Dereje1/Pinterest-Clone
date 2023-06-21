@@ -22,7 +22,7 @@ const addVisionApiTags = async (addedpin: Pin) => {
     const client = new vision.ImageAnnotatorClient();
     // Performs label detection on the image file
     const [result] = await client.labelDetection(addedpin.imgLink);
-    const labels = result.labelAnnotations;
+    const { labelAnnotations: labels } = result;
     if (labels) {
       const descriptions = labels.map((label) => (label.description?.toUpperCase()));
       const tags = descriptions.map((description) => ({ tag: description }));
