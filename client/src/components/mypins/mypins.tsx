@@ -4,10 +4,6 @@ import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
 
 import Typography from '@mui/material/Typography';
-import Button from '@mui/material/Button';
-import Dialog from '@mui/material/Dialog';
-import DialogActions from '@mui/material/DialogActions';
-import DialogTitle from '@mui/material/DialogTitle';
 import Box from '@mui/material/Box';
 import Fab from '@mui/material/Fab';
 import AddIcon from '@mui/icons-material/Add';
@@ -15,6 +11,7 @@ import AddIcon from '@mui/icons-material/Add';
 import PinCreate from './pincreatemodal';
 import ImageBuild from '../imagebuild/Imagebuild';
 import UserInfo from './UserInfo';
+import WarningDialog from './WarningDialog';
 import RESTcall from '../../crud'; // pin CRUD
 import { updateDisplayName } from '../../redux/userSlice';
 import { Loading, UserPinsSelector } from '../common/common';
@@ -252,37 +249,19 @@ export class Mypins extends Component<MypinsProps, MypinsState> {
           />
         )}
         { showDeleteImageModal && (
-          <Dialog
-            open={showDeleteImageModal}
-            aria-labelledby="alert-dialog-title"
-            aria-describedby="alert-dialog-description"
-          >
-            <DialogTitle id="alert-dialog-title">
-              {`Permanently delete ${deletableImgInfo && deletableImgInfo.imgDescription}?`}
-            </DialogTitle>
-            <DialogActions>
-              <Button
-                id="cancel-delete-alert"
-                onClick={() => this.setState({
-                  showDeleteImageModal: false,
-                  deletableImgInfo: null,
-                })}
-              >
-                Cancel
-              </Button>
-              <Button
-                id="resume-delete-alert"
-                onClick={() => {
-                  if (deletableImgInfo !== null) {
-                    this.deletePic(deletableImgInfo);
-                  }
-                }}
-                autoFocus
-              >
-                Delete
-              </Button>
-            </DialogActions>
-          </Dialog>
+          <WarningDialog
+            showDialog={showDeleteImageModal}
+            title={`Permanently delete ${deletableImgInfo && deletableImgInfo.imgDescription}?`}
+            handleCancel={() => this.setState({
+              showDeleteImageModal: false,
+              deletableImgInfo: null,
+            })}
+            handleContinue={() => {
+              if (deletableImgInfo !== null) {
+                this.deletePic(deletableImgInfo);
+              }
+            }}
+          />
         )}
       </>
     );

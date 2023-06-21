@@ -1,0 +1,30 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`The Warning Dialog component will render... 1`] = `
+<ForwardRef(Dialog)
+  aria-describedby="alert-dialog-description"
+  aria-labelledby="alert-dialog-title"
+  open={true}
+>
+  <ForwardRef(DialogTitle)
+    id="alert-dialog-title"
+  >
+    warning title
+  </ForwardRef(DialogTitle)>
+  <ForwardRef(DialogActions)>
+    <ForwardRef(Button)
+      id="cancel-alert"
+      onClick={[MockFunction]}
+    >
+      Cancel
+    </ForwardRef(Button)>
+    <ForwardRef(Button)
+      autoFocus={true}
+      id="resume-alert"
+      onClick={[MockFunction]}
+    >
+      Continue
+    </ForwardRef(Button)>
+  </ForwardRef(DialogActions)>
+</ForwardRef(Dialog)>
+`;

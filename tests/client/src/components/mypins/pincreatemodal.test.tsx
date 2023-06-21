@@ -20,7 +20,7 @@ describe('The pin creation modal', () => {
     props = {
       reset: jest.fn(),
       savePin: jest.fn(),
-      totalAiGenratedImages: 0,
+      totalAiGenratedImages: 1,
       updateGeneratedImages: jest.fn(),
     };
   });
@@ -252,11 +252,60 @@ describe('The pin creation modal', () => {
       generatedImage: true,
       generatingImage: false,
     });
+    // open warning dialog
     const resetButton: EnzymePropSelector = wrapper.find('ForwardRef(IconButton)').at(1);
     resetButton.props().onClick();
+    // reset generated image
+    const warningDialog: EnzymePropSelector = wrapper.find('WarningDialog');
+    expect(warningDialog.props().title).toBe('Warning: Refreshing will permanently delete the generated image, AI generated title, and you will have 4 tries left to generate a new image. Are you sure you want to continue?');
+    warningDialog.props().handleContinue();
     expect(wrapper.state().AIimageStatus).toEqual({
       _id: null,
       generatedImage: false,
+      generatingImage: false,
+    });
+  });
+
+  test('will cancel the reset of a generated image', async () => {
+    const wrapper = shallow<PinCreate>(<PinCreate {...props} />);
+    const cardHeader: EnzymePropSelector = wrapper.find('ForwardRef(CardHeader)');
+    cardHeader.props().action.props.onChange('', 'AI');
+    const textField: EnzymePropSelector = wrapper.find('ForwardRef(TextField)');
+    const generateButton: EnzymePropSelector = wrapper.find('ForwardRef(Button)');
+    // set the prompt
+    textField.props().onChange({ target: { value: 'A prompt to generate image' } });
+    // generate click
+    generateButton.props().onClick();
+    expect(mockedRESTcall).toHaveBeenCalledTimes(1);
+    expect(mockedRESTcall.mock.calls).toEqual([
+      [{
+        address: '/api/AIimage',
+        method: 'post',
+        payload: { description: 'A prompt to generate image' },
+      }],
+    ]);
+    expect(wrapper.state().AIimageStatus).toEqual({
+      _id: null,
+      generatedImage: false,
+      generatingImage: true,
+    });
+    // resolve api call to endpoint
+    await Promise.resolve();
+    expect(wrapper.state().AIimageStatus).toEqual({
+      _id: 'Ai_generated_ID',
+      generatedImage: true,
+      generatingImage: false,
+    });
+    // open warning dialog
+    const resetButton: EnzymePropSelector = wrapper.find('ForwardRef(IconButton)').at(1);
+    resetButton.props().onClick();
+    // reset generated image
+    const warningDialog: EnzymePropSelector = wrapper.find('WarningDialog');
+    expect(warningDialog.props().title).toBe('Warning: Refreshing will permanently delete the generated image, AI generated title, and you will have 4 tries left to generate a new image. Are you sure you want to continue?');
+    warningDialog.props().handleCancel();
+    expect(wrapper.state().AIimageStatus).toEqual({
+      _id: 'Ai_generated_ID',
+      generatedImage: true,
       generatingImage: false,
     });
   });

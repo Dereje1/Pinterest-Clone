@@ -20,6 +20,7 @@ import RestartAltIcon from '@mui/icons-material/RestartAlt';
 import Typography from '@mui/material/Typography';
 import RESTcall from '../../crud'; // pin CRUD
 import SavePin from './SavePin';
+import WarningDialog from './WarningDialog';
 import error from '../../assets/error.png';
 import loading from '../../assets/giphy.gif';
 import {
@@ -47,6 +48,7 @@ interface PinCreateState {
     _id: string | null
   }
   imgKey: number
+  showAIResetDialog: boolean
 }
 
 const mediaTypeInfo = {
@@ -66,6 +68,7 @@ const initialState = {
     _id: null,
   },
   imgKey: 0,
+  showAIResetDialog: false,
 };
 class PinCreate extends Component<PinCreateProps, PinCreateState> {
 
@@ -179,7 +182,7 @@ class PinCreate extends Component<PinCreateProps, PinCreateState> {
 
   handleImageTypes = () => {
     const {
-      mediaType, isError, picPreview, AIimageStatus,
+      mediaType, isError, picPreview, AIimageStatus, description,
     } = this.state;
     const { totalAiGenratedImages } = this.props;
     switch (mediaType) {
@@ -219,19 +222,16 @@ class PinCreate extends Component<PinCreateProps, PinCreateState> {
               component="label"
               color="info"
               onClick={this.handleAIimage}
-              disabled={AIimageStatus.generatedImage || AIimageStatus.generatingImage}
+              disabled={
+                AIimageStatus.generatedImage
+                || AIimageStatus.generatingImage
+                || !description.trim().length
+              }
             >
               {AIimageStatus.generatedImage ? 'Generated' : 'Generate Image'}
             </Button>
             <IconButton
-              onClick={() => this.setState({
-                ...initialState,
-                AIimageStatus: {
-                  generatedImage: false,
-                  generatingImage: false,
-                  _id: null,
-                },
-              })}
+              onClick={() => this.setState({ showAIResetDialog: true })}
               disabled={
                 !AIimageStatus.generatedImage
                 || AIimageStatus.generatingImage
@@ -254,123 +254,134 @@ class PinCreate extends Component<PinCreateProps, PinCreateState> {
 
   render() {
     const {
-      description, isError, picPreview, isLoaded, mediaType, AIimageStatus, imgKey,
+      description, isError, picPreview,
+      isLoaded, mediaType, AIimageStatus,
+      imgKey, showAIResetDialog,
     } = this.state;
     const { totalAiGenratedImages } = this.props;
     const modalWidth = getModalWidth();
     const isDescriptionError = description.trim().length < 5;
     return (
-      <Dialog
-        open
-        sx={{
-          '& .MuiDialog-container': {
-            '& .MuiPaper-root': {
-              width: '100%',
-              maxWidth: modalWidth,
+      <>
+        <Dialog
+          open
+          sx={{
+            '& .MuiDialog-container': {
+              '& .MuiPaper-root': {
+                width: '100%',
+                maxWidth: modalWidth,
+              },
             },
-          },
-        }}
-      >
-        <DialogTitle id="pin-create-dialog-title">
-          {`Create pin: ${mediaTypeInfo[mediaType]}`}
-          <IconButton
-            id="close-pin-create-modal"
-            aria-label="settings"
-            onClick={this.close}
-            sx={{
-              position: 'absolute',
-              right: 8,
-              top: 8,
-              color: (theme) => theme.palette.grey[50],
-            }}
-          >
-            <CancelIcon style={{ fontSize: '1.5em', color: '#3a1c1cde' }} />
-          </IconButton>
-        </DialogTitle>
-        <Card sx={{ width: modalWidth }}>
-
-          <CardHeader
-            action={(
-              <ToggleButtonGroup
-                value={mediaType}
-                exclusive
-                onChange={(_, imgType) => (imgType
-                  ? this.setState({ ...initialState, mediaType: imgType, imgKey: imgKey + 1 })
-                  : null)}
-                aria-label="text alignment"
-                sx={{ marginRight: 80, color: '900' }}
-              >
-                <ToggleButton value="link" aria-label="link type">
-                  <LinkIcon />
-                </ToggleButton>
-                <ToggleButton value="upload" aria-label="upload type">
-                  <DriveFolderUploadIcon />
-                </ToggleButton>
-                <ToggleButton value="AI" aria-label="AI type" disabled={totalAiGenratedImages >= 5}>
-                  <PsychologyIcon />
-                </ToggleButton>
-              </ToggleButtonGroup>
-            )}
-          />
-          <div style={{ display: 'flex', flexDirection: 'column', justifyContent: 'center' }}>
-            <CardMedia
-              key={imgKey}
-              component="img"
-              image={picPreview === '' ? error : picPreview}
-              onError={this.onError}
-              onLoad={this.onLoad}
-              sx={{ objectFit: 'contain', height: 240 }}
-              id="new-pin-image"
-            />
-            <SavePin
-              isImageError={isError}
-              isImageLoaded={isLoaded}
-              isDescriptionError={isDescriptionError}
-              picPreview={picPreview}
-              savePic={this.savePic}
-            />
-          </div>
-          <CardActions>
-            <div style={{
-              display: 'flex',
-              flexDirection: 'column',
-              justifyContent: 'space-evenly',
-              alignItems: 'center',
-              width: '100%',
-              height: '25vh',
-            }}
+          }}
+        >
+          <DialogTitle id="pin-create-dialog-title">
+            {`Create pin: ${mediaTypeInfo[mediaType]}`}
+            <IconButton
+              id="close-pin-create-modal"
+              aria-label="settings"
+              onClick={this.close}
+              sx={{
+                position: 'absolute',
+                right: 8,
+                top: 8,
+                color: (theme) => theme.palette.grey[50],
+              }}
             >
-              <TextField
-                id="pin-description"
-                label={mediaType === 'AI' ? 'Describe what you want in detail...' : 'Description...'}
-                variant={mediaType === 'AI' ? 'outlined' : 'standard'}
-                color="success"
-                onChange={({ target: { value } }) => {
-                  if (mediaType === 'AI') {
-                    this.setState({ description: value });
-                    return;
-                  }
-                  if (value.trim().length <= 20) {
-                    this.setState({ description: value });
-                  }
-                }}
-                value={description}
-                error={!description || isDescriptionError}
-                style={{ margin: '1.5vh', width: '100%' }}
-                disabled={AIimageStatus.generatedImage || AIimageStatus.generatingImage}
-                multiline={mediaType === 'AI'}
-                minRows={3}
-                maxRows={3}
+              <CancelIcon style={{ fontSize: '1.5em', color: '#3a1c1cde' }} />
+            </IconButton>
+          </DialogTitle>
+          <Card sx={{ width: modalWidth }}>
+
+            <CardHeader
+              action={(
+                <ToggleButtonGroup
+                  value={mediaType}
+                  exclusive
+                  onChange={(_, imgType) => (imgType
+                    ? this.setState({ ...initialState, mediaType: imgType, imgKey: imgKey + 1 })
+                    : null)}
+                  aria-label="text alignment"
+                  sx={{ marginRight: 80, color: '900' }}
+                >
+                  <ToggleButton value="link" aria-label="link type">
+                    <LinkIcon />
+                  </ToggleButton>
+                  <ToggleButton value="upload" aria-label="upload type">
+                    <DriveFolderUploadIcon />
+                  </ToggleButton>
+                  <ToggleButton value="AI" aria-label="AI type" disabled={totalAiGenratedImages >= 5}>
+                    <PsychologyIcon />
+                  </ToggleButton>
+                </ToggleButtonGroup>
+              )}
+            />
+            <div style={{ display: 'flex', flexDirection: 'column', justifyContent: 'center' }}>
+              <CardMedia
+                key={imgKey}
+                component="img"
+                image={picPreview === '' ? error : picPreview}
+                onError={this.onError}
+                onLoad={this.onLoad}
+                sx={{ objectFit: 'contain', height: 240 }}
+                id="new-pin-image"
               />
-              {
-                this.handleImageTypes()
-              }
+              <SavePin
+                isImageError={isError}
+                isImageLoaded={isLoaded}
+                isDescriptionError={isDescriptionError}
+                picPreview={picPreview}
+                savePic={this.savePic}
+              />
             </div>
-          </CardActions>
+            <CardActions>
+              <div style={{
+                display: 'flex',
+                flexDirection: 'column',
+                justifyContent: 'space-evenly',
+                alignItems: 'center',
+                width: '100%',
+                height: '25vh',
+              }}
+              >
+                <TextField
+                  id="pin-description"
+                  label={mediaType === 'AI' ? 'Describe what you want in detail...' : 'Description...'}
+                  variant={mediaType === 'AI' ? 'outlined' : 'standard'}
+                  color="success"
+                  onChange={({ target: { value } }) => {
+                    if (mediaType === 'AI') {
+                      this.setState({ description: value });
+                      return;
+                    }
+                    if (value.trim().length <= 20) {
+                      this.setState({ description: value });
+                    }
+                  }}
+                  value={description}
+                  error={!description || isDescriptionError}
+                  style={{ margin: '1.5vh', width: '100%' }}
+                  disabled={AIimageStatus.generatedImage || AIimageStatus.generatingImage}
+                  multiline={mediaType === 'AI'}
+                  minRows={3}
+                  maxRows={3}
+                />
+                {
+                  this.handleImageTypes()
+                }
+              </div>
+            </CardActions>
 
-        </Card>
-      </Dialog>
-
+          </Card>
+        </Dialog>
+        {showAIResetDialog && (
+          <WarningDialog
+            showDialog={showAIResetDialog}
+            handleCancel={() => this.setState({ showAIResetDialog: false })}
+            handleContinue={() => this.setState({ ...initialState, mediaType: 'AI' })}
+            title={`Warning: Refreshing will permanently delete the generated image, ${description}, and you will have ${5 - totalAiGenratedImages} tries left to generate a new image. Are you sure you want to continue?`}
+          />
+        )}
+      </>
     );
   }
 

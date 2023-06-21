@@ -98,8 +98,8 @@ describe('The Mypins component', () => {
       },
     });
     await Promise.resolve();
-    const cancelAlert = wrapper.find({ id: 'cancel-delete-alert' });
-    cancelAlert.props().onClick();
+    const warningDialog: EnzymePropSelector = wrapper.find('WarningDialog');
+    warningDialog.props().handleCancel();
     expect(wrapper.state().showDeleteImageModal).toBe(false);
     expect(wrapper.state().deletableImgInfo).toBe(null);
   });
@@ -123,8 +123,8 @@ describe('The Mypins component', () => {
       },
     });
     await Promise.resolve();
-    const deleteAlert = wrapper.find({ id: 'resume-delete-alert' });
-    deleteAlert.props().onClick();
+    const warningDialog: EnzymePropSelector = wrapper.find('WarningDialog');
+    warningDialog.props().handleContinue();
     expect(wrapper.state().showDeleteImageModal).toBe(false);
     expect(wrapper.state().deletableImgInfo).toBe(null);
     expect(wrapper.state().pinList).toStrictEqual([pinsStub[1]]);
