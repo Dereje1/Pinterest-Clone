@@ -185,6 +185,25 @@ describe('The pin creation modal', () => {
     expect(toJson(wrapper)).toMatchSnapshot();
   });
 
+  test('will show warning dialog while switching media type if an AI image has already generated', () => {
+    const wrapper = shallow<PinCreate>(<PinCreate {...props} />);
+    const cardHeader: EnzymePropSelector = wrapper.find('ForwardRef(CardHeader)');
+    let dialogTitle = wrapper.find('ForwardRef(DialogTitle)');
+    cardHeader.props().action.props.onChange('', 'AI');
+    dialogTitle = wrapper.find('ForwardRef(DialogTitle)');
+    expect(dialogTitle.text()).toBe('Create pin: AI');
+    expect(wrapper.state().showAIResetDialog).toBe(false);
+    wrapper.setState({
+      AIimageStatus: {
+        generatedImage: true,
+        generatingImage: false,
+        _id: null,
+      },
+    });
+    cardHeader.props().action.props.onChange('', 'link');
+    expect(wrapper.state().showAIResetDialog).toBe(true);
+  });
+
   test('will generate AI images', async () => {
     const wrapper = shallow<PinCreate>(<PinCreate {...props} />);
     const cardHeader: EnzymePropSelector = wrapper.find('ForwardRef(CardHeader)');
@@ -257,7 +276,7 @@ describe('The pin creation modal', () => {
     resetButton.props().onClick();
     // reset generated image
     const warningDialog: EnzymePropSelector = wrapper.find('WarningDialog');
-    expect(warningDialog.props().title).toBe('Warning: Refreshing will permanently delete the generated image, AI generated title, and you will have 4 tries left to generate a new image. Are you sure you want to continue?');
+    expect(warningDialog.props().title).toBe('Warning: This will permanently delete the generated image, AI generated title, and you will have 4 tries left to generate a new image. Are you sure you want to continue?');
     warningDialog.props().handleContinue();
     expect(wrapper.state().AIimageStatus).toEqual({
       _id: null,
@@ -301,7 +320,7 @@ describe('The pin creation modal', () => {
     resetButton.props().onClick();
     // reset generated image
     const warningDialog: EnzymePropSelector = wrapper.find('WarningDialog');
-    expect(warningDialog.props().title).toBe('Warning: Refreshing will permanently delete the generated image, AI generated title, and you will have 4 tries left to generate a new image. Are you sure you want to continue?');
+    expect(warningDialog.props().title).toBe('Warning: This will permanently delete the generated image, AI generated title, and you will have 4 tries left to generate a new image. Are you sure you want to continue?');
     warningDialog.props().handleCancel();
     expect(wrapper.state().AIimageStatus).toEqual({
       _id: 'Ai_generated_ID',

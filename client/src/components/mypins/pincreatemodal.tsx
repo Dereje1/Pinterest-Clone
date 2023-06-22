@@ -226,6 +226,7 @@ class PinCreate extends Component<PinCreateProps, PinCreateState> {
                 AIimageStatus.generatedImage
                 || AIimageStatus.generatingImage
                 || !description.trim().length
+                || totalAiGenratedImages >= 5
               }
             >
               {AIimageStatus.generatedImage ? 'Generated' : 'Generate Image'}
@@ -249,6 +250,17 @@ class PinCreate extends Component<PinCreateProps, PinCreateState> {
         );
       default:
         return null;
+    }
+  };
+
+  handleMediaChange = (e:React.SyntheticEvent, imgType: PinCreateState['mediaType']) => {
+    const { imgKey, AIimageStatus: { generatedImage } } = this.state;
+    if (generatedImage) {
+      this.setState({ showAIResetDialog: true });
+      return;
+    }
+    if (imgType) {
+      this.setState({ ...initialState, mediaType: imgType, imgKey: imgKey + 1 });
     }
   };
 
@@ -297,9 +309,7 @@ class PinCreate extends Component<PinCreateProps, PinCreateState> {
                 <ToggleButtonGroup
                   value={mediaType}
                   exclusive
-                  onChange={(_, imgType) => (imgType
-                    ? this.setState({ ...initialState, mediaType: imgType, imgKey: imgKey + 1 })
-                    : null)}
+                  onChange={this.handleMediaChange}
                   aria-label="text alignment"
                   sx={{ marginRight: 80, color: '900' }}
                 >
@@ -378,7 +388,7 @@ class PinCreate extends Component<PinCreateProps, PinCreateState> {
             showDialog={showAIResetDialog}
             handleCancel={() => this.setState({ showAIResetDialog: false })}
             handleContinue={() => this.setState({ ...initialState, mediaType: 'AI' })}
-            title={`Warning: Refreshing will permanently delete the generated image, ${description}, and you will have ${5 - totalAiGenratedImages} tries left to generate a new image. Are you sure you want to continue?`}
+            title={`Warning: This will permanently delete the generated image, ${description}, and you will have ${5 - totalAiGenratedImages} tries left to generate a new image. Are you sure you want to continue?`}
           />
         )}
       </>

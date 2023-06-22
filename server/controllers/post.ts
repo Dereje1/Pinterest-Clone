@@ -78,9 +78,11 @@ export const generateAIimage = async (req: Request, res: genericResponseType) =>
 
   const { description } = req.body;
   try {
-    if (!description.trim().length) res.end();
     const aiGeneratedByUser = await aiGenerated.find({ userId });
-    if (aiGeneratedByUser.length >= 5) res.end();
+    if (!description.trim().length || aiGeneratedByUser.length >= 5) {
+      res.end();
+      return;
+    }
     const openai = new OpenAIApi(configuration);
     debug(`UserId -> ${userId} Generating AI image and title for -> ${description} from openAI`);
     const { data: imageResponse } = await openai.createImage({
