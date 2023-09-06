@@ -2,7 +2,7 @@ import React from 'react';
 import Button from '@mui/material/Button';
 import AccountCircleIcon from '@mui/icons-material/AccountCircle';
 import { connect } from 'react-redux';
-import { setGuest } from '../../redux/userSlice';
+import { getUser } from '../../redux/userSlice';
 import { getProviderIcons } from '../common/common';
 import { userType, providerIconsType, providersType } from '../../interfaces';
 import './loginbuttons.scss';
@@ -10,7 +10,7 @@ import './loginbuttons.scss';
 export const mapStateToProps = ({ user }: {user: userType}) => ({ user });
 
 const actionCreators = {
-  setGuest,
+  getUser,
 };
 
 const handleLogin = (loc: string) => { // twitter/ google authentication
@@ -34,14 +34,14 @@ export function ProviderButton({ service }: {service: string}) {
 
 interface LoginButtonsProps{
   user: userType
-  setGuest: (path: string) => void
+  getUser: (path: string) => void
   guest: () => void
 }
 
 export class LoginButtons extends React.Component<LoginButtonsProps> {
 
   handleGuest = () => { // set guest user
-    const { setGuest: setGuestStatus, guest } = this.props;
+    const { getUser: setGuestStatus, guest } = this.props;
     setGuestStatus('/auth/guest');
     guest(); // callback to hid login div
   };

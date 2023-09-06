@@ -22,8 +22,7 @@ export const userSlice = createSlice({
   name: 'user',
   initialState,
   reducers: {
-    getUserStatus: (state, action) => action.payload,
-    setGuestStatus: (state, action) => action.payload,
+    getUserStatus: (state, action) => ({ ...state, ...action.payload }),
     rejectAuthentication: () => initialState,
     changeDisplayName: (state, action) => {
       state.displayName = action.payload;
@@ -34,7 +33,6 @@ export const userSlice = createSlice({
 // Action creators are generated for each case reducer function
 const {
   getUserStatus,
-  setGuestStatus,
   changeDisplayName,
   rejectAuthentication,
 } = userSlice.actions;
@@ -43,16 +41,6 @@ export const getUser = (address: string) => async (dispatch: (action: dispatchTy
   try {
     const payload = await RESTcall({ address });
     dispatch(getUserStatus(payload));
-  } catch (err) {
-    dispatch(rejectAuthentication());
-  }
-};
-
-// fake guest account setter look at backend /authconfig/routes
-export const setGuest = (address: string) => async (dispatch: (action: dispatchType) => void) => {
-  try {
-    const payload = await RESTcall({ address });
-    dispatch(setGuestStatus(payload));
   } catch (err) {
     dispatch(rejectAuthentication());
   }

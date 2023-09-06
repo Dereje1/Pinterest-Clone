@@ -11,7 +11,7 @@ describe('The sign in component', () => {
   let props: React.ComponentProps<typeof LoginButtons>;
   beforeEach(() => {
     props = {
-      setGuest: jest.fn(),
+      getUser: jest.fn(),
       guest: jest.fn(),
       user: { ...reduxStub.user },
     };
@@ -76,7 +76,7 @@ describe('The sign in component', () => {
     const wrapper = shallow(<LoginButtons {...props} />);
     const guestButton = wrapper.find({ id: 'guestbutton' });
     guestButton.props().onClick();
-    expect(props.setGuest).toHaveBeenCalledWith('/auth/guest');
+    expect(props.getUser).toHaveBeenCalledWith('/auth/guest');
     expect(props.guest).toHaveBeenCalledTimes(1);
   });
 

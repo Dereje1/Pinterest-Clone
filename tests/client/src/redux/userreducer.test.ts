@@ -1,4 +1,4 @@
-import userStatusReducer, { updateDisplayName, getUser, setGuest } from '../../../../client/src/redux/userSlice';
+import userStatusReducer, { updateDisplayName, getUser } from '../../../../client/src/redux/userSlice';
 import { reduxStub } from '../../stub';
 
 jest.mock('../../../../client/src/crud');
@@ -17,13 +17,7 @@ describe('The user reducer', () => {
   test('will return the payload for GET_USER_STATUS action', () => {
     const action = { type: 'user/getUserStatus', payload: reduxStub.user };
     const newState = userStatusReducer(initialState, action);
-    expect(newState).toBe(reduxStub.user);
-  });
-
-  test('will return the payload for SET_GUEST_STATUS action', () => {
-    const action = { type: 'user/setGuestStatus', payload: reduxStub.user };
-    const newState = userStatusReducer(initialState, action);
-    expect(newState).toBe(reduxStub.user);
+    expect(newState).toEqual(reduxStub.user);
   });
 
   test('will return the initial state for a rejected auth call', () => {
@@ -33,9 +27,9 @@ describe('The user reducer', () => {
   });
 
   test('will update the display name', () => {
-    const action = { type: 'user/setGuestStatus', payload: reduxStub.user };
+    const action = { type: 'user/getUserStatus', payload: reduxStub.user };
     const newState = userStatusReducer(initialState, action);
-    expect(newState).toBe(reduxStub.user);
+    expect(newState).toEqual(reduxStub.user);
     // send action to update dispalay name
     const newStateWithDisplayNameChange = userStatusReducer(newState, updateDisplayName('new display name'));
     expect(newStateWithDisplayNameChange).toEqual({ ...reduxStub.user, displayName: 'new display name' });
@@ -73,7 +67,7 @@ describe('Authentication actions', () => {
   });
 
   test('will dispatch the status for a guest user', async () => {
-    const profile = setGuest('/auth/guest');
+    const profile = getUser('/auth/guest');
     await profile(dispatch);
     expect(dispatch).toHaveBeenCalledWith({
       payload: {
@@ -81,20 +75,12 @@ describe('Authentication actions', () => {
         userIp: 'Tester userIp',
         username: 'Tester guest',
       },
-      type: 'user/setGuestStatus',
+      type: 'user/getUserStatus',
     });
   });
 
   test('will dispatch the status for a rejected logged in user request', async () => {
     const profile = getUser('profile_get_reject');
-    await profile(dispatch);
-    expect(dispatch).toHaveBeenCalledWith({
-      type: 'user/rejectAuthentication',
-    });
-  });
-
-  test('will dispatch the status for a rejected guest user request', async () => {
-    const profile = setGuest('guest_get_reject');
     await profile(dispatch);
     expect(dispatch).toHaveBeenCalledWith({
       type: 'user/rejectAuthentication',
