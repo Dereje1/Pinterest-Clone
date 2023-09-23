@@ -362,6 +362,10 @@ describe('generating an AI image', () => {
       },
     };
     await generateAIimage(req as genericRequest, res as unknown as Response);
-    expect(res.json).toHaveBeenCalledWith(Error('Mocked rejection'));
+    expect(res.json).toHaveBeenCalledWith({
+      imgURL: '',
+      title: '',
+      _id: null,
+    });
   });
 });

@@ -174,10 +174,10 @@ class PinCreate extends Component<PinCreateProps, PinCreateState> {
       description: title.trim(),
       AIimageStatus: {
         _id,
-        generatedImage: true,
+        generatedImage: Boolean(_id),
         generatingImage: false,
       },
-    }, updateGeneratedImages);
+    }, () => (_id ? updateGeneratedImages() : null));
   };
 
   handleImageTypes = () => {

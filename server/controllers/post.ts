@@ -105,6 +105,7 @@ export const generateAIimage = async (req: Request, res: genericResponseType) =>
     const [titleObject] = titleResponse.choices;
     res.json({ imgURL: linkObject.url, title: titleObject.text?.trim().replace(/[".]/g, ''), _id });
   } catch (error) {
-    res.json(error);
+    debug(`Error Generating AI image and title for -> UserId -> ${userId} and description: ${description}, Error: ${error}`);
+    res.json({ imgURL: '', title: '', _id: null });
   }
 };
