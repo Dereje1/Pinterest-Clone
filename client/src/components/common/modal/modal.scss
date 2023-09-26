@@ -1,0 +1,52 @@
+@import "../../../keyframes.scss";
+
+.zoom{
+  height: auto;
+  position: absolute;
+  left: 0;
+  right: 0;
+  margin-left: auto;
+  margin-right: auto;
+  overflow: auto;
+  box-shadow: 0 5px 15px rgba(0,0,0,.5);
+  border: 1px solid rgba(0,0,0,.2);
+  border-radius: 6px;
+  z-index: 1010;
+  outline: none;
+  &.cshow{
+    display: block;
+    @include animation('zoom-pin');
+    animation-duration: 1s;
+    animation-iteration-count: 1;
+    animation-fill-mode: forwards;
+  }
+  &.chide{
+    display: block;
+    @include animation('restore-pin');
+    animation-duration: 0.5s;
+    animation-iteration-count: 1;
+    animation-fill-mode: forwards;
+  }
+}
+
+
+@include keyframes(zoom-pin) {
+  0%{
+    transform: scale(0.6);
+  }
+  100%{
+    transform: scale(1);
+    visibility: visible;
+  }
+}
+
+@include keyframes(restore-pin) {
+  0%{
+    transform: scale(1);
+  }
+  100%{
+    transform: scale(0);
+    visibility:hidden;
+  }
+}
+

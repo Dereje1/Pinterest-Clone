@@ -2,7 +2,7 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import RESTcall from '../../crud';
-import ImageBuild from '../imagebuild/Imagebuild';
+import ImageBuild from '../common/imagebuild/Imagebuild';
 import { shuffleImages, getFilteredPins } from '../../utils/utils';
 import { PinType, userType, searchType } from '../../interfaces';
 

@@ -1,3 +1,7 @@
+/**
+ This file contains small react components that maybe used all over the codebase
+ * */
+
 import React, { HTMLAttributes } from 'react';
 import { Link as RouterLink } from 'react-router-dom';
 import Link from '@mui/material/Link';

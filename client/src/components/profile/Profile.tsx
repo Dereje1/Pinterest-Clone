@@ -6,7 +6,7 @@ import Avatar from '@mui/material/Avatar';
 import Box from '@mui/material/Box';
 import SearchIcon from '@mui/icons-material/Search';
 import IconButton from '@mui/material/IconButton';
-import ImageBuild from '../imagebuild/Imagebuild';
+import ImageBuild from '../common/imagebuild/Imagebuild';
 import {
   Loading, getProviderIcons, UserPinsSelector, UserJoinedDate,
 } from '../common/common';

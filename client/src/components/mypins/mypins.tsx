@@ -9,7 +9,7 @@ import Fab from '@mui/material/Fab';
 import AddIcon from '@mui/icons-material/Add';
 
 import PinCreate from './pincreatemodal';
-import ImageBuild from '../imagebuild/Imagebuild';
+import ImageBuild from '../common/imagebuild/Imagebuild';
 import UserInfo from './UserInfo';
 import WarningDialog from './WarningDialog';
 import RESTcall from '../../crud'; // pin CRUD

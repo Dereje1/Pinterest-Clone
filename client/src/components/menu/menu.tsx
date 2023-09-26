@@ -124,12 +124,7 @@ export class Menu extends React.Component<MenuProps, MenuState> {
       location: { pathname },
     } = this.props;
     if (!ready) return <Loading />;
-    if (!username) {
-      // render cover
-      document.body.classList.add('cover');
-      return <Cover />;
-    }
-    document.body.classList.remove('cover');
+    if (!username) return <Cover />;
     return (
       <div className="menu">
         <Search
