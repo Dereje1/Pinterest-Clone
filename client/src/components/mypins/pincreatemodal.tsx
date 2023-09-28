@@ -6,21 +6,13 @@ import Card from '@mui/material/Card';
 import CardHeader from '@mui/material/CardHeader';
 import CardMedia from '@mui/material/CardMedia';
 import CardActions from '@mui/material/CardActions';
-import UploadFileIcon from '@mui/icons-material/UploadFile';
 import IconButton from '@mui/material/IconButton';
-import Button from '@mui/material/Button';
-import DriveFolderUploadIcon from '@mui/icons-material/DriveFolderUpload';
 import Dialog from '@mui/material/Dialog';
 import DialogTitle from '@mui/material/DialogTitle';
-import ToggleButton from '@mui/material/ToggleButton';
-import ToggleButtonGroup from '@mui/material/ToggleButtonGroup';
-import LinkIcon from '@mui/icons-material/Link';
-import PsychologyIcon from '@mui/icons-material/Psychology';
-import RestartAltIcon from '@mui/icons-material/RestartAlt';
-import Typography from '@mui/material/Typography';
 import RESTcall from '../../crud'; // pin CRUD
 import SavePin from './SavePin';
 import WarningDialog from './WarningDialog';
+import { MediaSelect, MediaButtonHandler } from './MediaSelection';
 import error from '../../assets/error.png';
 import loading from '../../assets/giphy.gif';
 import {
@@ -90,18 +82,6 @@ class PinCreate extends Component<PinCreateProps, PinCreateState> {
     }, reset);
   };
 
-  // processes picture on change of text box
-  processImage = (e: React.SyntheticEvent) => {
-    const target = e.target as HTMLTextAreaElement;
-    const imgLink = validateURL(target.value);
-    if (!imgLink) return;
-    this.setState({
-      picPreview: imgLink,
-      isError: false,
-      isLoaded: false,
-    });
-  };
-
   savePic = () => { // ready to save pin
     const { savePin } = this.props;
     const { picPreview, description, AIimageStatus } = this.state;
@@ -149,6 +129,18 @@ class PinCreate extends Component<PinCreateProps, PinCreateState> {
     }
   };
 
+  // processes picture on change of text box
+  handleLinkImage = (e: React.SyntheticEvent) => {
+    const target = e.target as HTMLTextAreaElement;
+    const imgLink = validateURL(target.value);
+    if (!imgLink) return;
+    this.setState({
+      picPreview: imgLink,
+      isError: false,
+      isLoaded: false,
+    });
+  };
+
   handleUploadedImage = (e: React.SyntheticEvent<HTMLDivElement>) => {
     const target = (e.target as HTMLInputElement).files;
     if (target !== null) {
@@ -178,79 +170,6 @@ class PinCreate extends Component<PinCreateProps, PinCreateState> {
         generatingImage: false,
       },
     }, () => (_id ? updateGeneratedImages() : null));
-  };
-
-  handleImageTypes = () => {
-    const {
-      mediaType, isError, picPreview, AIimageStatus, description,
-    } = this.state;
-    const { totalAiGenratedImages } = this.props;
-    switch (mediaType) {
-      case 'upload':
-        return (
-          <Button
-            variant="contained"
-            startIcon={<UploadFileIcon />}
-            sx={{ margin: '2.3vh' }}
-            component="label"
-            color={isError ? 'error' : 'secondary'}
-          >
-            {isError ? 'choose image' : 'replace image'}
-            <input hidden accept="image/*" type="file" onChange={this.handleUploadedImage} />
-          </Button>
-        );
-      case 'link':
-        return (
-          <TextField
-            id="pin-img-link"
-            label="Paste image address here http://..."
-            variant="standard"
-            onChange={this.processImage}
-            value={picPreview}
-            error={isError}
-            color="success"
-            style={{ margin: '1.5vh', width: '100%' }}
-          />
-        );
-      case 'AI':
-        return (
-          <div style={{ display: 'flex', alignItems: 'center' }}>
-            <Button
-              variant="contained"
-              startIcon={<PsychologyIcon />}
-              sx={{ margin: '2.3vh' }}
-              component="label"
-              color="info"
-              onClick={this.handleAIimage}
-              disabled={
-                AIimageStatus.generatedImage
-                || AIimageStatus.generatingImage
-                || !description.trim().length
-                || totalAiGenratedImages >= 5
-              }
-            >
-              {AIimageStatus.generatedImage ? 'Generated' : 'Generate Image'}
-            </Button>
-            <IconButton
-              onClick={() => this.setState({ showAIResetDialog: true })}
-              disabled={
-                !AIimageStatus.generatedImage
-                || AIimageStatus.generatingImage
-                || totalAiGenratedImages >= 5
-              }
-              disableRipple
-            >
-              <RestartAltIcon />
-            </IconButton>
-            <Typography>
-              {totalAiGenratedImages}
-              /5
-            </Typography>
-          </div>
-        );
-      default:
-        return null;
-    }
   };
 
   handleMediaChange = (e:React.SyntheticEvent, imgType: PinCreateState['mediaType']) => {
@@ -306,23 +225,11 @@ class PinCreate extends Component<PinCreateProps, PinCreateState> {
 
             <CardHeader
               action={(
-                <ToggleButtonGroup
-                  value={mediaType}
-                  exclusive
-                  onChange={this.handleMediaChange}
-                  aria-label="text alignment"
-                  sx={{ marginRight: 80, color: '900' }}
-                >
-                  <ToggleButton value="link" aria-label="link type">
-                    <LinkIcon />
-                  </ToggleButton>
-                  <ToggleButton value="upload" aria-label="upload type">
-                    <DriveFolderUploadIcon />
-                  </ToggleButton>
-                  <ToggleButton value="AI" aria-label="AI type" disabled={totalAiGenratedImages >= 5}>
-                    <PsychologyIcon />
-                  </ToggleButton>
-                </ToggleButtonGroup>
+                <MediaSelect
+                  handleMediaChange={this.handleMediaChange}
+                  mediaType={mediaType}
+                  totalAiGenratedImages={totalAiGenratedImages}
+                />
               )}
             />
             <div style={{ display: 'flex', flexDirection: 'column', justifyContent: 'center' }}>
@@ -375,9 +282,18 @@ class PinCreate extends Component<PinCreateProps, PinCreateState> {
                   minRows={3}
                   maxRows={3}
                 />
-                {
-                  this.handleImageTypes()
-                }
+                <MediaButtonHandler
+                  AIimageStatus={AIimageStatus}
+                  description={description}
+                  isError={isError}
+                  mediaType={mediaType}
+                  picPreview={picPreview}
+                  totalAiGenratedImages={totalAiGenratedImages}
+                  handleLinkImage={this.handleLinkImage}
+                  handleUploadedImage={this.handleUploadedImage}
+                  handleAIimage={this.handleAIimage}
+                  showAIResetDialog={() => this.setState({ showAIResetDialog: true })}
+                />
               </div>
             </CardActions>
 

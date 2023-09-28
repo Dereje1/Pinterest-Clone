@@ -39,7 +39,7 @@ describe('The pin creation modal', () => {
     const cardHeader: EnzymePropSelector = wrapper.find('ForwardRef(CardHeader)');
     let dialogTitle = wrapper.find('ForwardRef(DialogTitle)');
     expect(dialogTitle.text()).toBe('Create pin: Web link');
-    cardHeader.props().action.props.onChange('', 'upload');
+    cardHeader.props().action.props.handleMediaChange('', 'upload');
     dialogTitle = wrapper.find('ForwardRef(DialogTitle)');
     expect(dialogTitle.text()).toBe('Create pin: File/device');
     expect(toJson(wrapper)).toMatchSnapshot();
@@ -83,29 +83,29 @@ describe('The pin creation modal', () => {
 
   test('will handle changes in image links', () => {
     const wrapper = shallow<PinCreate>(<PinCreate {...props} />);
-    const imgLink = wrapper.find({ id: 'pin-img-link' });
-    imgLink.props().onChange({ target: { value: 'https://abc.com' } });
+    const MediaButtonHandler: EnzymePropSelector = wrapper.find('MediaButtonHandler');
+    MediaButtonHandler.props().handleLinkImage({ target: { value: 'https://abc.com' } });
     expect(wrapper.state().picPreview).toBe('https://abc.com');
   });
 
   test('will handle changes in image links with http', () => {
     const wrapper = shallow<PinCreate>(<PinCreate {...props} />);
-    const imgLink = wrapper.find({ id: 'pin-img-link' });
-    imgLink.props().onChange({ target: { value: 'http://abc.com' } });
+    const MediaButtonHandler: EnzymePropSelector = wrapper.find('MediaButtonHandler');
+    MediaButtonHandler.props().handleLinkImage({ target: { value: 'http://abc.com' } });
     expect(wrapper.state().picPreview).toBe('https://abc.com');
   });
 
   test('will handle changes in image links with data protocol', () => {
     const wrapper = shallow<PinCreate>(<PinCreate {...props} />);
-    const imgLink = wrapper.find({ id: 'pin-img-link' });
-    imgLink.props().onChange({ target: { value: 'data:abc.com' } });
+    const MediaButtonHandler: EnzymePropSelector = wrapper.find('MediaButtonHandler');
+    MediaButtonHandler.props().handleLinkImage({ target: { value: 'data:abc.com' } });
     expect(wrapper.state().picPreview).toBe('data:abc.com');
   });
 
   test('will handle changes in image links with invalid url', () => {
     const wrapper = shallow<PinCreate>(<PinCreate {...props} />);
-    const imgLink = wrapper.find({ id: 'pin-img-link' });
-    imgLink.props().onChange({ target: { value: 'htt://abc.com' } });
+    const MediaButtonHandler: EnzymePropSelector = wrapper.find('MediaButtonHandler');
+    MediaButtonHandler.props().handleLinkImage({ target: { value: 'htt://abc.com' } });
     expect(wrapper.state().picPreview).toBe('');
   });
 
@@ -116,7 +116,7 @@ describe('The pin creation modal', () => {
     const wrapper = shallow<PinCreate>(<PinCreate {...props} />);
     // turn upload switch on
     const cardHeader: EnzymePropSelector = wrapper.find('ForwardRef(CardHeader)');
-    cardHeader.props().action.props.onChange('', 'upload');
+    cardHeader.props().action.props.handleMediaChange('', 'upload');
     const instance = wrapper.instance() as PinCreate;
     // TODO: Fix is any declaration
     await instance.handleUploadedImage(
@@ -179,7 +179,7 @@ describe('The pin creation modal', () => {
     const cardHeader: EnzymePropSelector = wrapper.find('ForwardRef(CardHeader)');
     let dialogTitle = wrapper.find('ForwardRef(DialogTitle)');
     expect(dialogTitle.text()).toBe('Create pin: Web link');
-    cardHeader.props().action.props.onChange('', 'AI');
+    cardHeader.props().action.props.handleMediaChange('', 'AI');
     dialogTitle = wrapper.find('ForwardRef(DialogTitle)');
     expect(dialogTitle.text()).toBe('Create pin: AI');
     expect(toJson(wrapper)).toMatchSnapshot();
@@ -189,7 +189,7 @@ describe('The pin creation modal', () => {
     const wrapper = shallow<PinCreate>(<PinCreate {...props} />);
     const cardHeader: EnzymePropSelector = wrapper.find('ForwardRef(CardHeader)');
     let dialogTitle = wrapper.find('ForwardRef(DialogTitle)');
-    cardHeader.props().action.props.onChange('', 'AI');
+    cardHeader.props().action.props.handleMediaChange('', 'AI');
     dialogTitle = wrapper.find('ForwardRef(DialogTitle)');
     expect(dialogTitle.text()).toBe('Create pin: AI');
     expect(wrapper.state().showAIResetDialog).toBe(false);
@@ -200,20 +200,20 @@ describe('The pin creation modal', () => {
         _id: null,
       },
     });
-    cardHeader.props().action.props.onChange('', 'link');
+    cardHeader.props().action.props.handleMediaChange('', 'link');
     expect(wrapper.state().showAIResetDialog).toBe(true);
   });
 
   test('will generate AI images', async () => {
     const wrapper = shallow<PinCreate>(<PinCreate {...props} />);
     const cardHeader: EnzymePropSelector = wrapper.find('ForwardRef(CardHeader)');
-    cardHeader.props().action.props.onChange('', 'AI');
+    cardHeader.props().action.props.handleMediaChange('', 'AI');
     const textField: EnzymePropSelector = wrapper.find('ForwardRef(TextField)');
-    const generateButton: EnzymePropSelector = wrapper.find('ForwardRef(Button)');
+    const generateButton: EnzymePropSelector = wrapper.find('MediaButtonHandler');
     // set the prompt
     textField.props().onChange({ target: { value: 'A prompt to generate image' } });
     // generate click
-    generateButton.props().onClick();
+    generateButton.props().handleAIimage();
     expect(mockedRESTcall).toHaveBeenCalledTimes(1);
     expect(mockedRESTcall.mock.calls).toEqual([
       [{
@@ -244,13 +244,13 @@ describe('The pin creation modal', () => {
   test('will reset a generated image', async () => {
     const wrapper = shallow<PinCreate>(<PinCreate {...props} />);
     const cardHeader: EnzymePropSelector = wrapper.find('ForwardRef(CardHeader)');
-    cardHeader.props().action.props.onChange('', 'AI');
+    cardHeader.props().action.props.handleMediaChange('', 'AI');
     const textField: EnzymePropSelector = wrapper.find('ForwardRef(TextField)');
-    const generateButton: EnzymePropSelector = wrapper.find('ForwardRef(Button)');
+    const generateButton: EnzymePropSelector = wrapper.find('MediaButtonHandler');
     // set the prompt
     textField.props().onChange({ target: { value: 'A prompt to generate image' } });
     // generate click
-    generateButton.props().onClick();
+    generateButton.props().handleAIimage();
     expect(mockedRESTcall).toHaveBeenCalledTimes(1);
     expect(mockedRESTcall.mock.calls).toEqual([
       [{
@@ -272,8 +272,7 @@ describe('The pin creation modal', () => {
       generatingImage: false,
     });
     // open warning dialog
-    const resetButton: EnzymePropSelector = wrapper.find('ForwardRef(IconButton)').at(1);
-    resetButton.props().onClick();
+    generateButton.props().showAIResetDialog();
     // reset generated image
     const warningDialog: EnzymePropSelector = wrapper.find('WarningDialog');
     expect(warningDialog.props().title).toBe('Warning: This will permanently delete the generated image, AI generated title, and you will have 4 tries left to generate a new image. Are you sure you want to continue?');
@@ -288,13 +287,13 @@ describe('The pin creation modal', () => {
   test('will cancel the reset of a generated image', async () => {
     const wrapper = shallow<PinCreate>(<PinCreate {...props} />);
     const cardHeader: EnzymePropSelector = wrapper.find('ForwardRef(CardHeader)');
-    cardHeader.props().action.props.onChange('', 'AI');
+    cardHeader.props().action.props.handleMediaChange('', 'AI');
     const textField: EnzymePropSelector = wrapper.find('ForwardRef(TextField)');
-    const generateButton: EnzymePropSelector = wrapper.find('ForwardRef(Button)');
+    const generateButton: EnzymePropSelector = wrapper.find('MediaButtonHandler');
     // set the prompt
     textField.props().onChange({ target: { value: 'A prompt to generate image' } });
     // generate click
-    generateButton.props().onClick();
+    generateButton.props().handleAIimage();
     expect(mockedRESTcall).toHaveBeenCalledTimes(1);
     expect(mockedRESTcall.mock.calls).toEqual([
       [{
@@ -316,8 +315,7 @@ describe('The pin creation modal', () => {
       generatingImage: false,
     });
     // open warning dialog
-    const resetButton: EnzymePropSelector = wrapper.find('ForwardRef(IconButton)').at(1);
-    resetButton.props().onClick();
+    generateButton.props().showAIResetDialog();
     // reset generated image
     const warningDialog: EnzymePropSelector = wrapper.find('WarningDialog');
     expect(warningDialog.props().title).toBe('Warning: This will permanently delete the generated image, AI generated title, and you will have 4 tries left to generate a new image. Are you sure you want to continue?');
@@ -334,11 +332,11 @@ describe('The pin creation modal', () => {
     const cardHeader: EnzymePropSelector = wrapper.find('ForwardRef(CardHeader)');
     let dialogTitle = wrapper.find('ForwardRef(DialogTitle)');
     expect(dialogTitle.text()).toBe('Create pin: Web link');
-    cardHeader.props().action.props.onChange('', null);
+    cardHeader.props().action.props.handleMediaChange('', null);
     dialogTitle = wrapper.find('ForwardRef(DialogTitle)');
     expect(dialogTitle.text()).toBe('Create pin: Web link');
     // handles default case of switch/case
-    cardHeader.props().action.props.onChange('', 'any');
-    expect(wrapper.instance().handleImageTypes()).toBe(null);
+    cardHeader.props().action.props.handleMediaChange('', 'any');
+    // expect(wrapper.instance().handleImageTypes()).toBe(null);
   });
 });

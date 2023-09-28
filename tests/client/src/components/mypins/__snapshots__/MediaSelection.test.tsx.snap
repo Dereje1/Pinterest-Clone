@@ -1,0 +1,174 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Handling different media buttons - AI - generated  1`] = `
+<div
+  style={
+    {
+      "alignItems": "center",
+      "display": "flex",
+    }
+  }
+>
+  <ForwardRef(Button)
+    color="info"
+    component="label"
+    disabled={true}
+    onClick={[MockFunction]}
+    startIcon={<Memo />}
+    sx={
+      {
+        "margin": "2.3vh",
+      }
+    }
+    variant="contained"
+  >
+    Generated
+  </ForwardRef(Button)>
+  <ForwardRef(IconButton)
+    disableRipple={true}
+    disabled={false}
+    onClick={[MockFunction]}
+  >
+    <Memo(ForwardRef(RestartAltIcon)) />
+  </ForwardRef(IconButton)>
+  <ForwardRef(Typography)>
+    2
+    /5
+  </ForwardRef(Typography)>
+</div>
+`;
+
+exports[`Handling different media buttons - AI - not generated yet 1`] = `
+<div
+  style={
+    {
+      "alignItems": "center",
+      "display": "flex",
+    }
+  }
+>
+  <ForwardRef(Button)
+    color="info"
+    component="label"
+    disabled={false}
+    onClick={[MockFunction]}
+    startIcon={<Memo />}
+    sx={
+      {
+        "margin": "2.3vh",
+      }
+    }
+    variant="contained"
+  >
+    Generate Image
+  </ForwardRef(Button)>
+  <ForwardRef(IconButton)
+    disableRipple={true}
+    disabled={true}
+    onClick={[MockFunction]}
+  >
+    <Memo(ForwardRef(RestartAltIcon)) />
+  </ForwardRef(IconButton)>
+  <ForwardRef(Typography)>
+    2
+    /5
+  </ForwardRef(Typography)>
+</div>
+`;
+
+exports[`Handling different media buttons - links 1`] = `
+<ForwardRef(TextField)
+  color="success"
+  error={false}
+  id="pin-img-link"
+  label="Paste image address here http://..."
+  onChange={[MockFunction]}
+  style={
+    {
+      "margin": "1.5vh",
+      "width": "100%",
+    }
+  }
+  value=""
+  variant="standard"
+/>
+`;
+
+exports[`Handling different media buttons - uploads - with no error 1`] = `
+<ForwardRef(Button)
+  color="secondary"
+  component="label"
+  startIcon={<Memo />}
+  sx={
+    {
+      "margin": "2.3vh",
+    }
+  }
+  variant="contained"
+>
+  replace image
+  <input
+    accept="image/*"
+    hidden={true}
+    onChange={[MockFunction]}
+    type="file"
+  />
+</ForwardRef(Button)>
+`;
+
+exports[`Handling different media buttons - uploads with error 1`] = `
+<ForwardRef(Button)
+  color="error"
+  component="label"
+  startIcon={<Memo />}
+  sx={
+    {
+      "margin": "2.3vh",
+    }
+  }
+  variant="contained"
+>
+  choose image
+  <input
+    accept="image/*"
+    hidden={true}
+    onChange={[MockFunction]}
+    type="file"
+  />
+</ForwardRef(Button)>
+`;
+
+exports[`Selecting media will display the media selection toggle buttons 1`] = `
+<ForwardRef(ToggleButtonGroup)
+  aria-label="text alignment"
+  exclusive={true}
+  onChange={[MockFunction]}
+  sx={
+    {
+      "color": "900",
+      "marginRight": 80,
+    }
+  }
+  value="link"
+>
+  <ForwardRef(ToggleButton)
+    aria-label="link type"
+    value="link"
+  >
+    <Memo(ForwardRef(LinkIcon)) />
+  </ForwardRef(ToggleButton)>
+  <ForwardRef(ToggleButton)
+    aria-label="upload type"
+    value="upload"
+  >
+    <Memo(ForwardRef(DriveFolderUploadIcon)) />
+  </ForwardRef(ToggleButton)>
+  <ForwardRef(ToggleButton)
+    aria-label="AI type"
+    disabled={false}
+    value="AI"
+  >
+    <Memo(ForwardRef(PsychologyIcon)) />
+  </ForwardRef(ToggleButton)>
+</ForwardRef(ToggleButtonGroup)>
+`;

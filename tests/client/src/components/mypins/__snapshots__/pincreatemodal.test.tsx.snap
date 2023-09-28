@@ -51,38 +51,11 @@ exports[`The pin creation modal will render for generating AI images selection 1
     >
       <ForwardRef(CardHeader)
         action={
-          <ForwardRef(ToggleButtonGroup)
-            aria-label="text alignment"
-            exclusive={true}
-            onChange={[Function]}
-            sx={
-              {
-                "color": "900",
-                "marginRight": 80,
-              }
-            }
-            value="AI"
-          >
-            <ForwardRef(ToggleButton)
-              aria-label="link type"
-              value="link"
-            >
-              <Memo />
-            </ForwardRef(ToggleButton)>
-            <ForwardRef(ToggleButton)
-              aria-label="upload type"
-              value="upload"
-            >
-              <Memo />
-            </ForwardRef(ToggleButton)>
-            <ForwardRef(ToggleButton)
-              aria-label="AI type"
-              disabled={false}
-              value="AI"
-            >
-              <Memo />
-            </ForwardRef(ToggleButton)>
-          </ForwardRef(ToggleButtonGroup)>
+          <MediaSelect
+            handleMediaChange={[Function]}
+            mediaType="AI"
+            totalAiGenratedImages={1}
+          />
         }
       />
       <div
@@ -148,41 +121,24 @@ exports[`The pin creation modal will render for generating AI images selection 1
             value=""
             variant="outlined"
           />
-          <div
-            style={
+          <MediaButtonHandler
+            AIimageStatus={
               {
-                "alignItems": "center",
-                "display": "flex",
+                "_id": null,
+                "generatedImage": false,
+                "generatingImage": false,
               }
             }
-          >
-            <ForwardRef(Button)
-              color="info"
-              component="label"
-              disabled={true}
-              onClick={[Function]}
-              startIcon={<Memo />}
-              sx={
-                {
-                  "margin": "2.3vh",
-                }
-              }
-              variant="contained"
-            >
-              Generate Image
-            </ForwardRef(Button)>
-            <ForwardRef(IconButton)
-              disableRipple={true}
-              disabled={true}
-              onClick={[Function]}
-            >
-              <Memo(ForwardRef(RestartAltIcon)) />
-            </ForwardRef(IconButton)>
-            <ForwardRef(Typography)>
-              1
-              /5
-            </ForwardRef(Typography)>
-          </div>
+            description=""
+            handleAIimage={[Function]}
+            handleLinkImage={[Function]}
+            handleUploadedImage={[Function]}
+            isError={true}
+            mediaType="AI"
+            picPreview=""
+            showAIResetDialog={[Function]}
+            totalAiGenratedImages={1}
+          />
         </div>
       </ForwardRef(CardActions)>
     </ForwardRef(Card)>
@@ -241,38 +197,11 @@ exports[`The pin creation modal will render for links to images 1`] = `
     >
       <ForwardRef(CardHeader)
         action={
-          <ForwardRef(ToggleButtonGroup)
-            aria-label="text alignment"
-            exclusive={true}
-            onChange={[Function]}
-            sx={
-              {
-                "color": "900",
-                "marginRight": 80,
-              }
-            }
-            value="link"
-          >
-            <ForwardRef(ToggleButton)
-              aria-label="link type"
-              value="link"
-            >
-              <Memo />
-            </ForwardRef(ToggleButton)>
-            <ForwardRef(ToggleButton)
-              aria-label="upload type"
-              value="upload"
-            >
-              <Memo />
-            </ForwardRef(ToggleButton)>
-            <ForwardRef(ToggleButton)
-              aria-label="AI type"
-              disabled={false}
-              value="AI"
-            >
-              <Memo />
-            </ForwardRef(ToggleButton)>
-          </ForwardRef(ToggleButtonGroup)>
+          <MediaSelect
+            handleMediaChange={[Function]}
+            mediaType="link"
+            totalAiGenratedImages={1}
+          />
         }
       />
       <div
@@ -338,20 +267,23 @@ exports[`The pin creation modal will render for links to images 1`] = `
             value=""
             variant="standard"
           />
-          <ForwardRef(TextField)
-            color="success"
-            error={true}
-            id="pin-img-link"
-            label="Paste image address here http://..."
-            onChange={[Function]}
-            style={
+          <MediaButtonHandler
+            AIimageStatus={
               {
-                "margin": "1.5vh",
-                "width": "100%",
+                "_id": null,
+                "generatedImage": false,
+                "generatingImage": false,
               }
             }
-            value=""
-            variant="standard"
+            description=""
+            handleAIimage={[Function]}
+            handleLinkImage={[Function]}
+            handleUploadedImage={[Function]}
+            isError={true}
+            mediaType="link"
+            picPreview=""
+            showAIResetDialog={[Function]}
+            totalAiGenratedImages={1}
           />
         </div>
       </ForwardRef(CardActions)>
@@ -411,38 +343,11 @@ exports[`The pin creation modal will render for uploading images 1`] = `
     >
       <ForwardRef(CardHeader)
         action={
-          <ForwardRef(ToggleButtonGroup)
-            aria-label="text alignment"
-            exclusive={true}
-            onChange={[Function]}
-            sx={
-              {
-                "color": "900",
-                "marginRight": 80,
-              }
-            }
-            value="upload"
-          >
-            <ForwardRef(ToggleButton)
-              aria-label="link type"
-              value="link"
-            >
-              <Memo />
-            </ForwardRef(ToggleButton)>
-            <ForwardRef(ToggleButton)
-              aria-label="upload type"
-              value="upload"
-            >
-              <Memo />
-            </ForwardRef(ToggleButton)>
-            <ForwardRef(ToggleButton)
-              aria-label="AI type"
-              disabled={false}
-              value="AI"
-            >
-              <Memo />
-            </ForwardRef(ToggleButton)>
-          </ForwardRef(ToggleButtonGroup)>
+          <MediaSelect
+            handleMediaChange={[Function]}
+            mediaType="upload"
+            totalAiGenratedImages={1}
+          />
         }
       />
       <div
@@ -508,25 +413,24 @@ exports[`The pin creation modal will render for uploading images 1`] = `
             value=""
             variant="standard"
           />
-          <ForwardRef(Button)
-            color="error"
-            component="label"
-            startIcon={<Memo />}
-            sx={
+          <MediaButtonHandler
+            AIimageStatus={
               {
-                "margin": "2.3vh",
+                "_id": null,
+                "generatedImage": false,
+                "generatingImage": false,
               }
             }
-            variant="contained"
-          >
-            choose image
-            <input
-              accept="image/*"
-              hidden={true}
-              onChange={[Function]}
-              type="file"
-            />
-          </ForwardRef(Button)>
+            description=""
+            handleAIimage={[Function]}
+            handleLinkImage={[Function]}
+            handleUploadedImage={[Function]}
+            isError={true}
+            mediaType="upload"
+            picPreview=""
+            showAIResetDialog={[Function]}
+            totalAiGenratedImages={1}
+          />
         </div>
       </ForwardRef(CardActions)>
     </ForwardRef(Card)>
