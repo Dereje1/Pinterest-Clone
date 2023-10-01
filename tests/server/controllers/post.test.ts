@@ -32,14 +32,17 @@ jest.mock('@google-cloud/vision', () => ({ ImageAnnotatorClient: jest.fn(() => m
 
 /* Mock open ai api */
 const mockOpenAiInstance = {
-  createImage: jest.fn(() => Promise.resolve({ data: { data: [{ url: 'http:/stub-ai-image-url' }] } })),
-  createCompletion: jest.fn(() => Promise.resolve({ data: { choices: [{ text: 'stub-ai-title' }] } })),
+  images: {
+    generate: jest.fn(() => Promise.resolve({ data: [{ url: 'http:/stub-ai-image-url' }] })),
+  },
+  chat: {
+    completions: {
+      create: jest.fn(() => Promise.resolve({ choices: [{ message: { content: 'stub-ai-title' } }] })),
+    },
+  },
 };
 
-jest.mock('openai', () => ({
-  OpenAIApi: jest.fn(() => mockOpenAiInstance),
-  Configuration: jest.fn(),
-}));
+jest.mock('openai', () => jest.fn(() => mockOpenAiInstance));
 
 /* Mongoose mocks */
 const setupMocks = (response: PopulatedPinType[] | unknown = rawPinsStub) => {
@@ -313,15 +316,18 @@ describe('generating an AI image', () => {
       },
     };
     await generateAIimage(req as genericRequest, res as unknown as Response);
-    expect(mockOpenAiInstance.createImage).toHaveBeenCalledWith({
+    expect(mockOpenAiInstance.images.generate).toHaveBeenCalledWith({
       n: 1,
       prompt: 'open ai image creation prompt',
       size: '1024x1024',
     });
-    expect(mockOpenAiInstance.createCompletion).toHaveBeenCalledWith({
+    expect(mockOpenAiInstance.chat.completions.create).toHaveBeenCalledWith({
       max_tokens: 10,
-      model: 'text-davinci-003',
-      prompt: 'Create a concise and engaging title, consisting of one or two words, for the given description: open ai image creation prompt',
+      model: 'gpt-3.5-turbo',
+      messages: [{
+        role: 'user',
+        content: 'Create a concise and engaging title, consisting of one or two words, for the given description: open ai image creation prompt',
+      }],
     });
     expect(res.json).toHaveBeenCalledWith({
       imgURL: 'http:/stub-ai-image-url',
