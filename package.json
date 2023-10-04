@@ -16,6 +16,7 @@
     "preview": "vite preview"
   },
   "dependencies": {
+    "@aws-sdk/client-s3": "^3.421.0",
     "@emotion/react": "^11.7.1",
     "@emotion/styled": "^11.6.0",
     "@google-cloud/vision": "^3.1.2",
@@ -23,7 +24,7 @@
     "@mui/material": "^5.10.17",
     "@mui/styles": "^5.3.0",
     "@reduxjs/toolkit": "^1.9.5",
-    "aws-sdk": "^2.1073.0",
+    "@smithy/types": "^2.3.4",
     "axios": "latest",
     "body-parser": "^1.20.1",
     "cookie-session": "^2.0.0",

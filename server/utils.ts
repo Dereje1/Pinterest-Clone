@@ -1,7 +1,8 @@
 /* eslint-disable import/no-import-module-exports */
 import * as https from 'https';
 import { Transform as Stream } from 'stream';
-import AWS from 'aws-sdk';
+import { S3Client, PutObjectCommand } from '@aws-sdk/client-s3';
+import { StreamingBlobPayloadInputTypes } from '@smithy/types';
 import {
   PopulatedPinType,
 } from './interfaces';
@@ -129,7 +130,7 @@ const validateURL = (string: string) => {
   }
 };
 
-export const processImage = (url: string):Promise<string|ArrayBuffer|undefined> => new
+export const processImage = (url: string):Promise<StreamingBlobPayloadInputTypes> => new
 Promise((resolve, reject) => {
   const urlType = validateURL(url);
   if (!urlType) {
@@ -162,10 +163,15 @@ Promise((resolve, reject) => {
   request.end();
 });
 
-export const configureS3 = () => new AWS.S3({
-  accessKeyId: process.env.AWS_ACCESS_KEY_ID,
-  secretAccessKey: process.env.AWS_SECRET_KEY,
-});
+export const configureS3 = () => (process.env.AWS_ACCESS_KEY_ID && process.env.AWS_SECRET_KEY
+  ? new S3Client({
+    credentials: {
+      accessKeyId: process.env.AWS_ACCESS_KEY_ID,
+      secretAccessKey: process.env.AWS_SECRET_KEY,
+    },
+    region: 'us-east-1',
+  })
+  : null);
 
 export const uploadImageToS3 = async ({
   originalImgLink, userId, displayName, service,
@@ -179,18 +185,22 @@ export const uploadImageToS3 = async ({
   const ASCIIdisplayName = displayName && displayName.replace(/[^\x20-\x7E]+/g, '');
   try {
     const s3 = configureS3();
+    if (!s3) {
+      throw new Error('Unable to configure S3');
+    }
     const Body = await processImage(originalImgLink);
     const Key = `${Date.now()}`;
-    const params = {
+
+    const command = new PutObjectCommand({
       Bucket: process.env.S3_BUCKET_NAME || '',
       Key,
       Body,
       ContentType: 'image/png',
       Tagging: `userId=${userId}&name=${ASCIIdisplayName}&service=${service}`,
-    };
-    const uploadedImage = await s3.upload(params).promise();
+    });
+    await s3.send(command);
     console.log(`Successfully uploaded image ${originalImgLink.slice(0, 50)}... to S3 with id: ${Key}`);
-    return uploadedImage.Location;
+    return `https://s3.amazonaws.com/${process.env.S3_BUCKET_NAME}/${Key}`;
   } catch (error) {
     console.log(`Error uploading img. ${originalImgLink.slice(0, 50)}... - ${error}`);
     return null;

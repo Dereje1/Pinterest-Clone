@@ -14,12 +14,16 @@ import { PopulatedPinType } from '../../../server/interfaces';
 
 /* AWS S3 mocks */
 const mockS3Instance = {
-  upload: jest.fn(() => ({
-    promise: jest.fn(() => ({ Location: 'https://s3-uploaded-location-stub-4' })),
-  })),
+  send: jest.fn(() => Promise.resolve()),
 };
-
-jest.mock('aws-sdk', () => ({ S3: jest.fn(() => mockS3Instance) }));
+let mockPutObjectCommand: ()=>void;
+jest.mock('@aws-sdk/client-s3', () => {
+  mockPutObjectCommand = jest.fn();
+  return {
+    S3Client: jest.fn(() => mockS3Instance),
+    PutObjectCommand: mockPutObjectCommand,
+  };
+});
 
 /* Mock cloud vision api */
 const mockGvisionInstance = {
@@ -59,6 +63,8 @@ describe('Adding a pin', () => {
     process.env = {
       ...process.env,
       S3_BUCKET_NAME: 'pinterest.clone',
+      AWS_ACCESS_KEY_ID: 'stub_Id',
+      AWS_SECRET_KEY: 'stub key',
     };
     res = { json: jest.fn() };
     pinLinks.create = jest.fn().mockResolvedValue({});
@@ -102,7 +108,7 @@ describe('Adding a pin', () => {
       ...req.body,
       owner: Types.ObjectId(user._id),
       originalImgLink: req.body.imgLink,
-      imgLink: 'https://s3-uploaded-location-stub-4',
+      imgLink: expect.stringContaining('https://s3.amazonaws.com/pinterest.clone/'),
       isBroken: false,
     });
     expect(pinLinks.create).toHaveBeenCalledWith({
@@ -111,7 +117,7 @@ describe('Adding a pin', () => {
       pin_id: '123',
     });
     expect(res.json).toHaveBeenCalledWith({ ...req.body });
-    expect(mockS3Instance.upload).toHaveBeenCalledWith({
+    expect(mockPutObjectCommand).toHaveBeenCalledWith({
       Bucket: 'pinterest.clone',
       Key: expect.any(String),
       Body: Buffer.from('Processed Image data'),
@@ -150,7 +156,6 @@ describe('Adding a pin', () => {
         _id: 123,
       },
     };
-    mockS3Instance.upload.mockClear();
     setupMocks({ ...req.body });
     await addPin(req as genericRequest, res as unknown as Response);
     expect(pins.create).toHaveBeenCalledTimes(1);
@@ -158,11 +163,11 @@ describe('Adding a pin', () => {
       ...req.body,
       owner: Types.ObjectId(user._id),
       originalImgLink: req.body.imgLink,
-      imgLink: 'https://s3-uploaded-location-stub-4',
+      imgLink: expect.stringContaining('https://s3.amazonaws.com/pinterest.clone/'),
       isBroken: false,
     });
     expect(res.json).toHaveBeenCalledWith({ ...req.body });
-    expect(mockS3Instance.upload).toHaveBeenCalledWith({
+    expect(mockPutObjectCommand).toHaveBeenCalledWith({
       Bucket: 'pinterest.clone',
       Key: expect.any(String),
       Body: Buffer.from('/stub-4-data-protocol/', 'base64'),
@@ -201,7 +206,7 @@ describe('Adding a pin', () => {
         _id: 123,
       },
     };
-    mockS3Instance.upload.mockClear();
+    mockS3Instance.send.mockClear();
     setupMocks({ ...req.body });
     await addPin(req as genericRequest, res as unknown as Response);
     expect(pins.create).toHaveBeenCalledTimes(1);
@@ -213,7 +218,7 @@ describe('Adding a pin', () => {
       isBroken: false,
     });
     expect(res.json).toHaveBeenCalledWith({ ...req.body });
-    expect(mockS3Instance.upload).not.toHaveBeenCalled();
+    expect(mockS3Instance.send).not.toHaveBeenCalled();
     // assert for cloud vision api labeling
     expect(pins.findByIdAndUpdate).toHaveBeenCalledTimes(1);
     expect(pins.findByIdAndUpdate).toHaveBeenCalledWith(
@@ -232,7 +237,57 @@ describe('Adding a pin', () => {
     expect(savedTags.create).toHaveBeenNthCalledWith(2, { tag: 'TEST-LABEL-B' });
   });
 
-  test('will create a new pin from original link if S3 upload fails', async () => {
+  test('will keep original link on pin if invalid AWS credentials used to upload', async () => {
+    process.env = {
+      ...process.env,
+      AWS_ACCESS_KEY_ID: undefined,
+      AWS_SECRET_KEY: 'stub key',
+    };
+    const req = {
+      user,
+      body: {
+        owner: {
+          name: 'tester-twitter',
+          service: 'twitter',
+          id: user._id,
+        },
+        imgDescription: 'description-4',
+        imgLink: 'https://stub-4',
+        _id: 123,
+      },
+    };
+    mockS3Instance.send.mockClear();
+    setupMocks({ ...req.body });
+    await addPin(req as genericRequest, res as unknown as Response);
+    expect(pins.create).toHaveBeenCalledTimes(1);
+    expect(pins.create).toHaveBeenCalledWith({
+      ...req.body,
+      owner: Types.ObjectId(user._id),
+      originalImgLink: req.body.imgLink,
+      imgLink: 'https://stub-4',
+      isBroken: false,
+    });
+    expect(res.json).toHaveBeenCalledWith({ ...req.body });
+    expect(mockS3Instance.send).not.toHaveBeenCalled();
+    // assert for cloud vision api labeling
+    expect(pins.findByIdAndUpdate).toHaveBeenCalledTimes(1);
+    expect(pins.findByIdAndUpdate).toHaveBeenCalledWith(
+      123,
+      {
+        $set: {
+          tags: [{ tag: 'TEST-LABEL-A' }, { tag: 'TEST-LABEL-B' }],
+          visionApiTags: ['TEST-LABEL-A', 'TEST-LABEL-B'],
+        },
+      },
+    );
+    // assert for saving new labels
+    await Promise.resolve();
+    expect(savedTags.create).toHaveBeenCalledTimes(2);
+    expect(savedTags.create).toHaveBeenNthCalledWith(1, { tag: 'TEST-LABEL-A' });
+    expect(savedTags.create).toHaveBeenNthCalledWith(2, { tag: 'TEST-LABEL-B' });
+  });
+
+  test('will create a new pin from original link if S3 upload fails for any other reason', async () => {
     const req = {
       user,
       body: {
