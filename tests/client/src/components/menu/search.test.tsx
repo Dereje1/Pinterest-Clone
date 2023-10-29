@@ -52,7 +52,7 @@ describe('The search component', () => {
     searchInput.props().onChange({ target: { value: 'abc' } });
     jest.advanceTimersByTime(1000);
     expect(mockdispatch).toHaveBeenCalledWith({
-      payload: { tagSearch: false, term: 'abc' },
+      payload: { tagSearch: false, term: 'abc', sort: false },
       type: 'search/updateSearch',
     });
     searchInput = wrapper.find('ForwardRef(InputBase)');
@@ -66,7 +66,7 @@ describe('The search component', () => {
     searchInput.props().onChange({ target: { value: 'abc' } });
     jest.advanceTimersByTime(1000);
     expect(mockdispatch).toHaveBeenNthCalledWith(1, {
-      payload: { tagSearch: false, term: 'abc' },
+      payload: { tagSearch: false, term: 'abc', sort: false },
       type: 'search/updateSearch',
     });
     searchInput = wrapper.find('ForwardRef(InputBase)');
@@ -77,7 +77,7 @@ describe('The search component', () => {
     searchInput = wrapper.find('ForwardRef(InputBase)');
     expect(searchInput.props().value).toBe('');
     expect(mockdispatch).toHaveBeenNthCalledWith(2, {
-      payload: { tagSearch: false, term: null },
+      payload: { tagSearch: false, term: null, sort: false },
       type: 'search/updateSearch',
     });
   });
@@ -90,7 +90,7 @@ describe('The search component', () => {
     searchInput.props().onChange({ target: { value: 'abc' } });
     jest.advanceTimersByTime(1000);
     expect(mockdispatch).toHaveBeenNthCalledWith(1, {
-      payload: { tagSearch: false, term: 'abc' },
+      payload: { tagSearch: false, term: 'abc', sort: false },
       type: 'search/updateSearch',
     });
     searchInput = wrapper.find('ForwardRef(InputBase)');
@@ -101,7 +101,7 @@ describe('The search component', () => {
     searchInput = wrapper.find('ForwardRef(InputBase)');
     expect(searchInput.props().value).toBe('');
     expect(mockdispatch).toHaveBeenNthCalledWith(2, {
-      payload: { tagSearch: false, term: null },
+      payload: { tagSearch: false, term: null, sort: false },
       type: 'search/updateSearch',
     });
   });
@@ -132,7 +132,7 @@ describe('The search component', () => {
     const wrapper = shallow(<Search {...props} isShowing />);
     const searchInput = wrapper.find('ForwardRef(InputBase)');
     expect(mockdispatch).toHaveBeenCalledWith({
-      payload: { tagSearch: false, term: 'tag search' },
+      payload: { tagSearch: false, term: 'tag search', sort: false },
       type: 'search/updateSearch',
     });
     expect(props.openSearch).toHaveBeenCalled();

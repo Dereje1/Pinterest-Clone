@@ -52,7 +52,8 @@ export interface userType {
 
 export interface searchType {
     term: string | null,
-    tagSearch: boolean
+    tagSearch: boolean,
+    sort: boolean
 }
 
 export interface providerIconsType {

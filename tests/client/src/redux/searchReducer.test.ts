@@ -22,7 +22,7 @@ describe('The user reducer', () => {
       },
     };
     const newState = searchReducer(undefined, action);
-    expect(newState).toEqual({ tagSearch: false, term: null });
+    expect(newState).toEqual({ tagSearch: false, term: null, sort: false });
   });
 });
 
@@ -34,6 +34,7 @@ describe('search actions', () => {
       payload: {
         term: 'abc',
         tagSearch: false,
+        sort: false,
       },
     });
   });
@@ -44,6 +45,7 @@ describe('search actions', () => {
       payload: {
         term: null,
         tagSearch: false,
+        sort: false,
       },
     });
   });

@@ -10,7 +10,24 @@ exports[`The Menu component will render for an authenticated user 1`] = `
     openSearch={[Function]}
     pathname="/"
   />
-  <Brand />
+  <div
+    style={
+      {
+        "display": "flex",
+        "justifyContent": "space-between",
+        "width": 175,
+      }
+    }
+  >
+    <Brand />
+    <ForwardRef(IconButton)
+      onClick={[Function]}
+    >
+      <Memo(ForwardRef(SortIcon))
+        color="secondary"
+      />
+    </ForwardRef(IconButton)>
+  </div>
   <CollapsibleMenu
     menuClicked={[Function]}
     pathname="/"
@@ -29,7 +46,24 @@ exports[`The Menu component will render for users authenticated as guest 1`] = `
     openSearch={[Function]}
     pathname="/"
   />
-  <Brand />
+  <div
+    style={
+      {
+        "display": "flex",
+        "justifyContent": "space-between",
+        "width": 175,
+      }
+    }
+  >
+    <Brand />
+    <ForwardRef(IconButton)
+      onClick={[Function]}
+    >
+      <Memo(ForwardRef(SortIcon))
+        color="secondary"
+      />
+    </ForwardRef(IconButton)>
+  </div>
   <Login
     showSignIn={[Function]}
   />

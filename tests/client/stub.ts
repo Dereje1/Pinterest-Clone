@@ -59,7 +59,7 @@ export const pinsStub = [
 ];
 
 export const reduxStub = {
-  search: { term: null, tagSearch: false },
+  search: { term: null, tagSearch: false, sort: false },
   user: {
     authenticated: true,
     userId: 'a stub user id',

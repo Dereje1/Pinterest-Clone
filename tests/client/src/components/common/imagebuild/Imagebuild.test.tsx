@@ -3,11 +3,18 @@
  */
 import React from 'react';
 import { EnzymePropSelector, shallow } from 'enzyme';
+import * as redux from 'react-redux';
 import toJson from 'enzyme-to-json';
 import ImageBuild from '../../../../../../client/src/components/common/imagebuild/Imagebuild';
 import RESTcall from '../../../../../../client/src/crud';
 import { pinsStub, reduxStub } from '../../../../stub';
 import { PinType, PinnerType, zoomedImageInfoType } from '../../../../../../client/src/interfaces';
+
+// Mock redux hooks
+jest.mock('react-redux', () => ({
+  ...jest.requireActual('react-redux'), // use actual for all non-hook parts
+  useSelector: jest.fn((() => false)),
+}));
 
 jest.mock('../../../../../../client/src/crud');
 const mockedRESTcall = jest.mocked(RESTcall);
@@ -40,6 +47,9 @@ describe('The ImageBuild component', () => {
   });
 
   test('will render....', () => {
+    jest
+      .spyOn(redux, 'useSelector')
+      .mockImplementationOnce(() => true);
     const wrapper = shallow(<ImageBuild {...props} />);
     expect(toJson(wrapper)).toMatchSnapshot();
   });

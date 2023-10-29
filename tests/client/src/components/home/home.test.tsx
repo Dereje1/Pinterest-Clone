@@ -13,7 +13,7 @@ describe('The Home Component', () => {
   beforeEach(() => {
     props = {
       user: { ...reduxStub.user },
-      search: { term: null, tagSearch: false },
+      search: { term: null, tagSearch: false, sort: false },
     };
   });
   afterEach(() => {
@@ -45,7 +45,7 @@ describe('The Home Component', () => {
   test('Will filter pins if matching search found for description', async () => {
     const updatedProps = {
       ...props,
-      search: { term: 'id-3', tagSearch: false },
+      search: { term: 'id-3', tagSearch: false, sort: false },
     };
     const wrapper = shallow<Home>(<Home {...updatedProps} />);
     await Promise.resolve();
@@ -57,7 +57,7 @@ describe('The Home Component', () => {
   test('Will filter pins if matching search found for tags', async () => {
     const updatedProps = {
       ...props,
-      search: { term: 'tag 2', tagSearch: false },
+      search: { term: 'tag 2', tagSearch: false, sort: false },
     };
     const wrapper = shallow(<Home {...updatedProps} />);
     await Promise.resolve();

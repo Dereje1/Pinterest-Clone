@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import InfiniteScroll from 'react-infinite-scroll-component';
+import { useSelector } from 'react-redux';
 import MasonryPins from './MasonryPins';
 import PinZoom from '../modal/modalzoom';
 import { Loading } from '../common';
@@ -11,7 +12,7 @@ import {
   getZoomedImageStyle,
 } from '../../../utils/utils';
 import {
-  PinType, userType, zoomedImageInfoType, imageMetadataType,
+  PinType, userType, zoomedImageInfoType, imageMetadataType, searchType,
 } from '../../../interfaces';
 import './imagebuild.scss';
 import error from '../../../assets/error.png';
@@ -46,9 +47,18 @@ function ImageBuild({
   const [batchSize, setBatchSize] = useState(initialDisplayPerScroll());
   const [displayLogin, setDisplayLogin] = useState(false);
 
+  const isSorted = useSelector(({ search }: { search: searchType }) => search.sort);
+
   useEffect(() => {
-    setLoadedPins(pinList);
-  }, [pinList]);
+    if (isSorted) {
+      const sortedList = pinList.slice().sort(
+        (a, b) => Date.parse(b.createdAt) - Date.parse(a.createdAt),
+      );
+      setLoadedPins(sortedList);
+    } else {
+      setLoadedPins(pinList);
+    }
+  }, [isSorted, pinList]);
 
   useEffect(() => {
     setActivePins(loadedPins.slice(0, batchSize));

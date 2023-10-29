@@ -18,6 +18,8 @@ describe('The Menu component', () => {
         pathname: '/',
       },
       getUser: jest.fn(),
+      updateSearch: jest.fn(),
+      search: { term: null, tagSearch: false, sort: false },
     };
   });
   afterEach(() => {
@@ -106,7 +108,7 @@ describe('The Menu component', () => {
 
   test('will map redux state to props', () => {
     const mappedProps = mapStateToProps(reduxStub);
-    expect(mappedProps).toEqual({ user: reduxStub.user });
+    expect(mappedProps).toEqual({ ...reduxStub });
   });
 
   test('will render the brand', () => {
@@ -117,5 +119,21 @@ describe('The Menu component', () => {
   test('will render the Login', () => {
     const wrapper = shallow(<Login showSignIn={jest.fn()} />);
     expect(toJson(wrapper)).toMatchSnapshot();
+  });
+
+  test('will toggle the pin sort', async () => {
+    const updatedProps = {
+      ...props,
+      search: { term: null, tagSearch: false, sort: true },
+    };
+    const wrapper = shallow<Menu>(<Menu {...updatedProps} />);
+    await Promise.resolve();
+    const sortButton: EnzymePropSelector = wrapper.find('ForwardRef(IconButton)');
+    const sortIcon: EnzymePropSelector = sortButton.find('Memo(ForwardRef(SortIcon))');
+    const shuffleIcon: EnzymePropSelector = sortButton.find('Memo(ForwardRef(ShuffleIcon))');
+    sortButton.props().onClick();
+    expect(props.updateSearch).toHaveBeenLastCalledWith('', false, false);
+    expect(sortIcon.isEmptyRender()).toBe(true);
+    expect(shuffleIcon.isEmptyRender()).toBe(false);
   });
 });

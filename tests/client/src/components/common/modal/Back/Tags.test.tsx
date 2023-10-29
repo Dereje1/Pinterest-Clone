@@ -122,6 +122,7 @@ describe('The tags component', () => {
       payload: {
         tagSearch: true,
         term: 'tag 1',
+        sort: false,
       },
     });
     expect(props.closePin).toHaveBeenCalled();

@@ -3,18 +3,24 @@ import React, { ComponentType } from 'react';
 import { withRouter } from 'react-router-dom';
 import { connect } from 'react-redux';
 import { compose } from 'redux';
+import IconButton from '@mui/material/IconButton';
+import SortIcon from '@mui/icons-material/Sort';
+import ShuffleIcon from '@mui/icons-material/Shuffle';
 import { getUser } from '../../redux/userSlice';
+import { updateSearch } from '../../redux/searchSlice';
 import Search from './search';
 import Cover from '../cover/cover';
 import SignIn from '../signin/signin';
 import CollapsibleMenu from './CollapsibleMenu';
 import { Loading } from '../common/common';
-import { userType } from '../../interfaces';
+import { userType, searchType } from '../../interfaces';
 import './menu.scss';
 
-export const mapStateToProps = ({ user }: {user: userType}) => ({ user });
+export const mapStateToProps = ({ user, search }:
+  {user: userType, search: searchType}) => ({ user, search });
 const actionCreators = {
   getUser,
+  updateSearch,
 };
 
 export function Brand() {
@@ -46,6 +52,8 @@ interface MenuProps {
   location: {
     pathname: string,
   }
+  updateSearch: (val: string, tagSearch: boolean, sort: boolean) => void
+  search: searchType
 }
 
 interface MenuState {
@@ -86,6 +94,8 @@ export class Menu extends React.Component<MenuProps, MenuState> {
     const {
       user: { authenticated, service },
       location: { pathname },
+      updateSearch: toggleSort,
+      search: { sort },
     } = this.props;
     const {
       displaySignIn,
@@ -93,7 +103,14 @@ export class Menu extends React.Component<MenuProps, MenuState> {
 
     return (
       <>
-        <Brand />
+        <div style={{ display: 'flex', width: 175, justifyContent: 'space-between' }}>
+          <Brand />
+          <IconButton onClick={() => toggleSort('', false, !sort)}>
+            {
+              sort ? <ShuffleIcon color="primary" /> : <SortIcon color="secondary" />
+            }
+          </IconButton>
+        </div>
         {
           authenticated ? (
             <CollapsibleMenu
