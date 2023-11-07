@@ -372,6 +372,7 @@ describe('generating an AI image', () => {
     };
     await generateAIimage(req as genericRequest, res as unknown as Response);
     expect(mockOpenAiInstance.images.generate).toHaveBeenCalledWith({
+      model: 'dall-e-3',
       n: 1,
       prompt: 'open ai image creation prompt',
       size: '1024x1024',

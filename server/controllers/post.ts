@@ -83,6 +83,7 @@ export const generateAIimage = async (req: Request, res: genericResponseType) =>
     });
     debug(`UserId -> ${userId} Generating AI image and title for -> ${description} from openAI`);
     const imageResponse = await openai.images.generate({
+      model: 'dall-e-3',
       prompt: description,
       n: 1,
       size: '1024x1024',
