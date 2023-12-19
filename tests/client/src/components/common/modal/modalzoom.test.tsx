@@ -73,16 +73,6 @@ describe('The pin zoom modal', () => {
     expect(props.reset).toHaveBeenCalledTimes(1);
   });
 
-  test('will disable the scroll on mount and when user tries to scroll', () => {
-    global.scrollTo = jest.fn();
-    const mockedScroll = jest.mocked(global.scrollTo);
-    const wrapper = shallow(<PinZoom {...props} />);
-    mockedScroll.mockClear();
-    const instance = wrapper.instance() as PinZoom;
-    instance.disableScroll();
-    expect(mockedScroll).toHaveBeenCalledWith(0, 10);
-  });
-
   test('will toggle the comments window', () => {
     global.innerHeight = 1000;
     const updatedProps = {
@@ -133,26 +123,6 @@ describe('The pin zoom modal', () => {
     wrapper.setState({ cancelBlur: true });
     const instance = wrapper.instance() as PinZoom;
     instance.close({} as React.SyntheticEvent, false);
-  });
-
-  test('will add eventlisteners to listen for scrolling events on mount', () => {
-    global.addEventListener = jest.fn();
-    const mockedAddEventListener = jest.mocked(global.addEventListener);
-    shallow(<PinZoom {...props} />);
-    const events = mockedAddEventListener.mock.calls.map((c) => c[0]);
-    expect(global.addEventListener).toHaveBeenCalledTimes(1);
-    expect(events).toEqual(['scroll']);
-  });
-
-  test('will remove eventlisteners and reinstate scroll when modal unloads', () => {
-    global.removeEventListener = jest.fn();
-    const mockedRemoveEventListener = jest.mocked(global.removeEventListener);
-    const wrapper = shallow(<PinZoom {...props} />);
-    const instance = wrapper.instance() as PinZoom;
-    instance.componentWillUnmount();
-    const events = mockedRemoveEventListener.mock.calls.map((c) => c[0]);
-    expect(global.removeEventListener).toHaveBeenCalledTimes(1);
-    expect(events).toEqual(['scroll']);
   });
 
   test('will set the image metadata in state', () => {

@@ -51,17 +51,7 @@ export class PinZoom extends Component<PinZoomProps, PinZoomState> {
     if (this.zoomedImage.current) {
       this.zoomedImage.current.focus();
     }
-    window.addEventListener('scroll', this.disableScroll);
   }
-
-  componentWillUnmount() {
-    window.removeEventListener('scroll', this.disableScroll);
-  }
-
-  disableScroll = () => {
-    const { zoomInfo: { parentDivStyle } } = this.props;
-    window.scrollTo(0, parentDivStyle.top);
-  };
 
   close = (_: React.SyntheticEvent, forceClose = false) => {
     // sends a reset callback after closing modalstate
