@@ -11,7 +11,7 @@ import PeopleAltOutlinedIcon from '@mui/icons-material/PeopleAltOutlined';
 import SearchIcon from '@mui/icons-material/Search';
 import LogoutIcon from '@mui/icons-material/Logout';
 import MenuIcon from '@mui/icons-material/Menu';
-import { getProviderIcons } from '../common/common';
+import { getProviderIcons } from '../common';
 import { providerIconsType } from '../../interfaces';
 
 const ListItemTextStyling = { marginLeft: 5, fontSize: 20, fontWeight: 'bold' };

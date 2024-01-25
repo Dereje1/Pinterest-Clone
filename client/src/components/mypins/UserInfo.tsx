@@ -6,7 +6,7 @@ import IconButton from '@mui/material/IconButton';
 import TextField from '@mui/material/TextField';
 import DoneIcon from '@mui/icons-material/Done';
 import CancelIcon from '@mui/icons-material/Cancel';
-import { getProviderIcons, UserJoinedDate } from '../common/common';
+import { getProviderIcons, UserJoinedDate } from '../common';
 import {
   providerIconsType,
 } from '../../interfaces';

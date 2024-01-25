@@ -3,10 +3,8 @@ import List from '@mui/material/List';
 import Dialog from '@mui/material/Dialog';
 import ListSubheader from '@mui/material/ListSubheader';
 import ListItemText from '@mui/material/ListItemText';
-import { getProviderIcons, UserListItem } from '../../common';
+import { getProviderIcons, UserListItem } from '../..';
 import { providerIconsType, PinnerType } from '../../../../interfaces';
-
-const providerIcons: providerIconsType = getProviderIcons({ fontSize: 20 });
 
 interface PinnersDialogProps {
   onCloseDialog: () => void
@@ -24,12 +22,12 @@ function PinnersDialog({
   pinnersList,
   authenticated,
   displayLogin,
-}:PinnersDialogProps) {
+}: PinnersDialogProps) {
   const handleCose = (e: React.SyntheticEvent) => {
     onCloseDialog();
     onClosePin(e);
   };
-
+  const providerIcons: providerIconsType = getProviderIcons({ fontSize: 20 });
   return (
     <Dialog
       onClose={onCloseDialog}

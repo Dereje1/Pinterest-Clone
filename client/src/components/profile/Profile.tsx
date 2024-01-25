@@ -6,10 +6,9 @@ import Avatar from '@mui/material/Avatar';
 import Box from '@mui/material/Box';
 import SearchIcon from '@mui/icons-material/Search';
 import IconButton from '@mui/material/IconButton';
-import ImageBuild from '../common/imagebuild/Imagebuild';
 import {
-  Loading, getProviderIcons, UserPinsSelector, UserJoinedDate,
-} from '../common/common';
+  Loading, getProviderIcons, UserPinsSelector, UserJoinedDate, ImageBuild,
+} from '../common';
 import SearchUsers from './SearchUsers';
 import RESTcall from '../../crud';
 import { providerIconsType, userType } from '../../interfaces';

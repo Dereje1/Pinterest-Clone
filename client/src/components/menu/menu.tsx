@@ -12,7 +12,7 @@ import Search from './search';
 import Cover from '../cover/cover';
 import SignIn from '../signin/signin';
 import CollapsibleMenu from './CollapsibleMenu';
-import { Loading } from '../common/common';
+import { Loading } from '../common';
 import { userType, searchType } from '../../interfaces';
 import './menu.scss';
 

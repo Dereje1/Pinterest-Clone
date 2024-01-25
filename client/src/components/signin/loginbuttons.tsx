@@ -3,7 +3,7 @@ import Button from '@mui/material/Button';
 import AccountCircleIcon from '@mui/icons-material/AccountCircle';
 import { connect } from 'react-redux';
 import { getUser } from '../../redux/userSlice';
-import { getProviderIcons } from '../common/common';
+import { getProviderIcons } from '../common';
 import { userType, providerIconsType, providersType } from '../../interfaces';
 import './loginbuttons.scss';
 

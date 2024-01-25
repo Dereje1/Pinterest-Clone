@@ -3,7 +3,7 @@ import { EnzymePropSelector, shallow } from 'enzyme';
 import toJson from 'enzyme-to-json';
 import {
   Loading, UserPinsSelector, ProfileLink, UserListItem, getProviderIcons, UserJoinedDate,
-} from '../../../../../client/src/components/common/common';
+} from '../../../../../client/src/components/common/index';
 
 describe('Loading...', () => {
   test('Will render the loading bubbles', () => {

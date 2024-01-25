@@ -17,6 +17,11 @@ import Avatar from '@mui/material/Avatar';
 import Typography from '@mui/material/Typography';
 import { providerIconsType } from '../../interfaces';
 import './common.scss';
+import ModalZoom from './modal/modalzoom';
+import ImageBuild from './imagebuild/Imagebuild';
+
+export { ModalZoom };
+export { ImageBuild };
 
 export const getProviderIcons = ({ fontSize }: { fontSize: number }): providerIconsType => (
   {

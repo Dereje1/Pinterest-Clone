@@ -3,7 +3,7 @@ import { render } from 'react-dom';
 import { Provider } from 'react-redux';
 import { BrowserRouter, Route, Switch } from 'react-router-dom';
 import { ThemeProvider, createTheme } from '@mui/material/styles';
-import { Loading } from './components/common/common';
+import { Loading } from './components/common';
 // redux
 import { store } from './store';
 // css

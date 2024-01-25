@@ -8,7 +8,7 @@ import CommentIcon from '@mui/icons-material/Comment';
 import Typography from '@mui/material/Typography';
 import PsychologyIcon from '@mui/icons-material/Psychology';
 import ModalActions from './ModalActions';
-import { ProfileLink } from '../../common';
+import { ProfileLink } from '../..';
 import { formatDate, getFormattedDescription } from '../../../../utils/utils';
 import {
   PinType, zoomedImageInfoType,

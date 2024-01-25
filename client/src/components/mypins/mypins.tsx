@@ -9,12 +9,11 @@ import Fab from '@mui/material/Fab';
 import AddIcon from '@mui/icons-material/Add';
 
 import PinCreate from './pincreatemodal';
-import ImageBuild from '../common/imagebuild/Imagebuild';
 import UserInfo from './UserInfo';
 import WarningDialog from './WarningDialog';
 import RESTcall from '../../crud'; // pin CRUD
 import { updateDisplayName } from '../../redux/userSlice';
-import { Loading, UserPinsSelector } from '../common/common';
+import { Loading, UserPinsSelector, ImageBuild } from '../common';
 import { onTheFlyPinListNameChange } from '../../utils/utils';
 import {
   userType, PinType,

@@ -2,8 +2,7 @@ import React, { useState, useEffect } from 'react';
 import InfiniteScroll from 'react-infinite-scroll-component';
 import { useSelector } from 'react-redux';
 import MasonryPins from './MasonryPins';
-import PinZoom from '../modal/modalzoom';
-import { Loading } from '../common';
+import { Loading, ModalZoom as PinZoom } from '..';
 import SignIn from '../../signin/signin';
 import RESTcall from '../../../crud';
 import {
