@@ -1,5 +1,6 @@
 // displays modal that creates pin
 import React, { Component } from 'react';
+import _ from 'lodash';
 import CancelIcon from '@mui/icons-material/Cancel';
 import TextField from '@mui/material/TextField';
 import Card from '@mui/material/Card';
@@ -41,6 +42,7 @@ interface PinCreateState {
   }
   imgKey: number
   showAIResetDialog: boolean
+  isDescriptionError: boolean
 }
 
 const mediaTypeInfo = {
@@ -61,6 +63,7 @@ const initialState = {
   },
   imgKey: 0,
   showAIResetDialog: false,
+  isDescriptionError: true,
 };
 class PinCreate extends Component<PinCreateProps, PinCreateState> {
 
@@ -124,7 +127,7 @@ class PinCreate extends Component<PinCreateProps, PinCreateState> {
           picPreview: value,
         });
       }
-    } catch (_) {
+    } catch (e) {
       this.onError();
     }
   };
@@ -183,15 +186,19 @@ class PinCreate extends Component<PinCreateProps, PinCreateState> {
     }
   };
 
+  validateDescription = () => {
+    const { description } = this.state;
+    this.setState({ isDescriptionError: description.trim().length < 5 });
+  };
+
   render() {
     const {
       description, isError, picPreview,
       isLoaded, mediaType, AIimageStatus,
-      imgKey, showAIResetDialog,
+      imgKey, showAIResetDialog, isDescriptionError,
     } = this.state;
     const { totalAiGenratedImages } = this.props;
     const modalWidth = getModalWidth();
-    const isDescriptionError = description.trim().length < 5;
     return (
       <>
         <Dialog
@@ -271,7 +278,9 @@ class PinCreate extends Component<PinCreateProps, PinCreateState> {
                       return;
                     }
                     if (value.trim().length <= 20) {
-                      this.setState({ description: value });
+                      this.setState({ description: value }, _.debounce(() => {
+                        this.validateDescription();
+                      }, 5000));
                     }
                   }}
                   value={description}
