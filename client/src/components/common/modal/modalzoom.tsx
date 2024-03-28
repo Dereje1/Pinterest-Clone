@@ -33,8 +33,11 @@ interface PinZoomState {
   imgMetaData: imageMetadataType | null
 }
 
+// The PinZoom component displays a zoomed-in view of a pin in a modal.
+// It also provides functionality to view and add comments to the pin.
 export class PinZoom extends Component<PinZoomProps, PinZoomState> {
 
+  // Reference to the zoomed image element
   private zoomedImage = createRef<HTMLDivElement>();
 
   constructor(props: PinZoomProps) {
@@ -47,49 +50,59 @@ export class PinZoom extends Component<PinZoomProps, PinZoomState> {
     };
   }
 
+  // Focus on the zoomed image when the component mounts
   componentDidMount() {
     if (this.zoomedImage.current) {
       this.zoomedImage.current.focus();
     }
   }
 
+  // Close the modal and reset the state
   close = (_: React.SyntheticEvent, forceClose = false) => {
-    // sends a reset callback after closing modalstate
     const { cancelBlur } = this.state;
     if (cancelBlur && !forceClose) return;
     const { reset } = this.props;
     this.setState({
       zoomClass: 'zoom chide',
     }, async () => {
-      // delay to display closing keyframe
       await delay(500);
       reset();
     });
   };
 
+  // Calculate and set the state for showing comments
+  handleCommentsNotShowing = (zoomedImage: HTMLDivElement, updatedDivStyle: zoomedImageInfoType['parentDivStyle']) => {
+    const [header] = zoomedImage.children;
+    this.setState({
+      commentsShowing: {
+        width: updatedDivStyle.parentWidth,
+        height: window.innerHeight - header.clientHeight - 25,
+      },
+      cancelBlur: true,
+    });
+  };
+
+  // Handle the case when comments are currently showing
+  handleCommentsShowing = (zoomedImage: HTMLDivElement) => {
+    zoomedImage.focus();
+    this.setState({ commentsShowing: null, cancelBlur: false });
+  };
+
+  // Toggle the visibility of the comments section
   toggleComments = () => {
     const { commentsShowing, imgMetaData } = this.state;
     const { resetParentDivStyle } = this.props;
     const updatedDivStyle = resetParentDivStyle(imgMetaData);
     if (this.zoomedImage.current && updatedDivStyle) {
       if (!commentsShowing) {
-        const { current: { children } } = this.zoomedImage;
-        const [header] = children;
-        this.setState({
-          commentsShowing: {
-            width: updatedDivStyle.parentWidth,
-            height: window.innerHeight - header.clientHeight - 25,
-          },
-          cancelBlur: true,
-        });
-        return;
+        this.handleCommentsNotShowing(this.zoomedImage.current, updatedDivStyle);
+      } else {
+        this.handleCommentsShowing(this.zoomedImage.current);
       }
-      // need to reinstate focus for blur to work again
-      this.zoomedImage.current.focus();
-      this.setState({ commentsShowing: null, cancelBlur: false });
     }
   };
 
+  // Render the PinZoom component
   render() {
     const {
       zoomInfo: { pin: pinInformation, parentDivStyle },
@@ -156,7 +169,6 @@ export class PinZoom extends Component<PinZoomProps, PinZoomState> {
                 />
               )}
           </CardContent>
-
         </Card>
       </>
     );
