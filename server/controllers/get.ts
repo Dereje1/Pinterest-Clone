@@ -85,7 +85,7 @@ export const getProfilePins = async (
       savedPins: filterPins({ rawPins: savedPins, userId: loggedInUserid, isAdmin: false }),
       user: {
         service: user.service,
-        displayName: user.displayName || '🚫',
+        displayName: user.displayName || '🚫 Anonymous User',
         joined: user.createdAt,
       },
     });

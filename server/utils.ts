@@ -36,7 +36,7 @@ export const getUserProfile = (user: UserType):({
   return {
     service,
     userId: _id.toString(), // mask actual userId sent to client by mongo doc Id
-    displayName: displayName || '🚫',
+    displayName: displayName || '🚫 Anonymous User',
     username,
     isAdmin,
   };
@@ -106,7 +106,7 @@ export const filterPins = ({ rawPins, userId, isAdmin }: filterTypes) => {
       _id: pinId,
       imgDescription,
       imgLink: getCloudFrontLink(imgLink),
-      owner: { name: owner.displayName || '🚫', userId: owner._id, service: owner.service },
+      owner: { name: owner.displayName || '🚫 Anonymous User', userId: owner._id, service: owner.service },
       savedBy: savedNames,
       owns: Boolean(userId && (userId === owner._id.toString() || isAdmin)),
       hasSaved: Boolean(userId && savedIds.includes(userId)),
