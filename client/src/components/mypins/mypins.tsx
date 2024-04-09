@@ -36,6 +36,7 @@ interface MypinsState {
   displaySetting: string,
   nameChangeFormIsShowing: boolean,
   totalAiGenratedImages: number,
+  totalPinsOwned: number,
 }
 
 export class Mypins extends Component<MypinsProps, MypinsState> {
@@ -51,7 +52,7 @@ export class Mypins extends Component<MypinsProps, MypinsState> {
       displaySetting: 'created',
       nameChangeFormIsShowing: false,
       totalAiGenratedImages: 0,
-
+      totalPinsOwned: 0,
     };
   }
 
@@ -62,6 +63,7 @@ export class Mypins extends Component<MypinsProps, MypinsState> {
       pinList: profilePins,
       ready: true,
       totalAiGenratedImages,
+      totalPinsOwned: profilePins.filter((pin: PinType) => Boolean(pin.owns)).length,
     });
   }
 
@@ -88,7 +90,7 @@ export class Mypins extends Component<MypinsProps, MypinsState> {
 
   // adds a new pin to the db
   async addPin(pinJSON: {imgDescription: string, imgLink: string | ArrayBuffer}) {
-    const { pinList } = this.state;
+    const { pinList, totalPinsOwned } = this.state;
     const { user: { displayName, service, userId } } = this.props;
     this.setState({ ready: false });
     const newPin = await RESTcall({
@@ -108,6 +110,7 @@ export class Mypins extends Component<MypinsProps, MypinsState> {
       ready: true,
       displayPinCreate: false,
       displaySetting: 'created',
+      totalPinsOwned: totalPinsOwned + 1,
     });
   }
 
@@ -119,12 +122,13 @@ export class Mypins extends Component<MypinsProps, MypinsState> {
   }
 
   deletePic({ _id, owns }: {_id: string, owns: boolean}) {
-    const { pinList, displayPinCreate } = this.state;
+    const { pinList, displayPinCreate, totalPinsOwned } = this.state;
     if (displayPinCreate) return;
     this.setState({
       pinList: pinList.filter((p) => p._id !== _id),
       showDeleteImageModal: false,
       deletableImgInfo: null,
+      totalPinsOwned: owns ? totalPinsOwned - 1 : totalPinsOwned,
     }, async () => {
       await RESTcall({
         address: owns ? `/api/${_id}` : `/api/unpin/${_id}`,
@@ -138,7 +142,7 @@ export class Mypins extends Component<MypinsProps, MypinsState> {
     const {
       displayPinCreate, showDeleteImageModal, deletableImgInfo,
       pinList, ready, displaySetting,
-      nameChangeFormIsShowing, totalAiGenratedImages,
+      nameChangeFormIsShowing, totalAiGenratedImages, totalPinsOwned,
     } = this.state;
     if (!authenticated) return null;
     if (!ready) return <Loading />;
@@ -178,6 +182,7 @@ export class Mypins extends Component<MypinsProps, MypinsState> {
             aria-label="add"
             onClick={() => this.pinForm()}
             sx={{ marginTop: 1, zIndex: 1 }}
+            disabled={totalPinsOwned >= 10}
           >
             <AddIcon fontSize="large" />
           </Fab>

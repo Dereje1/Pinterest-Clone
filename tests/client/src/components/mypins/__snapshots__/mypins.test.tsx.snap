@@ -54,6 +54,7 @@ exports[`The Mypins component landing page will render message if no pins create
     <ForwardRef(Fab)
       aria-label="add"
       color="default"
+      disabled={false}
       id="createpin"
       onClick={[Function]}
       sx={
@@ -151,6 +152,7 @@ exports[`The Mypins component landing page will render message if no pins saved 
     <ForwardRef(Fab)
       aria-label="add"
       color="default"
+      disabled={false}
       id="createpin"
       onClick={[Function]}
       sx={
@@ -246,6 +248,7 @@ exports[`The Mypins component landing page will render pins if found 1`] = `
     <ForwardRef(Fab)
       aria-label="add"
       color="default"
+      disabled={false}
       id="createpin"
       onClick={[Function]}
       sx={

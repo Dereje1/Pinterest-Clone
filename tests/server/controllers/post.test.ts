@@ -50,6 +50,11 @@ jest.mock('openai', () => jest.fn(() => mockOpenAiInstance));
 
 /* Mongoose mocks */
 const setupMocks = (response: PopulatedPinType[] | unknown = rawPinsStub) => {
+  pins.find = jest.fn().mockImplementation(
+    () => ({
+      exec: jest.fn().mockResolvedValue([]),
+    }),
+  );
   pins.create = jest.fn().mockResolvedValue(response);
   pins.findByIdAndUpdate = jest.fn().mockResolvedValue([]);
   savedTags.create = jest.fn().mockResolvedValue([]);
@@ -330,7 +335,37 @@ describe('Adding a pin', () => {
     expect(savedTags.create).toHaveBeenNthCalledWith(2, { tag: 'TEST-LABEL-B' });
   });
 
+  test('will respond with error if pin creation limit has been reached', async () => {
+    const req = {
+      user,
+      body: {
+        owner: {
+          name: 'tester-twitter',
+          service: 'twitter',
+          id: user._id,
+        },
+        imgDescription: 'description-4',
+        imgLink: 'https://stub-4',
+        _id: 123,
+      },
+    };
+    jest.clearAllMocks();
+    pins.find = jest.fn().mockImplementation(
+      () => ({
+        exec: jest.fn().mockResolvedValue([1, 2, 3, 4, 5, 6, 7, 8, 9, 10]),
+      }),
+    );
+    await addPin(req as genericRequest, res as unknown as Response);
+    expect(pins.create).toHaveBeenCalledTimes(0);
+    expect(res.json).toHaveBeenCalledWith(Error('UserID: 5cad310f7672ca00146485a8 has reached the pin creation limit - aborted!'));
+  });
+
   test('will respond with error if POST is rejected', async () => {
+    pins.find = jest.fn().mockImplementation(
+      () => ({
+        exec: jest.fn().mockResolvedValue([]),
+      }),
+    );
     pins.create = jest.fn().mockRejectedValue(new Error('Mocked rejection'));
     const req = {
       user,

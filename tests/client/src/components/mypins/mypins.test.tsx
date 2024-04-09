@@ -79,6 +79,14 @@ describe('The Mypins component', () => {
     expect(wrapper.state().displayPinCreate).toBe(true);
   });
 
+  test('Will disable the pin create form if pins owned limit reached', async () => {
+    const wrapper = shallow<Mypins>(<Mypins {...props} />);
+    await Promise.resolve();
+    wrapper.setState({ totalPinsOwned: 10 });
+    const form = wrapper.find({ id: 'createpin' });
+    expect(form.props().disabled).toBe(true);
+  });
+
   test('Will cancel pin delete on alert', async () => {
     const wrapper = shallow<Mypins>(<Mypins {...props} />);
     wrapper.setState({

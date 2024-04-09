@@ -43,6 +43,11 @@ export const addPin = async (req: Request, res: genericResponseType) => {
   const { imgLink: originalImgLink } = req.body;
   debug(`Creating new pin for userId -> ${userId}`);
   try {
+    // check if pin limit has been reached
+    const createdPins = await pins.find({ owner: userId }).exec();
+    if (createdPins.length >= 10) {
+      throw new Error(`UserID: ${userId} has reached the pin creation limit - aborted!`);
+    }
     const newImgLink = await uploadImageToS3({
       originalImgLink, userId, displayName, service,
     });
@@ -64,7 +69,7 @@ export const addPin = async (req: Request, res: genericResponseType) => {
     debug(`${displayName} added pin ${addedpin.imgDescription}`);
     res.json(addedpin);
   } catch (error) {
-    debug(`Error creating new pin for userId -> ${userId}`);
+    debug(`Error creating new pin for userId -> ${userId} Error: ${error}`);
     res.json(error);
   }
 };
