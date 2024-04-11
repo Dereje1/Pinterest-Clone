@@ -31,4 +31,6 @@ jobs:
     - run: npm run lint
     - run: npm run coverage
     - name: Upload coverage to Codecov
-      uses: codecov/codecov-action@v1
+      uses: codecov/codecov-action@v3
+      env: 
+          CODECOV_TOKEN: ${{ secrets.CODECOV_TOKEN }}
