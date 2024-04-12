@@ -1,3 +1,4 @@
+// Import necessary modules and components
 import React, { useEffect, useState } from 'react';
 import { useSwipeable } from 'react-swipeable';
 import CardMedia from '@mui/material/CardMedia';
@@ -6,38 +7,48 @@ import IconButton from '@mui/material/IconButton';
 import NavigateNextIcon from '@mui/icons-material/NavigateNext';
 import NavigateBeforetIcon from '@mui/icons-material/NavigateBefore';
 import { zoomedImageInfoType, imageMetadataType } from '../../../../interfaces';
+import LoadingImage from '../../../../assets/giphy.gif';
 
+// Define the props for the SwipableImage component
 interface SwipableImageProps {
   zoomInfo: zoomedImageInfoType,
   onSlidePin: (newIndex: number) => void
   onSetImageMetaData: (metaData: imageMetadataType) => void
 }
 
+// Configuration for the swipeable component
 const config = {
-  delta: 10, // min distance(px) before a swipe starts. *See Notes*
-  preventScrollOnSwipe: false, // prevents scroll during swipe (*See Details*)
+  delta: 10, // min distance(px) before a swipe starts
+  preventScrollOnSwipe: false, // prevents scroll during swipe
   trackTouch: true, // track touch input
   trackMouse: true, // track mouse input
   rotationAngle: 0, // set a rotation angle
-  swipeDuration: Infinity, // allowable duration of a swipe (ms). *See Notes*
-  touchEventOptions: { passive: true }, // options for touch listeners (*See Details*)
+  swipeDuration: Infinity, // allowable duration of a swipe (ms)
+  touchEventOptions: { passive: true }, // options for touch listeners
 };
 
+// Define the type for the slide direction
 type slideType = 'left' | 'right' | false
 
+// Define the SwipableImage component
 function SwipableImage({ zoomInfo, onSlidePin, onSetImageMetaData }: SwipableImageProps) {
   const { pin: pinInformation, parentDivStyle } = zoomInfo;
 
+  // Define the state variables
   const [slideImage, setSlideImage] = useState(false as slideType);
   const [showImageListItemBar, setShowImageListItemBar] = useState(false);
+  const [isLoading, setIsLoading] = useState(false); // State for loading status
 
+  // Effect hook to handle slide image state changes
   useEffect(
     () => {
       if (slideImage === 'left') {
+        setIsLoading(true);
         onSlidePin(zoomInfo.loadedIndex - 1);
       }
 
       if (slideImage === 'right') {
+        setIsLoading(true);
         onSlidePin(zoomInfo.loadedIndex + 1);
       }
 
@@ -48,18 +59,22 @@ function SwipableImage({ zoomInfo, onSlidePin, onSetImageMetaData }: SwipableIma
     [slideImage],
   );
 
+  // Function to handle image load events
   const onPinLoad = (e: React.SyntheticEvent<HTMLImageElement>) => {
     const target = e.target as HTMLImageElement;
     const { naturalWidth, naturalHeight } = target;
     onSetImageMetaData({ naturalWidth, naturalHeight });
+    setIsLoading(false);
   };
 
+  // Define the swipe handlers
   const handlers = useSwipeable({
     onSwipedLeft: () => setSlideImage('left'),
     onSwipedRight: () => setSlideImage('right'),
     ...config,
   });
 
+  // Return the component JSX
   return (
     <div
       onMouseOver={() => setShowImageListItemBar(true)}
@@ -68,7 +83,7 @@ function SwipableImage({ zoomInfo, onSlidePin, onSetImageMetaData }: SwipableIma
     >
       <CardMedia
         component="img"
-        image={pinInformation.imgLink}
+        image={isLoading ? LoadingImage : pinInformation.imgLink}
         id="pin-zoom"
         sx={{
           width: parentDivStyle.imgWidth,

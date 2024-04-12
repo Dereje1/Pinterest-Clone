@@ -7,6 +7,8 @@ import toJson from 'enzyme-to-json';
 import SwipableImage from '../../../../../../../client/src/components/common/modal/Front/SwipableImage';
 import { pinsStub } from '../../../../../stub';
 
+jest.mock('../img.png', () => 'mock-loading-img');
+
 const props: React.ComponentProps<typeof SwipableImage> = {
   zoomInfo: {
     pin: pinsStub[0],
