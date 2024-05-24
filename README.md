@@ -13,15 +13,20 @@ These instructions will get you a copy of the project up and running on your loc
 
 ### Tools
 
-| Prerequisite                                | Version |
-| ------------------------------------------- | ------- |
-| [Node.js](http://nodejs.org) /  npm (comes with Node)  | `~ ^18.3.0` / `~^8.19.3` |
-| [Git](https://git-scm.com/downloads) | `~ ^2` |
+#### Prerequisites
 
-| Optional                                | Version |
-| ------------------------------------------- | ------- |
-| [Docker Desktop](https://www.docker.com/products/docker-desktop/) | `~ ^4.4.2` |
-| [MongoDB Compass](https://www.mongodb.com/products/compass) | `~ ^1.0.0` |
+| Tool                                        | Version            |
+|---------------------------------------------|--------------------|
+| [Node.js](https://nodejs.org/) / npm        | ~18.3.0 / ~8.19.3  |
+| [Git](https://git-scm.com/)                 | ~2                 |
+
+#### Optional
+
+| Tool                                        | Version            |
+|---------------------------------------------|--------------------|
+| [Docker Desktop](https://www.docker.com/products/docker-desktop) | ~4.4.2             |
+| [MongoDB Compass](https://www.mongodb.com/products/compass)     | ~1.0.0             |
+
 
 ### Installing
 
