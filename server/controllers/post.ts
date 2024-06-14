@@ -1,7 +1,6 @@
 import { Request } from 'express';
 import mongoose from 'mongoose';
 import debugg from 'debug';
-import vision from '@google-cloud/vision';
 import OpenAI from 'openai';
 import { genericResponseType, tagType } from '../interfaces';
 import {
@@ -16,21 +15,43 @@ import aiGenerated from '../models/AI_generated';
 const debug = debugg('Pinterest-Clone:server');
 
 // run as a side effect after pin has been uploaded
-const addVisionApiTags = async (addedpin: Pin) => {
+const tagWithOpenAI = async (addedpin: Pin) => {
   try {
-    // Creates a client
-    const client = new vision.ImageAnnotatorClient();
-    // Performs label detection on the image file
-    const [result] = await client.labelDetection(addedpin.imgLink);
-    const { labelAnnotations: labels } = result;
-    if (labels) {
-      const descriptions = labels.map((label) => (label.description?.toUpperCase()));
-      const tags = descriptions.map((description) => ({ tag: description }));
-      const update = { $set: { tags, visionApiTags: descriptions } };
-      debug(`Adding tags -> ${descriptions} for new pin -> ${addedpin.imgDescription} from vision api`);
+    const openai = new OpenAI({
+      apiKey: process.env.OPENAI_API_KEY,
+    });
+    const tagsResponse = await openai.chat.completions.create({
+      model: 'gpt-4o',
+      messages: [
+        {
+          role: 'user',
+          content: [
+            {
+              type: 'text',
+              text: 'Please provide 10 unique, single-word tags for the image in a pure JSON array format. The tags should accurately and specifically describe the image. Do not number the tags. Your response should only include a single JSON array and must NOT be wrapped in JSON markdown markers.',
+            },
+            {
+              type: 'image_url',
+              image_url: {
+                url: addedpin.imgLink,
+              },
+            },
+          ],
+        },
+      ],
+      temperature: 0.2,
+    });
+    const [tagsObject] = tagsResponse.choices;
+    const rawTags = tagsObject.message?.content?.trim();
+    let tagsArray = rawTags ? JSON.parse(rawTags) : [];
+    if (tagsArray.length) {
+      tagsArray = tagsArray.map((tag: string) => tag.toUpperCase());
+      const tags = tagsArray.map((tag: string) => ({ tag }));
+      const update = { $set: { tags, visionApiTags: tagsArray } };
+      debug(`Adding tags -> ${tagsArray} for new pin -> ${addedpin.imgDescription} from OpenAI vision api`);
       await pins.findByIdAndUpdate(addedpin._id, update);
       const newSavedTags: Promise<tagType>[] = [];
-      tags.forEach((tag) => newSavedTags.push(savedTags.create(tag)));
+      tags.forEach((tag: string) => newSavedTags.push(savedTags.create(tag)));
       await Promise.all(newSavedTags);
     }
   } catch (error) {
@@ -65,7 +86,7 @@ export const addPin = async (req: Request, res: genericResponseType) => {
       originalImgLink: addedpin.originalImgLink,
       cloudFrontLink: newImgLink ? `https://d1ttxrulihk8wq.cloudfront.net/${newImgLink.split('/')[4]}` : '',
     });
-    addVisionApiTags(addedpin);
+    tagWithOpenAI(addedpin);
     debug(`${displayName} added pin ${addedpin.imgDescription}`);
     res.json(addedpin);
   } catch (error) {

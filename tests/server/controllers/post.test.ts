@@ -25,15 +25,6 @@ jest.mock('@aws-sdk/client-s3', () => {
   };
 });
 
-/* Mock cloud vision api */
-const mockGvisionInstance = {
-  labelDetection: jest.fn(() => Promise.resolve([
-    { labelAnnotations: [{ description: 'Test-label-A' }, { description: 'Test-label-B' }] },
-  ])),
-};
-
-jest.mock('@google-cloud/vision', () => ({ ImageAnnotatorClient: jest.fn(() => mockGvisionInstance) }));
-
 /* Mock open ai api */
 const mockOpenAiInstance = {
   images: {
@@ -41,7 +32,7 @@ const mockOpenAiInstance = {
   },
   chat: {
     completions: {
-      create: jest.fn(() => Promise.resolve({ choices: [{ message: { content: 'stub-ai-title' } }] })),
+      create: jest.fn(() => Promise.resolve({ choices: [{ message: { content: '["TEST-LABEL-A", "TEST-LABEL-B"]' } }] })),
     },
   },
 };
@@ -422,7 +413,7 @@ describe('generating an AI image', () => {
     });
     expect(res.json).toHaveBeenCalledWith({
       imgURL: 'http:/stub-ai-image-url',
-      title: 'stub-ai-title',
+      title: '[TEST-LABEL-A, TEST-LABEL-B]', // Not really the title but easier to mock just the tags since both use chat completions
       _id: 'stub_ai_mongoose_storage_ID',
     });
   });

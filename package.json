@@ -19,7 +19,6 @@
     "@aws-sdk/client-s3": "^3.421.0",
     "@emotion/react": "^11.7.1",
     "@emotion/styled": "^11.6.0",
-    "@google-cloud/vision": "^3.1.2",
     "@mui/icons-material": "^5.2.5",
     "@mui/material": "^5.10.17",
     "@mui/styles": "^5.3.0",

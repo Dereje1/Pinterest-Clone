@@ -79,7 +79,6 @@ Optional tools:
     NODE_ENV=<development|production>
     DEBUG=Pinterest-Clone:server
     DEBUG_COLORS=1
-    GOOGLE_APPLICATION_CREDENTIALS=< service account key path for cloud vision api >
     OPENAI_API_KEY=<Get from OpenAI>
     ```
 
@@ -150,7 +149,6 @@ npm start
 * [MongoDB](https://www.mongodb.com/) - Database
 * [Express](https://expressjs.com/) - Node.js web application framework
 * [Material UI](https://mui.com/) - A library of React UI components that implements Google's Material Design
-* [Google Cloud Vision API](https://cloud.google.com/vision/docs) - Image labeling, face, and landmark detection
 * [OpenAI](https://www.openai.com/) - AI-based image generation
 * [...and more](https://github.com/Dereje1/Pinterest-Clone/blob/master/package.json)
 
