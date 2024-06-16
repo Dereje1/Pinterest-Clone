@@ -280,7 +280,7 @@ class PinCreate extends Component<PinCreateProps, PinCreateState> {
                     if (value.trim().length <= 20) {
                       this.setState({ description: value }, _.debounce(() => {
                         this.validateDescription();
-                      }, 5000));
+                      }, 500));
                     }
                   }}
                   value={description}
