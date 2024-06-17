@@ -95,6 +95,14 @@ exports[`The tags component will render with tags for non-owner 1`] = `
         label="TAG 1"
         onClick={[Function]}
         size="small"
+        sx={
+          {
+            "fontSize": {
+              "sm": 12,
+              "xs": 8,
+            },
+          }
+        }
         variant="outlined"
       />
     </Styled(li)>
@@ -106,6 +114,14 @@ exports[`The tags component will render with tags for non-owner 1`] = `
         label="TAG 2"
         onClick={[Function]}
         size="small"
+        sx={
+          {
+            "fontSize": {
+              "sm": 12,
+              "xs": 8,
+            },
+          }
+        }
         variant="outlined"
       />
     </Styled(li)>
@@ -153,6 +169,14 @@ exports[`The tags component will render with tags for owner 1`] = `
         onClick={[Function]}
         onDelete={[Function]}
         size="small"
+        sx={
+          {
+            "fontSize": {
+              "sm": 12,
+              "xs": 8,
+            },
+          }
+        }
         variant="outlined"
       />
     </Styled(li)>
@@ -165,6 +189,14 @@ exports[`The tags component will render with tags for owner 1`] = `
         onClick={[Function]}
         onDelete={[Function]}
         size="small"
+        sx={
+          {
+            "fontSize": {
+              "sm": 12,
+              "xs": 8,
+            },
+          }
+        }
         variant="outlined"
       />
     </Styled(li)>

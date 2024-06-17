@@ -200,6 +200,10 @@ exports[`The comments window will render with comments 1`] = `
         color="text.secondary"
         sx={
           {
+            "fontSize": {
+              "sm": 14,
+              "xs": 10,
+            },
             "mb": 1.5,
           }
         }
@@ -389,6 +393,10 @@ exports[`The comments window will render with no comments for authenticated user
         color="text.secondary"
         sx={
           {
+            "fontSize": {
+              "sm": 18,
+              "xs": 12,
+            },
             "margin": "auto",
           }
         }
@@ -571,6 +579,10 @@ exports[`The comments window will render with no comments for unauthenticated us
         color="text.secondary"
         sx={
           {
+            "fontSize": {
+              "sm": 18,
+              "xs": 12,
+            },
             "margin": "auto",
           }
         }

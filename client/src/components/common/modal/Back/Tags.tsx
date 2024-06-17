@@ -112,13 +112,14 @@ function TagsArray({
               variant="outlined"
               size="small"
               onClick={(e) => handleTagClick(e, data.tag)}
+              sx={{ fontSize: { xs: 8, sm: 12 } }}
             />
           </ListItem>
         ))}
 
       </Paper>
       <div style={{ marginRight: 3 }}>
-        { owns && tagData && tagData.length < 10 && (
+        {owns && tagData && tagData.length < 10 && (
           <div style={{ display: 'flex' }}>
             <Tooltip title="Add a tag manually">
               <IconButton onClick={() => setOpenTagsForm(true)} disabled={commentFormIsOpen}>

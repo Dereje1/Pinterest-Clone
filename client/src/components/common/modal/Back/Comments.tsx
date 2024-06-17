@@ -148,7 +148,7 @@ function Comments({
             raised
           >
             <CardContent>
-              <Typography variant="h6" color="text.secondary" sx={{ margin: 'auto' }}>
+              <Typography variant="h6" color="text.secondary" sx={{ margin: 'auto', fontSize: { xs: 12, sm: 18 } }}>
                 {authenticated
                   ? `Be the first to write a comment on ${pinInformation.imgDescription}...`
                   : `Login and be the first to write a comment on ${pinInformation.imgDescription}...`}
@@ -183,7 +183,7 @@ function Comments({
                     {`- ${formatDate(createdAt)}`}
                   </Typography>
                 </div>
-                <Typography sx={{ mb: 1.5 }} color="text.secondary">
+                <Typography sx={{ mb: 1.5, fontSize: { xs: 10, sm: 14 } }} color="text.secondary">
                   {comment}
                 </Typography>
               </CardContent>
