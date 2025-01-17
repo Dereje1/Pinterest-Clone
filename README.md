@@ -4,7 +4,7 @@
 
 ### A clone of the Pinterest application for educational purposes
 
-Explore the live application: [Pinterest-Clone](https://pinterest-clone-oct6.onrender.com/)
+Explore the live application: [Pinterest-Clone](https://pclone.derejegetahun.com/)
 
 Use the app to generate images using a web link, upload your own images, or use OpenAI’s cutting-edge image generation technology.
 
