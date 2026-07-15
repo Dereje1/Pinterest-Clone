@@ -13,23 +13,23 @@ exports[`The landing page will display the cover 1`] = `
       >
         <i
           aria-hidden="true"
-          className="fa fa-pinterest"
+          className="fa fa-th-large"
         />
       </div>
       <div
         id="welcome"
       >
-        Welcome to Pinterest
+        Welcome to Pinboard
       </div>
       <div
         id="subheader"
       >
-        Find new ideas to try
+        Discover, save, and share visual ideas
       </div>
       <div
         id="disclaimer"
       >
-        Cloned For Educational Purposes Only!
+        An educational Pinterest-inspired project.
       </div>
       <div
         id="gitsource"

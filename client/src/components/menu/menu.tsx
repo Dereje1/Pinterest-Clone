@@ -27,8 +27,8 @@ export function Brand() {
   return (
     <div className="brand">
       <a href="https://github.com/Dereje1/Pinterest-Clone" target="_blank" rel="noopener noreferrer">
-        <i className="fa fa-pinterest" aria-hidden="true" />
-        {' Clone'}
+        <i className="fa fa-th-large" aria-hidden="true" />
+        {' Pinboard'}
       </a>
     </div>
   );

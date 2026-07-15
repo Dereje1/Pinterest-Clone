@@ -1,10 +1,10 @@
-# Pinterest-Clone
+# Pinboard
 
 [![codecov](https://codecov.io/gh/Dereje1/Pinterest-Clone/branch/master/graph/badge.svg?token=k3bnvXaDh3)](https://codecov.io/gh/Dereje1/Pinterest-Clone)
 
-### A clone of the Pinterest application for educational purposes
+### An educational Pinterest-inspired full-stack application built as a learning project
 
-Explore the live application: [Pinterest-Clone](https://pclone.derejegetahun.com/)
+Explore the live application: [Pinboard](https://pclone.derejegetahun.com/)
 
 Use the app to generate images using a web link, upload your own images, or use OpenAI image generation.
 

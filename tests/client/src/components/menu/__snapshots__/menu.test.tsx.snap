@@ -96,9 +96,9 @@ exports[`The Menu component will render the brand 1`] = `
   >
     <i
       aria-hidden="true"
-      className="fa fa-pinterest"
+      className="fa fa-th-large"
     />
-     Clone
+     Pinboard
   </a>
 </div>
 `;
