@@ -29,7 +29,7 @@ exports[`The landing page will display the cover 1`] = `
       <div
         id="disclaimer"
       >
-        An educational Pinterest-inspired project.
+        An educational visual discovery project.
       </div>
       <div
         id="gitsource"
