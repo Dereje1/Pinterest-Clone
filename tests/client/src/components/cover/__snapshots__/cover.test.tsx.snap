@@ -7,29 +7,31 @@ exports[`The landing page will display the cover 1`] = `
   <div
     id="logincard"
   >
-    <div>
+    <div
+      className="cover-content"
+    >
       <div
         id="logo"
       >
         <i
           aria-hidden="true"
-          className="fa fa-pinterest"
+          className="fa fa-th-large"
         />
       </div>
       <div
         id="welcome"
       >
-        Welcome to Pinterest
+        Welcome to Pinboard
       </div>
       <div
         id="subheader"
       >
-        Find new ideas to try
+        Discover, save, and share visual ideas
       </div>
       <div
         id="disclaimer"
       >
-        Cloned For Educational Purposes Only!
+        An educational visual discovery project.
       </div>
       <div
         id="gitsource"
@@ -47,7 +49,9 @@ exports[`The landing page will display the cover 1`] = `
         </a>
       </div>
     </div>
-    <div>
+    <div
+      className="cover-actions"
+    >
       <Connect(LoginButtons)
         guest={[Function]}
       />

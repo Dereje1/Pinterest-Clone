@@ -12,11 +12,26 @@
     font-weight: bold;
     color: #5e6870;
     z-index: 1000;
+    .brand-actions{
+      display: flex;
+      align-items: center;
+      gap: 24px;
+    }
+    .sort-toggle{
+      flex: 0 0 auto;
+    }
     .brand{
       margin-left: 5%;
+      display: flex;
+      align-items: center;
+      height: 50px;
       >a{
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
         text-decoration: none;
         font-size: 30px;
+        line-height: 1;
         color:#b20e0e;
       }
     }

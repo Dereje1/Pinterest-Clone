@@ -27,8 +27,8 @@ export function Brand() {
   return (
     <div className="brand">
       <a href="https://github.com/Dereje1/Pinterest-Clone" target="_blank" rel="noopener noreferrer">
-        <i className="fa fa-pinterest" aria-hidden="true" />
-        {' Clone'}
+        <i className="fa fa-th-large" aria-hidden="true" />
+        {' Pinboard'}
       </a>
     </div>
   );
@@ -103,9 +103,9 @@ export class Menu extends React.Component<MenuProps, MenuState> {
 
     return (
       <>
-        <div style={{ display: 'flex', width: 175, justifyContent: 'space-between' }}>
+        <div className="brand-actions">
           <Brand />
-          <IconButton onClick={() => toggleSort('', false, !sort)}>
+          <IconButton className="sort-toggle" onClick={() => toggleSort('', false, !sort)}>
             {
               sort ? <ShuffleIcon color="primary" /> : <SortIcon color="secondary" />
             }

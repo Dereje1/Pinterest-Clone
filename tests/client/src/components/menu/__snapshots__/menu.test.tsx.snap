@@ -11,16 +11,11 @@ exports[`The Menu component will render for an authenticated user 1`] = `
     pathname="/"
   />
   <div
-    style={
-      {
-        "display": "flex",
-        "justifyContent": "space-between",
-        "width": 175,
-      }
-    }
+    className="brand-actions"
   >
     <Brand />
     <ForwardRef(IconButton)
+      className="sort-toggle"
       onClick={[Function]}
     >
       <Memo(ForwardRef(SortIcon))
@@ -47,16 +42,11 @@ exports[`The Menu component will render for users authenticated as guest 1`] = `
     pathname="/"
   />
   <div
-    style={
-      {
-        "display": "flex",
-        "justifyContent": "space-between",
-        "width": 175,
-      }
-    }
+    className="brand-actions"
   >
     <Brand />
     <ForwardRef(IconButton)
+      className="sort-toggle"
       onClick={[Function]}
     >
       <Memo(ForwardRef(SortIcon))
@@ -96,9 +86,9 @@ exports[`The Menu component will render the brand 1`] = `
   >
     <i
       aria-hidden="true"
-      className="fa fa-pinterest"
+      className="fa fa-th-large"
     />
-     Clone
+     Pinboard
   </a>
 </div>
 `;
