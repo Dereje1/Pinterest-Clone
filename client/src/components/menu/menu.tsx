@@ -103,16 +103,9 @@ export class Menu extends React.Component<MenuProps, MenuState> {
 
     return (
       <>
-        <div
-          style={{
-            display: 'flex',
-            width: 175,
-            justifyContent: 'space-between',
-            alignItems: 'center',
-          }}
-        >
+        <div className="brand-actions">
           <Brand />
-          <IconButton onClick={() => toggleSort('', false, !sort)}>
+          <IconButton className="sort-toggle" onClick={() => toggleSort('', false, !sort)}>
             {
               sort ? <ShuffleIcon color="primary" /> : <SortIcon color="secondary" />
             }

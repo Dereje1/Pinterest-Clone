@@ -11,17 +11,11 @@ exports[`The Menu component will render for an authenticated user 1`] = `
     pathname="/"
   />
   <div
-    style={
-      {
-        "alignItems": "center",
-        "display": "flex",
-        "justifyContent": "space-between",
-        "width": 175,
-      }
-    }
+    className="brand-actions"
   >
     <Brand />
     <ForwardRef(IconButton)
+      className="sort-toggle"
       onClick={[Function]}
     >
       <Memo(ForwardRef(SortIcon))
@@ -48,17 +42,11 @@ exports[`The Menu component will render for users authenticated as guest 1`] = `
     pathname="/"
   />
   <div
-    style={
-      {
-        "alignItems": "center",
-        "display": "flex",
-        "justifyContent": "space-between",
-        "width": 175,
-      }
-    }
+    className="brand-actions"
   >
     <Brand />
     <ForwardRef(IconButton)
+      className="sort-toggle"
       onClick={[Function]}
     >
       <Memo(ForwardRef(SortIcon))
