@@ -13,6 +13,7 @@ exports[`The Menu component will render for an authenticated user 1`] = `
   <div
     style={
       {
+        "alignItems": "center",
         "display": "flex",
         "justifyContent": "space-between",
         "width": 175,
@@ -49,6 +50,7 @@ exports[`The Menu component will render for users authenticated as guest 1`] = `
   <div
     style={
       {
+        "alignItems": "center",
         "display": "flex",
         "justifyContent": "space-between",
         "width": 175,

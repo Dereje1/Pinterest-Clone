@@ -103,7 +103,14 @@ export class Menu extends React.Component<MenuProps, MenuState> {
 
     return (
       <>
-        <div style={{ display: 'flex', width: 175, justifyContent: 'space-between' }}>
+        <div
+          style={{
+            display: 'flex',
+            width: 175,
+            justifyContent: 'space-between',
+            alignItems: 'center',
+          }}
+        >
           <Brand />
           <IconButton onClick={() => toggleSort('', false, !sort)}>
             {

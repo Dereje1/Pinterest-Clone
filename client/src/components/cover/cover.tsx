@@ -6,7 +6,7 @@ function Cover() {
   return (
     <div id="cover">
       <div id="logincard">
-        <div>
+        <div className="cover-content">
           <div id="logo"><i className="fa fa-th-large" aria-hidden="true" /></div>
           <div id="welcome">Welcome to Pinboard</div>
           <div id="subheader">Discover, save, and share visual ideas</div>
@@ -18,7 +18,7 @@ function Cover() {
             </a>
           </div>
         </div>
-        <div>
+        <div className="cover-actions">
           <LoginButtons guest={() => ({})} />
         </div>
       </div>
