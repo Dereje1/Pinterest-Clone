@@ -1,2 +1,11 @@
 node_modules
-package-lock.json
+.git
+.env
+*.zip
+docker-compose.yml
+server_build
+client/dist
+coverage
+myscripts/dump_archives
+myscripts/atlas-dump.json
+myscripts/atlas-dump-backup.json

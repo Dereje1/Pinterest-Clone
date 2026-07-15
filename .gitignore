@@ -21,3 +21,4 @@ nodemon.json
 /server_build
 google_vision_api_key.json
 /client/dist
+*.zip
