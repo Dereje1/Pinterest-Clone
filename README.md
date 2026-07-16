@@ -106,18 +106,26 @@ Optional tools:
 
 ## Using Docker
 
-The production application is built from the root `Dockerfile`.
-
-To build the application image locally:
+The application image is built from the root `Dockerfile`. For production artifacts, build for the current Elastic Beanstalk architecture, `linux/amd64`:
 
 ```sh
-docker build -t pinterest-clone .
+docker buildx build \
+  --platform linux/amd64 \
+  --load \
+  -t pinboard:local \
+  .
 ```
 
-To run it locally, provide the required environment variables and expose the application port:
+To run that image locally, provide the required environment variables at runtime and expose the application port:
 
 ```sh
-docker run --env-file .env -p 3000:3000 pinterest-clone
+docker run --rm \
+  --platform linux/amd64 \
+  --env-file .env \
+  -e NODE_ENV=production \
+  -e PORT=3000 \
+  -p 3000:3000 \
+  pinboard:local
 ```
 
 Then open:
@@ -126,13 +134,17 @@ Then open:
 http://localhost:3000/
 ```
 
-The production Elastic Beanstalk deployment uses the root `Dockerfile` directly.
+`.env` is runtime-only and must never be copied into the image. The root Dockerfile builds the image, but Elastic Beanstalk no longer builds from that Dockerfile during normal production deployment.
 
 `docker-compose.yml` is not included in the production deployment bundle.
 
 ## Production Deployment
 
-The live application is deployed manually using Docker and AWS Elastic Beanstalk.
+The live application is deployed manually using Docker, private Amazon ECR, and AWS Elastic Beanstalk. Production images are built and tested outside Elastic Beanstalk, pushed to private ECR, and deployed by giving Elastic Beanstalk a minimal `Dockerrun.aws.json` bundle. The existing environment pulls and runs the prebuilt image.
+
+```text
+Repository → local amd64 Docker build → ECR → Dockerrun bundle → Elastic Beanstalk
+```
 
 Production URL:
 

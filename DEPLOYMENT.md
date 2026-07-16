@@ -1,116 +1,102 @@
 # Production Deployment Guide
 
-This document describes the current production deployment process for the Pinterest Clone application.
+This document is the authoritative manual runbook for deploying the public Pinboard application to production.
 
-The production deployment is manual and uses:
+Production deployment is manual. Docker images are built and tested outside Elastic Beanstalk, pushed to a private Amazon ECR repository, and then deployed by Elastic Beanstalk from a small `Dockerrun.aws.json` bundle. During normal production deployment, Elastic Beanstalk must not build the application source.
 
-- Docker
-- AWS Elastic Beanstalk
-- Amazon CloudFront
-- Amazon Route 53
-- AWS Certificate Manager
-- MongoDB Atlas
-- Amazon S3
+The deployment path changed. The application architecture and surrounding production infrastructure did not.
 
 ---
 
-# Current Production Environment
+## Current Production Environment
 
-## Production URL
+### Production URL
 
 ```text
 https://pclone.derejegetahun.com
 ```
 
-## Elastic Beanstalk environment
+### Elastic Beanstalk application and environment
 
 ```text
+Pinterest-Clone
 Pinterest-Clone-new-env
 ```
 
-## AWS region
+### AWS region
 
 ```text
 us-east-1
 ```
 
-## Elastic Beanstalk platform
+### Elastic Beanstalk platform
 
 ```text
 Docker on Amazon Linux 2023
 ```
 
-## Application container port
+### Application container port
 
 ```text
 3000
 ```
 
-## Direct Elastic Beanstalk hostname
+### Direct Elastic Beanstalk hostname
 
 ```text
 http://pinterest-clone-new-env.eba-4m2kepim.us-east-1.elasticbeanstalk.com
 ```
 
-The direct Elastic Beanstalk hostname is primarily for diagnostics.
-
-Normal production traffic should use:
-
-```text
-https://pclone.derejegetahun.com
-```
+The direct Elastic Beanstalk hostname is primarily for diagnostics. Normal production traffic should use `https://pclone.derejegetahun.com`.
 
 ---
 
-# Production Architecture
+## Production Architecture
+
+### Runtime traffic
 
 ```text
 Browser
-   |
-   v
-Route 53
-pclone.derejegetahun.com
-   |
-   v
-CloudFront
-HTTPS termination and proxying
-   |
-   v
-Elastic Beanstalk
-Pinterest-Clone-new-env
-   |
-   v
-Docker container
-Node.js / Express on port 3000
-   |
-   +--> MongoDB Atlas
-   +--> Amazon S3
-   +--> OAuth providers
-   +--> OpenAI API
+  → Route 53
+  → CloudFront
+  → Elastic Beanstalk
+  → Docker container
+  → MongoDB Atlas / S3 / OAuth / OpenAI
 ```
+
+### Deployment artifact path
+
+```text
+Git repository
+    |
+    v
+Local Docker build (`linux/amd64`)
+    |
+    v
+Local container test
+    |
+    v
+Private Amazon ECR
+    |
+    v
+Elastic Beanstalk via `Dockerrun.aws.json`
+    |
+    v
+Production container on port 3000
+```
+
+The working production deployment uses a prebuilt image. The historical source-build path is not the normal deployment method anymore.
 
 ---
 
-# Resources That Must Be Preserved
+## Resources That Must Be Preserved
 
 Do not delete or recreate these without first confirming the current architecture.
 
-## Elastic Beanstalk environment
-
 ```text
-Pinterest-Clone-new-env
-```
-
-## Production domain
-
-```text
-pclone.derejegetahun.com
-```
-
-## CloudFront distribution
-
-```text
-pclone-production
+Elastic Beanstalk environment: Pinterest-Clone-new-env
+Production domain: pclone.derejegetahun.com
+CloudFront distribution name: pclone-production
 ```
 
 Also preserve:
@@ -118,13 +104,16 @@ Also preserve:
 - production Route 53 records
 - ACM certificate used by CloudFront
 - MongoDB Atlas database
-- S3 image bucket
-- existing CloudFront resources used for image delivery
+- S3 image bucket and image delivery configuration
+- OAuth application settings
+- OpenAI integration settings
 - production Elastic Beanstalk environment variables
+
+The production environment variables remain configured in Elastic Beanstalk and are supplied at container runtime.
 
 ---
 
-# Old Elastic Beanstalk Environments
+## Old Elastic Beanstalk Environments
 
 The following old environments have been terminated:
 
@@ -133,19 +122,13 @@ pinterest-clone-prod
 pinterest-clone-v3-test
 ```
 
-Do not use them for future deployments.
-
-All future production deployments should target:
-
-```text
-Pinterest-Clone-new-env
-```
+Do not use them for future deployments. All future production deployments should target `Pinterest-Clone-new-env` unless the production architecture is intentionally changed in separately scoped work.
 
 ---
 
-# Production Dockerfile
+## Root Dockerfile
 
-The production deployment uses the root `Dockerfile`.
+The application image is still built from the repository root `Dockerfile`.
 
 ```dockerfile
 FROM node:18
@@ -165,19 +148,27 @@ EXPOSE 3000
 CMD ["npm", "start"]
 ```
 
-The container:
+The Dockerfile currently:
 
 1. uses Node.js 18
 2. installs exact dependencies from `package-lock.json`
-3. copies the application source
+3. copies the application source into the image build context
 4. builds the React/Vite frontend
 5. builds the TypeScript backend
 6. starts the compiled Node.js server
-7. listens on port `3000`
+7. exposes port `3000`
+
+Important distinction:
+
+- The Dockerfile is used during the local/prebuilt image build.
+- The Dockerfile is not included in the minimal Elastic Beanstalk deployment ZIP.
+- Elastic Beanstalk does not normally execute this Dockerfile anymore.
+
+Do not redesign or modernize the Dockerfile as part of a deployment run. Dockerfile improvements should be handled in separately scoped work.
 
 ---
 
-# `.dockerignore`
+## `.dockerignore`
 
 The current production `.dockerignore` is:
 
@@ -195,582 +186,620 @@ myscripts/atlas-dump.json
 myscripts/atlas-dump-backup.json
 ```
 
-These exclusions prevent local dependencies, secrets, generated output, archives, and local data dumps from entering the Docker build context.
+These exclusions protect the local Docker image build context. They prevent local dependencies, secrets, generated output, archives, and local data dumps from being copied into the image build context.
+
+This is separate from the Elastic Beanstalk deployment ZIP. The normal Elastic Beanstalk ZIP contains only `Dockerrun.aws.json` and does not use `.dockerignore`.
+
+`.env` must not be copied into the Docker image. For local testing, pass `.env` only at runtime with `--env-file .env`.
 
 ---
 
-# Important: Do Not Include `docker-compose.yml`
+## One-Time Setup Versus Every Deployment
 
-Do not include:
+### Normally done only once
 
-```text
-docker-compose.yml
+| Setup item | Purpose | Production impact |
+|---|---|---|
+| Create a private ECR repository | Stores tested application images | No running production change by itself |
+| Give the Elastic Beanstalk EC2 instance role ECR pull permission | Allows the environment to download the private image | No application version change by itself |
+| Retain existing CloudFront, Route 53, and TLS configuration | Keeps the current public production path | Do not change during a normal deployment |
+| Confirm production environment properties | Ensures runtime secrets and settings remain in Elastic Beanstalk | Do not print or commit secret values |
+
+### Done for every deployment
+
+1. Update `master` and understand the source state.
+2. Record the intended commit SHA.
+3. Build a `linux/amd64` Docker image.
+4. Run the exact image locally.
+5. Tag and push the tested image to ECR.
+6. Record the ECR image digest.
+7. Create `Dockerrun.aws.json` for that image tag.
+8. ZIP only `Dockerrun.aws.json`.
+9. Register a unique Elastic Beanstalk application version.
+10. Perform a pre-deployment safety check.
+11. Deploy the application version.
+12. Monitor Elastic Beanstalk.
+13. Verify production behavior.
+14. Retain an earlier known-good application version for rollback.
+
+---
+
+## AWS CLI Context Checks
+
+These commands confirm which AWS account and region your CLI is using. They assume the AWS CLI is already authenticated through an appropriate IAM user, IAM Identity Center session, or assumed role.
+
+```bash
+aws sts get-caller-identity
+aws configure get region
 ```
 
-in the Elastic Beanstalk deployment bundle.
+What this does: prints the active AWS identity and default region.
 
-During restoration, including the Compose configuration caused Elastic Beanstalk to use an unintended deployment path involving local MongoDB behavior and incorrect port mapping.
+Production impact: none.
 
-The working production deployment uses only the root:
+Success looks like: the account and region are the intended deployment context.
+
+What not to do:
+
+- Do not paste or commit credential output.
+- Do not document access keys, secret keys, session tokens, ECR login passwords, or account-specific ARNs.
+- Use a least-privileged deployment identity such as an appropriate IAM user, IAM Identity Center session, or assumed role.
+- Do not make credential migration part of this deployment guide.
+
+---
+
+## ECR Prerequisite
+
+A private ECR repository must already exist, or it must be created once before the first prebuilt-image deployment.
+
+Reusable one-time creation example:
+
+```bash
+aws ecr create-repository \
+  --repository-name <ECR_REPOSITORY_NAME> \
+  --region <AWS_REGION> \
+  --image-scanning-configuration scanOnPush=true \
+  --encryption-configuration encryptionType=AES256
+```
+
+The private repository URI has this form:
 
 ```text
-Dockerfile
+<AWS_ACCOUNT_ID>.dkr.ecr.<AWS_REGION>.amazonaws.com/<ECR_REPOSITORY_NAME>
+```
+
+Do not place the real AWS account ID in public documentation.
+
+---
+
+## Elastic Beanstalk EC2 Role ECR Permission
+
+The Elastic Beanstalk EC2 instance role must be able to authenticate to ECR and download the image.
+
+This is normally a one-time infrastructure prerequisite. The policy belongs on the Elastic Beanstalk EC2 instance role, not only on the Elastic Beanstalk service role. Verify existing permissions before adding a duplicate policy. Do not remove or rewrite unrelated role permissions.
+
+Least-privilege policy template:
+
+```json
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Sid": "AllowECRAuthentication",
+      "Effect": "Allow",
+      "Action": "ecr:GetAuthorizationToken",
+      "Resource": "*"
+    },
+    {
+      "Sid": "AllowApplicationImagePull",
+      "Effect": "Allow",
+      "Action": [
+        "ecr:BatchCheckLayerAvailability",
+        "ecr:GetDownloadUrlForLayer",
+        "ecr:BatchGetImage"
+      ],
+      "Resource": "arn:aws:ecr:<AWS_REGION>:<AWS_ACCOUNT_ID>:repository/<ECR_REPOSITORY_NAME>"
+    }
+  ]
+}
 ```
 
 ---
 
-# Before Deployment
+## Deployment Runbook
 
-Start from the current `master` branch.
+### 1. Verify source state
 
 ```bash
 git checkout master
 git pull origin master
-```
-
-Run the application locally:
-
-```bash
-NODE_ENV=development PORT=3001 npm run dev
-```
-
-Verify the affected functionality in:
-
-```text
-http://localhost:8080
-```
-
----
-
-# Build Verification
-
-Before creating a deployment bundle, run:
-
-```bash
-npm run build_client
-npm run build_server
-```
-
-Both commands must complete successfully.
-
-The Docker image will rebuild these artifacts during deployment, but local build verification catches compilation failures before uploading to AWS.
-
-For broader validation:
-
-```bash
-npm run compileTS
-npm run lint
-npm run coverage
-```
-
-Some legacy tests or lint rules may require separate maintenance.
-
-A successful production build is required before deployment.
-
----
-
-# Commit and Push
-
-Review the changes:
-
-```bash
 git status
-git diff
+git branch --show-current
+git rev-parse HEAD
+git log -5 --oneline
 ```
 
-Confirm that no secrets or local-only files are being committed.
+What this does: confirms the source commit that will be built.
 
-Then:
+Production impact: none.
+
+Success looks like: the working tree is understood and the image tag corresponds to the intended commit.
+
+What not to do: do not build an image from an unknown or unintended working tree. Record the commit SHA in deployment notes.
+
+### 2. Build a `linux/amd64` image locally
+
+The current Elastic Beanstalk EC2 environment uses x86-64. Production images must target:
+
+```text
+linux/amd64
+```
+
+Build command:
 
 ```bash
-git add .
-git commit -m "Describe the deployment"
-git push origin master
+docker buildx build \
+  --platform linux/amd64 \
+  --progress=plain \
+  --load \
+  -t pinboard:<IMAGE_TAG> \
+  .
 ```
 
-The deployment bundle should normally be created from the same code that has been committed and pushed.
+`--load` loads the single-platform result into the local Docker image store so the exact image can be tested before pushing.
 
----
+Production impact: none.
 
-# Create the Deployment ZIP
+Success looks like: Docker completes the build and a local `pinboard:<IMAGE_TAG>` image exists.
 
-From the repository root:
+Verify image architecture:
 
 ```bash
-rm -f pinterest-clone-deploy.zip
+docker image inspect pinboard:<IMAGE_TAG> \
+  --format 'Architecture={{.Architecture}} OS={{.Os}} ID={{.Id}}'
 ```
 
-Then run:
+Expected:
+
+```text
+Architecture=amd64 OS=linux
+```
+
+### 3. Test the exact image locally
 
 ```bash
-zip -r pinterest-clone-deploy.zip . \
-  -x "node_modules/*" \
-     ".git/*" \
-     ".env" \
-     "*.zip" \
-     "docker-compose.yml" \
-     "server_build/*" \
-     "client/dist/*" \
-     "coverage/*" \
-     "myscripts/dump_archives/*" \
-     "myscripts/atlas-dump.json" \
-     "myscripts/atlas-dump-backup.json"
+docker run --rm \
+  --platform linux/amd64 \
+  -p 3001:3000 \
+  --env-file .env \
+  -e NODE_ENV=production \
+  -e PORT=3000 \
+  pinboard:<IMAGE_TAG>
 ```
 
-This is the ZIP creation method that was successfully used for the restored production deployment.
+What this does: runs the same image that will be pushed to ECR, with local runtime environment variables.
 
----
+Production impact: none.
 
-# ZIP Structure
+Success looks like:
 
-Run the ZIP command from the repository root.
+- container starts
+- MongoDB connects
+- homepage loads at `http://localhost:3001`
+- Pinboard branding appears
+- existing pins load
+- no startup error appears
 
-The archive must contain files such as these directly at the root:
+What not to do:
 
-```text
-Dockerfile
-package.json
-package-lock.json
-server/
-client/
-bin/
-```
+- Do not push an untested image.
+- Do not bake `.env` into the image.
+- Do not copy secret values into documentation or logs.
 
-Correct:
+### 4. Log in to ECR, tag, push, and verify
 
-```text
-pinterest-clone-deploy.zip
-├── Dockerfile
-├── package.json
-├── package-lock.json
-├── server/
-├── client/
-└── bin/
-```
-
-Incorrect:
-
-```text
-pinterest-clone-deploy.zip
-└── Pinterest-Clone/
-    ├── Dockerfile
-    ├── package.json
-    └── ...
-```
-
-Elastic Beanstalk must see `Dockerfile` at the root of the uploaded archive.
-
----
-
-# Inspect the Deployment ZIP
-
-Before uploading:
+Log in without printing the ECR password:
 
 ```bash
-unzip -l pinterest-clone-deploy.zip | head -50
+aws ecr get-login-password --region <AWS_REGION> \
+  | docker login \
+      --username AWS \
+      --password-stdin \
+      <AWS_ACCOUNT_ID>.dkr.ecr.<AWS_REGION>.amazonaws.com
 ```
 
-Confirm:
-
-- `Dockerfile` is at the ZIP root
-- `package.json` is at the ZIP root
-- `package-lock.json` is present
-- `.env` is absent
-- `node_modules` is absent
-- `.git` is absent
-- `docker-compose.yml` is absent
-- `server_build` is absent
-- `client/dist` is absent
-- old ZIP files are absent
-
----
-
-# Upload a New Elastic Beanstalk Application Version
-
-In the AWS Console:
-
-1. Open **Elastic Beanstalk**.
-2. Open the Pinterest Clone application.
-3. Go to **Application versions**.
-4. Upload:
-
-   ```text
-   pinterest-clone-deploy.zip
-   ```
-
-5. Give the application version a unique label.
-
-Examples:
-
-```text
-pinterest-clone-v5
-```
-
-or:
-
-```text
-pinterest-clone-2026-07-15
-```
-
-Do not reuse an existing application-version label.
-
----
-
-# Deploy the New Version
-
-After uploading the application version:
-
-1. Open:
-
-   ```text
-   Pinterest-Clone-new-env
-   ```
-
-2. Choose the option to deploy an application version.
-3. Select the new application version.
-4. Start the deployment.
-5. Wait for Elastic Beanstalk to finish updating.
-
-A deployment may take several minutes.
-
-Elastic Beanstalk will:
-
-- prepare the environment
-- build the Docker image
-- run `npm ci`
-- build the frontend
-- build the backend
-- start the new container
-- replace the old application container
-- perform health checks
-
-Do not interrupt the deployment while the environment is updating.
-
----
-
-# Production Environment Variables
-
-Production environment variables are configured in the Elastic Beanstalk environment.
-
-Examples include:
-
-```text
-SESSION_SECRET
-MONGOLAB_URI
-
-GOOGLE_CLIENT_ID
-GOOGLE_CLIENT_SECRET
-GOOGLE_CALLBACK
-
-GITHUB_CLIENT_ID
-GITHUB_CLIENT_SECRET
-GITHUB_CALLBACK
-
-TWITTER_CONSUMER_KEY
-TWITTER_CONSUMER_SECRET
-TWITTER_CALLBACK
-
-AWS_ACCESS_KEY_ID
-AWS_SECRET_KEY
-S3_BUCKET_NAME
-
-OPENAI_API_KEY
-
-NODE_ENV
-```
-
-Do not place production secret values in the repository.
-
----
-
-# Production OAuth Callbacks
-
-## Google
-
-```text
-https://pclone.derejegetahun.com/auth/google/redirect
-```
-
-## GitHub
-
-```text
-https://pclone.derejegetahun.com/auth/github/redirect
-```
-
-Do not replace these production callback URLs with localhost values.
-
----
-
-# Twitter / X Status
-
-Twitter/X authentication is currently deferred.
-
-X currently flags:
-
-```text
-pclone.derejegetahun.com
-```
-
-as a malware URL in its developer platform.
-
-The application itself is operational and other OAuth providers work correctly.
-
-Do not change the working Google or GitHub authentication configuration while troubleshooting Twitter/X.
-
-The Twitter/X UI may be disabled separately.
-
----
-
-# Deployment Verification
-
-After Elastic Beanstalk reports healthy status, verify production.
-
-## 1. Open the production application
-
-```text
-https://pclone.derejegetahun.com
-```
-
-## 2. Confirm the public application loads
-
-Verify:
-
-- frontend loads
-- images appear
-- existing pins appear
-- feed data loads
-- no obvious server error appears
-
-## 3. Confirm authentication
-
-Verify at least one supported OAuth provider:
-
-- Google
-- GitHub
-
-## 4. Verify affected authenticated functionality
-
-For changes affecting authenticated behavior, test the relevant function.
-
-Examples:
-
-- create a pin
-- delete a pin
-- save a pin
-- remove a saved pin
-- comment
-- update tags
-- update profile information
-
-## 5. Confirm Elastic Beanstalk health
-
-The environment should return to:
-
-```text
-Health: Ok
-```
-
----
-
-# Known Verified Production Functionality
-
-The restored production deployment has been verified for:
-
-- public application loading
-- guest access
-- MongoDB Atlas reads
-- existing pin feed
-- Google authentication
-- GitHub authentication
-- authenticated pin creation
-- image upload
-- S3-backed image storage
-- MongoDB persistence
-- persistence after page refresh
-- authenticated pin deletion
-- HTTPS
-- CloudFront proxying
-- Elastic Beanstalk deployment
-
----
-
-# Rollback Procedure
-
-Elastic Beanstalk keeps previous application versions that can be redeployed.
-
-If a deployment fails:
-
-1. Open Elastic Beanstalk.
-2. Open:
-
-   ```text
-   Pinterest-Clone-new-env
-   ```
-
-3. Select a previously known-good application version.
-4. Deploy that version.
-5. Wait for environment health to return to:
-
-   ```text
-   Ok
-   ```
-
-6. Verify:
-
-   ```text
-   https://pclone.derejegetahun.com
-   ```
-
-Do not attempt to recover from a bad deployment by deleting the environment.
-
-Use an application-version rollback first.
-
----
-
-# Application Version Cleanup
-
-Old Elastic Beanstalk application versions may be deleted periodically.
-
-Before deleting an application version:
-
-1. confirm it is not currently deployed
-2. keep the current production version
-3. keep at least one known-good rollback version
-4. delete only clearly obsolete test, failed, or superseded versions
-
-Do not delete every previous application version.
-
-Keeping at least one known-good rollback bundle is recommended.
-
----
-
-# Troubleshooting
-
-## Application works locally but deployment fails
-
-Run:
+Tag the tested local image:
 
 ```bash
-npm run build_client
-npm run build_server
+docker tag \
+  pinboard:<IMAGE_TAG> \
+  <ECR_REPOSITORY_URI>:<IMAGE_TAG>
 ```
 
-Inspect the deployment ZIP:
+Push it:
 
 ```bash
-unzip -l pinterest-clone-deploy.zip | head -50
+docker push <ECR_REPOSITORY_URI>:<IMAGE_TAG>
 ```
 
-Confirm `Dockerfile` and `package.json` are at the ZIP root.
+Verify the image exists in ECR:
 
----
-
-## Elastic Beanstalk uses the wrong deployment behavior
-
-Confirm:
-
-```text
-docker-compose.yml
+```bash
+aws ecr describe-images \
+  --repository-name <ECR_REPOSITORY_NAME> \
+  --image-ids imageTag=<IMAGE_TAG> \
+  --region <AWS_REGION> \
+  --query 'imageDetails[0].{
+    Tags:imageTags,
+    Digest:imageDigest,
+    PushedAt:imagePushedAt,
+    SizeBytes:imageSizeInBytes
+  }'
 ```
 
-is not inside the deployment ZIP.
+What this does: uploads the tested image to private ECR and confirms ECR has it.
 
-The production deployment must use the root `Dockerfile`.
+Production impact: none until Elastic Beanstalk is updated to use this image.
 
----
+Success looks like: ECR returns the tag, digest, push time, and size. The digest identifies the immutable image content and should be recorded in deployment notes.
 
-## Production container does not start
+What not to do: do not rely only on `latest`. Use unique, non-reused deployment tags.
 
-Confirm the Dockerfile ends with:
+### 5. Create `Dockerrun.aws.json`
 
-```dockerfile
-EXPOSE 3000
-
-CMD ["npm", "start"]
-```
-
-Confirm `package.json` contains:
+Create a root-level file named `Dockerrun.aws.json` for the image tag being deployed:
 
 ```json
-"start": "node ./server_build/bin/www"
+{
+  "AWSEBDockerrunVersion": "1",
+  "Image": {
+    "Name": "<ECR_REPOSITORY_URI>:<IMAGE_TAG>",
+    "Update": "true"
+  },
+  "Ports": [
+    {
+      "ContainerPort": "3000"
+    }
+  ]
+}
 ```
 
----
+Field notes:
 
-## Local development loads the wrong server entry point
+- `AWSEBDockerrunVersion` is Elastic Beanstalk single-container Docker v1 format.
+- `Image.Name` must reference the private ECR image tag.
+- `Image.Update` tells Elastic Beanstalk to pull the image during deployment.
+- `ContainerPort` must match the application container port, `3000`.
 
-Run:
+Rules:
+
+- No secret belongs in this file.
+- No host-port mapping belongs in this file.
+- A digest reference may be used later if intentionally adopted, but the currently proven workflow uses a unique image tag.
+
+### 6. Create the minimal Elastic Beanstalk ZIP
+
+The current normal deployment ZIP must contain only this root-level file:
+
+```text
+Dockerrun.aws.json
+```
+
+Correct structure:
+
+```text
+pinboard-ecr-<version>.zip
+└── Dockerrun.aws.json
+```
+
+Incorrect structure:
+
+```text
+pinboard-ecr-<version>.zip
+└── pinboard-ecr-<version>/
+    └── Dockerrun.aws.json
+```
+
+Create the ZIP:
 
 ```bash
-NODE_ENV=development PORT=3001 npm run dev
+DEPLOY_VERSION="<EB_APPLICATION_VERSION>"
+BUNDLE_DIR="/tmp/$DEPLOY_VERSION"
+
+mkdir -p "$BUNDLE_DIR"
+cp Dockerrun.aws.json "$BUNDLE_DIR/"
+cd "$BUNDLE_DIR"
+zip "$DEPLOY_VERSION.zip" Dockerrun.aws.json
+unzip -l "$DEPLOY_VERSION.zip"
 ```
 
-The application entry-point logic depends on:
+What this does: creates the Elastic Beanstalk source bundle that points to the already-built ECR image.
+
+Production impact: none.
+
+Success looks like: the ZIP is only a few hundred bytes and `unzip -l` shows exactly one root-level `Dockerrun.aws.json` file.
+
+The deployment ZIP must not contain:
+
+- the repository source
+- `Dockerfile`
+- `docker-compose.yml`
+- `.env`
+- `node_modules`
+- previously generated ZIP files
+
+### 7. Register an Elastic Beanstalk application version
+
+The CLI path below is the authoritative path. The console can also upload the same ZIP as a new application version, but the same rules apply: use a unique version label and do not overwrite or delete the currently deployed version.
+
+```bash
+EB_BUCKET=$(aws elasticbeanstalk create-storage-location \
+  --region <AWS_REGION> \
+  --query 'S3Bucket' \
+  --output text)
+
+aws s3 cp \
+  "/tmp/<EB_APPLICATION_VERSION>/<EB_APPLICATION_VERSION>.zip" \
+  "s3://$EB_BUCKET/pinboard/<EB_APPLICATION_VERSION>.zip" \
+  --region <AWS_REGION>
+
+aws elasticbeanstalk create-application-version \
+  --application-name <EB_APPLICATION_NAME> \
+  --version-label <EB_APPLICATION_VERSION> \
+  --description "Prebuilt Pinboard Docker image from private ECR" \
+  --source-bundle \
+    S3Bucket="$EB_BUCKET",S3Key="pinboard/<EB_APPLICATION_VERSION>.zip" \
+  --region <AWS_REGION>
+```
+
+What this does: uploads the tiny bundle to S3 and registers it as an Elastic Beanstalk application version.
+
+Production impact: none until the environment is updated to this version.
+
+Success looks like: Elastic Beanstalk accepts the new version label. `UNPROCESSED` immediately after registration is not necessarily an error; configuration validation may occur at deployment time.
+
+The image itself is in ECR. The S3 ZIP only contains the `Dockerrun.aws.json` instruction.
+
+### 8. Pre-deployment safety check
+
+Confirm the current environment is healthy before changing production:
+
+```bash
+aws elasticbeanstalk describe-environments \
+  --application-name <EB_APPLICATION_NAME> \
+  --environment-names <EB_ENVIRONMENT_NAME> \
+  --region <AWS_REGION> \
+  --query 'Environments[0].{
+    Status:Status,
+    Health:Health,
+    HealthStatus:HealthStatus,
+    VersionLabel:VersionLabel,
+    AbortableOperationInProgress:AbortableOperationInProgress
+  }'
+```
+
+Required state:
 
 ```text
-NODE_ENV=development
+Status: Ready
+Health: Green
+HealthStatus: Ok
+AbortableOperationInProgress: false
 ```
 
-for the local TypeScript server path.
+Also confirm `https://pclone.derejegetahun.com` loads before deployment.
 
----
+Production impact: none.
 
-## OAuth works locally but not in production
+What not to do: do not start a deployment while another operation is in progress or while production is already unhealthy unless this is an intentional recovery action.
 
-Check both:
+### 9. Deploy the application version
 
-1. Elastic Beanstalk environment variables
-2. OAuth provider callback configuration
+```bash
+aws elasticbeanstalk update-environment \
+  --environment-name <EB_ENVIRONMENT_NAME> \
+  --version-label <EB_APPLICATION_VERSION> \
+  --region <AWS_REGION>
+```
 
-The callback URLs must match exactly.
+This is the point where production begins changing.
 
-Google:
+Expected behavior:
+
+- Elastic Beanstalk reads `Dockerrun.aws.json`.
+- Elastic Beanstalk authenticates to ECR using the EC2 instance role.
+- Elastic Beanstalk pulls the finished image.
+- Elastic Beanstalk starts the container.
+- Traffic is routed to container port `3000`.
+- Health checks run.
+
+The normal deployment must not run:
 
 ```text
-https://pclone.derejegetahun.com/auth/google/redirect
+docker build -t aws_beanstalk/staging-app ...
 ```
 
-GitHub:
+If Elastic Beanstalk performs a Docker build, the bundle was not recognized correctly or contains unintended files.
+
+### 10. Monitor deployment
+
+Use this macOS-compatible status loop:
+
+```bash
+while true; do
+  clear
+  date
+  aws elasticbeanstalk describe-environments \
+    --environment-names <EB_ENVIRONMENT_NAME> \
+    --region <AWS_REGION> \
+    --query 'Environments[0].{
+      Status:Status,
+      Health:Health,
+      HealthStatus:HealthStatus,
+      Version:VersionLabel,
+      Abortable:AbortableOperationInProgress
+    }'
+  sleep 10
+done
+```
+
+In another terminal, monitor recent events:
+
+```bash
+while true; do
+  clear
+  date
+  aws elasticbeanstalk describe-events \
+    --environment-name <EB_ENVIRONMENT_NAME> \
+    --region <AWS_REGION> \
+    --max-items 12 \
+    --query 'Events[].{
+      Time:EventDate,
+      Severity:Severity,
+      Message:Message
+    }'
+  sleep 10
+done
+```
+
+`Ctrl+C` stops only the local monitoring loop. It does not cancel or change the AWS deployment.
+
+### 11. Verify production
+
+Do not claim full success merely because the Elastic Beanstalk update command completed. Verify the running application.
+
+Required checks:
+
+- environment returns to `Ready / Green / Ok`
+- running application version matches `<EB_APPLICATION_VERSION>`
+- `https://pclone.derejegetahun.com` loads
+- Pinboard branding appears
+- guest mode works
+- existing pins load
+- S3 images render
+- MongoDB data remains intact
+- login routes render
+- Google authentication is checked where practical
+- GitHub authentication is checked where practical
+- Twitter/X is checked only according to its documented current status
+- affected authenticated features are tested
+- environment variables are still being supplied at runtime by Elastic Beanstalk
+- no secrets were baked into the image
+
+---
+
+## Rollback
+
+Keep an earlier known-good Elastic Beanstalk application version available.
+
+CLI rollback:
+
+```bash
+aws elasticbeanstalk update-environment \
+  --environment-name <EB_ENVIRONMENT_NAME> \
+  --version-label <KNOWN_GOOD_VERSION> \
+  --region <AWS_REGION>
+```
+
+Rollback changes the Elastic Beanstalk application version. It does not delete ECR images, DNS, MongoDB, S3, CloudFront, or the environment.
+
+Do not terminate the environment as a first recovery action. If an unhealthy deployment reproduces a `No Data` or unavailable production state, allow rollback to complete first and inspect logs before considering an EC2 reboot.
+
+---
+
+## Troubleshooting
+
+### ECR authentication or authorization failure
+
+Check:
+
+- correct account and region
+- exact ECR repository URI
+- image exists
+- Elastic Beanstalk EC2 role has pull access
+- permissions include `GetAuthorizationToken`, `BatchCheckLayerAvailability`, `GetDownloadUrlForLayer`, and `BatchGetImage`
+
+### Architecture mismatch
+
+Symptoms may include:
 
 ```text
-https://pclone.derejegetahun.com/auth/github/redirect
+exec format error
 ```
 
+Rebuild explicitly for `linux/amd64`.
+
+### Image works locally but container fails in production
+
+Check:
+
+- `NODE_ENV=production`
+- `PORT=3000`
+- Elastic Beanstalk environment properties
+- server listens on `0.0.0.0`
+- container logs
+- same image tag/digest was tested locally
+
+### Unexpected Docker build
+
+If logs show:
+
+```text
+docker build ...
+```
+
+check that:
+
+- deployment ZIP contains only root-level `Dockerrun.aws.json`
+- no Dockerfile is included
+- no full source tree is included
+- JSON syntax is valid
+- `AWSEBDockerrunVersion` is `"1"`
+
+Do not wait through another prolonged source build.
+
+### Health-check failure
+
+Check:
+
+- port `3000`
+- application startup logs
+- proxy behavior
+- health-check path
+- environment properties
+
+Do not change DNS as a first response.
+
 ---
 
-## Twitter/X reports a malware URL
+## Why the Deployment Workflow Changed
 
-This is a known external provider issue involving the production hostname.
+The previous source-build workflow is historical and unreliable for this environment. It sent a full source bundle to Elastic Beanstalk and expected the EC2 instance to build the Docker image, install dependencies, compile the frontend and backend, and then start the container.
 
-Do not change the working Google or GitHub authentication configuration while investigating it.
+The workflow changed because:
 
----
+- the exact application bundle built successfully locally
+- the exact image ran successfully locally
+- Elastic Beanstalk source deployments repeatedly stalled during the on-instance Docker build
+- the problem reproduced after an EC2 instance replacement and root-volume increase
+- the precise internal Dockerfile step causing the stall was never proven
+- using a prebuilt image removes the unreliable on-instance build phase
 
-# Security
-
-Never:
-
-- commit `.env`
-- commit API keys
-- commit database credentials
-- include `.env` in a deployment ZIP
-- expose production credentials in logs
-- commit database dumps containing private information
-
-If a credential is exposed, rotate it.
+Do not claim that `npm ci`, Vite, TypeScript, memory, disk, or CPU was definitively proven to be the root cause.
 
 ---
 
-# Future Deployment Improvements
+## Future Improvements
 
-Possible future improvements:
+The current workflow is still manual. Possible later improvements include:
 
-- automate deployment with CI/CD
-- generate version labels automatically
-- add automated deployment smoke tests
-- modernize the Node.js runtime
-- add structured production logging
-- improve rollback automation
-- improve dependency and security auditing
+- CI/CD automation
+- automatic commit-SHA image tags
+- digest-pinned deployments
+- automated smoke tests
+- image lifecycle policies
+- multi-stage Dockerfile
+- Node runtime modernization
+- credential and IAM hardening
 
-These are not required for the current working deployment.
+These improvements are not implemented by this runbook.
