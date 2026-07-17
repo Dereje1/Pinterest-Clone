@@ -850,7 +850,7 @@ Deploy that exact prepared artifact later, from the same clean `master` commit:
 npm run deploy:production -- --deploy-prepared <RELEASE_ID>
 ```
 
-This verifies the local record, commit, ECR digest, S3 object, EB version, identity, and environment. It does not rebuild, locally run, push, upload, or register the artifact.
+This verifies the local record, commit, ECR digest, exact S3 object ETag, EB version source-bundle bucket/key, identity, and environment. It does not rebuild, locally run, push, upload, or register the artifact. Because it consumes an already prepared artifact, this mode does not require Docker, Buildx, ZIP tools, or a local `.env`; the common Git, AWS, account, role, and production-health checks still apply.
 
 ### Releases, confirmations, and records
 
@@ -862,7 +862,7 @@ The exact confirmation phrases are:
 - `PREPARE` before the first AWS write;
 - `DEPLOY PINBOARD` immediately before `UpdateEnvironment`.
 
-Non-secret atomic records are stored in the gitignored `.deployments/<RELEASE_ID>.json`. They bind the commit, image digest, environment, preparation/deployment times, result, and previous version. Do not copy credentials or `.env` contents into these records.
+Non-secret atomic records are stored in the gitignored `.deployments/<RELEASE_ID>.json`. They bind the commit, image digest, S3 bundle bucket/key/ETag, environment, preparation/deployment times, result, and previous version. A prepared deployment checks both that object identity and the EB application's recorded source bundle before approval. Do not copy credentials or `.env` contents into these records.
 
 ### Monitoring, rollback, and manual verification
 

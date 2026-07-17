@@ -7,6 +7,9 @@ readonly URL=https://pclone.derejegetahun.com LOCAL_URL=http://localhost:3001/
 MODE=full; NEW_RELEASE=false; PREPARED_RELEASE=""; CONTAINER_ID=""; TEMP_DIR=""; DEPLOYMENT_STARTED=false
 CALLER_ARN=""; ACCOUNT_ID=""; FULL_SHA=""; SHORT_SHA=""; RELEASE_ID=""; ECR_URI=""
 IMAGE_DIGEST=""; PREVIOUS_VERSION=""; PREPARED_AT=""
+BUNDLE_BUCKET=""; BUNDLE_KEY=""; BUNDLE_ETAG=""
+MONITOR_TIMEOUT_SECONDS=${MONITOR_TIMEOUT_SECONDS:-1800}
+MONITOR_POLL_SECONDS=${MONITOR_POLL_SECONDS:-20}
 
 usage() { cat <<'EOF'
 Usage:
@@ -47,16 +50,21 @@ parse_args() {
   [[ "$MODE" != deploy-prepared || "$NEW_RELEASE" == false ]] || die '--new-release cannot accompany --deploy-prepared'
 }
 
-tools_preflight() {
-  local t; for t in git docker aws zip unzip curl; do command -v "$t" >/dev/null || die "required tool missing: $t"; done
+common_tools_preflight() {
+  local t; for t in git aws curl; do command -v "$t" >/dev/null || die "required tool missing: $t"; done
+}
+build_tools_preflight() {
+  local t; for t in docker zip unzip; do command -v "$t" >/dev/null || die "required tool missing: $t"; done
   docker info >/dev/null 2>&1 || die 'Docker daemon is unavailable'
   docker buildx version >/dev/null 2>&1 || die 'docker buildx is unavailable'
 }
-repo_preflight() {
+common_repo_preflight() {
   [[ -d .git && -f package.json && -f Dockerfile && "$(git rev-parse --show-toplevel)" == "$PWD" ]] || die 'run from the Pinterest-Clone repository root'
   [[ "$(git branch --show-current)" == master ]] || die 'production deployment requires branch master'
   [[ -z "$(git status --porcelain)" ]] || die 'working tree is dirty; commit or stash changes'
   FULL_SHA=$(git rev-parse HEAD); SHORT_SHA=$(git rev-parse --short HEAD)
+}
+build_repo_preflight() {
   [[ -f .env ]] || die '.env is required for local testing'
   ! git ls-files --error-unmatch .env >/dev/null 2>&1 || die '.env must not be tracked'
   grep -Eq '(^|/)\.env($|[[:space:]])' .dockerignore || die '.env must be excluded by .dockerignore'
@@ -114,6 +122,9 @@ write_record() {
   "commit": "$FULL_SHA",
   "imageTag": "$RELEASE_ID",
   "imageDigest": "$IMAGE_DIGEST",
+  "bundleBucket": "$BUNDLE_BUCKET",
+  "bundleKey": "$BUNDLE_KEY",
+  "bundleETag": "$BUNDLE_ETAG",
   "previousVersion": "$PREVIOUS_VERSION",
   "environment": "$ENVIRONMENT",
   "region": "$REGION",
@@ -141,8 +152,9 @@ build_and_test() {
 }
 
 prepare() {
-  local bucket="elasticbeanstalk-$REGION-$ACCOUNT_ID" data bundle listing pushed size
-  printf '\nPREPARATION\nCommit: %s\nRelease: %s\nECR: %s:%s\nS3: s3://%s/pinboard/%s.zip\n\n' "$FULL_SHA" "$RELEASE_ID" "$ECR_URI" "$RELEASE_ID" "$bucket" "$RELEASE_ID"
+  local data bundle listing pushed size
+  BUNDLE_BUCKET="elasticbeanstalk-$REGION-$ACCOUNT_ID"; BUNDLE_KEY="pinboard/$RELEASE_ID.zip"
+  printf '\nPREPARATION\nCommit: %s\nRelease: %s\nECR: %s:%s\nS3: s3://%s/%s\n\n' "$FULL_SHA" "$RELEASE_ID" "$ECR_URI" "$RELEASE_ID" "$BUNDLE_BUCKET" "$BUNDLE_KEY"
   confirm PREPARE
   ! release_exists "$RELEASE_ID" || die "release collision detected immediately before AWS writes: $RELEASE_ID"
   aws_cli ecr get-login-password | docker login --username AWS --password-stdin "$ACCOUNT_ID.dkr.ecr.$REGION.amazonaws.com"
@@ -159,23 +171,36 @@ prepare() {
 EOF
   bundle="$TEMP_DIR/$RELEASE_ID.zip"; (cd "$TEMP_DIR" && zip -q "$RELEASE_ID.zip" Dockerrun.aws.json)
   listing=$(unzip -Z1 "$bundle"); [[ "$listing" == Dockerrun.aws.json ]] || die 'ZIP must contain exactly one root Dockerrun.aws.json'
-  aws_cli s3 cp "$bundle" "s3://$bucket/pinboard/$RELEASE_ID.zip" --only-show-errors
-  aws_cli elasticbeanstalk create-application-version --application-name "$APPLICATION" --version-label "$RELEASE_ID" --description "Pinboard commit $FULL_SHA; ECR digest $IMAGE_DIGEST" --source-bundle S3Bucket="$bucket",S3Key="pinboard/$RELEASE_ID.zip" >/dev/null
+  aws_cli s3 cp "$bundle" "s3://$BUNDLE_BUCKET/$BUNDLE_KEY" --only-show-errors
+  BUNDLE_ETAG=$(aws_cli s3api head-object --bucket "$BUNDLE_BUCKET" --key "$BUNDLE_KEY" --query ETag --output text)
+  BUNDLE_ETAG=${BUNDLE_ETAG#\"}; BUNDLE_ETAG=${BUNDLE_ETAG%\"}
+  [[ -n "$BUNDLE_ETAG" && "$BUNDLE_ETAG" != None ]] || die 'uploaded bundle ETag unavailable'
+  aws_cli elasticbeanstalk create-application-version --application-name "$APPLICATION" --version-label "$RELEASE_ID" --description "Pinboard commit $FULL_SHA; ECR digest $IMAGE_DIGEST" --source-bundle S3Bucket="$BUNDLE_BUCKET",S3Key="$BUNDLE_KEY" >/dev/null
   [[ "$(aws_cli elasticbeanstalk describe-application-versions --application-name "$APPLICATION" --version-labels "$RELEASE_ID" --query 'ApplicationVersions[0].VersionLabel' --output text)" == "$RELEASE_ID" ]] || die 'EB version verification failed'
   PREPARED_AT=$(date -u +%FT%TZ); write_record PREPARED; log "Prepared $RELEASE_ID ($IMAGE_DIGEST, $pushed, $size bytes)"
 }
 
 record_value() { sed -n "s/^[[:space:]]*\"$2\": \"\([^\"]*\)\".*$/\1/p" "$1"; }
+verify_prepared_bundle() {
+  local metadata remote_etag source source_bucket source_key
+  metadata=$(aws_cli s3api head-object --bucket "$BUNDLE_BUCKET" --key "$BUNDLE_KEY" --query ETag --output text) || die 'S3 bundle missing'
+  remote_etag=${metadata#\"}; remote_etag=${remote_etag%\"}
+  [[ "$remote_etag" == "$BUNDLE_ETAG" ]] || die 'S3 bundle ETag changed'
+  source=$(aws_cli elasticbeanstalk describe-application-versions --application-name "$APPLICATION" --version-labels "$RELEASE_ID" --query 'ApplicationVersions[0].SourceBundle.[S3Bucket,S3Key]' --output text)
+  read -r source_bucket source_key <<<"$source"
+  [[ "$source_bucket" == "$BUNDLE_BUCKET" && "$source_key" == "$BUNDLE_KEY" ]] || die 'EB application version points to an unexpected source bundle'
+}
 load_prepared() {
   [[ "$PREPARED_RELEASE" =~ ^pinboard-ecr-[a-zA-Z0-9._-]+$ ]] || die 'invalid release ID'
-  RELEASE_ID=$PREPARED_RELEASE; local record=".deployments/$RELEASE_ID.json" remote bucket="elasticbeanstalk-$REGION-$ACCOUNT_ID"
+  RELEASE_ID=$PREPARED_RELEASE; local record=".deployments/$RELEASE_ID.json" remote
   [[ -f "$record" ]] || die 'deployment record not found'
   [[ "$(record_value "$record" result)" == PREPARED ]] || die 'record is not PREPARED'
   [[ "$(record_value "$record" commit)" == "$FULL_SHA" ]] || die 'prepared commit differs from HEAD'
   IMAGE_DIGEST=$(record_value "$record" imageDigest); PREPARED_AT=$(record_value "$record" preparedAt); PREVIOUS_VERSION=$(record_value "$record" previousVersion)
+  BUNDLE_BUCKET=$(record_value "$record" bundleBucket); BUNDLE_KEY=$(record_value "$record" bundleKey); BUNDLE_ETAG=$(record_value "$record" bundleETag)
+  [[ "$BUNDLE_BUCKET" == "elasticbeanstalk-$REGION-$ACCOUNT_ID" && "$BUNDLE_KEY" == "pinboard/$RELEASE_ID.zip" && -n "$BUNDLE_ETAG" ]] || die 'prepared record has invalid bundle identity'
   remote=$(aws_cli ecr describe-images --repository-name "$REPOSITORY" --image-ids imageTag="$RELEASE_ID" --query 'imageDetails[0].imageDigest' --output text); [[ "$remote" == "$IMAGE_DIGEST" ]] || die 'ECR digest changed'
-  aws_cli s3api head-object --bucket "$bucket" --key "pinboard/$RELEASE_ID.zip" >/dev/null || die 'S3 bundle missing'
-  [[ "$(aws_cli elasticbeanstalk describe-application-versions --application-name "$APPLICATION" --version-labels "$RELEASE_ID" --query 'ApplicationVersions[0].VersionLabel' --output text)" == "$RELEASE_ID" ]] || die 'EB version missing'
+  verify_prepared_bundle
 }
 
 rollback() { cat <<EOF
@@ -190,15 +215,16 @@ EOF
 }
 events() { aws_cli elasticbeanstalk describe-events --environment-name "$ENVIRONMENT" --max-records 10 --query 'Events[*].[EventDate,Severity,Message]' --output table >&2 || true; }
 monitor() {
-  local deadline=$((SECONDS+1800)) last="" state status health hs version abortable
+  local deadline=$((SECONDS+MONITOR_TIMEOUT_SECONDS)) last="" state status health hs version abortable
   while ((SECONDS < deadline)); do
     state=$(environment_state); [[ "$state" == "$last" ]] || log "Status: $state"; last=$state
     read -r status health hs version abortable <<<"$state"
     if [[ "$status" == Ready ]]; then
       [[ "$health" == Green && "$hs" == Ok && "$version" == "$RELEASE_ID" && "$abortable" == False ]] && return 0
-      events; die "deployment returned Ready without expected healthy release $RELEASE_ID"
+      [[ "$version" == "$RELEASE_ID" ]] || { events; die "deployment returned Ready on unexpected version $version (expected $RELEASE_ID)"; }
     fi
-    sleep 20
+    case "$status" in Aborting|Terminated|Terminating) events; die "Elastic Beanstalk entered failed state $status" ;; esac
+    sleep "$MONITOR_POLL_SECONDS"
   done
   events; die "deployment timed out; expected $RELEASE_ID (inspect: aws elasticbeanstalk request-environment-info --info-type tail --environment-name $ENVIRONMENT --region $REGION --profile $PROFILE)"
 }
@@ -246,10 +272,12 @@ EOF
 }
 
 main() {
-  parse_args "$@"; tools_preflight; repo_preflight; load_account; aws_preflight
+  parse_args "$@"; common_tools_preflight; common_repo_preflight
+  if [[ "$MODE" != deploy-prepared ]]; then build_tools_preflight; build_repo_preflight; fi
+  load_account; aws_preflight
   if [[ "$MODE" == deploy-prepared ]]; then load_prepared; deploy; exit; fi
   choose_release; build_and_test; prepare
   [[ "$MODE" == prepare-only ]] && { log 'Prepare-only complete; UpdateEnvironment was not called.'; exit; }
   deploy
 }
-main "$@"
+if [[ "${BASH_SOURCE[0]}" == "$0" ]]; then main "$@"; fi
