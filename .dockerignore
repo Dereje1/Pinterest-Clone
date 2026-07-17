@@ -9,3 +9,5 @@ coverage
 myscripts/dump_archives
 myscripts/atlas-dump.json
 myscripts/atlas-dump-backup.json
+.pinboard-deploy.env
+.deployments/

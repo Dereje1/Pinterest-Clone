@@ -142,6 +142,15 @@ http://localhost:3000/
 
 The live application is deployed manually using Docker, private Amazon ECR, and AWS Elastic Beanstalk. Production images are built and tested outside Elastic Beanstalk, pushed to private ECR, and deployed by giving Elastic Beanstalk a minimal `Dockerrun.aws.json` bundle. The existing environment pulls and runs the prebuilt image.
 
+The repository-owned guided deployment starts with an explicit SSO login:
+
+```bash
+aws sso login --profile pinboard-deployer
+npm run deploy:production
+```
+
+Configure the independently verified AWS account locally as described in `DEPLOYMENT.md`. The script retains the prebuilt-image architecture and asks for exact preparation and production confirmations.
+
 ```text
 Repository → local amd64 Docker build → ECR → Dockerrun bundle → Elastic Beanstalk
 ```

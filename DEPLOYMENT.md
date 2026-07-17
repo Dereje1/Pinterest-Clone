@@ -803,3 +803,69 @@ The current workflow is still manual. Possible later improvements include:
 - credential and IAM hardening
 
 These improvements are not implemented by this runbook.
+
+---
+
+## Guided production deployment script
+
+The manual runbook above remains authoritative for understanding and troubleshooting the deployment path. For routine guided releases, the repository provides `scripts/deploy-production.sh`; it builds and tests the exact `linux/amd64` image locally and creates only a minimal Dockerrun bundle for Elastic Beanstalk.
+
+### Authentication and local account guard
+
+Authenticate only with the least-privileged production deployment profile:
+
+```bash
+aws sso login --profile pinboard-deployer
+```
+
+Copy the public-safe template and fill it with an independently verified AWS account ID (never commit the resulting file):
+
+```bash
+cp .pinboard-deploy.env.example .pinboard-deploy.env
+# Edit PINBOARD_EXPECTED_AWS_ACCOUNT_ID=<ACCOUNT_ID>
+```
+
+The variable may instead be exported in the shell. The script fails closed without it and validates the fixed profile, `us-east-1`, account, SSO role, repository state, production health, and required resources before any write.
+
+### Modes
+
+A full guided preparation and deployment is:
+
+```bash
+npm run deploy:production
+```
+
+To prepare without calling `UpdateEnvironment`:
+
+```bash
+aws sso login --profile pinboard-deployer
+npm run deploy:production -- --prepare-only
+```
+
+Expected checkpoints are preflight validation, an amd64 build, the exact-image local URL and `TESTED` gate, the `PREPARE` gate, ECR digest verification, minimal ZIP validation, S3 upload, EB application-version registration, and a final `PREPARED` record. This is the appropriate first live AWS validation for this script; it does **not** deploy production.
+
+Deploy that exact prepared artifact later, from the same clean `master` commit:
+
+```bash
+npm run deploy:production -- --deploy-prepared <RELEASE_ID>
+```
+
+This verifies the local record, commit, ECR digest, S3 object, EB version, identity, and environment. It does not rebuild, locally run, push, upload, or register the artifact.
+
+### Releases, confirmations, and records
+
+The deterministic release is `pinboard-ecr-<short-commit-sha>`. Any collision in `.deployments`, ECR, S3, or EB stops the run. Use the prepared-release mode for an existing release, or deliberately request a timestamped identifier with `--new-release`; timestamps are never silently added.
+
+The exact confirmation phrases are:
+
+- `TESTED` after manually inspecting the locally running exact image;
+- `PREPARE` before the first AWS write;
+- `DEPLOY PINBOARD` immediately before `UpdateEnvironment`.
+
+Non-secret atomic records are stored in the gitignored `.deployments/<RELEASE_ID>.json`. They bind the commit, image digest, environment, preparation/deployment times, result, and previous version. Do not copy credentials or `.env` contents into these records.
+
+### Monitoring, rollback, and manual verification
+
+Monitoring is bounded and success requires the requested version to reach `Ready / Green / Ok` with no abortable operation. HTTPS smoke checks follow redirects, reject failures, require the `Pinboard` page marker, and re-check EB state. An HTTP response alone is not considered complete production verification.
+
+On both success and failure the script prints, but never executes, a fully scoped rollback command for the previous version. It also prints the manual checklist for homepage appearance, branding, guest browsing, pins and S3 images, login routes, Google/GitHub authentication, Twitter/X according to its documented status, and affected authenticated behavior. Use the detailed manual sections above to investigate events, logs, health checks, image issues, or to conduct rollback.
