@@ -13,7 +13,8 @@
     "test": "jest --watch",
     "coverage": "jest --coverage",
     "compileTS": "tsc -p ./client && tsc -p ./server --noEmit && tsc -p ./tests/tsconfig.test.json",
-    "preview": "vite preview"
+    "preview": "vite preview",
+    "deploy:production": "bash scripts/deploy-production.sh"
   },
   "dependencies": {
     "@aws-sdk/client-s3": "^3.421.0",
