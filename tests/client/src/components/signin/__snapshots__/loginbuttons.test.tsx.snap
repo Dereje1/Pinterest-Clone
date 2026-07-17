@@ -3,10 +3,6 @@
 exports[`The sign in component will render for Guest users on homepage 1`] = `
 <Fragment>
   <ProviderButton
-    key="twitter"
-    service="twitter"
-  />
-  <ProviderButton
     key="google"
     service="google"
   />
@@ -35,10 +31,6 @@ exports[`The sign in component will render for cover page 1`] = `
   >
     Continue As Guest        
   </ForwardRef(Button)>
-  <ProviderButton
-    key="twitter"
-    service="twitter"
-  />
   <ProviderButton
     key="google"
     service="google"

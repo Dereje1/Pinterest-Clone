@@ -63,9 +63,13 @@ export class LoginButtons extends React.Component<LoginButtonsProps> {
 
         {
           providerKeys.map((service) => {
-            if (providers[service as keyof providersType]) {
+            if (
+              service !== 'twitter'
+              && providers[service as keyof providersType]
+            ) {
               return <ProviderButton key={service} service={service} />;
             }
+
             return null;
           })
         }
