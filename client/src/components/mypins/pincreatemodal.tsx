@@ -164,9 +164,11 @@ class PinCreate extends Component<PinCreateProps, PinCreateState> {
       picPreview: loading,
     });
     const { imgURL, title, _id } = await RESTcall({ address: '/api/AIimage', method: 'post', payload: { description } });
+    const generatedTitle = title.trim();
     this.setState({
       picPreview: imgURL,
-      description: title.trim(),
+      description: generatedTitle,
+      isDescriptionError: generatedTitle.length < 5,
       AIimageStatus: {
         _id,
         generatedImage: Boolean(_id),
