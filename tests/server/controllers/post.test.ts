@@ -28,11 +28,11 @@ jest.mock('@aws-sdk/client-s3', () => {
 /* Mock open ai api */
 const mockOpenAiInstance = {
   images: {
-    generate: jest.fn(() => Promise.resolve({ data: [{ url: 'http:/stub-ai-image-url' }] })),
+    generate: jest.fn<Promise<unknown>, unknown[]>(() => Promise.resolve({ data: [{ url: 'http:/stub-ai-image-url' }] })),
   },
   chat: {
     completions: {
-      create: jest.fn(() => Promise.resolve({ choices: [{ message: { content: '["TEST-LABEL-A", "TEST-LABEL-B"]' } }] })),
+      create: jest.fn<Promise<unknown>, unknown[]>(() => Promise.resolve({ choices: [{ message: { content: '["TEST-LABEL-A", "TEST-LABEL-B"]' } }] })),
     },
   },
 };
@@ -382,14 +382,18 @@ describe('generating an AI image', () => {
   };
   beforeEach(() => {
     res = { json: jest.fn(), end: jest.fn() };
+    mockOpenAiInstance.images.generate.mockResolvedValue({ data: [{ url: 'http:/stub-ai-image-url' }] });
+    mockOpenAiInstance.chat.completions.create.mockResolvedValue({ choices: [{ message: { content: '["TEST-LABEL-A", "TEST-LABEL-B"]' } }] });
     aiGenerated.create = jest.fn().mockResolvedValue({ _id: 'stub_ai_mongoose_storage_ID' });
     aiGenerated.find = jest.fn().mockResolvedValue([1, 2, 3]);
+    delete process.env.OPENAI_IMAGE_MODEL;
   });
   afterEach(() => {
     jest.restoreAllMocks();
   });
 
-  test('will make request to openAI to generate a new image', async () => {
+  test('will make request to openAI to generate a new image with the configured GPT Image model', async () => {
+    process.env.OPENAI_IMAGE_MODEL = 'stub-image-model';
     const req = {
       user,
       body: {
@@ -398,7 +402,7 @@ describe('generating an AI image', () => {
     };
     await generateAIimage(req as genericRequest, res as unknown as Response);
     expect(mockOpenAiInstance.images.generate).toHaveBeenCalledWith({
-      model: 'dall-e-3',
+      model: 'stub-image-model',
       n: 1,
       prompt: 'open ai image creation prompt',
       size: '1024x1024',
@@ -415,6 +419,76 @@ describe('generating an AI image', () => {
       imgURL: 'http:/stub-ai-image-url',
       title: '[TEST-LABEL-A, TEST-LABEL-B]', // Not really the title but easier to mock just the tags since both use chat completions
       _id: 'stub_ai_mongoose_storage_ID',
+    });
+  });
+
+  test('will return a PNG data URI for a GPT Image base64 response without persisting the payload', async () => {
+    const stubImage = Buffer.from('stub-image').toString('base64');
+    mockOpenAiInstance.images.generate.mockResolvedValue({ data: [{ b64_json: stubImage }] });
+    const req = {
+      user,
+      body: {
+        description: 'open ai image creation prompt',
+      },
+    };
+    await generateAIimage(req as genericRequest, res as unknown as Response);
+    expect(mockOpenAiInstance.images.generate).toHaveBeenCalledWith({
+      model: 'gpt-image-1',
+      n: 1,
+      prompt: 'open ai image creation prompt',
+      size: '1024x1024',
+    });
+    expect(res.json).toHaveBeenCalledWith({
+      imgURL: `data:image/png;base64,${stubImage}`,
+      title: '[TEST-LABEL-A, TEST-LABEL-B]',
+      _id: 'stub_ai_mongoose_storage_ID',
+    });
+    expect(aiGenerated.create).toHaveBeenCalledWith({
+      userId: user._id,
+      description: 'open ai image creation prompt',
+      response: {
+        imageResponse: {
+          created: undefined,
+          hasUrl: false,
+          hasB64Json: true,
+          model: 'gpt-image-1',
+        },
+        titleResponse: { choices: [{ message: { content: '["TEST-LABEL-A", "TEST-LABEL-B"]' } }] },
+      },
+    });
+    const persistedAIRecord = JSON.stringify((aiGenerated.create as jest.Mock).mock.calls[0][0]);
+    expect(persistedAIRecord).not.toContain(stubImage);
+  });
+
+  test('will return an existing image URL if OpenAI provides a URL fallback', async () => {
+    const req = {
+      user,
+      body: {
+        description: 'open ai image creation prompt',
+      },
+    };
+    await generateAIimage(req as genericRequest, res as unknown as Response);
+    expect(res.json).toHaveBeenCalledWith({
+      imgURL: 'http:/stub-ai-image-url',
+      title: '[TEST-LABEL-A, TEST-LABEL-B]',
+      _id: 'stub_ai_mongoose_storage_ID',
+    });
+  });
+
+  test('will respond with error if OpenAI returns no image payload', async () => {
+    mockOpenAiInstance.images.generate.mockResolvedValue({ data: [{}] });
+    const req = {
+      user,
+      body: {
+        description: 'open ai image creation prompt',
+      },
+    };
+    await generateAIimage(req as genericRequest, res as unknown as Response);
+    expect(aiGenerated.create).not.toHaveBeenCalled();
+    expect(res.json).toHaveBeenCalledWith({
+      imgURL: '',
+      title: '',
+      _id: null,
     });
   });
 
