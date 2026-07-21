@@ -238,7 +238,36 @@ describe('The pin creation modal', () => {
     });
     expect(wrapper.state().picPreview).toEqual('AI generated image url');
     expect(wrapper.state().description).toEqual('AI generated title');
+    expect(wrapper.state().isDescriptionError).toBe(false);
+    wrapper.update();
+    const SavePin: EnzymePropSelector = wrapper.find('SavePin');
+    expect(SavePin.props().picPreview).toEqual('AI generated image url');
+    expect(SavePin.props().isDescriptionError).toBe(false);
     expect(props.updateGeneratedImages).toHaveBeenCalled();
+  });
+
+  test('will keep AI generated titles shorter than 5 characters invalid', async () => {
+    mockedRESTcall.mockImplementationOnce(() => Promise.resolve({
+      imgURL: 'AI generated image url',
+      title: 'Bot ',
+      _id: 'Ai_generated_ID',
+    }));
+    const wrapper = shallow<PinCreate>(<PinCreate {...props} />);
+    const cardHeader: EnzymePropSelector = wrapper.find('ForwardRef(CardHeader)');
+    cardHeader.props().action.props.handleMediaChange('', 'AI');
+    const textField: EnzymePropSelector = wrapper.find('ForwardRef(TextField)');
+    const generateButton: EnzymePropSelector = wrapper.find('MediaButtonHandler');
+    textField.props().onChange({ target: { value: 'A prompt to generate image' } });
+
+    generateButton.props().handleAIimage();
+    await Promise.resolve();
+
+    expect(wrapper.state().picPreview).toEqual('AI generated image url');
+    expect(wrapper.state().description).toEqual('Bot');
+    expect(wrapper.state().isDescriptionError).toBe(true);
+    wrapper.update();
+    const SavePin: EnzymePropSelector = wrapper.find('SavePin');
+    expect(SavePin.props().isDescriptionError).toBe(true);
   });
 
   test('will reset a generated image', async () => {
