@@ -77,6 +77,7 @@ Optional tools:
    S3_BUCKET_NAME=<S3 bucket name for uploaded pins>
 
    OPENAI_API_KEY=<Get from OpenAI>
+   OPENAI_IMAGE_MODEL=gpt-image-1
 
    NODE_ENV=development
 

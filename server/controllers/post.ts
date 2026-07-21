@@ -98,6 +98,7 @@ export const addPin = async (req: Request, res: genericResponseType) => {
 export const generateAIimage = async (req: Request, res: genericResponseType) => {
   const { userId } = getUserProfile(req.user as UserType);
   const { description } = req.body;
+  const OPENAI_IMAGE_MODEL = process.env.OPENAI_IMAGE_MODEL || 'gpt-image-1';
   try {
     const aiGeneratedByUser = await aiGenerated.find({ userId });
     if (!description.trim().length || aiGeneratedByUser.length >= 5) {
@@ -109,7 +110,7 @@ export const generateAIimage = async (req: Request, res: genericResponseType) =>
     });
     debug(`UserId -> ${userId} Generating AI image and title for -> ${description} from openAI`);
     const imageResponse = await openai.images.generate({
-      model: 'dall-e-3',
+      model: OPENAI_IMAGE_MODEL,
       prompt: description,
       n: 1,
       size: '1024x1024',
@@ -122,15 +123,29 @@ export const generateAIimage = async (req: Request, res: genericResponseType) =>
       }],
       max_tokens: 10,
     });
+    const [imageData] = imageResponse.data;
+    const imgURL = imageData?.b64_json
+      ? `data:image/png;base64,${imageData.b64_json}`
+      : imageData?.url;
+    if (!imgURL) {
+      throw new Error('OpenAI returned no image data');
+    }
     const { _id } = await aiGenerated.create({
       userId,
       description,
-      response: { imageResponse, titleResponse },
+      response: {
+        imageResponse: {
+          created: imageResponse.created,
+          hasUrl: Boolean(imageData?.url),
+          hasB64Json: Boolean(imageData?.b64_json),
+          model: OPENAI_IMAGE_MODEL,
+        },
+        titleResponse,
+      },
     });
-    const [linkObject] = imageResponse.data;
     const [titleObject] = titleResponse.choices;
 
-    res.json({ imgURL: linkObject.url, title: titleObject.message?.content?.trim().replace(/[".]/g, ''), _id });
+    res.json({ imgURL, title: titleObject.message?.content?.trim().replace(/[".]/g, ''), _id });
   } catch (error) {
     debug(`Error Generating AI image and title for -> UserId -> ${userId} and description: ${description}, Error: ${error}`);
     res.json({ imgURL: '', title: '', _id: null });
