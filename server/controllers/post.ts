@@ -14,6 +14,32 @@ import aiGenerated from '../models/AI_generated';
 
 const debug = debugg('Pinterest-Clone:server');
 
+const isAppS3Url = (url: string) => {
+  try {
+    const parsedUrl = new URL(url);
+    return parsedUrl.protocol === 'https:'
+      && parsedUrl.hostname === 's3.amazonaws.com'
+      && parsedUrl.pathname.split('/')[1] === process.env.S3_BUCKET_NAME;
+  } catch (error) {
+    return false;
+  }
+};
+
+const getReusableAIImageUrl = async ({
+  AIgeneratedId,
+  originalImgLink,
+  userId,
+}: {
+  AIgeneratedId: string | null | undefined,
+  originalImgLink: string,
+  userId: string | undefined,
+}) => {
+  if (!AIgeneratedId || !isAppS3Url(originalImgLink)) return null;
+  const AIgeneratedRecord = await aiGenerated.findOne({ _id: AIgeneratedId, userId });
+  const generatedImgURL = AIgeneratedRecord?.response?.imageResponse?.generatedImgURL;
+  return generatedImgURL === originalImgLink ? generatedImgURL : null;
+};
+
 // run as a side effect after pin has been uploaded
 const tagWithOpenAI = async (addedpin: Pin) => {
   try {
@@ -69,7 +95,12 @@ export const addPin = async (req: Request, res: genericResponseType) => {
     if (createdPins.length >= 10) {
       throw new Error(`UserID: ${userId} has reached the pin creation limit - aborted!`);
     }
-    const newImgLink = await uploadImageToS3({
+    const reusableAIImageUrl = await getReusableAIImageUrl({
+      AIgeneratedId: req.body.AIgeneratedId,
+      originalImgLink,
+      userId,
+    });
+    const newImgLink = reusableAIImageUrl || await uploadImageToS3({
       originalImgLink, userId, displayName, service,
     });
     const updatedPinInfo = {
@@ -96,7 +127,7 @@ export const addPin = async (req: Request, res: genericResponseType) => {
 };
 
 export const generateAIimage = async (req: Request, res: genericResponseType) => {
-  const { userId } = getUserProfile(req.user as UserType);
+  const { userId, displayName, service } = getUserProfile(req.user as UserType);
   const { description } = req.body;
   const OPENAI_IMAGE_MODEL = process.env.OPENAI_IMAGE_MODEL || 'gpt-image-1';
   try {
@@ -124,9 +155,19 @@ export const generateAIimage = async (req: Request, res: genericResponseType) =>
       max_tokens: 10,
     });
     const [imageData] = imageResponse.data;
-    const imgURL = imageData?.b64_json
-      ? `data:image/png;base64,${imageData.b64_json}`
-      : imageData?.url;
+    let imgURL = imageData?.url;
+    if (imageData?.b64_json) {
+      const generatedS3Url = await uploadImageToS3({
+        originalImgLink: `data:image/png;base64,${imageData.b64_json}`,
+        userId,
+        displayName,
+        service,
+      });
+      if (!generatedS3Url) {
+        throw new Error('Unable to upload OpenAI image to S3');
+      }
+      imgURL = generatedS3Url;
+    }
     if (!imgURL) {
       throw new Error('OpenAI returned no image data');
     }
@@ -139,6 +180,7 @@ export const generateAIimage = async (req: Request, res: genericResponseType) =>
           hasUrl: Boolean(imageData?.url),
           hasB64Json: Boolean(imageData?.b64_json),
           model: OPENAI_IMAGE_MODEL,
+          generatedImgURL: imgURL,
         },
         titleResponse,
       },

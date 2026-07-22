@@ -63,13 +63,16 @@ describe('Adding a pin', () => {
       AWS_SECRET_KEY: 'stub key',
     };
     res = { json: jest.fn() };
+    mockS3Instance.send.mockClear();
+    (mockPutObjectCommand as jest.Mock).mockClear();
     pinLinks.create = jest.fn().mockResolvedValue({});
+    aiGenerated.findOne = jest.fn().mockResolvedValue(null);
   });
   afterEach(() => {
     jest.restoreAllMocks();
   });
 
-  test('will create a new pin after uploading to S3 for https:// protocol', async () => {
+  test('will keep normal non-AI web URL pin creation on the original S3 upload path', async () => {
     const req = {
       user,
       body: {
@@ -88,17 +91,9 @@ describe('Adding a pin', () => {
       .get('/')
       .reply(200, 'Processed Image data');
 
-    setupMocks({
-      owner: {
-        name: 'tester-twitter',
-        service: 'twitter',
-        id: user._id,
-      },
-      imgDescription: 'description-4',
-      imgLink: 'https://stub-4',
-      _id: 123,
-    });
-    await addPin(req as genericRequest, res as unknown as Response);
+    setupMocks({ ...req.body });
+    pins.create = jest.fn().mockImplementation((pin) => Promise.resolve({ ...pin, _id: 123 }));
+    await addPin(req as unknown as genericRequest, res as unknown as Response);
     expect(pins.create).toHaveBeenCalledTimes(1);
     expect(pins.create).toHaveBeenCalledWith({
       ...req.body,
@@ -107,12 +102,16 @@ describe('Adding a pin', () => {
       imgLink: expect.stringContaining('https://s3.amazonaws.com/pinterest.clone/'),
       isBroken: false,
     });
+    const persistedWebPin = (pins.create as jest.Mock).mock.calls[0][0];
+    expect(aiGenerated.findOne).not.toHaveBeenCalled();
+    expect(mockS3Instance.send).toHaveBeenCalledTimes(1);
     expect(pinLinks.create).toHaveBeenCalledWith({
-      cloudFrontLink: expect.any(String),
-      imgLink: expect.any(String),
+      cloudFrontLink: `https://d1ttxrulihk8wq.cloudfront.net/${persistedWebPin.imgLink.split('/')[4]}`,
+      imgLink: persistedWebPin.imgLink,
+      originalImgLink: req.body.imgLink,
       pin_id: '123',
     });
-    expect(res.json).toHaveBeenCalledWith({ ...req.body });
+    expect(res.json).toHaveBeenCalledWith({ ...persistedWebPin, _id: 123 });
     expect(mockPutObjectCommand).toHaveBeenCalledWith({
       Bucket: 'pinterest.clone',
       Key: expect.any(String),
@@ -138,7 +137,7 @@ describe('Adding a pin', () => {
     expect(savedTags.create).toHaveBeenNthCalledWith(2, { tag: 'TEST-LABEL-B' });
   });
 
-  test('will create a new pin after uploading to S3 for data:image/ protocol', async () => {
+  test('will keep normal non-AI file upload data URI pin creation on the original S3 upload path', async () => {
     const req = {
       user,
       body: {
@@ -153,6 +152,7 @@ describe('Adding a pin', () => {
       },
     };
     setupMocks({ ...req.body });
+    pins.create = jest.fn().mockImplementation((pin) => Promise.resolve({ ...pin, _id: 123 }));
     await addPin(req as genericRequest, res as unknown as Response);
     expect(pins.create).toHaveBeenCalledTimes(1);
     expect(pins.create).toHaveBeenCalledWith({
@@ -162,7 +162,16 @@ describe('Adding a pin', () => {
       imgLink: expect.stringContaining('https://s3.amazonaws.com/pinterest.clone/'),
       isBroken: false,
     });
-    expect(res.json).toHaveBeenCalledWith({ ...req.body });
+    const persistedUploadPin = (pins.create as jest.Mock).mock.calls[0][0];
+    expect(aiGenerated.findOne).not.toHaveBeenCalled();
+    expect(mockS3Instance.send).toHaveBeenCalledTimes(1);
+    expect(pinLinks.create).toHaveBeenCalledWith({
+      cloudFrontLink: `https://d1ttxrulihk8wq.cloudfront.net/${persistedUploadPin.imgLink.split('/')[4]}`,
+      imgLink: persistedUploadPin.imgLink,
+      originalImgLink: req.body.imgLink,
+      pin_id: '123',
+    });
+    expect(res.json).toHaveBeenCalledWith({ ...persistedUploadPin, _id: 123 });
     expect(mockPutObjectCommand).toHaveBeenCalledWith({
       Bucket: 'pinterest.clone',
       Key: expect.any(String),
@@ -186,6 +195,56 @@ describe('Adding a pin', () => {
     expect(savedTags.create).toHaveBeenCalledTimes(2);
     expect(savedTags.create).toHaveBeenNthCalledWith(1, { tag: 'TEST-LABEL-A' });
     expect(savedTags.create).toHaveBeenNthCalledWith(2, { tag: 'TEST-LABEL-B' });
+  });
+
+  test('will reuse an already uploaded AI generated S3 image without uploading it again', async () => {
+    const generatedImgURL = 'https://s3.amazonaws.com/pinterest.clone/generated-ai-image';
+    const req = {
+      user,
+      body: {
+        owner: {
+          name: 'tester-twitter',
+          service: 'twitter',
+          id: user._id,
+        },
+        imgDescription: 'description-4',
+        imgLink: generatedImgURL,
+        AIgeneratedId: 'stub_ai_mongoose_storage_ID',
+        _id: 123,
+      },
+    };
+    mockS3Instance.send.mockClear();
+    aiGenerated.findOne = jest.fn().mockResolvedValue({
+      response: {
+        imageResponse: {
+          generatedImgURL,
+        },
+      },
+    });
+    setupMocks({ ...req.body, imgLink: generatedImgURL, originalImgLink: generatedImgURL });
+    await addPin(req as unknown as genericRequest, res as unknown as Response);
+    expect(aiGenerated.findOne).toHaveBeenCalledWith({
+      _id: 'stub_ai_mongoose_storage_ID',
+      userId: user._id,
+    });
+    expect(mockS3Instance.send).not.toHaveBeenCalled();
+    expect(pins.create).toHaveBeenCalledWith({
+      ...req.body,
+      owner: Types.ObjectId(user._id),
+      imgLink: generatedImgURL,
+      originalImgLink: generatedImgURL,
+      isBroken: false,
+    });
+    expect(pinLinks.create).toHaveBeenCalledWith({
+      pin_id: '123',
+      imgLink: generatedImgURL,
+      originalImgLink: generatedImgURL,
+      cloudFrontLink: 'https://d1ttxrulihk8wq.cloudfront.net/generated-ai-image',
+    });
+    const persistedPin = JSON.stringify((pins.create as jest.Mock).mock.calls[0][0]);
+    const persistedPinLink = JSON.stringify((pinLinks.create as jest.Mock).mock.calls[0][0]);
+    expect(persistedPin).not.toContain('data:image');
+    expect(persistedPinLink).not.toContain('data:image');
   });
 
   test('will keep original link on pin but not upload to S3 for an invalid url', async () => {
@@ -422,7 +481,7 @@ describe('generating an AI image', () => {
     });
   });
 
-  test('will return a PNG data URI for a GPT Image base64 response without persisting the payload', async () => {
+  test('will upload a GPT Image base64 response to S3 and return a URL without persisting the payload', async () => {
     const stubImage = Buffer.from('stub-image').toString('base64');
     mockOpenAiInstance.images.generate.mockResolvedValue({ data: [{ b64_json: stubImage }] });
     const req = {
@@ -439,9 +498,19 @@ describe('generating an AI image', () => {
       size: '1024x1024',
     });
     expect(res.json).toHaveBeenCalledWith({
-      imgURL: `data:image/png;base64,${stubImage}`,
+      imgURL: expect.stringContaining('https://s3.amazonaws.com/pinterest.clone/'),
       title: '[TEST-LABEL-A, TEST-LABEL-B]',
       _id: 'stub_ai_mongoose_storage_ID',
+    });
+    const responsePayload = (res.json as jest.Mock).mock.calls[0][0];
+    expect(responsePayload.imgURL).not.toContain(stubImage);
+    expect(responsePayload.imgURL).not.toContain('data:image/png;base64');
+    expect(mockPutObjectCommand).toHaveBeenCalledWith({
+      Bucket: 'pinterest.clone',
+      Key: expect.any(String),
+      Body: Buffer.from(stubImage, 'base64'),
+      ContentType: 'image/png',
+      Tagging: 'userId=5cad310f7672ca00146485a8&name=tester-twitter&service=twitter',
     });
     expect(aiGenerated.create).toHaveBeenCalledWith({
       userId: user._id,
@@ -452,6 +521,7 @@ describe('generating an AI image', () => {
           hasUrl: false,
           hasB64Json: true,
           model: 'gpt-image-1',
+          generatedImgURL: expect.stringContaining('https://s3.amazonaws.com/pinterest.clone/'),
         },
         titleResponse: { choices: [{ message: { content: '["TEST-LABEL-A", "TEST-LABEL-B"]' } }] },
       },
