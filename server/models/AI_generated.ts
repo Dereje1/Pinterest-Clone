@@ -2,9 +2,14 @@ import mongoose from 'mongoose';
 
 interface ImageResponse {
   created: number;
-  data: {
-    url: string;
+  data?: {
+    url?: string;
+    b64_json?: string;
   }[];
+  hasUrl?: boolean;
+  hasB64Json?: boolean;
+  model?: string;
+  generatedImgURL?: string;
 }
 
 interface Choice {
